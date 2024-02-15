@@ -1,0 +1,33 @@
+Dossier API :
+
+- Dossier Controller
+	activityController
+	adminController
+	beneficiariesController
+	volunteersController
+	planningController (?)
+
+- Dossier Models
+	activityModels
+	adminModel
+	beneficiariesModels
+	volunteersModels
+	planningModels (?)
+
+- Dossier Repository
+	activityRepository
+	adminRepository
+	beneficiariesRepository
+	volunteersRepository
+	planningRepository (?)
+	
+- Dossier Service
+	activityRepository
+	adminRepository
+	beneficiariesRepository
+	colunteersRepository
+	planningRepository ()
+	
+
+Dossier website (ou front)
+- Tous les fichiers pour faire tourner le site internet

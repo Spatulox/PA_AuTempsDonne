@@ -1,0 +1,49 @@
+API WEB coupé en trois parties :
+
+- Administration
+- Bénévoles
+- Bénéficiaires
+
+## Administration
+
+- Gestion de stocks
+- Organisations des activités
+- Gestions des camions (horaires, trajets)
+    - Plan de route généré automatiquement)
+- Gestion des services
+    - Soutient Scolaire
+    - Visites aux personnes agées
+- Gestion des bénévoles / bénéficiaires
+- Gestions des plannings (bénévoles / bénéficiares)
+- Multilingue
+- Recrutement / Validation des bénévoles
+
+## Bénévoles
+
+- Gestion du planning
+- Gere ses affectations aux activités
+- Accéder aux proposition de formations
+- Mettre à jours ses informations personnelles
+- Notifications push de rappel des activités (planning, etc…)
+
+## Bénéficiaire
+
+L’application ne doit pas être intrusive dans leur vie
+
+- Inscription en tant que bénéficiaire
+    - Informations personnelles si une seule personne
+        - Nom Prenom (optionnel)
+        - Age (optionnel)
+        - Homme / Femme (optionnel)
+        - Adresse postale
+        - Numéro de téléphone
+    
+    - Informations globale sur groupe
+        - Adresse postale de référence
+        - Age moyen des membres du groupe (optionnel)
+        - Responsable du groupe (dois être majeur)
+            - Nom Prenom
+            - Numéro de téléphone
+            
+- Ajout de demandes de service (préparer à manger le mardi par exemple)
+- Gestion du compte (Mise a jour des infos perso)
