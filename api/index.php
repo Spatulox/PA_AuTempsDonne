@@ -1,10 +1,10 @@
 <?php
 //include_once './Service/globalFunctions.php';
 include_once './Repository/BDD.php';
+include_once './Controller/loginController.php';
 
 /*include_once './Controller/apartmentController.php';
 include_once './Controller/userController.php';
-include_once './Controller/loginController.php';
 include_once './Controller/reservationController.php';
 */
 
