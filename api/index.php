@@ -2,9 +2,9 @@
 //include_once './Service/globalFunctions.php';
 include_once './Repository/BDD.php';
 include_once './Controller/loginController.php';
+include_once './Controller/userController.php';
 
 /*include_once './Controller/apartmentController.php';
-include_once './Controller/userController.php';
 include_once './Controller/reservationController.php';
 */
 
@@ -46,9 +46,9 @@ function exit_with_content($content = null, $code = 200) {
 }
 
 function getRoleFromApiKey($apiKey){
-    $role = selectDB("USERS", 'role', "apikey='".$apiKey."'", "bool");
+    $role = selectDB("UTILISATEUR", 'role', "apikey='".$apiKey."'", "bool");
     if($role){
-        $role = selectDB("USERS", 'role', "apikey='".$apiKey."'")[0]["role"];
+        $role = $role[0]["role"];
     }
     return $role;
 }
@@ -58,12 +58,14 @@ function getRoleFromApiKey($apiKey){
 function controller($uri) {
     $headers = getallheaders();
     $apiKey = $headers['apikey'];
-    //$role = getRoleFromApiKey($apiKey); 
-    
 
     switch($uri[2]) {
         case 'login':
             loginController($uri);
+            break;
+
+        case 'user':
+            userController($uri, $apiKey);
             break;
 
         default:
@@ -73,8 +75,6 @@ function controller($uri) {
             break;
     }
 }
-
-
 
 // On appelle le controlleur principal
 controller($uri);
