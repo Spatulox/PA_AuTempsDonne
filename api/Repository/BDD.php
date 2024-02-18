@@ -42,7 +42,7 @@ function checkData($table = -10, $columnArray = -10, $columnData = -10, $conditi
 function connectDB(){
 	try {
 	    $db = new PDO(
-	        'pgsql:host=pa_autempsdonne-database-1;
+	        'mysql:host=pa_autempsdonne-database-1;
 	        port=3306;
 	        dbname=apiDev_db;
 	        user=apiDev;
