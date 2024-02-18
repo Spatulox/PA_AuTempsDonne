@@ -159,6 +159,7 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 		    $data .= ", " . $tmp;
 		} 
 		else if (gettype($columnData[$i]) == "integer"){
+			
 		    $data .= ", " . $columnData[$i];
 		}
 		else{
@@ -168,11 +169,16 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 
 	$dbRequest = 'INSERT INTO '. $table .' (' . $colums . ') VALUES ('. $data . ')';
 	
+	if($returningData == "-@"){
+		var_dump($dbRequest);
+	}
+
+
 	try{
 		$result = $db->prepare($dbRequest);
 		$result->execute();
 
-		if ($returningData == null){
+		if ($returningData == null || $returningData == "-@"){
 			return true;
 		}
 		return selectDB($table, '*', $returningData);
@@ -185,6 +191,10 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 			//exit_with_message("caca");
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
 			exit_with_message("Error : ".str_replace('"', "'", $tmp));
+		}
+
+		if($returningData == "-@"){
+			exit_with_message("PDO error :" . $e->getMessage());
 		}
 
 	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
