@@ -62,14 +62,14 @@ class UserService {
      *  Supprime un utilisateur
     */
 
-    /*
+    
     public function deleteUser($id, $apiKey) {
         $userRepository = new UserRepository();
         if ($userRepository->unreferenceUser($id, $apiKey)){
-            exit_with_message("Unreference Succeed !");
+            exit_with_message("Unreference Succeed !", 200);
         }
     }
-    */
+    
     
     
 }

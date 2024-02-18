@@ -73,7 +73,7 @@ function userController($uri, $apiKey) {
         /*
         // update the user
         case 'PUT':
-        	$userService = new UserService($uri);
+        	$userService = new UserService();
 
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
@@ -84,14 +84,17 @@ function userController($uri, $apiKey) {
             exit_with_content($userService->updateUser($uri[3], $apiKey, $json["role"], $json["pseudo"], $json["user_index"]));
             break;
 
+        */
 
         case 'DELETE':
             // Gestion des requêtes DELETE pour supprimer un utilisateur
-            $userService = new UserService($uri);
+            $userService = new UserService();
+
+            if(!$uri[3]){
+                exit_with_message("No user specified", 400);
+            }
             $userService->deleteUser($uri[3], $apiKey);
             break;
-
-        */
 
         default:
             // Gestion des requêtes OPTIONS pour le CORS

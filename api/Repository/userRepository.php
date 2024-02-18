@@ -85,25 +85,37 @@ class UserRepository {
         return $this->getUser($user->id_users, null);
     }
 
+    */
+
     //-------------------------------------
 
     public function unreferenceUser($id, $apiKey){
 
         $role = getRoleFromApiKey($apiKey);
 
-        $apiToRole = selectDB("UTILISATEUR", "id_users", "apikey='".$apiKey."'")[0]['id_users'];
-        // var_dump($apiKey, $apiToRole);
-        // exit();
+        $user = selectDB("UTILISATEUR", "id_user, index_user", "apikey='".$apiKey."'", "bool")[0];
 
-        if ($id != $id_users && $role != 1){
-            exit_with_message("You can't unrefence a user wich is not you");
+        $userToDelete = $this->getUser($id);
+
+        var_dump($userToDelete);
+
+        if($userToDelete->role == 1){
+            exit_with_message("You can't unrefence an admin", 403);
         }
 
-        return updateDB("UTILISATEUR", ['user_index'], [-1], "id_users=".$id);
-        //deleteDB("UTILISATEUR", "id_users=".$id);
+        if($userToDelete->role == 2 && $role == 2){
+            if($id != $user["id_user"]){
+                exit_with_message("You can't unrefence a modo if you're a modo, unless if it's you :/", 403);
+            }
+        }
+
+        if ($id != $user['id_user'] && $role > 2 ){
+            exit_with_message("You can't unrefence a user wich is not you", 403);
+        }
+
+        return updateDB("UTILISATEUR", ['index_user'], [-1], "id_user=".$id);
     }
     
-    */
 }
 
 
