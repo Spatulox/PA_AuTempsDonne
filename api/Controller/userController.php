@@ -41,7 +41,7 @@ function userController($uri, $apiKey) {
             break;
 
 
-        /*
+        
 
         // Create the user
         case 'POST':
@@ -50,17 +50,27 @@ function userController($uri, $apiKey) {
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
 
-            if ( !isset($json['role']) || !isset($json['pseudo']) || !isset($json['password']) )
+            if ( !isset($json['nom']) || !isset($json['prenom']) || !isset($json['email']) || !isset($json['mdp']) || !isset($json['role']))
             {
-                exit_with_message("Plz give the role, the pseudo and the password of the user");
+                exit_with_message("Plz give the name, the lastname the password, the role and the type (group (2), solo (1) or old people (3)) of the futur user");
             }
 
+            if(isset($json["type"]) && filter_var($json["type"], FILTER_VALIDATE_INT) == false){
+                exit_with_message("The type need to be an integer", 403);
+            }
+
+            if($json['role'] < 3){
+                exit_with_message("You can'tregister you as an Admin or modo...", 403); 
+            }
+
+            $user = new UserModel(1, $json['nom'], $json['prenom'], null, isset($json['email']) ? $json['email'] : "no_email", isset($json['telephone']) ? $json['telephone'] : "no_phone", isset($json['type']) ? $json['type'] : 1, $json['role'], null);
+
             // Valider les données reçues ici
-            exit_with_content($userService->createUser($json["role"], $json["pseudo"], $json["password"]));
+            exit_with_content($userService->createUser($user, $json["mdp"]));
 
             break;
 
-
+        /*
         // update the user
         case 'PUT':
         	$userService = new UserService($uri);

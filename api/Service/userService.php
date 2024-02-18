@@ -40,14 +40,12 @@ class UserService {
      *  Créer un utilisateur
     */
 
-    /*
-
-    public function createUser($role, $pseudo, $password) {
+    public function createUser(UserModel $user, $password) {
         $userRepository = new UserRepository();
-        $newUser = new UserModel(12, $role, $pseudo, $password);
-        return $userRepository->createUser($newUser);
+        return $userRepository->createUser($user, $password);
     }
 
+    
     /*
      *  Met à jour un utilisateur
     */

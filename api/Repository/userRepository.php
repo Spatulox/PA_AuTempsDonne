@@ -42,25 +42,37 @@ class UserRepository {
     }
 
     //-------------------------------------
-    /*
-    public function createUser(UserModel $user){
-        $tmp = insertDB("UTILISATEUR", ["role", "user_index", "pseudo", "mdp", "apikey"], [$user->role, 1, $user->pseudo, strtoupper(hash('sha256', $user->password)), $user->apiKey]);// , "apiKey='".$user->apiKey."'");
-
-        $userTmp = selectDB("UTILISATEUR", 'id_users, pseudo', "pseudo='".$user->pseudo."'");
-
-        $string = $userTmp[0]['id_users'].$userTmp[0]['pseudo'];
-
-        if(!updateDB("UTILISATEUR", ["apikey"], [strtoupper(hash('sha256', $string))], "id_users='".$userTmp[0]['id_users']."'")){
-            exit_with_message("Impossible to create your apiKey :/");
+    
+    public function createUser(UserModel $user, $password){
+        
+        $index_user = 1;
+        if($user->role == 3){
+            $index_user = 2;
         }
 
-        $user = selectDB('USERS', '*', 'id_users='.$userTmp[0]['id_users']);
+        $tmp = selectDB('UTILISATEUR', '*', 'email="'.$user->email.'"', "bool");
+        if($tmp){
+            exit_with_message("Error, email already exist, plz chose another one", 403);
+        }
+        
 
-        return new UserModel($user[0]['id_users'], $user[0]['role'], $user[0]['pseudo'], "hidden", $user[0]['user_index'], $user[0]['apikey']);//$this->getUserApi($user->apiKey);
+        $user = insertDB("UTILISATEUR", ["nom", "prenom", "email", "telephone", "index_user", "date_inscription", "type", "role", "apikey", "mdp"], [$user->nom, $user->prenom, $user->email, $user->telephone, $index_user, date('Y-m-d'), $user->type, $user->role, "null", strtoupper(hash('sha256', $password))], "email='".$user->email."'");
+
+        if(!$user){
+            exit_with_message("Error, your account don't exist, plz try again", 500);
+        }
+
+        $apiKey = hash('sha256', $user[0]["id_user"] . $user[0]["nom"] . $user[0]["prenom"] . $password);
+        updateDB("UTILISATEUR", ["apikey"], [$apiKey], "email='".$user[0]["email"]."'");
+
+
+        $user = selectDB('UTILISATEUR', '*', 'email="'.$user[0]['email'].'"');
+
+        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['role'], $user[0]['apikey']);
     }
 
     //-------------------------------------
-
+    /*
     public function updateUser(UserModel $user, $apiKey){
         
         $idUSer = selectDB("UTILISATEUR", 'id_users', "apikey='".$apiKey."'")[0]["id_users"];
