@@ -20,7 +20,7 @@ class UserRepository {
         $usersTest = [];
 
         for ($i=0; $i < count($usersArray); $i++) {
-            $user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $usersArray[$i]['telephone'], $usersArray[$i]['type'], $usersArray[$i]['role'], $usersArray[$i]['apikey']);
+            $user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $usersArray[$i]['telephone'], $usersArray[$i]['type'], $usersArray[$i]['role'], $usersArray[$i]['apikey'], $usersArray[$i]['index_user']);
         }
         return $user;
     }
@@ -51,7 +51,7 @@ class UserRepository {
 
         $user = selectDB("UTILISATEUR", "*", "apikey='".$api."'");
 
-        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['role'], "hidden");
+        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['role'], "hidden", $user[0]['index_user']);
     }
 
     //-------------------------------------
@@ -81,7 +81,7 @@ class UserRepository {
 
         $user = selectDB('UTILISATEUR', '*', 'email="'.$user[0]['email'].'"');
 
-        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['role'], $user[0]['apikey']);
+        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['role'], $user[0]['apikey'], $user[0]['index_user']);
     }
 
     //-------------------------------------

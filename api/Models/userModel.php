@@ -12,8 +12,9 @@ class UserModel {
     public $type;
     public $role;
     public $apikey;
+    public $index;
 
-    public function __construct($id_user, $nom, $prenom, $date_inscription, $email = null, $telephone = null, $type = null, $role = null, $apikey = null) {
+    public function __construct($id_user, $nom, $prenom, $date_inscription, $email = null, $telephone = null, $type = null, $role = null, $apikey = null, $index = null) {
         $this->id_user = $id_user;
         $this->nom = $nom;
         $this->prenom = $prenom;
@@ -23,6 +24,7 @@ class UserModel {
         $this->type = $type;
         $this->role = $role;
         $this->apikey = $apikey;
+        $this->index = $index;
     }
 }
 
