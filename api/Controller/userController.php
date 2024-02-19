@@ -66,10 +66,10 @@ function userController($uri, $apiKey) {
             }
 
             if($json['role'] < 3){
-                exit_with_message("You can'tregister you as an Admin or modo...", 403); 
+                exit_with_message("You can't register you as an Admin or modo...", 403); 
             }
 
-            $user = new UserModel(1, $json['nom'], $json['prenom'], null, isset($json['email']) ? $json['email'] : "no_email", isset($json['telephone']) ? $json['telephone'] : "no_phone", isset($json['type']) ? $json['type'] : 1, $json['role'], null);
+            $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], isset($json['telephone']) ? $json['telephone'] : "no_phone", isset($json['type']) ? $json['type'] : 1, $json['role'], null);
 
             // Valider les données reçues ici
             exit_with_content($userService->createUser($user, $json["mdp"]));

@@ -75,7 +75,7 @@ class UserRepository {
             exit_with_message("Error, your account don't exist, plz try again", 500);
         }
 
-        $apiKey = hash('sha256', $user[0]["id_user"] . $user[0]["nom"] . $user[0]["prenom"] . $password);
+        $apiKey = hash('sha256', $user[0]["id_user"] . $user[0]["nom"] . $user[0]["prenom"] . $password . $user[0]["email"]);
         updateDB("UTILISATEUR", ["apikey"], [$apiKey], "email='".$user[0]["email"]."'");
 
 
