@@ -200,3 +200,9 @@ INSERT INTO STOCKS VALUES
 (3, 'poulet', 20, '2024-02-22', '2024-03-02', 1),
 (4, 'paracétamol ', 80, '2024-03-05', NULL, 1),
 (5, 'pomme', 4, '2024-03-10', NULL, 2);
+
+
+
+
+
+UPDATE UTILISATEUR SET apikey = SHA2(CONCAT(id_user, nom, prenom, mdp, email), 256) WHERE id_user IS NOT NULL;
