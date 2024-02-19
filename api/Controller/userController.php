@@ -56,13 +56,17 @@ function userController($uri, $apiKey) {
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
 
-            if ( !isset($json['nom']) || !isset($json['prenom']) || !isset($json['email']) || !isset($json['mdp']) || !isset($json['role']))
+            if ( !isset($json['nom']) || !isset($json['prenom']) || !isset($json['email']) || !isset($json['mdp']) || !isset($json['role']) || !isset($json['type']))
             {
-                exit_with_message("Plz give the name, the lastname the password, the role and the type (group (2), solo (1) or old people (3)) of the futur user");
+                exit_with_message("Plz give the name, the lastname the password, the role and the type (group (2), solo (1) or old people (3)) of the futur user", 403);
             }
 
             if(isset($json["type"]) && filter_var($json["type"], FILTER_VALIDATE_INT) == false){
-                exit_with_message("The type need to be an integer", 403);
+                exit_with_message("The type need to be an integer between 1 and 3", 403);
+            }
+
+            if($json["type"] < 1 || $json["type"] > 3){
+                exit_with_message("The type need to be an integer between 1 and 3", 403);
             }
 
             if($json['role'] < 3){
