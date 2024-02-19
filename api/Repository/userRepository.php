@@ -29,7 +29,20 @@ class UserRepository {
 
     public function getUser($id){
         $user = selectDB("UTILISATEUR", "*", "id_user='".$id."'");
-        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['role'], "hidden");
+        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['role'], "hidden", $user[0]['index_user']);
+    }
+
+    //-------------------------------------
+
+    public function getWaitUsers(){
+        var_dump("coucou");
+        $usersArray = selectDB("UTILISATEUR", "*", "index_user=2");
+
+        for ($i=0; $i < count($usersArray); $i++) {
+            $user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $usersArray[$i]['telephone'], $usersArray[$i]['type'], $usersArray[$i]['role'], $usersArray[$i]['apikey'], $usersArray[$i]['index_user']);
+        }
+
+        return $user;
     }
 
     //-------------------------------------

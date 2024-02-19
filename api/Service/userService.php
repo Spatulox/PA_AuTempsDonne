@@ -20,6 +20,14 @@ class UserService {
     }
 
     /*
+     *  Récupère tous les utilisateurs en attente de validation
+    */
+    public function getAllWaitingUsers() {
+        $userRepository = new UserRepository();
+        return $userRepository->getWaitUsers();
+    }
+
+    /*
      *  Récupère un utilisateur avec son apikey
     */
     public function getUserByApikey($apiKey){

@@ -24,7 +24,7 @@ function userController($uri, $apiKey) {
             }
 
             // If a number exist after the /user
-            elseif($uri[3] && $uri[3]!="all"){
+            elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
                 $userService = new UserService();
                 exit_with_content($userService->getUserById($uri[3]));
             }
@@ -34,6 +34,12 @@ function userController($uri, $apiKey) {
                 $userService = new UserService();
                 exit_with_content($userService->getAllUsers());
             }
+
+            elseif($uri[3] == "validate" && $role < 3){
+                $userService = new UserService();
+                exit_with_content($userService->getAllWaitingUsers());
+            }
+
             else{
                 exit_with_message("You need to be admin to see all the users", 403);
             }
