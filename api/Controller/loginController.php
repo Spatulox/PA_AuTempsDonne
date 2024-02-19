@@ -13,12 +13,12 @@ function loginController($uri) {
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
 
-            if (!isset($json['nom']) || !isset($json['prenom']) || !isset($json['mdp']))
+            if (!isset($json['email']) || !isset($json['mdp']))
             {
-                exit_with_message("Plz give the name, lastname and the password of the user");
+                exit_with_message("Plz give the email and the password of the user");
             }
 
-            exit_with_content($loginClass->getApiKey($json['nom'], $json['prenom'], ($json['mdp'])));
+            exit_with_content($loginClass->getApiKey($json['email'], $json['mdp']));
             
             break;
 

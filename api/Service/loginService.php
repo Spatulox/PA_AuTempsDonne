@@ -10,9 +10,9 @@ class LoginService {
         $this->uri = $uri;
     }
 
-    public function getApiKey($nom, $prenom, $password) {
+    public function getApiKey($email, $password) {
         $loginRepository = new loginRepository();
-        return $loginRepository->getPersonnalApiKey($nom, $prenom, $password);
+        return $loginRepository->getPersonnalApiKey($email, $password);
     }
     
 }
