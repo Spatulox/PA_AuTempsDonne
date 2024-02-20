@@ -51,6 +51,9 @@ function getRoleFromApiKey($apiKey){
     if($role){
         $role = $role[0]["role"];
     }
+    else{
+        exit_with_message("No one with this apikey", 403);
+    }
     return $role;
 }
 
@@ -58,6 +61,9 @@ function getIdUserFromApiKey($apiKey){
     $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool");
     if($id){
         $id = $id[0]["id_user"];
+    }
+    else{
+        exit_with_message("No one with this apikey", 403);
     }
     return $id;
 }

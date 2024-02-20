@@ -1,6 +1,6 @@
 <?php
 
-include_once './Repository/BDD.php';
+//include_once './Repository/BDD.php';
 
 class UserModel {
     public $id_user;

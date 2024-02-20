@@ -4,13 +4,7 @@ include_once './Models/userModel.php';
 include_once './exceptions.php';
 
 class UserRepository {
-    private $connection = null;
 
-    // I'm not sure about this function lol (unuse)
-    function __construct() {
-       
-    }
-    
     //-------------------------------------
 
     public function getUsers($index = 1){
@@ -35,8 +29,10 @@ class UserRepository {
     //-------------------------------------
 
     public function getWaitUsers(){
-        var_dump("coucou");
-        $usersArray = selectDB("UTILISATEUR", "*", "index_user=2");
+        $usersArray = selectDB("UTILISATEUR", "*", "index_user=2", "bool");
+        if(!$usersArray){
+            exit_with_message("No users waiting user to validate", 200);
+        }
 
         for ($i=0; $i < count($usersArray); $i++) {
             $user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $usersArray[$i]['telephone'], $usersArray[$i]['type'], $usersArray[$i]['role'], $usersArray[$i]['apikey'], $usersArray[$i]['index_user']);
@@ -49,7 +45,10 @@ class UserRepository {
 
     public function getUserApi($api){
 
-        $user = selectDB("UTILISATEUR", "*", "apikey='".$api."'");
+        $user = selectDB("UTILISATEUR", "*", "apikey='".$api."'", "bool");
+        if(!$user){
+            exit_with_message('Wrong apikey or no data');
+        }
 
         return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['role'], "hidden", $user[0]['index_user']);
     }
