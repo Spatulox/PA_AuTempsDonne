@@ -70,7 +70,7 @@ function benevoleController($uri, $apiKey) {
             break;
 
         
-
+        //To Delete an action in the planning of idk what
         //case 'DELETE':
            
 
