@@ -18,6 +18,7 @@ CREATE TABLE ACTIVITES(
    nom_activite VARCHAR(100),
    date_activite DATE,
    type_activite VARCHAR(50),
+   index_activite INT NOT NULL,
    PRIMARY KEY(id_activite)
 );
 
@@ -136,17 +137,17 @@ INSERT INTO UTILISATEUR VALUES
 
 
 INSERT INTO ACTIVITES VALUES
-(1, 'Collecte de vêtements', '2024-02-15', 'Collecte'),
-(2, 'Distribution de repas', '2024-02-20', 'Distribution'),
-(3, 'Atelier de recyclage', '2024-02-25', 'Atelier'),
-(4, 'Collecte alimentaire', '2024-01-01', 'Collecte'),
-(5, 'Visite aux personnes âgées', '2024-01-05', 'Visite'),
-(6, 'Cours dinformatique', '2024-03-10', 'Cours'),
-(7, 'Journée de sensibilisation', '2024-03-15', 'Sensibilisation'),
-(8, 'Collecte de jouets', '2024-03-20', 'Collecte'),
-(9, 'Distribution de couvertures', '2024-03-25', 'Distribution'),
-(10, 'Atelier de jardinage', '2024-03-30', 'Atelier'),
-(11, 'Collecte de fournitures scolaires', '2024-04-05', 'Collecte');
+(1, 'Collecte de vêtements', '2024-02-15', 'Collecte',0),
+(2, 'Distribution de repas', '2024-02-20', 'Distribution',0),
+(3, 'Atelier de recyclage', '2024-02-25', 'Atelier',1),
+(4, 'Collecte alimentaire', '2024-01-01', 'Collecte',0),
+(5, 'Visite aux personnes âgées', '2024-01-05', 'Visite',0),
+(6, 'Cours dinformatique', '2024-03-10', 'Cours',1),
+(7, 'Journée de sensibilisation', '2024-03-15', 'Sensibilisation',1),
+(8, 'Collecte de jouets', '2024-03-20', 'Collecte',1),
+(9, 'Distribution de couvertures', '2024-03-25', 'Distribution',1),
+(10, 'Atelier de jardinage', '2024-03-30', 'Atelier',1),
+(11, 'Collecte de fournitures scolaires', '2024-04-05', 'Collecte',1);
 
 INSERT INTO FORMATIONS VALUES
 (1, 'Formation Secourisme'),
