@@ -84,20 +84,18 @@ class UserRepository {
     }
 
     //-------------------------------------
-    /*
-    public function updateUser(UserModel $user, $apiKey){
-        
-        $idUSer = selectDB("UTILISATEUR", 'id_users', "apikey='".$apiKey."'")[0]["id_users"];
-        if ($idUSer != $user->id_users){
-            exit_with_message("You can't update an user which is not you");
+    
+    public function updateUser($id_user, $key, $data){
+
+        $tmp = updateDB("UTILISATEUR", [$key], [$data], "id_user=" . $id_user);
+
+        if(!$tmp){
+            exit_with_message("Error");
         }
 
-        updateDB("UTILISATEUR", ["role", "pseudo", "user_index"], [$user->role, $user->pseudo, $user->user_index], 'id_users='.$user->id_users." AND apikey='".$apiKey."'");
-
-        return $this->getUser($user->id_users, null);
+        return $this->getUser($id_user);
     }
 
-    */
 
     //-------------------------------------
 
