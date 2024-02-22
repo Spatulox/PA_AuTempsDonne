@@ -2,6 +2,7 @@
 
 include_once './Repository/BDD.php';
 include_once './Models/ActiviteModel.php';
+include_once './exceptions.php';
 
 class BeneficiaireRepository {
     //private $connection = null;
