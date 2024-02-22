@@ -35,5 +35,18 @@ class BeneficiaireRepository {
     }
 	//-------------------------------------
 
+    public function getActivite(ActiviteModel) {
+        $acticiteArray = selectDB("ACTIVITES", "*");
+
+        $activite = [];
+        
+
+        for ($i=0; $i < count($acticiteArray); $i++) {
+            $activite[$i] = new ActiviteModel($acticiteArray[$i]['id_activite'], $acticiteArray[$i]['nom_activite'], $acticiteArray[$i]['type_activite'], $acticiteArray[$i]['date_activite'], $acticiteArray[$i]['index_activite']);
+        }
+        return $activite;
+    }
+    //-------------------------------------
+
 }
 ?>
