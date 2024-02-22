@@ -22,6 +22,13 @@ class BeneficiaireService {
         return $this->beneficiaireRepository->createActivite($activiteModel);
     }
 
+    /*
+     * recuper toute les activités
+    */
+     public function getAllActivite(ActiviteModel) {
+        return $this->beneficiaireRepository->getActivite();
+    }
+
     
 }
 
