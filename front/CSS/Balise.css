@@ -1,0 +1,45 @@
+
+body{
+    margin: 0px;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+/* Styles pour l'en-tête */
+header {
+  background-color: rgb(48, 36, 28); /* Couleur de fond de l'en-tête */
+  position: relative;
+}
+
+/* Style de la ligne jaune */
+header::after {
+  content: "";
+  display: block;
+  background-color: rgb(222, 162, 60); /* Couleur de la ligne jaune */
+  height: 14%; /* Hauteur de la ligne jaune */
+  position: absolute;
+  bottom: 90%;
+  left: 0;
+  right: 0;
+}
+
+
+/* Styles pour l'en-tête */
+footer {
+  background-color: #4F759B; /* Couleur de fond de l'en-tête */
+  position: relative;
+}
+
+/* Style de la ligne jaune */
+footer::after {
+  content: "";
+  display: block;
+  background-color: #3B3B3B; /* Couleur de la ligne jaune */
+  height: 14%; /* Hauteur de la ligne jaune */
+  position: absolute;
+  bottom: 0%;
+  left: 0;
+  right: 0;
+}
+
