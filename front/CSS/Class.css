@@ -1,27 +1,52 @@
-.GreySection{
-  background-color: #949191;
+.block{
+  display: block;
 }
 
-.WhiteSection{
-  background-color: #FFFFFF;
+.border {
+  border-radius: 20px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  padding: 50px;
+  margin: auto 50px;
 }
+
 
 .container {
-  width: 30%;
   margin: 20px auto;
   border: 1px solid #ddd;
   border-radius: 10px;
   background-color: #fff;
 }
 
-.title_form {
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  text-align: center;
+.flex{
+  display: flex;
 }
 
+.flexCenter{
+  justify-content: center;
+}
 
+.flexAround{
+  justify-content: space-around;
+}
+
+.flexBetween{
+  justify-content: space-between;
+}
+
+.alignCenter{
+  align-content: center;
+  align-items: center;
+}
+
+.nowrap{
+  flex-wrap: nowrap;
+}
+
+.wrap{
+  flex-wrap: wrap;
+}
 
 .form-group {
   margin-bottom: 10px;
@@ -67,6 +92,172 @@
   position: relative;
   top: 10%;
   right: 30%;
+}
+
+.title_form {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
 
 
+.whiteSection{
+  background-color: #FFFFFF;
+}
+
+
+
+/* Utility */
+
+
+.noDecoration{
+    text-decoration: none;
+    list-style: none;
+    color: var(--mainPoliceColor);
+}
+
+.noDecoration > li {
+    text-decoration: none;
+    list-style: none;
+}
+
+.noMargin{
+    margin: 0px;
+}
+
+.noMarginBottom{
+    margin-bottom: 0px;
+}
+
+.noMarginTop{
+    margin-top: 0px;
+}
+
+.noMarginRight{
+    margin-right: 0px;
+}
+
+.noMarginLeft{
+    margin-left: 0px;
+}
+
+.noPadding{
+    padding: 0px;
+}
+
+.noPaddingBottom{
+    padding-bottom: 0px;
+}
+
+.noPaddingTop{
+    padding-top: 0px;
+}
+
+.noPaddingRight{
+    padding-right: 0px;
+}
+
+.noPaddingLeft{
+    padding-left: 0px;
+}
+
+.marginAuto{
+    margin: auto;
+}
+
+.marginTop10{
+    margin-top: 10px;
+}
+
+.marginBottom10{
+    margin-bottom: 10px;
+}
+
+.marginTop20{
+    margin-top: 20px;
+}
+
+.marginBottom20{
+    margin-bottom: 20px;
+}
+
+.marginTop30{
+    margin-top: 30px;
+}
+
+.marginBottom30{
+    margin-bottom: 30px;
+}
+
+.marginTop40{
+    margin-top: 40px;
+}
+
+.marginBottom40{
+    margin-bottom: 40px;
+}
+
+.marginTopBottom8Pourcent{
+    margin: 8% 0;
+}
+
+.padding5{
+    padding: 5px;
+}
+
+.padding10{
+    padding: 10px;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.textCenter{
+    text-align: center;
+}
+
+.height20{
+    height: 20%;
+}
+
+.height30{
+    height: 30%;
+}
+
+.height50{
+    height: 50%;
+}
+
+.height80{
+    height: 80%;
+}
+
+.height100{
+    height: 100%;
+}
+
+.width20{
+    width: 20%;
+}
+
+.width30{
+    width: 30%;
+}
+
+.width50{
+    width: 50%;
+}
+
+.width80{
+    width: 80%;
+}
+
+.width100{
+    width: 100%;
+}
+
+.widthAuto{
+    width: auto;
 }
