@@ -1,0 +1,43 @@
+{
+	"header":{
+		"li":{
+			"./actualites.php":"Actualities",
+			"./découvrir.php":"Discover Us",
+			"./operations.php":"Our Operation",
+			"./aide.php":"Help us",
+			"./expertise.php":"Our Expertise",
+			"./carrieres.php":"Career",
+			"./donateur.php":"Give us",
+			"./signup_login.php":"Login/Sign up"
+		}
+	},
+	"footer":{
+		"li":{
+			"contact.php":"Contact us",
+			"https://youtu.be/L0TB1IkhVds":"Mr Sananes sings rap in suit"
+		}
+	},
+	"actualites":{
+		"title":"Actuality",
+		"sectionTitle":"Be Partership"
+	},
+	"signup_login":{
+		"title":"Log In/Sign Up",
+		"formSignUp":{
+			"title":"Sign up",
+			"name":"Name",
+			"email":"Email",
+			"password":"Password",
+			"confirmPassword":"Confirm password",
+			"input":"Sign up",
+			"switch":"Log In"
+		},
+		"formLogin":{
+			"title":"Log in",
+			"email":"Email",
+			"password":"Password",
+			"input":"Log In",
+			"switch":"Sing Up"
+		}
+	}
+}

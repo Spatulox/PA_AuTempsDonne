@@ -1,0 +1,43 @@
+{
+	"header":{
+		"li":{
+			"./actualites.php":"Actualités",
+			"./découvrir.php":"Nous Découvrir",
+			"./operations.php":"Nos Opérations",
+			"./aide.php":"Nous Aider",
+			"./expertise.php":"Nos Expertises",
+			"./carrieres.php":"Carrières",
+			"./donateur.php":"Espace Donateur",
+			"./signup_login.php":"Connexion/Inscription"
+		}
+	},
+	"footer":{
+		"li":{
+			"./contact.php":"Nous Contacter",
+			"https://youtu.be/L0TB1IkhVds":"Mr Sananes Chante du RAP en costard"
+		}
+	},
+	"actualites":{
+		"title":"Actualité",
+		"sectionTitle":"Devenez Partenaire"
+	},
+	"signup_login":{
+		"title":"Connexion/Inscription",
+		"formSignUp":{
+			"title":"Inscription",
+			"name":"Nom",
+			"email":"Email",
+			"password":"Mot de passe",
+			"confirmPassword":"Confirmer le mot de passe",
+			"input":"S'inscrire",
+			"switch":"Connexion"
+		},
+		"formLogin":{
+			"title":"Connexion",
+			"email":"Email",
+			"password":"Password",
+			"input":"Connexion",
+			"switch":"Inscription"
+		}
+	}
+}
