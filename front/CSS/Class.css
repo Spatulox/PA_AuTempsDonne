@@ -1,16 +1,40 @@
-.block{
-  display: block;
+.alternateSection section:nth-child(2n){
+  background-color: #808080;
+  min-height: 60vh;
+
 }
 
-.border {
-  border-radius: 20px;
-  border-color: black;
-  border-width: 1px;
-  border-style: solid;
+.alternateSection section:nth-child(2n+1){
+  background-color: #dea23c;
+  min-height: 60vh;
+}
+
+.alternateSection section:first-child{
+  background-color: inherit;
+  height: 70vh;
+  font-size: 100px;
+
+}
+
+.alternateSection section:first-child > h1{
+  margin: inherit;
+
+}
+
+.alternateSection :not(section:first-child){
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+
+}
+
+.alternateSection section > p{
+  margin: inherit;
   padding: 50px;
-  margin: auto 50px;
-}
+  font-size: 20px;
 
+}
 
 .container {
   margin: 20px auto;
@@ -19,34 +43,9 @@
   background-color: #fff;
 }
 
-.flex{
-  display: flex;
-}
 
-.flexCenter{
-  justify-content: center;
-}
 
-.flexAround{
-  justify-content: space-around;
-}
-
-.flexBetween{
-  justify-content: space-between;
-}
-
-.alignCenter{
-  align-content: center;
-  align-items: center;
-}
-
-.nowrap{
-  flex-wrap: nowrap;
-}
-
-.wrap{
-  flex-wrap: wrap;
-}
+/* FORM */
 
 .form-group {
   margin-bottom: 10px;
@@ -101,15 +100,71 @@
   text-align: center;
 }
 
-
 .whiteSection{
   background-color: #FFFFFF;
 }
 
 
 
-/* Utility */
+/*############################ /* Utility */
 
+.alignCenter{
+  align-content: center;
+  align-items: center;
+}
+
+.block{
+  display: block;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.border {
+  border-radius: 20px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  padding: 50px;
+  margin: auto 50px;
+}
+
+.flex{
+  display: flex;
+}
+
+.flexCenter{
+  justify-content: center;
+}
+
+.flexAround{
+  justify-content: space-around;
+}
+
+.flexBetween{
+  justify-content: space-between;
+}
+
+.height20{
+    height: 20%;
+}
+
+.height30{
+    height: 30%;
+}
+
+.height50{
+    height: 50%;
+}
+
+.height80{
+    height: 80%;
+}
+
+.height100{
+    height: 100%;
+}
 
 .noDecoration{
     text-decoration: none;
@@ -202,6 +257,10 @@
     margin: 8% 0;
 }
 
+.nowrap{
+  flex-wrap: nowrap;
+}
+
 .padding5{
     padding: 5px;
 }
@@ -218,24 +277,8 @@
     text-align: center;
 }
 
-.height20{
-    height: 20%;
-}
-
-.height30{
-    height: 30%;
-}
-
-.height50{
-    height: 50%;
-}
-
-.height80{
-    height: 80%;
-}
-
-.height100{
-    height: 100%;
+.underline{
+  text-decoration: underline;
 }
 
 .width20{
@@ -260,4 +303,8 @@
 
 .widthAuto{
     width: auto;
+}
+
+.wrap{
+  flex-wrap: wrap;
 }
