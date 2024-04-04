@@ -2,10 +2,9 @@
 	"header":{
 		"li":{
 			"./actualites.php":"Actualités",
-			"./découvrir.php":"Nous Découvrir",
+			"./decouvrir.php":"Nous Découvrir",
 			"./operations.php":"Nos Opérations",
 			"./aide.php":"Nous Aider",
-			"./expertise.php":"Nos Expertises",
 			"./carrieres.php":"Carrières",
 			"./donateur.php":"Espace Donateur",
 			"./signup_login.php":"Connexion/Inscription"
@@ -19,7 +18,9 @@
 	},
 	"actualites":{
 		"title":"Actualité",
-		"sectionTitle":"Devenez Partenaire"
+		"sectionTitle":"Devenez Partenaire",
+		"button":"Soutenez-nous",
+		"buttonLink":"./donateur.php"
 	},
 	"signup_login":{
 		"title":"Connexion/Inscription",
@@ -38,6 +39,40 @@
 			"password":"Password",
 			"input":"Connexion",
 			"switch":"Inscription"
+		}
+	},
+	"contact":{
+		"title":"Contactez Nous",
+		"sectionTitle":"Contactez-nous",
+		"li":{
+			"1":"Admin : jazzoul@gmail.com",
+			"2":"Storehouse 1 : spatulox@gmail.com",
+			"3":"Storehouse 2 : spatulox@gmail.com",
+			"4":"Datacenter : fousta@gmail.com"
+		}
+	},
+	"decouvrir":{
+		"title":"Découvrez nos actions",
+		"sectionTitle":"Découvrez nos actions",
+		"button":"Soutenez-nous",
+		"buttonLink":"./donateur.php"
+	},
+	"aide":{
+		"title":"Aidez nous",
+		"sectionTitle":"Aidez nous",
+		"sections":{
+			"1":{
+				"title":"Devenez bénévole aide",
+				"description":"JE VEUX DEVENIR BENEVOLE EUUUUUUH"
+			},
+			"2":{
+				"title":"Devenez bénévole entreprise (donation nourriture / donation vêtements) ",
+				"description":"JE VEUX DEVENIR BENEVOLE NOURRITURE EUUUUUUH"
+			},
+			"3":{
+				"title":"Aidez à manager l'aide pour les entrepôts",
+				"description":"JE VEUX DEVENIR UN ENTREPÔT"
+			}
 		}
 	}
 }

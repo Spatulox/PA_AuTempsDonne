@@ -1,0 +1,78 @@
+{
+  "header": {
+    "li": {
+      "./actualites.php": "Izindaba",
+      "./decouvrir.php": "Siyakwazi",
+      "./operations.php": "Imisebenzi Yethu",
+      "./aide.php": "Sisiza",
+      "./carrieres.php": "Amathuba Emisebenzi",
+      "./donateur.php": "Indawo Yabakhonzi",
+      "./signup_login.php": "Ngena / Bhalisela"
+    }
+  },
+  "footer": {
+    "li": {
+      "./contact.php": "Sithintane",
+      "https://youtu.be/L0TB1IkhVds": "UMnu Sananes Ucula i-RAP ngengqoqo"
+    }
+  },
+  "actualites": {
+    "title": "Izindaba",
+    "sectionTitle": "Iba Umlingani",
+    "button": "Sisekele",
+    "buttonLink": "./donateur.php"
+  },
+  "signup_login": {
+    "title": "Ngena / Bhalisela",
+    "formSignUp": {
+      "title": "Bhalisela",
+      "name": "Igama",
+      "email": "I-imeyili",
+      "password": "Iphasiwedi",
+      "confirmPassword": "Qinisekisa iphasiwedi",
+      "input": "Bhalisela",
+      "switch": "Ngena"
+    },
+    "formLogin": {
+      "title": "Ngena",
+      "email": "I-imeyili",
+      "password": "Iphasiwedi",
+      "input": "Ngena",
+      "switch": "Bhalisela"
+    }
+  },
+  "contact": {
+    "title": "Sithintane",
+    "sectionTitle": "Sithintane",
+    "li": {
+      "1": "Umphathi : jazzoul@gmail.com",
+      "2": "Isitoreji 1 : spatulox@gmail.com",
+      "3": "Isitoreji 2 : spatulox@gmail.com",
+      "4": "Indawo Yedatha : fousta@gmail.com"
+    }
+  },
+  "decouvrir": {
+    "title": "Khangelani imisebenzi yethu",
+    "sectionTitle": "Khangelani imisebenzi yethu",
+    "button": "Sisekele",
+    "buttonLink": "./donateur.php"
+  },
+  "aide": {
+    "title": "Sisiza",
+    "sectionTitle": "Sisiza",
+    "sections": {
+      "1": {
+        "title": "Uba umvoli osize",
+        "description": "NGIFUNA UKUBA UMVOLI EUUUUUUH"
+      },
+      "2": {
+        "title": "Uba umvoli wenkampani (ukuhlinzeka ngemideni / ukuhlinzeka ngezingubo)",
+        "description": "NGIFUNA UKUBA UMVOLI WEMIDENI EUUUUUUH"
+      },
+      "3": {
+        "title": "Sisiza ukuphatha ukusiza kwezitoreji",
+        "description": "NGIFUNA UKUBA ISITOREJI"
+      }
+    }
+  }
+}

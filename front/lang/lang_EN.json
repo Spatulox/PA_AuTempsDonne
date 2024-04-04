@@ -2,10 +2,9 @@
 	"header":{
 		"li":{
 			"./actualites.php":"Actualities",
-			"./découvrir.php":"Discover Us",
+			"./decouvrir.php":"Discover Us",
 			"./operations.php":"Our Operation",
 			"./aide.php":"Help us",
-			"./expertise.php":"Our Expertise",
 			"./carrieres.php":"Career",
 			"./donateur.php":"Give us",
 			"./signup_login.php":"Login/Sign up"
@@ -19,7 +18,9 @@
 	},
 	"actualites":{
 		"title":"Actuality",
-		"sectionTitle":"Be Partership"
+		"sectionTitle":"Be Partership",
+		"button":"Buy us a coffe",
+		"buttonLink":"./donateur.php"
 	},
 	"signup_login":{
 		"title":"Log In/Sign Up",
@@ -38,6 +39,40 @@
 			"password":"Password",
 			"input":"Log In",
 			"switch":"Sing Up"
+		}
+	},
+	"contact":{
+		"title":"Contact us",
+		"sectionTitle":"Contact us",
+		"li":{
+			"1":"Admin : jazzoul@gmail.com",
+			"2":"Storehouse 1 : spatulox@gmail.com",
+			"3":"Storehouse 2 : spatulox@gmail.com",
+			"4":"Datacenter : fousta@gmail.com"
+		}
+	},
+	"decouvrir":{
+		"title":"Discover Us",
+		"sectionTitle":"Discovers Us",
+		"button":"Buy us a coffe",
+		"buttonLink":"./donateur.php"
+	},
+	"aide":{
+		"title":"Help us",
+		"sectionTitle":"Help us",
+		"sections":{
+			"1":{
+				"title":"BECOME VOLUNTEER HELP",
+				"description":"I WANT TO BECOME A VOLUNTEER EUUUUUUH"
+			},
+			"2":{
+				"title":"BECOME VOLUNTER ENTERPRISE (giv food / giv clothes) ",
+				"description":"I WANT TO BECOME A FOOD VOLUNTEER EUUUUUUH"
+			},
+			"3":{
+				"title":"HELP STOREHOUSE",
+				"description":"I WANT TO BECOME A STOREHOUSE"
+			}
 		}
 	}
 }
