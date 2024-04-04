@@ -1,5 +1,5 @@
 <?php
-header('Location: accueil.php');
+header('Location: actualites.php');
 exit()
 ?>
 
