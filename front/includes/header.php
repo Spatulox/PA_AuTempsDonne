@@ -6,6 +6,24 @@ EATNow : Header
 
 -->
 
+<?php
+
+$directory = '../lang/';
+
+$files22 = scandir($directory);
+$fileArray = [];
+
+foreach ($files22 as $filea) {
+    if ($filea !== '.' && $filea !== '..' && $filea !== 'lang_example.json' && pathinfo($filea, PATHINFO_EXTENSION) === 'json') {
+    	
+    	$filea = explode(".json", $filea)[0];
+    	$filea = explode('lang_', $filea)[1];
+    	array_push($fileArray, $filea);
+    }
+}
+
+?>
+
 <header>
 	<img src="../Images/Au_Temps_Donne.png">
 	<nav>
@@ -21,9 +39,16 @@ EATNow : Header
 		<select id="language-select" name="language">
 			<option value="<?php echo(strtolower($userLanguage)) ?>_default"><?php echo($userLanguage) ?></option>
 			<hr>
-		  <option value="en" onclick="setCookie('lang', 'EN', 1000)">EN</option>
+			<?php
+			for ($i=0; $i < count($fileArray) ; $i++) { 
+				//print_r($fileArray[$i]);
+				echo '<option value="' . strtolower($fileArray[$i]) . '" onclick="setCookie(\'lang\', \'' . $fileArray[$i] . '\', 1000)">' . $fileArray[$i] . '</option>';
+			}
+
+			?>
+		  <!-- <option value="en" onclick="setCookie('lang', 'EN', 1000)">EN</option>
 		  <option value="fr" onclick="setCookie('lang', 'FR', 1000)">FR</option>
-		  <option value="zu" onclick="setCookie('lang', 'ZU', 1000)">ZU</option>
+		  <option value="zu" onclick="setCookie('lang', 'ZU', 1000)">ZU</option> -->
 		</select>
 
 	</nav>
