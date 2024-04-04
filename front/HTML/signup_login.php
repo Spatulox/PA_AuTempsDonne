@@ -3,9 +3,7 @@
 <head>
 
   <?php include("../includes/head.php");?>
-  <?php
-  //var_dump($data["signup_login"])
-  ?>
+
   <title><?php echo($data["signup_login"]["title"]) ?></title>
   
 </head>
@@ -104,4 +102,37 @@
 
     valueToReplace.value = value.value
   }
+</script>
+
+<script type="text/javascript" defer>
+    
+    var currentURL = window.location.href;
+    currentURL = currentURL.split('/')
+    currentURL = currentURL[currentURL.length - 1]
+
+    const urlParams = currentURL.split("?");
+
+    if(currentURL.length > 1){  
+
+      if(urlParams.includes('signup=true')){
+        const signup = document.getElementById('inscriptionBox')
+        const login = document.getElementById('connectionBox')
+
+        signup.classList.add("active")
+        login.classList.remove('active')
+      }
+
+      // const roleIndex = urlParams.findIndex(param => param.includes('role'));
+      // if (roleIndex !== -1) {
+      //   const roleBox = document.getElementById('roleBox')
+
+      //   const roleNum = urlParams[roleIndex].split("=")[1]
+      //   console.log(roleNum)
+
+      //   // Active la radio box correspondante au numéro du rôle
+      //   roleBox.?.? = roleIndex
+      // }
+
+    }
+
 </script>
