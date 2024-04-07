@@ -3,6 +3,7 @@
 include_once './Repository/BDD.php';
 include_once './Controller/loginController.php';
 include_once './Controller/userController.php';
+include_once './Controller/planningController.php';
 
 /*include_once './Controller/apartmentController.php';
 include_once './Controller/reservationController.php';
@@ -66,6 +67,10 @@ function controller($uri) {
 
         case 'user':
             userController($uri, $apiKey);
+            break;
+
+        case 'planning':
+            planningController($uri, $apiKey);
             break;
 
         default:
