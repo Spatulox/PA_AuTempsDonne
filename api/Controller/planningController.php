@@ -14,7 +14,7 @@ function planningController($uri, $apiKey) {
 
            
             if(!$uri[3]){
-                exit_with_content($planningService->getAllPlanning($apiKey));
+                exit_with_content($planningService->getAllPlanning());
             }
 
             

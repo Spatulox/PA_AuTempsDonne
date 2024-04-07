@@ -13,8 +13,8 @@ class PlanningRepository {
     
     //-------------------------------------
 
-    public function getAllPlanning($apiKey){
-        $planningArray = selectDB("PLANNING", "*", "id_user=(SELECT id_user FROM UTILISATEUR WHERE apikey='".$apiKey."')");
+    public function getAllPlanning(){
+        $planningArray = selectDB("PLANNING", "*");
 
         $planning = [];
 

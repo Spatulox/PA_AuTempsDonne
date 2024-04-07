@@ -7,9 +7,9 @@ class PlanningService {
     /*
      *  Récupère tous les planning
     */
-    public function getAllPlanning($apiKey) {
+    public function getAllPlanning() {
         $planningRepository = new PlanningRepository();
-        return $planningRepository->getAllPlanning($apiKey);
+        return $planningRepository->getAllPlanning();
     }
 
     /*
