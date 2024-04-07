@@ -20,6 +20,15 @@ class PlanningService {
         return $planningRepository->getPlanningById($id);
     }
 
+    /*
+     *  Créer un planning
+    */
+    public function createPlanning(PlanningModel $planning) {
+        $planningRepository = new PlanningRepository();
+        return $planningRepository->createPlanning($planning);
+    }
+
+   
 
 }
 ?>
