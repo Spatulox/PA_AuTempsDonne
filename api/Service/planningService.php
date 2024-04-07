@@ -28,7 +28,38 @@ class PlanningService {
         return $planningRepository->createPlanning($planning);
     }
 
-   
+    /*
+     *  Met à jour un planning
+    */
+    public function updatePlanning($id, $id_user, $id_activite, $description, $lieux, $date_activite, $index_activite) {
+        $planningRepository = new PlanningRepository();
+        $updatedPlanning = new PlanningModel(
+            $id_user,
+            $id_activite,
+            $description,
+            $lieux,
+            $date_activite,
+            $index_activite
+        );
+        $updatedPlanning->setId($id);
+        return $planningRepository->updatePlanning($updatedPlanning);
+    }
+
+    /*
+     *  Supprime un planning
+    */
+    public function deletePlanning($id) {
+        $planningRepository = new PlanningRepository();
+        return $planningRepository->deletePlanning($id);
+    }
+
+    /*
+     *  rejoind une activiter
+    */
+    public function joinActivity($userId, $planningId) {
+    $planningRepository = new PlanningRepository();
+    return $planningRepository->joinActivity($userId, $planningId);
+}
 
 }
 ?>
