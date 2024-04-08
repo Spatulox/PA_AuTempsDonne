@@ -18,6 +18,7 @@ class PlanningModel {
         $this->id_index = $id_index;
         $this->id_activite = $id_activite;
     }
+}
 
 
 class ActiviteModel {
@@ -31,6 +32,5 @@ class ActiviteModel {
 
 }
 
-}
 
 ?>
