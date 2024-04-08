@@ -224,3 +224,6 @@ INSERT INTO PARTICIPE (id_user, id_planning) VALUES
 (28, 2),
 (29, 1),
 (30, 3);
+
+
+UPDATE UTILISATEUR SET apikey = SHA2(CONCAT(id_user, nom, prenom, mdp, email), 256) WHERE id_user IS NOT NULL;
