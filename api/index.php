@@ -47,9 +47,9 @@ function exit_with_content($content = null, $code = 200) {
 }
 
 function getRoleFromApiKey($apiKey){
-    $role = selectDB("UTILISATEUR", 'role', "apikey='".$apiKey."'", "bool");
+    $role = selectDB("UTILISATEUR", 'id_role', "apikey='".$apiKey."'", "bool");
     if($role){
-        $role = $role[0]["role"];
+        $role = $role[0]["id_role"];
     }
     return $role;
 }

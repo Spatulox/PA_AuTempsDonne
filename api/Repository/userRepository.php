@@ -14,13 +14,13 @@ class UserRepository {
     //-------------------------------------
 
     public function getUsers($index = 1){
-        $usersArray = selectDB("UTILISATEUR", "*", "index_user='".$index."'");
+        $usersArray = selectDB("UTILISATEUR", "*", "id_index='".$index."'");
 
         $user = [];
         $usersTest = [];
 
         for ($i=0; $i < count($usersArray); $i++) {
-            $user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $usersArray[$i]['telephone'], $usersArray[$i]['type'], $usersArray[$i]['role'], $usersArray[$i]['apikey'], $usersArray[$i]['index_user']);
+            $user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $usersArray[$i]['telephone'], $usersArray[$i]['type'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index']);
         }
         return $user;
     }
@@ -29,7 +29,7 @@ class UserRepository {
 
     public function getUser($id){
         $user = selectDB("UTILISATEUR", "*", "id_user='".$id."'");
-        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['role'], "hidden", $user[0]['index_user']);
+        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['id_role'], "hidden", $user[0]['id_index']);
     }
 
     //-------------------------------------
@@ -39,7 +39,7 @@ class UserRepository {
         $usersArray = selectDB("UTILISATEUR", "*", "index_user=2");
 
         for ($i=0; $i < count($usersArray); $i++) {
-            $user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $usersArray[$i]['telephone'], $usersArray[$i]['type'], $usersArray[$i]['role'], $usersArray[$i]['apikey'], $usersArray[$i]['index_user']);
+            $user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $usersArray[$i]['telephone'], $usersArray[$i]['type'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index']);
         }
 
         return $user;
@@ -51,7 +51,7 @@ class UserRepository {
 
         $user = selectDB("UTILISATEUR", "*", "apikey='".$api."'");
 
-        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['role'], "hidden", $user[0]['index_user']);
+        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['id_role'], "hidden", $user[0]['id_index']);
     }
 
     //-------------------------------------
@@ -69,7 +69,7 @@ class UserRepository {
         }
         
 
-        $user = insertDB("UTILISATEUR", ["nom", "prenom", "email", "telephone", "index_user", "date_inscription", "type", "role", "apikey", "mdp"], [$user->nom, $user->prenom, $user->email, $user->telephone, $index_user, date('Y-m-d'), $user->type, $user->role, "null", strtoupper(hash('sha256', $password))], "email='".$user->email."'");
+        $user = insertDB("UTILISATEUR", ["nom", "prenom", "email", "telephone", "id_index", "date_inscription", "type", "id_role", "apikey", "mdp"], [$user->nom, $user->prenom, $user->email, $user->telephone, $index_user, date('Y-m-d'), $user->type, $user->role, "null", strtoupper(hash('sha256', $password))], "email='".$user->email."'");
 
         if(!$user){
             exit_with_message("Error, your account don't exist, plz try again", 500);
@@ -81,7 +81,7 @@ class UserRepository {
 
         $user = selectDB('UTILISATEUR', '*', 'email="'.$user[0]['email'].'"');
 
-        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['role'], $user[0]['apikey'], $user[0]['index_user']);
+        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['type'], $user[0]['id_role'], $user[0]['apikey'], $user[0]['id_index']);
     }
 
     //-------------------------------------
@@ -106,7 +106,7 @@ class UserRepository {
 
         $role = getRoleFromApiKey($apiKey);
 
-        $user = selectDB("UTILISATEUR", "id_user, index_user", "apikey='".$apiKey."'", "bool")[0];
+        $user = selectDB("UTILISATEUR", "id_user, id_index", "apikey='".$apiKey."'", "bool")[0];
 
         $userToDelete = $this->getUser($id);
 
@@ -126,7 +126,7 @@ class UserRepository {
             exit_with_message("You can't unrefence a user wich is not you", 403);
         }
 
-        return updateDB("UTILISATEUR", ['index_user'], [-1], "id_user=".$id);
+        return updateDB("UTILISATEUR", ['id_index'], [-1], "id_user=".$id);
     }
     
 }
