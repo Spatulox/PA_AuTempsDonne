@@ -1,8 +1,6 @@
 CREATE TABLE ACTIVITES(
    id_activite INT,
    nom_activite VARCHAR(100),
-   type_activite INT,
-   index_activite INT NOT NULL,
    PRIMARY KEY(id_activite)
 );
 
@@ -21,18 +19,16 @@ CREATE TABLE COLLECTE(
    PRIMARY KEY(id_collecte)
 );
 
-CREATE TABLE INDEX(
+CREATE TABLE TABINDEX(
    id_index INT,
-   index VARCHAR(50) NOT NULL,
-   rubrique_index VARCHAR(50),
+   index_nom VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_index)
 );
 
-CREATE TABLE Type(
-   id_type INT,
-   type VARCHAR(50),
-   rubriques_type VARCHAR(50) NOT NULL,
-   PRIMARY KEY(id_type)
+CREATE TABLE ROLES(
+   id_role INT,
+   role VARCHAR(50),
+   PRIMARY KEY(id_role)
 );
 
 CREATE TABLE CATEGORIES(
@@ -41,21 +37,34 @@ CREATE TABLE CATEGORIES(
    PRIMARY KEY(id_categorie)
 );
 
+CREATE TABLE PLANNINGS(
+   id_planning INT,
+   description TEXT,
+   lieux VARCHAR(50),
+   date_activite DATE,
+   id_index INT NOT NULL,
+   id_activite INT NOT NULL,
+   PRIMARY KEY(id_planning),
+   FOREIGN KEY(id_index) REFERENCES TABINDEX(id_index),
+   FOREIGN KEY(id_activite) REFERENCES ACTIVITES(id_activite)
+);
+
 CREATE TABLE UTILISATEUR(
    id_user INT,
    nom VARCHAR(50) NOT NULL,
    prenom VARCHAR(50) NOT NULL,
    email VARCHAR(80),
    telephone VARCHAR(20),
-   index INT NOT NULL,
    date_inscription DATE NOT NULL,
-   type INT,
-   role INT,
    apikey VARCHAR(255),
    mdp VARCHAR(255) NOT NULL,
    id_entrepot INT NOT NULL,
+   id_index INT NOT NULL,
+   id_role INT NOT NULL,
    PRIMARY KEY(id_user),
-   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot)
+   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
+   FOREIGN KEY(id_index) REFERENCES TABINDEX(id_index),
+   FOREIGN KEY(id_role) REFERENCES ROLES(id_role)
 );
 
 CREATE TABLE STOCKS(
@@ -70,14 +79,6 @@ CREATE TABLE STOCKS(
    FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot)
 );
 
-CREATE TABLE ROLES(
-   id_role INT,
-   role VARCHAR(50),
-   id_user INT NOT NULL,
-   PRIMARY KEY(id_role),
-   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
-);
-
 CREATE TABLE TICKETS(
    id_ticket INT,
    description VARCHAR(50),
@@ -87,15 +88,12 @@ CREATE TABLE TICKETS(
    FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
 );
 
-CREATE TABLE PLANNINGS(
+CREATE TABLE PARTICIPE(
    id_user INT,
-   id_activite INT,
-   description TEXT,
-   lieux VARCHAR(50),
-   date_activite DATE,
-   PRIMARY KEY(id_user, id_activite),
+   id_planning INT,
+   PRIMARY KEY(id_user, id_planning),
    FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user),
-   FOREIGN KEY(id_activite) REFERENCES ACTIVITES(id_activite)
+   FOREIGN KEY(id_planning) REFERENCES PLANNINGS(id_planning)
 );
 
 CREATE TABLE ORGANISE(
@@ -112,18 +110,6 @@ CREATE TABLE RECUPERE(
    PRIMARY KEY(id_stock, id_collecte),
    FOREIGN KEY(id_stock) REFERENCES STOCKS(id_stock),
    FOREIGN KEY(id_collecte) REFERENCES COLLECTE(id_collecte)
-);
-
-CREATE TABLE LIAISON(
-   id_user INT,
-   id_activite INT,
-   id_index INT,
-   id_type INT,
-   PRIMARY KEY(id_user, id_activite, id_index, id_type),
-   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user),
-   FOREIGN KEY(id_activite) REFERENCES ACTIVITES(id_activite),
-   FOREIGN KEY(id_index) REFERENCES INDEX(id_index),
-   FOREIGN KEY(id_type) REFERENCES Type(id_type)
 );
 
 CREATE TABLE LIE(
