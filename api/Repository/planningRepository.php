@@ -14,7 +14,7 @@ class PlanningRepository {
     //-------------------------------------
 
     public function getAllPlanning(){
-        $planningArray = selectDB("PLANNING", "*");
+        $planningArray = selectDB("PLANNINGS", "*");
 
         $planning = [];
 
@@ -28,6 +28,8 @@ class PlanningRepository {
                 $planningArray[$i]['id_activite']
             );
             $planning[$i]->setId($planningArray[$i]['id_planning']);
+
+            $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
         }
         return $planning;
     }
