@@ -37,21 +37,27 @@ class PlanningRepository {
     //-------------------------------------
 
     public function getPlanningById($id){
-        $planning = selectDB("PLANNING", "*", "id_planning='".$id."'");
-        return new PlanningModel(
-            $planningArray[$i]['id_planning'],
-            $planningArray[$i]['description'],
-            $planningArray[$i]['lieux'],
-            $planningArray[$i]['date_activite'],
-            $planningArray[$i]['id_index'],
-            $planningArray[$i]['id_activite']
+        $planning = selectDB("PLANNINGS", "*", "id_planning='".$id."'")[0];
+        
+        $planningModel = new PlanningModel(
+            $planning['id_planning'],
+            $planning['description'],
+            $planning['lieux'],
+            $planning['date_activite'],
+            $planning['id_index'],
+            $planning['id_activite']
+            
         );
+
+        $planningModel->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planning['id_activite'])[0]);
+        
+        return $planningModel;
     }
 
     //-------------------------------------
     
     public function createPlanning(PlanningModel $planning){
-        $id_planning = insertDB("PLANNING", ["id_planning", "description", "lieux", "date_activite", "id_index", "id_activite"], [
+        $id_planning = insertDB("PLANNINGS", ["id_planning", "description", "lieux", "date_activite", "id_index", "id_activite"], [
             $planning->id_planning,
             $planning->description,
             $planning->lieux,
@@ -71,7 +77,7 @@ class PlanningRepository {
     //-------------------------------------
     
     public function updatePlanning(PlanningModel $planning){
-        $id_planning = updateDB("PLANNING", ["id_planning", "description", "lieux", "date_activite", "id_index", "id_activite"], [
+        $id_planning = updateDB("PLANNINGS", ["id_planning", "description", "lieux", "date_activite", "id_index", "id_activite"], [
             $planning->id_planning,
             $planning->description,
             $planning->lieux,
@@ -90,7 +96,7 @@ class PlanningRepository {
     //-------------------------------------
 
     public function deletePlanning($id){
-        $deleted = deleteDB("PLANNING", "id_planning=".$id);
+        $deleted = deleteDB("PLANNINGS", "id_planning=".$id);
 
         if(!$deleted){
             exit_with_message("Error, the planning can't be deleted, plz try again", 500);
