@@ -15,7 +15,7 @@
 
   <main>
 
-    <section id="signup_login" class="inheritWidth container flex flexAround alignCenter nowrap">
+    <section id="signup_login" class="inheritWidth container flex flexAround alignCenter nowrap noMargin">
 
       <div class="active" id="connectionBox">
 
@@ -123,18 +123,6 @@
         signup.classList.add("active")
         login.classList.remove('active')
       }
-
-      // const roleIndex = urlParams.findIndex(param => param.includes('role'));
-      // if (roleIndex !== -1) {
-      //   const roleBox = document.getElementById('roleBox')
-
-      //   const roleNum = urlParams[roleIndex].split("=")[1]
-      //   console.log(roleNum)
-
-      //   // Active la radio box correspondante au numéro du rôle
-      //   roleBox.?.? = roleIndex
-      // }
-
     }
 
 </script>
