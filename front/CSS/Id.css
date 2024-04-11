@@ -41,3 +41,26 @@
   width: 0%;
   transition: all 0.5s ease-in-out;
 }
+
+#inscriptionBox, #connectionBox{
+  max-height: 500px;
+  overflow: hidden;
+}
+
+#titleFooter{
+  position: absolute;
+  top: calc(-100vh);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #dea23c;
+  margin: auto;
+  padding: 5px 10px;
+  border-radius: 20px;
+  z-index: 0;
+  transition: all 0.5s ease-in-out;
+}
+
+#titleFooter.active{
+  top: calc(-100vh + 210%);
+  transition: all 0.5s ease-in-out;
+}

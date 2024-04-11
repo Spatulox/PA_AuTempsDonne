@@ -9,6 +9,7 @@ body{
 header {
   background-color: rgb(48, 36, 28); /* Couleur de fond de l'en-tête */
   position: relative;
+  z-index: 1;
 }
 
 /* Style de la ligne jaune */

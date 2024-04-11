@@ -25,7 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 
 }
 
@@ -34,6 +34,14 @@
   padding: 50px;
   font-size: 20px;
 
+}
+
+.alternateSection section > input{
+  margin-bottom: 30px;
+}
+
+.alternateSection section > h1, .alternateSection section > h2, .alternateSection section > h3{
+  margin-top: 30px;
 }
 
 .container {
@@ -179,6 +187,10 @@
 
 .noMargin{
     margin: 0px;
+}
+
+.noMarginImportant{
+    margin: 0px !important;
 }
 
 .noMarginBottom{
