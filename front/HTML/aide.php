@@ -10,6 +10,8 @@ $img = $contenu[rand(0, count($contenu)-1)];
 
 ?>
 
+<?php include("../includes/loadLang.php");?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -31,9 +33,10 @@ $img = $contenu[rand(0, count($contenu)-1)];
 			<?php
 
 				foreach ($data["aide"]["sections"] as $key => $value) {
-					echo('<section>
-						<p>' . $value["description"] . '</p>
-						<input type="button" onclick="loadPage(' . $key . ')" value="' . $value["title"] . '">
+					echo('<section class="flex flexCenter wrap alignCenter">
+						<h2 class="width100 underline bold">' . $value["title"] . '</h2>
+						<p class="width100">' . $value["description"] . '</p>
+						<input class="" type="button" onclick="loadPage(' . $key . ')" value="' . $value["title"] . '">
 						</section>');
 				}
 

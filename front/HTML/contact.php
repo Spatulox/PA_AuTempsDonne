@@ -1,3 +1,5 @@
+<?php include("../includes/loadLang.php");?>
+
 <!DOCTYPE html>
 <html>
 	<head>
