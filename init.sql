@@ -1,36 +1,36 @@
 CREATE TABLE ACTIVITES(
-   id_activite INT,
+   id_activite INT AUTO_INCREMENT,
    nom_activite VARCHAR(100),
    PRIMARY KEY(id_activite)
 );
 
 CREATE TABLE ENTREPOTS(
-   id_entrepot INT,
+   id_entrepot INT AUTO_INCREMENT,
    nom_entrepot VARCHAR(100),
    localisation VARCHAR(255),
    PRIMARY KEY(id_entrepot)
 );
 
 CREATE TABLE TABINDEX(
-   id_index INT,
+   id_index INT AUTO_INCREMENT,
    index_nom VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_index)
 );
 
 CREATE TABLE ROLES(
-   id_role INT,
+   id_role INT AUTO_INCREMENT,
    role VARCHAR(50),
    PRIMARY KEY(id_role)
 );
 
 CREATE TABLE CATEGORIES(
-   id_categorie INT,
+   id_categorie INT AUTO_INCREMENT,
    categorie VARCHAR(50),
    PRIMARY KEY(id_categorie)
 );
 
 CREATE TABLE TRAJETS(
-   camion INT,
+   camion INT AUTO_INCREMENT,
    date_collecte DATE,
    id_entrepot INT NOT NULL,
    PRIMARY KEY(camion),
@@ -38,20 +38,20 @@ CREATE TABLE TRAJETS(
 );
 
 CREATE TABLE POINTCOLLECTE(
-   id_lieux INT,
+   id_lieux INT AUTO_INCREMENT,
    localisation_passage VARCHAR(255),
    nom_lieux VARCHAR(50),
    PRIMARY KEY(id_lieux)
 );
 
 CREATE TABLE PRODUIT(
-   id_produit INT,
+   id_produit INT AUTO_INCREMENT,
    nom_produit VARCHAR(100),
    PRIMARY KEY(id_produit)
 );
 
 CREATE TABLE PLANNINGS(
-   id_planning INT,
+   id_planning INT AUTO_INCREMENT,
    description TEXT,
    date_activite DATE,
    lieux VARCHAR(50),
@@ -63,13 +63,13 @@ CREATE TABLE PLANNINGS(
 );
 
 CREATE TABLE FORMATIONS(
-   id_formation INT,
+   id_formation INT AUTO_INCREMENT,
    nom_formation VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_formation)
 );
 
 CREATE TABLE UTILISATEUR(
-   id_user INT,
+   id_user INT AUTO_INCREMENT,
    nom VARCHAR(50) NOT NULL,
    prenom VARCHAR(50) NOT NULL,
    email VARCHAR(80),
@@ -87,7 +87,7 @@ CREATE TABLE UTILISATEUR(
 );
 
 CREATE TABLE STOCKS(
-   id_stock INT,
+   id_stock INT AUTO_INCREMENT,
    quantite_produit INT NOT NULL,
    date_entree DATE,
    date_sortie DATE,
@@ -100,7 +100,7 @@ CREATE TABLE STOCKS(
 );
 
 CREATE TABLE TICKETS(
-   id_ticket INT,
+   id_ticket INT AUTO_INCREMENT,
    description VARCHAR(50),
    categorie INT,
    id_user INT NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE TICKETS(
 );
 
 CREATE TABLE COLLECTE(
-   id_collecte VARCHAR(50),
+    id_collecte INT AUTO_INCREMENT,
    quantite VARCHAR(50),
    id_produit INT NOT NULL,
    PRIMARY KEY(id_collecte),
@@ -156,7 +156,7 @@ CREATE TABLE PARTICIPE(
    FOREIGN KEY(id_planning) REFERENCES PLANNINGS(id_planning)
 );
 
-CREATE TABLE Asso_23(
+CREATE TABLE FORMER(
    id_user INT,
    id_formation INT,
    PRIMARY KEY(id_user, id_formation),
