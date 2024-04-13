@@ -1,7 +1,6 @@
-<!DOCTYPE html>
-
 <?php include("../includes/loadLang.php");?>
 
+<!DOCTYPE html>
 <script type="text/javascript" src="../JS/functions.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
 <script type="text/javascript">

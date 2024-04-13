@@ -1,3 +1,5 @@
+<?php include("../includes/loadLang.php");?>
+
 <?php
 $dossier = '../Images/background_images/';
 
@@ -8,8 +10,6 @@ $contenu = array_slice($contenu, 2);
 
 $img = $contenu[rand(0, count($contenu)-1)]
 ?>
-
-<?php include("../includes/loadLang.php");?>
 
 <!DOCTYPE html>
 <html>
