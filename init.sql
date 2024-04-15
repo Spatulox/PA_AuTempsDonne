@@ -109,7 +109,7 @@ CREATE TABLE TICKETS(
 );
 
 CREATE TABLE COLLECTE(
-    id_collecte INT AUTO_INCREMENT,
+   id_collecte INT AUTO_INCREMENT,
    quantite VARCHAR(50),
    id_produit INT NOT NULL,
    PRIMARY KEY(id_collecte),
@@ -142,7 +142,7 @@ CREATE TABLE LISTE(
 
 CREATE TABLE RECOLTE(
    camion INT,
-   id_collecte VARCHAR(50),
+   id_collecte INT,
    PRIMARY KEY(camion, id_collecte),
    FOREIGN KEY(camion) REFERENCES TRAJETS(camion),
    FOREIGN KEY(id_collecte) REFERENCES COLLECTE(id_collecte)
@@ -185,14 +185,14 @@ VALUES
 (4, 'Bénéficiaire'),
 (5, 'Prestataires');
 
-INSERT INTO TABINDEX (id_index, index_nom)
+INSERT INTO TABINDEX (index_nom)
 VALUES 
-    (0, 'inactif / déréférencé'),
-    (1, 'actif'),
-    (2, 'attente de validation'),
-    (4, 'terminé'),
-    (5, 'organiser'),
-    (6, 'en attente');
+    ('inactif / déréférencé'),
+    ('actif'),
+    ('attente de validation'),
+    ('terminé'),
+    ('organiser'),
+    ('en attente');
 
 
 INSERT INTO UTILISATEUR VALUES 
