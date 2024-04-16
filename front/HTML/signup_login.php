@@ -23,7 +23,7 @@
           <h1><?php echo($data["signup_login"]["formLogin"]["title"]) ?></h1>
         </div>
       
-        <form action="" class="form">
+        <div>
           <div class="form-group">
             <label for="email"> <?php echo($data["signup_login"]["formLogin"]["email"]) ?> : </label>
             <input type="email" id="emailCo" name="emailCo" placeholder=" <?php echo($data["signup_login"]["formLogin"]["email"]) ?> " oninput="fillEmail()">
@@ -33,12 +33,12 @@
             <input type="password" id="motdepasseCo" name="motdepasseCo" placeholder=" <?php echo($data["signup_login"]["formLogin"]["password"]) ?> ">
           </div>
           <div class="form-group">
-            <input type="submit" value=" <?php echo($data["signup_login"]["formLogin"]["input"]) ?> ">
+            <button type="button" onclick="connexion()" value="<?php echo($data["signup_login"]["formSignUp"]["input"]) ?>"> <?php echo($data["signup_login"]["formSignUp"]["input"]) ?> </button>
           </div>
           <div class="form-group">
             <input type="button" id="connexionButton" value=" <?php echo($data["signup_login"]["formLogin"]["switch"]) ?> ">
           </div>
-        </form>
+        </div>
 
       </div>  
 
@@ -47,7 +47,7 @@
           <h1><?php echo($data["signup_login"]["formSignUp"]["title"]) ?></h1>
         </div>
 
-        <form action="" class="form">
+        <div>
           <div class="form-group">
             <label for="nom"> <?php echo($data["signup_login"]["formSignUp"]["name"]) ?> : </label>
             <input type="text" id="nom" name="nom" placeholder=" <?php echo($data["signup_login"]["formSignUp"]["name"]) ?> ">
@@ -65,12 +65,12 @@
             <input type="password" id="confirmation" name="confirmation" placeholder=" <?php echo($data["signup_login"]["formSignUp"]["confirmPassword"]) ?> ">
           </div>
           <div class="form-group">
-            <input type="submit" value=" <?php echo($data["signup_login"]["formSignUp"]["input"]) ?> ">
+            <input type="button" value=" <?php echo($data["signup_login"]["formSignUp"]["input"]) ?> ">
           </div>
           <div class="form-group">
             <input type="button" id="inscriptionButton" value=" <?php echo($data["signup_login"]["formSignUp"]["switch"]) ?> ">
           </div>
-        </form>
+        </div>
 
       </div>
 
@@ -83,6 +83,7 @@
 </html>
 
 <script type="text/javascript" defer>
+
   const connectionBox = document.getElementById('connectionBox')
   const connectionButton = document.getElementById('connexionButton')
   const inscriptionBox = document.getElementById('inscriptionBox')
