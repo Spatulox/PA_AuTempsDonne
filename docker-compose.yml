@@ -4,7 +4,7 @@ services:
     ports:
       - 8083:80
     volumes:
-      - ./front:/var/www/html # Modification du chemin du volume pour Apache
+      - ./front:/var/www/html/
 
   api:
     build: .
@@ -15,7 +15,6 @@ services:
 
   database:
     image: mysql
-    
     volumes:
       - db-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -28,5 +27,4 @@ services:
       - MYSQL_PASSWORD=password
 
 volumes:
-  pgadmin-data:
   db-data:

@@ -1,4 +1,5 @@
 <?php
+
 //include_once './Service/globalFunctions.php';
 include_once './Repository/BDD.php';
 include_once './Controller/loginController.php';
@@ -21,10 +22,9 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 // On récupère l'URI de la requête et on le découpe en fonction des / 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$uri = explode( '/', $uri ); // On obtient un tableau de la forme ['index.php', 'todos', '1']
+$uri = explode('/', $uri); // On obtient un tableau de la forme ['index.php', 'todos', '1']
 
 // Si on a moins de 3 éléments dans l'URI, c'est que l'on est sur l'index de l'API
-
 if (sizeof($uri) < 3) {
     header("HTTP/1.1 200 OK");
     echo '{"message": "Welcome to the API"}';
@@ -32,7 +32,6 @@ if (sizeof($uri) < 3) {
 }
 
 // Ces fonctions nous permettent de centraliser la gestion des headers et du body de la réponse HTTP
-
 function exit_with_message($message = "Internal Server Error", $code = 500) {
     http_response_code($code);
     echo '{"message": "' . $message . '"}';
@@ -45,29 +44,26 @@ function exit_with_content($content = null, $code = 200) {
     exit();
 }
 
-function getRoleFromApiKey($apiKey){
-    $role = selectDB("UTILISATEUR", 'role', "apikey='".$apiKey."'", "bool");
-    if($role){
+function getRoleFromApiKey($apiKey) {
+    $role = selectDB("UTILISATEUR", 'role', "apikey='" . $apiKey . "'", "bool");
+    if ($role) {
         $role = $role[0]["role"];
     }
     return $role;
 }
-
 
 // Composant principal du controlleur: cette fonction agit comme un routeur en redirigeant les requêtes vers le bon controlleur
 function controller($uri) {
     $headers = getallheaders();
     $apiKey = $headers['apikey'];
 
-    switch($uri[2]) {
+    switch ($uri[2]) {
         case 'login':
             loginController($uri);
             break;
-
         case 'user':
             userController($uri, $apiKey);
             break;
-
         default:
             // Si la ressource demandée n'existe pas, alors on renvoie une erreur 404
             header("HTTP/1.1 404 Not Found");
@@ -79,5 +75,4 @@ function controller($uri) {
 // On appelle le controlleur principal
 controller($uri);
 
-return
 ?>
