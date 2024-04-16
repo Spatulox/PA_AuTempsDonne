@@ -1,0 +1,97 @@
+{
+	"header":{
+		"li":{
+			"./actualites.php":"Actualités",
+			"./decouvrir.php":"Nous Découvrir",
+			"./operations.php":"Nos Opérations",
+			"./aide.php":"Nous Aider",
+			"./donateur.php":"Espace Donateur",
+			"./moncompte.php":"Mon compte",
+			"./signup_login.php":"Connexion/Inscription"
+		}
+	},
+	"footer":{
+		"li":{
+			"./contact.php":"Nous Contacter",
+			"https://youtu.be/L0TB1IkhVds":"Mr Sananes Chante du RAP en costard"
+		}
+	},
+	"actualites":{
+		"title":"Actualité",
+		"sectionTitle":"Devenez Partenaire",
+		"button":"Soutenez-nous",
+		"buttonLink":"./donateur.php"
+	},
+	"signup_login":{
+		"title":"Connexion/Inscription",
+		"formSignUp":{
+			"title":"Inscription",
+			"name":"Nom",
+			"email":"Email",
+			"password":"Mot de passe",
+			"confirmPassword":"Confirmer le mot de passe",
+			"input":"S'inscrire",
+			"switch":"Connexion"
+		},
+		"formLogin":{
+			"title":"Connexion",
+			"email":"Email",
+			"password":"Password",
+			"input":"Connexion",
+			"switch":"Inscription"
+		}
+	},
+	"contact":{
+		"title":"Contactez Nous",
+		"sectionTitle":"Contactez-nous",
+		"li":{
+			"1":"Admin : jazzoul@gmail.com",
+			"2":"Storehouse 1 : spatulox@gmail.com",
+			"3":"Storehouse 2 : spatulox@gmail.com",
+			"4":"Datacenter : fousta@gmail.com"
+		}
+	},
+	"decouvrir":{
+		"title":"Découvrez nos actions",
+		"sectionTitle":"Découvrez nos actions",
+		"button":"Soutenez-nous",
+		"buttonLink":"./donateur.php"
+	},
+	"aide":{
+		"title":"Aidez nous",
+		"sectionTitle":"Aidez nous",
+		"sections":{
+			"1":{
+				"title":"Devenez bénévole aide",
+				"description":"JLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+			},
+			"2":{
+				"title":"Devenez bénévole entreprise (donation nourriture / donation vêtements) ",
+				"description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+			},
+			"3":{
+				"title":"Aidez à manager l'aide pour les entrepôts",
+				"description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+			}
+		}
+	},
+	"moncompte":{
+		"title":"Mon compte",
+		"sectionTitle":"Mon compte",
+		"form":{
+			"titleF1":"Mes Informations",
+			"inputPlanning":"Planning",
+			"titleF2":"Mettre à jour",
+			"placeholderEmail":"Nouveau Email",
+			"placeholderPhone":"Nouveau numéro de téléphone",
+			"inputUpdate":"Mettre à jour"
+		},
+		"error":{
+			"errorCo":"Vous devez vous connecter avant"
+		}
+	},
+	"planning":{
+		"title":"Planning",
+		"sectionTitle":"Planning"
+	}
+}

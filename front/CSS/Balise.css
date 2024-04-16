@@ -1,0 +1,114 @@
+body{
+    margin: 0px;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 10vh 1fr 10vh;
+}
+
+/* Styles pour l'en-tête */
+header {
+  background-color: rgb(48, 36, 28); /* Couleur de fond de l'en-tête */
+  position: relative;
+  z-index: 1;
+}
+
+/* Style de la ligne jaune */
+header::after {
+  content: "";
+  display: block;
+  background-color: rgb(222, 162, 60); /* Couleur de la ligne jaune */
+  height: 14%; /* Hauteur de la ligne jaune */
+  position: absolute;
+  bottom: 90%;
+  left: 0;
+  right: 0;
+}
+
+header img{
+  width: 110px;
+  position: absolute;
+  left: 10%;
+  top: 10px;
+}
+
+header nav, footer nav{
+  height: 10vh;
+  right: 10px;
+  top: 0px;
+
+  position: absolute;
+  display: flex;
+
+  align-items: center;
+  text-transform: uppercase;
+}
+
+nav ul{
+  padding: inherit;
+  margin: inherit;
+  display: flex;
+  list-style: none;
+}
+
+nav a{
+  color: white;
+  text-decoration: inherit;
+  margin: auto 5px;
+  padding: 10px 12px;
+
+  border-radius: 20px 5px 20px 5px;
+
+  transition: all 0.5s ease-in-out;
+}
+
+nav a:hover{
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease-in-out;
+  text-decoration: underline;
+}
+
+/* Styles pour l'en-tête */
+footer {
+  background-color: #4F759B; /* Couleur de fond de l'en-tête */
+  position: relative;
+}
+
+/* Style de la ligne jaune */
+footer::after {
+  content: "";
+  display: block;
+  background-color: #3B3B3B; /* Couleur de la ligne jaune */
+  height: 14%; /* Hauteur de la ligne jaune */
+  position: absolute;
+  bottom: 0%;
+  left: 0;
+  right: 0;
+}
+
+
+
+/* Autres */
+
+
+input[type="submit"], input[type="button"]{
+  cursor: pointer;
+}
+
+input[type="submit"], input[type="button"] {
+  background-image: linear-gradient(to right, #ff6b6b, #ffa500);
+  border: none;
+  color: white;
+  padding: 14px 28px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease-in-out;
+}
+
+input[type="submit"]:hover, input[type="button"]:hover {
+  background-color: #005A7E;
+  transform: scale(1.01);
+  transition: all 0.3s ease-in-out;
+}

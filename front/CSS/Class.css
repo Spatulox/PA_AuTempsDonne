@@ -1,0 +1,322 @@
+.alternateSection section:nth-child(2n){
+  background-color: #808080;
+  min-height: 60vh;
+
+}
+
+.alternateSection section:nth-child(2n+1){
+  background-color: #dea23c;
+  min-height: 60vh;
+}
+
+.alternateSection section:first-child{
+  background-color: inherit;
+  height: 70vh;
+  font-size: 100px;
+
+}
+
+.alternateSection section:first-child > h1{
+  margin: inherit;
+
+}
+
+.alternateSection :not(section:first-child){
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+}
+
+.alternateSection section > p{
+  margin: inherit;
+  padding: 50px;
+  font-size: 20px;
+
+}
+
+.alternateSection section > input{
+  margin-bottom: 30px;
+}
+
+.alternateSection section > h1, .alternateSection section > h2, .alternateSection section > h3{
+  margin-top: 30px;
+}
+
+.container {
+  margin: 20px auto;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+
+
+/* FORM */
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  font-weight: bold;
+  margin-left: 5%;
+}
+
+.form-group input {
+  width: 80%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-left: 10%;
+
+}
+
+.form-group input:focus {
+  border-color: #999;
+}
+
+.form-group .button {
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.form-group .button:hover {
+  background-color: #444;
+}
+
+.placement_left{
+  position: relative;
+  top: 10%;
+  right: 30%;
+}
+
+.title_form {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+.whiteSection{
+  background-color: #FFFFFF;
+}
+
+
+
+/*############################ /* Utility */
+
+.alignCenter{
+  align-content: center;
+  align-items: center;
+}
+
+.block{
+  display: block;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.border {
+  border-radius: 20px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  padding: 50px;
+  margin: auto 50px;
+}
+
+.flex{
+  display: flex;
+}
+
+.flexCenter{
+  justify-content: center;
+}
+
+.flexAround{
+  justify-content: space-around;
+}
+
+.flexBetween{
+  justify-content: space-between;
+}
+
+.height20{
+    height: 20%;
+}
+
+.height30{
+    height: 30%;
+}
+
+.height50{
+    height: 50%;
+}
+
+.height80{
+    height: 80%;
+}
+
+.height100{
+    height: 100%;
+}
+
+.noDecoration{
+    text-decoration: none;
+    list-style: none;
+    color: var(--mainPoliceColor);
+}
+
+.noDecoration > li {
+    text-decoration: none;
+    list-style: none;
+}
+
+.noMargin{
+    margin: 0px;
+}
+
+.noMarginImportant{
+    margin: 0px !important;
+}
+
+.noMarginBottom{
+    margin-bottom: 0px;
+}
+
+.noMarginTop{
+    margin-top: 0px;
+}
+
+.noMarginRight{
+    margin-right: 0px;
+}
+
+.noMarginLeft{
+    margin-left: 0px;
+}
+
+.noPadding{
+    padding: 0px;
+}
+
+.noPaddingBottom{
+    padding-bottom: 0px;
+}
+
+.noPaddingTop{
+    padding-top: 0px;
+}
+
+.noPaddingRight{
+    padding-right: 0px;
+}
+
+.noPaddingLeft{
+    padding-left: 0px;
+}
+
+.marginAuto{
+    margin: auto;
+}
+
+.marginTop10{
+    margin-top: 10px;
+}
+
+.marginBottom10{
+    margin-bottom: 10px;
+}
+
+.marginTop20{
+    margin-top: 20px;
+}
+
+.marginBottom20{
+    margin-bottom: 20px;
+}
+
+.marginTop30{
+    margin-top: 30px;
+}
+
+.marginBottom30{
+    margin-bottom: 30px;
+}
+
+.marginTop40{
+    margin-top: 40px;
+}
+
+.marginBottom40{
+    margin-bottom: 40px;
+}
+
+.marginTopBottom8Pourcent{
+    margin: 8% 0;
+}
+
+.nowrap{
+  flex-wrap: nowrap;
+}
+
+.padding5{
+    padding: 5px;
+}
+
+.padding10{
+    padding: 10px;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.textCenter{
+    text-align: center;
+}
+
+.underline{
+  text-decoration: underline;
+}
+
+.width20{
+    width: 20%;
+}
+
+.width30{
+    width: 30%;
+}
+
+.width50{
+    width: 50%;
+}
+
+.width80{
+    width: 80%;
+}
+
+.width100{
+    width: 100%;
+}
+
+.widthAuto{
+    width: auto;
+}
+
+.wrap{
+  flex-wrap: wrap;
+}
