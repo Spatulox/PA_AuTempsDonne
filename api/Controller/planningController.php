@@ -1,6 +1,6 @@
 <?php
 include_once './Service/planningService.php';
-include_once './Models/organisationModel.php';
+include_once './Models/planningModel.php';
 include_once './exceptions.php';
 
 function planningController($uri, $apiKey) {
@@ -27,6 +27,7 @@ function planningController($uri, $apiKey) {
             }
             
             break;
+
         case 'POST':
             $planningService = new PlanningService();
 
@@ -36,16 +37,16 @@ function planningController($uri, $apiKey) {
             if (isset($json['action'])) {
                 // Si l'action est de créer une nouvelle planification
                 if ($json['action'] === 'create_planning') {
-                    if (!isset($json['id_user']) || !isset($json['id_activite']) || !isset($json['description']) || !isset($json['lieux']) || !isset($json['date_activite']) || !isset($json['id_activite'])) {
+                    if (!isset($json['description']) || !isset($json['lieux']) || !isset($json['date_activite']) || !isset($json['id_index']) || !isset($json['id_activite'])) {
                         exit_with_message("Please provide all required fields to create a new planning", 400);
                     }
 
                     $planning = new PlanningModel(
-                        $json['id_user'],
-                        $json['id_activite'],
+                        1,
                         $json['description'],
                         $json['lieux'],
                         $json['date_activite'],
+                        $json['id_index'],
                         $json['id_activite']
                     );
 
@@ -82,19 +83,19 @@ function planningController($uri, $apiKey) {
 
 
 
-            case 'PUT':
+        case 'PUT':
                 $planningService = new PlanningService();
 
                 $body = file_get_contents("php://input");
                 $json = json_decode($body, true);
-                if (!isset($json["id_user"]) || !isset($json["id_activite"]) || !isset($json["description"]) || !isset($json["lieux"]) || !isset($json["date_activite"]) || !isset($json["index_activite"])){
-                    exit_with_message("Plz give, at least, the id_user, id_activite, description, lieux, date_activite and index_activite");
+                if (!isset($json["id_planning"])  || !isset($json["description"]) || !isset($json["lieux"]) || !isset($json["date_activite"]) || !isset($json["id_index"]) || !isset($json["id_activite"]) ){
+                    exit_with_message("Plz give, at least, the id_planning, id_activite, description, lieux, date_activite and id_index");
                 }
                 // Valider les données reçues ici
-                exit_with_content($planningService->updatePlanning($uri[3], $json["id_user"], $json["id_activite"], $json["description"], $json["lieux"], $json["date_activite"], $json["index_activite"]));
+                exit_with_content($planningService->updatePlanning($json["id_planning"], $json["description"], $json["lieux"], $json["date_activite"], $json["id_index"], $json["id_activite"]));
                 break;
 
-            case 'DELETE':
+        case 'DELETE':
                 $planningService = new PlanningService();
 
                 if(!$uri[3]){

@@ -1,6 +1,6 @@
 <?php
 include_once './Repository/planningRepository.php'; 
-include_once './Models/organisationModel.php';
+include_once './Models/planningModel.php';
 
 class PlanningService {
     
@@ -31,15 +31,15 @@ class PlanningService {
     /*
      *  Met à jour un planning
     */
-    public function updatePlanning($id, $id_user, $id_activite, $description, $lieux, $date_activite, $index_activite) {
+    public function updatePlanning( $id_planning, $description, $lieux, $date_activite, $id_index, $id_activite) {
         $planningRepository = new PlanningRepository();
         $updatedPlanning = new PlanningModel(
-            $id_user,
-            $id_activite,
+            $id_planning,
             $description,
             $lieux,
             $date_activite,
-            $index_activite
+            $id_index,
+            $id_activite
         );
         $updatedPlanning->setId($id);
         return $planningRepository->updatePlanning($updatedPlanning);

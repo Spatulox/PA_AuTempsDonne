@@ -1,6 +1,6 @@
 <?php
 include_once './Repository/BDD.php';
-include_once './Models/organisationModel.php';
+include_once './Models/planningModel.php';
 include_once './exceptions.php';
 
 class PlanningRepository {
@@ -57,8 +57,8 @@ class PlanningRepository {
     //-------------------------------------
     
     public function createPlanning(PlanningModel $planning){
-        $id_planning = insertDB("PLANNINGS", ["id_planning", "description", "lieux", "date_activite", "id_index", "id_activite"], [
-            $planning->id_planning,
+       
+        $create= insertDB("PLANNINGS", [ "description", "lieux", "date_activite", "id_index", "id_activite","-@"], [
             $planning->description,
             $planning->lieux,
             $planning->date_activite,
@@ -66,32 +66,39 @@ class PlanningRepository {
             $planning->id_activite
         ]);
 
-        if(!$id_planning){
+        if(!$create){
             exit_with_message("Error, the planning can't be created, plz try again", 500);
         }
 
         $planning->setId($id_planning);
-        return $planning;
+        return $create;
     }
 
     //-------------------------------------
     
-    public function updatePlanning(PlanningModel $planning){
-        $id_planning = updateDB("PLANNINGS", ["id_planning", "description", "lieux", "date_activite", "id_index", "id_activite"], [
+    public function updatePlanning(PlanningModel $planning) {
+    $planningRepository = new PlanningRepository();
+    $updated = $planningRepository->updateDB(
+        "PLANNINGS",
+        ["id_planning", "description", "lieux", "date_activite", "id_index", "id_activite"],
+        [
             $planning->id_planning,
             $planning->description,
             $planning->lieux,
             $planning->date_activite,
             $planning->id_index,
             $planning->id_activite
-        ], "id_planning=".$planning->getId());
+        ],
+        "id_planning=" . $planning->id_planning
+    );
 
-        if(!$id_planning){
-            exit_with_message("Error, the planning can't be updated, plz try again", 500);
-        }
-
-        return $planning;
+    if (!$updated) {
+        exit_with_message("Erreur, le planning n'a pas pu être mis à jour. Veuillez réessayer.", 500);
     }
+
+    return $planning;
+}
+
 
     //-------------------------------------
 
