@@ -67,7 +67,7 @@
   margin-left: 5%;
 }
 
-.form-group input {
+.form-group input, .form-group button {
   width: 80%;
   padding: 8px;
   border: 1px solid #ccc;
