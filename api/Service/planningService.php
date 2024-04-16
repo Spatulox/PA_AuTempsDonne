@@ -46,7 +46,7 @@ class PlanningService {
     }
 
     /*
-     *  Supprime un planning
+     *  Supprimer un planning
     */
     public function deletePlanning($id) {
         $planningRepository = new PlanningRepository();
@@ -54,7 +54,7 @@ class PlanningService {
     }
 
     /*
-     *  rejoind une activiter
+     *  Rejoindre une activité
     */
     public function joinActivity($userId, $planningId) {
     $planningRepository = new PlanningRepository();

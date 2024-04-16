@@ -124,19 +124,29 @@ class PlanningRepository {
 
 
     public function joinActivity($userId, $planningId) {
-    // a faire verifie que l'utilisateur et l'activité existent avant d'effectuer l'opération.
 
-    $query = "INSERT INTO PARTICIPE (id_user, id_planning) VALUES (?, ?)";
-    $statement = $this->connection->prepare($query);
-    $success = $statement->execute([$userId, $planningId]);
+        $user = selectDB("UTILISATEUR", "*", "id_user=".$userId, "bool");
 
-    //a faire verifier si l'opération d'insertion a réussi
-    if ($success) {
-        return true;
-    } else {
-        return false;
+        $planning = selectDB("PLANNINGS", "*", "id_planning=".$planningId, "bool");
+
+        if(!$user){
+            exit_with_message("Cet utilisateur n'existe pas");
+        }
+
+        if($planning){
+            exit_with_message("Ce planning n'existe pas");
+        }
+
+        $create = insertDB("PARTICIPE", [ "id_user", "id_planning"], [$userId, $planningId]);
+
+
+        if ($create) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
-}
 
 }
 ?>
