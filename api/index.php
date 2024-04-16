@@ -5,6 +5,7 @@ include_once './Repository/BDD.php';
 include_once './Controller/loginController.php';
 include_once './Controller/userController.php';
 include_once './Controller/planningController.php';
+include_once './Controller/benevoleController.php';
 
 /*include_once './Controller/apartmentController.php';
 include_once './Controller/reservationController.php';
@@ -50,8 +51,23 @@ function getRoleFromApiKey($apiKey){
     if($role){
         $role = $role[0]["id_role"];
     }
+    else{
+        exit_with_message("No one with this apikey", 403);
+    }
     return $role;
 }
+
+function getIdUserFromApiKey($apiKey){
+    $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool");
+    if($id){
+        $id = $id[0]["id_user"];
+    }
+    else{
+        exit_with_message("No one with this apikey", 403);
+    }
+    return $id;
+}
+
 
 // Composant principal du controlleur: cette fonction agit comme un routeur en redirigeant les requêtes vers le bon controlleur
 function controller($uri) {
@@ -66,8 +82,8 @@ function controller($uri) {
             userController($uri, $apiKey);
             break;
 
-        case 'planning':
-            planningController($uri, $apiKey);
+        case 'benevole':
+            benevoleController($uri, $apiKey);
             break;
 
         default:

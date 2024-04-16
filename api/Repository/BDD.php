@@ -126,6 +126,70 @@ function selectDB($table, $colums, $condition = -1, $additionnalMessage = NULL){
 
 # -------------------------------------------------------------- #
 
+function selectJoinDB($table, $colums, $join, $condition = -1, $additionnalMessage = NULL){
+	// -1 : the user want no condition or no condition entered by the user.
+	// $colums must be like that : $columns = "idusers, role"
+
+	checkData($table, $colums, -10, $condition);
+
+
+	$db = connectDB();
+
+	if ($condition == -1){
+		$dbRequest = 'SELECT '. $colums .' FROM '. $table . ' ' . $join;
+	}
+	else{
+		if(!checkMsg($condition, '=')){
+			exit_with_message('Plz enter a valid condition like : columnName=data', 500);
+		}
+
+		$dbRequest = 'SELECT '. $colums .' FROM '. $table . ' ' . $join . ' WHERE ' . $condition;
+	}
+
+	if($additionnalMessage == "-@"){
+		var_dump($dbRequest);
+	}
+
+	try{
+		$result = $db->prepare($dbRequest);
+		$result->execute();
+
+		$reponse = $result->fetchAll();
+		if ($reponse == false)
+		{
+			if ($additionnalMessage == NULL || $additionnalMessage == "-@"){
+				exit_with_message("ERROR : Impossible to select data, or no data here", 500);
+			}
+			elseif($additionnalMessage == "bool"){
+				return false;
+			}
+			else{
+				exit_with_message("ERROR : Impossible to select data ".$additionnalMessage, 500);
+			}
+		}
+		return $reponse;
+	}
+	catch (PDOException $e)
+	{
+		if($additionnalMessage == "-@"){
+			echo($e->getMessage());
+			exit();
+		}
+
+		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
+		{
+
+			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
+			exit_with_message("Error : ".str_replace('"', "'", $tmp), 500);
+		}
+
+	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]), 500);
+	}
+	return false;
+}
+
+# -------------------------------------------------------------- #
+
 function insertDB($table, $columnArray, $columnData, $returningData = null)
 {
 	// -10 no condition enter by the user
@@ -205,7 +269,7 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 
 # -------------------------------------------------------------- #
 
-function updateDB($table, $columnArray, $columnData, $condition = null)
+function updateDB($table, $columnArray, $columnData, $condition = null, $debug = null)
 {
 	// -10 no condition enter by the user
 	// -1 : the user want no condition
@@ -248,6 +312,11 @@ function updateDB($table, $columnArray, $columnData, $condition = null)
 	else{
 		$dbRequest = 'UPDATE '. $table .' SET ' . $updatedData .'  WHERE ' . $condition ;
 	}
+
+	if($debug == "-@"){
+		var_dump($dbRequest);
+	}
+
 	try{
 		$result = $db->prepare($dbRequest);
 		$result->execute();
@@ -256,10 +325,19 @@ function updateDB($table, $columnArray, $columnData, $condition = null)
 	}
 	catch (PDOException $e)
 	{	
-
+		if($debug == "-@"){
+			var_dump($e->getMessage());
+			//exit_with_message($e->getMessage());
+		}
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
+			exit_with_message("Error : ".str_replace('"', "'", $tmp));
+		}
+
+		if (checkMsg($e->getMessage(), $wordToSearch = "for key"))
+		{
+			$tmp = explode("for key", explode(":", $e->getMessage())[2])[0];
 			exit_with_message("Error : ".str_replace('"', "'", $tmp));
 		}
 
