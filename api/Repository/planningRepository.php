@@ -57,8 +57,16 @@ class PlanningRepository {
     //-------------------------------------
     
     public function createPlanning(PlanningModel $planning){
+
+        $string = "lieux='" . $planning->lieux . "' AND date_activite='" . $planning->date_activite."'";
+
+        $Select = selectDB("PLANNINGS", "*", $string, "bool");
+
+        if($Select){
+            exit_with_message("Y'a déjà une même activité", 403);
+        }
        
-        $create= insertDB("PLANNINGS", [ "description", "lieux", "date_activite", "id_index", "id_activite","-@"], [
+        $create = insertDB("PLANNINGS", [ "description", "lieux", "date_activite", "id_index", "id_activite"], [
             $planning->description,
             $planning->lieux,
             $planning->date_activite,
