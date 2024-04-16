@@ -32,6 +32,10 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
 					</h2>
 				');
 		}
+		else{
+			echo('	<h2 class="" id="titleFooter" style="position:absolute;"></h2>
+				');
+		}
 	?>
 	
 </footer>
@@ -41,8 +45,10 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
 
 	message = document.getElementById('titleFooter')
 
-	if(message){
-		popup(message.innerHTML)
+	if(message.innerHTML != ""){
+		if(message){
+			popup(message.innerHTML)
+		}
 	}
 
 </script>
