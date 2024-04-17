@@ -35,8 +35,11 @@ class UserRepository {
     //-------------------------------------
 
     public function getWaitUsers(){
-        var_dump("coucou");
-        $usersArray = selectDB("UTILISATEUR", "*", "index_user=3");
+        $usersArray = selectDB("UTILISATEUR", "*", "id_index=3", "bool");
+
+        if($usersArray == false){
+            exit_with_message("No waiting user");
+        }
 
         for ($i=0; $i < count($usersArray); $i++) {
             $user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $usersArray[$i]['telephone'], $usersArray[$i]['type'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index']);
@@ -177,7 +180,7 @@ class UserRepository {
         if ($id != $user['id_user'] && $role > 2 ){
             exit_with_message("You can't unrefence a user wich is not you", 403);
         }
-        
+
         return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id, "-@");
     }
     
