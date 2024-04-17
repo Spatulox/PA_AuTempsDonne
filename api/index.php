@@ -58,6 +58,14 @@ function controller($uri) {
     $headers = getallheaders();
     $apiKey = $headers['apikey'];
 
+    // Check if the user exist
+    if($uri[2] != "login"){
+        $role = getRoleFromApiKey($apiKey);
+        if(!$role){
+            exit_with_message("Wrong APIKEY");
+        }
+    }
+
     switch ($uri[2]) {
         case 'login':
             loginController($uri);
