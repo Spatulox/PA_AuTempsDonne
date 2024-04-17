@@ -53,6 +53,17 @@ function getRoleFromApiKey($apiKey){
     return $role;
 }
 
+function getIdUserFromApiKey($apiKey){ 
+    $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool"); 
+    if($id){ 
+        $id = $id[0]["id_user"]; 
+    } 
+    else{ 
+        exit_with_message("No one with this apikey", 403); 
+    } 
+    return $id; 
+} 
+
 // Composant principal du controlleur: cette fonction agit comme un routeur en redirigeant les requêtes vers le bon controlleur
 function controller($uri) {
     $headers = getallheaders();
