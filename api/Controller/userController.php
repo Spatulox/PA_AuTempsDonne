@@ -100,8 +100,6 @@ function userController($uri, $apiKey) {
             $userService = new UserService();
             $role = getRoleFromApiKey($apiKey);
 
-            var_dump($uri);
-
             // If admin and no id specified
             if (!isset($uri[3]) && $role == 1) {
                 exit_with_message("No user specified or, you can't unreferenced you as an admin", 403);

@@ -177,8 +177,7 @@ class UserRepository {
         if ($id != $user['id_user'] && $role > 2 ){
             exit_with_message("You can't unrefence a user wich is not you", 403);
         }
-        exit_with_message("Yeyepe");
-        return;
+        
         return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id, "-@");
     }
     
