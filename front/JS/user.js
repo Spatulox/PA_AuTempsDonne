@@ -150,10 +150,10 @@ class User {
     }
 
     const data2 = {
-      "email" : this.email,
+      "nom" : this.nom,
       "prenom" : "yeeeteeee",
       "telephone" : this.telephone,
-      "nom" : this.nom
+      "email" : this.email
     }
 
     const response = await this.fetchSync(this.adresse+"/user", this.optionPut(data2))
@@ -163,6 +163,30 @@ class User {
       return false
     }
     alertDebug("Mise à jour terminée")
+    return response
+
+  }
+
+  /**
+   * Unreference the user using the apikey
+   */
+  async deleteUser(id = null){
+    if(this.apikey === null){
+      alert("Apikey null")
+      return
+    }
+
+    let complementPath = ""
+    if(id != null){
+      complementPath = `/${id}`
+    }
+
+    let response = await this.fetchSync(this.adresse+'/user'+complementPath, this.optionDelete())
+    console.log(response)
+    if(!this.compareAnswer(response, "Impossible de supprimer l'utilisateur")){
+      return false
+    }
+    alertDebug("Votre compte à bien été désactivé")
     return response
 
   }
@@ -226,8 +250,10 @@ class User {
       return await response.json()
     }
     else{
+      const text = await response.json()
       alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
-      popup(`Impossible de réaliser cette requête`)
+      //alertDebug(`${text.message}`)
+      popup(`${text.message}`)
       console.log(response)
       return false
     }
@@ -356,12 +382,27 @@ class User {
     }
 
     const options = {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'apikey': `${this.apikey}`
       },
       body: JSON.stringify(data)
+    };
+
+    return options;
+  }
+  optionDelete() {
+    if (this.apikey === "hidden" || this.apikey === null) {
+      this.loginApi();
+    }
+
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': `${this.apikey}`
+      }
     };
 
     return options;
