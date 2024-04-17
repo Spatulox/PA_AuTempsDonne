@@ -80,21 +80,20 @@ function userController($uri, $apiKey) {
 
             break;
 
-        /*
+        
         // update the user
         case 'PUT':
+
         	$userService = new UserService();
 
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
-            if (!isset($json["role"]) || !isset($json["pseudo"]) || !isset($json["user_index"])){
-                exit_with_message("Plz give, at least, the role, pseudo and the user_index");
+            if (!isset($json["nom"]) || !isset($json["prenom"]) || !isset($json["telephone"]) || !isset($json["email"]) ){
+                exit_with_message("Plz give the firstname, lastname, the phone and the email");
             }
             // Valider les données reçues ici
-            exit_with_content($userService->updateUser($uri[3], $apiKey, $json["role"], $json["pseudo"], $json["user_index"]));
+            exit_with_content($userService->updateUser($apiKey, $json["nom"], $json["prenom"], $json["telephone"], $json["email"]));
             break;
-
-        */
 
         case 'DELETE':
             // Gestion des requêtes DELETE pour supprimer un utilisateur

@@ -58,11 +58,10 @@ class UserService {
      *  Met à jour un utilisateur
     */
 
-    /*
-    public function updateUser($id_users, $apiKey, $role, $pseudo, $user_index) {
+    
+    public function updateUser($apiKey, $nom, $prenom, $telephone, $email) {
         $userRepository = new UserRepository();
-        $newUser = new UserModel($id_users, $role, $pseudo, '1234', $user_index, null);
-        return $userRepository->updateUser($newUser, $apiKey);
+        return $userRepository->updateUser($apiKey, $nom, $prenom, $telephone, $email);
     }
 
 

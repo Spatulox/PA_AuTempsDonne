@@ -85,20 +85,43 @@ class UserRepository {
     }
 
     //-------------------------------------
-    /*
-    public function updateUser(UserModel $user, $apiKey){
+    
+    public function updateUser($apiKey, $nom, $prenom, $telephone, $email){
         
-        $idUSer = selectDB("UTILISATEUR", 'id_users', "apikey='".$apiKey."'")[0]["id_users"];
-        if ($idUSer != $user->id_users){
-            exit_with_message("You can't update an user which is not you");
+        $idUSer = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'")[0]["id_user"];
+        if (!$idUSer){
+            exit_with_message("Sadly you don't exist in the database ??");
         }
 
-        updateDB("UTILISATEUR", ["role", "pseudo", "user_index"], [$user->role, $user->pseudo, $user->user_index], 'id_users='.$user->id_users." AND apikey='".$apiKey."'");
+        $columnArray = [];
+        $valuesArray = [];
 
-        return $this->getUser($user->id_users, null);
+        if($nom != null){
+            array_push($columnArray, "nom");
+            array_push($valuesArray, $nom);
+        }
+
+        if($prenom != null){
+            array_push($columnArray, "prenom");
+            array_push($valuesArray, $prenom);
+        }
+
+        if($telephone != null){
+            array_push($columnArray, "telephone");
+            array_push($valuesArray, $telephone);
+        }
+
+        if($email != null){
+            array_push($columnArray, "email");
+            array_push($valuesArray, $email);
+        }
+
+        updateDB("UTILISATEUR", $columnArray, $valuesArray, "apikey='".$apiKey."'");
+
+        return $this->getUserApi($apiKey);
     }
 
-    */
+    
 
     //-------------------------------------
 
