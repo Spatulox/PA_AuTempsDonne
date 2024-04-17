@@ -33,7 +33,7 @@
             <input type="password" id="motdepasseCo" name="motdepasseCo" placeholder=" <?php echo($data["signup_login"]["formLogin"]["password"]) ?> ">
           </div>
           <div class="form-group">
-            <button type="button" onclick="connexion()" value="<?php echo($data["signup_login"]["formSignUp"]["input"]) ?>"> <?php echo($data["signup_login"]["formSignUp"]["input"]) ?> </button>
+            <button type="button" onclick="connexion()" value="<?php echo($data["signup_login"]["formLogin"]["input"]) ?>"> <?php echo($data["signup_login"]["formLogin"]["input"]) ?> </button>
           </div>
           <div class="form-group">
             <input type="button" id="connexionButton" value=" <?php echo($data["signup_login"]["formLogin"]["switch"]) ?> ">
