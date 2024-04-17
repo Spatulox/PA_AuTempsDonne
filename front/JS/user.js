@@ -64,7 +64,7 @@ class User {
     };
 
     const rep = await this.fetchSync(this.adresse  + "/login", options)
-    if(rep == false){
+    if(rep === false){
       popup("Impossible")
       return false
     }
@@ -73,20 +73,31 @@ class User {
     return true
   }
 
-  async me(forceLoad = null){
 
-    if(this.nom == null || forceLoad == null){
+  //
+  //----------------------------------METHODES--------------------------------------------------------------------------
+  //
+
+  /**
+   *
+   * @param forceLoad null by default, can be set to 1 to request the API
+   * @returns Data of user
+   */
+  async me(forceLoad = false){
+
+    if(this.nom == null || forceLoad === true){
       const rep = await this.fetchSync(this.adresse  + "/user", this.optionGet())
-      if(rep == false){
+      if(rep === false){
         return false
       }
-      alertDebug(rep)
+      //alertDebug(rep)
       this.setVar(rep)
-      return true
+      return rep
+      //return true
     }
     else{
       return {
-        apikey: this.apikey,
+        apikey: "hidden",
         nom: this.nom,
         prenom: this.prenom,
         email: this.email,
@@ -95,36 +106,98 @@ class User {
         role: this.role
       };
     }
-
-
   }
 
-  //
-  //----------------------------------METHODES--------------------------------------------------------------------------
-  //
-
-  // Méthodes de la classe User
-  getApikey() {
-    return this.apikey;
-  }
-
-  setApikey(newApikey) {
-    this.apikey = newApikey;
-  }
-
-  async planning(){
-    let response = await this.fetchSync(this.adresse+'/planning', this.optionGet())
-    if(response == false){
-      popup("Impossible de récupérer les plannings")
-      this.logout()
-      return false
+  /**
+   * Update the user with informations
+   * @param nom
+   * @param prenom
+   * @param telephone
+   * @param email
+   * @returns {Promise<void>}
+   */
+  async updateUser(nom, prenom, telephone, email){
+    if (nom == null && this.nom == null){
+      await this.me(true)
+    } else if(nom != null){
+      this.nom = nom
     }
 
+    if(prenom == null && this.prenom == null){
+      await this.me(true)
+    } else if(prenom != null){
+      this.prenom = prenom
+    }
+
+    if(telephone == null && this.telephone == null){
+      await this.me(true)
+    } else if(telephone != null){
+      this.telephone = telephone
+    }
+
+    if(email == null && this.email == null){
+      await this.me(true)
+    } else if(email != null){
+      this.email = email
+    }
+
+
+    const data = {
+      "email" : this.email,
+      "prenom" : this.prenom,
+      "telephone" : this.telephone,
+      "nom" : this.nom
+    }
+
+    const data2 = {
+      "email" : this.email,
+      "prenom" : "yeeeteeee",
+      "telephone" : this.telephone,
+      "nom" : this.nom
+    }
+
+    const response = await this.fetchSync(this.adresse+"/user", this.optionPut(data2))
+    console.log(response)
+    alertDebug("Yetye")
+    if(!this.compareAnswer(response, "Impossible de mettre à jour l'utilisateur")){
+      return false
+    }
+    alertDebug("Mise à jour terminée")
+    return response
+
+  }
+
+  /**
+   * Get the plannig of the user with the apikey
+   * @returns {Promise<any|boolean>}
+   */
+  async allPlanning(){
+    let response = await this.fetchSync(this.adresse+'/planning', this.optionGet())
+    if(!this.compareAnswer(response, "Impossible de récupérer les plannings")){
+      return false
+    }
+    alertDebug("Tout les planning ont été récupéré")
+    return response
+  }
+
+  /**
+   * Get the planning of the user
+   * @returns {Promise<*|boolean>}
+   */
+  async planning(){
+    let response = await this.fetchSync(this.adresse+'/planning/me', this.optionGet())
+
+    if(!this.compareAnswer(response, "Impossible de récupérer votre planning")){
+      return false
+    }
+    alertDebug("Votre planning a été récupéré")
     return response
   }
 
 
-
+  /**
+   * Log out the user (rewrite the apikey)
+   */
   logout() {
     this.apikey = '';
     this.setCookie("apikey", "", 7)
@@ -134,9 +207,15 @@ class User {
   //------------------------------------UTILS--------------------------------------------------------------------------
   //
 
+  /**
+   * Use to fetch the api
+   * @param url : Specifie it to request an endpoint
+   * @param options option get by this.optionGet() or this.optionPost()
+   * @returns {Promise<any|boolean>}
+   */
   async fetchSync(url, options){
 
-    if(options == false){
+    if(options === false){
       popup("Impossible de se connecter, veuillez entrer vos identifiant sur la page de connexion")
       return false
     }
@@ -155,9 +234,19 @@ class User {
 
   }
 
+  compareAnswer(response, msg){
+    if(response === false){
+      alertDebug(msg)
+      popup(msg)
+      this.logout()
+      return false
+    }
+    return response
+  }
+
 
   /**
-   *
+   * Set a cookie
    * @param name name of the cookie
    * @param value value of the cookie
    * @param days number of days for the cookie to stay
@@ -179,30 +268,32 @@ class User {
     } else {
       cookieString += "; SameSite=" + sameSite;
     }
-
     document.cookie = cookieString;
   }
 
+  /**
+   * Get a cookie
+   * @param cookieName : Name of the cookie to get
+   * @returns {null|string}
+   */
   getCookie(cookieName) {
-    // Récupère tous les cookies sous forme de tableau
     const cookies = document.cookie.split(';');
 
-    // Parcourt le tableau de cookies
     for (let i = 0; i < cookies.length; i++) {
       let cookie = cookies[i].trim();
-
-      // Vérifie si le cookie commence par le nom recherché
       if (cookie.startsWith(cookieName + '=')) {
-        // Renvoie la valeur du cookie
         return cookie.substring(cookieName.length + 1);
       }
     }
 
-    // Si le cookie n'est pas trouvé, renvoie null
     return null;
   }
 
-
+  /**
+   * Set all the var of user instance
+   * @param rep : response from the api
+   * @returns {boolean}
+   */
   setVar(rep){
     this.apikey = rep.apikey
     this.apikey = rep.apikey
@@ -217,9 +308,13 @@ class User {
     return true
   }
 
+  /**
+   * Create the header option for GET request
+   * @returns {{headers: {apikey: string, "Content-Type": string}, method: string}}
+   */
   optionGet(){
 
-    if(this.apikey == "hidden"){
+    if(this.apikey === "hidden"){
       this.loginApi()
     }
 
@@ -231,6 +326,45 @@ class User {
       }
     };
     return options
+  }
+
+  /**
+   * Create the header option for a POST request
+   * @param data
+   * @returns {{headers: {apikey: string, "Content-Type": string}, method: string, body: string}}
+   */
+  optionPost(data) {
+    if (this.apikey === "hidden") {
+      this.loginApi();
+    }
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': `${this.apikey}`
+      },
+      body: JSON.stringify(data)
+    };
+
+    return options;
+  }
+
+  optionPut(data) {
+    if (this.apikey === "hidden") {
+      this.loginApi();
+    }
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': `${this.apikey}`
+      },
+      body: JSON.stringify(data)
+    };
+
+    return options;
   }
 
 }
