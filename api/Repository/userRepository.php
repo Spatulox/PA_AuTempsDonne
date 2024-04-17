@@ -36,7 +36,7 @@ class UserRepository {
 
     public function getWaitUsers(){
         var_dump("coucou");
-        $usersArray = selectDB("UTILISATEUR", "*", "index_user=2");
+        $usersArray = selectDB("UTILISATEUR", "*", "index_user=3");
 
         for ($i=0; $i < count($usersArray); $i++) {
             $user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $usersArray[$i]['telephone'], $usersArray[$i]['type'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index']);
@@ -125,7 +125,7 @@ class UserRepository {
 
     //-------------------------------------
 
-    public function unreferenceUser($id, $apiKey){
+    public function unreferenceUserById($id, $apiKey){
 
         $role = getRoleFromApiKey($apiKey);
 
@@ -133,7 +133,7 @@ class UserRepository {
 
         $userToDelete = $this->getUser($id);
 
-        var_dump($userToDelete);
+        //var_dump($userToDelete);
 
         if($userToDelete->role == 1){
             exit_with_message("You can't unrefence an admin", 403);
@@ -149,7 +149,37 @@ class UserRepository {
             exit_with_message("You can't unrefence a user wich is not you", 403);
         }
 
-        return updateDB("UTILISATEUR", ['id_index'], [-1], "id_user=".$id);
+        return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id, "-@");
+    }
+
+    public function unreferenceUserByApikey($apiKey){
+
+        $role = getRoleFromApiKey($apiKey);
+
+        $user = selectDB("UTILISATEUR", "id_user, id_index", "apikey='".$apiKey."'", "bool")[0];
+
+        $id = $user["id_user"];
+
+        $userToDelete = $this->getUser($id);
+
+        //var_dump($userToDelete);
+
+        if($userToDelete->role == 1){
+            exit_with_message("You can't unrefence an admin", 403);
+        }
+
+        if($userToDelete->role == 2 && $role == 2){
+            if($id != $user["id_user"]){
+                exit_with_message("You can't unrefence a modo if you're a modo, unless if it's you :/", 403);
+            }
+        }
+
+        if ($id != $user['id_user'] && $role > 2 ){
+            exit_with_message("You can't unrefence a user wich is not you", 403);
+        }
+        exit_with_message("Yeyepe");
+        return;
+        return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id, "-@");
     }
     
 }

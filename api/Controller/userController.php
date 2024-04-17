@@ -98,11 +98,29 @@ function userController($uri, $apiKey) {
         case 'DELETE':
             // Gestion des requêtes DELETE pour supprimer un utilisateur
             $userService = new UserService();
+            $role = getRoleFromApiKey($apiKey);
 
-            if(!$uri[3]){
-                exit_with_message("No user specified", 400);
+            var_dump($uri);
+
+            // If admin and no id specified
+            if (!isset($uri[3]) && $role == 1) {
+                exit_with_message("No user specified or, you can't unreferenced you as an admin", 403);
             }
-            $userService->deleteUser($uri[3], $apiKey);
+
+            $userId = getIdUserFromApiKey($apiKey);
+            
+            //If normal user and id specified
+            if($uri[3] != $userId && $role != 1){
+                exit_with_message("You can't delete a user wich is not you :/", 403);
+            }
+
+            if(isset($uri[3])){
+                $userService->deleteUserById($uri[3], $apiKey);
+            }
+            else{
+                $userService->deleteUserByApikey($apiKey);
+            }
+
             break;
 
         default:
