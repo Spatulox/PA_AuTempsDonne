@@ -67,3 +67,22 @@ async function deconnection(){
 }
 
 
+async function myAccount(){
+    const c_nom = document.getElementById("c_nom")
+    const c_prenom = document.getElementById("c_prenom")
+    const c_email = document.getElementById("c_email")
+    const c_telephone = document.getElementById("c_telephone")
+    const c_date_inscription = document.getElementById("c_date_inscription")
+    const c_entrepot = document.getElementById("c_entrepot")
+    const c_role = document.getElementById("c_role")
+
+    const user = new User()
+    await user.connect()
+    c_nom.innerHTML = user.nom
+    c_prenom.innerHTML = user.prenom
+    c_email.innerHTML = user.email
+    c_telephone.innerHTML = user.telephone
+    c_date_inscription.innerHTML = user.date_inscription
+    //c_entrepot.innerHTML = user.entrepot
+    //c_role.innerHTML = user.role
+}
