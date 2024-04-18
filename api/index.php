@@ -48,7 +48,7 @@ function exit_with_content($content = null, $code = 200) {
 
 function getRoleFromApiKey($apiKey){
     if($apiKey == null){
-        return false
+        return false;
     }
     $role = selectDB("UTILISATEUR", 'id_role', "apikey='".$apiKey."'", "bool");
     if($role){
@@ -59,9 +59,9 @@ function getRoleFromApiKey($apiKey){
 
 function getIdUserFromApiKey($apiKey){
     if($apiKey == null){
-        return false
+        return false;
     }
-    
+
     $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool"); 
     if($id){ 
         $id = $id[0]["id_user"]; 
