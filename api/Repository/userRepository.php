@@ -38,7 +38,7 @@ class UserRepository {
         $usersArray = selectDB("UTILISATEUR", "*", "id_index=3", "bool");
 
         if($usersArray == false){
-            exit_with_message("No waiting user");
+            exit_with_message("No waiting user", 200);
         }
 
         for ($i=0; $i < count($usersArray); $i++) {
