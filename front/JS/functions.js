@@ -60,4 +60,10 @@ async function connexion() {
 
 }
 
+async function deconnection(){
+    const user = await new User()
+    await user.logout()
+    redirect("./index.php")
+}
+
 
