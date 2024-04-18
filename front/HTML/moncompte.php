@@ -71,3 +71,7 @@
 
 	</body>
 </html>
+
+<script type="text/javascript" defer>
+	myAccount()
+</script>
