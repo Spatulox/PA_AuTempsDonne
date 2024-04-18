@@ -41,13 +41,13 @@
 				<div>
 					<h2 class="bold underline"> <?php echo($data["moncompte"]["form"]["titleF1"]) ?> </h2>
 					<ul class="noDecoration noPadding">
-						<li id="c_nom"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
-						<li id="c_prenom"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
-						<li id="c_email"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
-						<li id="c_telephone"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
-						<li id="c_date_inscription"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
-						<li id="c_entreprot"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
-						<li id="c_role"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_nom"> Nom : <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_prenom"> Prénom : <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_email"> Email : <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_telephone"> Téléphone : <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_date_inscription"> Date inscription :  <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_entrepot"> Entrepot : <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_role"> Role : <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
 					</ul>
 					<input class="noMarginImportant" type="button" name="planningRedirect" onclick="redirect('./planning.php')" value="<?php echo($data["moncompte"]["form"]["inputPlanning"]) ?>" id="planning">
 				</div>
