@@ -192,6 +192,54 @@ class User {
   }
 
   /**
+   * Retrieve only one user with his id
+   * @param id of the user
+   * @returns {Promise<void>}
+   */
+  async getUser(id = null){
+    if(id != null && typeof(id) != "number"){
+      popup("Vous devez spécifier un ID d'utilisateur sous forme de nombre")
+      return false
+    }
+    let response = await this.fetchSync(this.adresse+'/user/'+id, this.optionGet())
+    console.log(response)
+    if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs en attente")){
+      return false
+    }
+    return response
+  }
+
+  /**
+   * Retrieve all the users
+   * @returns {Promise<boolean>}
+   */
+  async getAllUser(){
+    let response = await this.fetchSync(this.adresse+'/user/all', this.optionGet())
+    console.log(response)
+    if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs")){
+      return false
+    }
+    return response
+  }
+
+  /**
+   * Only retrieve the waiting for validation users
+   * @param id
+   * @returns {Promise<void>}
+   */
+  async getWaitingUser(){
+    let response = await this.fetchSync(this.adresse+'/user/validate', this.optionGet())
+    console.log(response)
+    if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs en attente")){
+      return false
+    }
+    return response
+  }
+
+
+  //------------------------------------PLANNING------------------------------------
+
+  /**
    * Get the plannig of the user with the apikey
    * @returns {Promise<any|boolean>}
    */
