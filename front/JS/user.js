@@ -46,6 +46,10 @@ class User {
    */
   async connect(){
 
+    if(this.apikey != null){
+      await this.me(true)
+      return
+    }
     if(this.email == null || this.password == null){
       await this.me()
       return true
@@ -78,16 +82,17 @@ class User {
   //----------------------------------METHODES--------------------------------------------------------------------------
   //
 
+  //------------------------------------USER------------------------------------
   /**
    *
-   * @param forceLoad null by default, can be set to 1 to request the API
+   * @param forceLoad null by default, can be set to 1 to request the API to update informations
    * @returns Data of user
    */
   async me(forceLoad = false){
 
     if(this.nom == null || forceLoad === true){
       const rep = await this.fetchSync(this.adresse  + "/user", this.optionGet())
-      if(rep === false){
+      if(!this.compareAnswer(rep, "Impossible de récupérer vos informations")){
         return false
       }
       //alertDebug(rep)
@@ -149,14 +154,7 @@ class User {
       "nom" : this.nom
     }
 
-    const data2 = {
-      "nom" : this.nom,
-      "prenom" : "yeeeteeee",
-      "telephone" : this.telephone,
-      "email" : this.email
-    }
-
-    const response = await this.fetchSync(this.adresse+"/user", this.optionPut(data2))
+    const response = await this.fetchSync(this.adresse+"/user", this.optionPut(data))
     console.log(response)
     alertDebug("Yetye")
     if(!this.compareAnswer(response, "Impossible de mettre à jour l'utilisateur")){
@@ -262,17 +260,17 @@ class User {
     if(!this.compareAnswer(response, "Impossible de récupérer votre planning")){
       return false
     }
-    alertDebug("Votre planning a été récupéré")
+    popup("Votre planning a été récupéré")
     return response
   }
 
-
+  //------------------------------------OTHER------------------------------------
   /**
    * Log out the user (rewrite the apikey)
    */
   logout() {
     this.apikey = '';
-    this.setCookie("apikey", "", 7)
+    this.deleteCookie("apikey")
   }
 
   //
@@ -295,7 +293,13 @@ class User {
     const response = await fetch(url, options)
 
     if(response.ok){
-      return await response.json()
+      const message = await response.json()
+      //console.log(message)
+      if(message.hasOwnProperty("message")){
+        popup(message.message)
+        return true
+      }
+      return message
     }
     else{
       const text = await response.json()
@@ -313,6 +317,9 @@ class User {
       alertDebug(msg)
       popup(msg)
       this.logout()
+      return false
+    }
+    else if (response === true){
       return false
     }
     return response
@@ -361,6 +368,16 @@ class User {
     }
 
     return null;
+  }
+
+  /**
+   * Delete the specified cookie
+   * @param cookieName
+   */
+  deleteCookie(cookieName){
+    // Définir la date d'expiration à une date passée (1er janvier 2000)
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 2000 00:00:00 UTC; path=/;`
+
   }
 
   /**
