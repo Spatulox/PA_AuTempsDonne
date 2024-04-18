@@ -78,11 +78,12 @@ async function myAccount(){
 
     const user = new User()
     await user.connect()
-    c_nom.innerHTML = user.nom
-    c_prenom.innerHTML = user.prenom
-    c_email.innerHTML = user.email
-    c_telephone.innerHTML = user.telephone
-    c_date_inscription.innerHTML = user.date_inscription
-    //c_entrepot.innerHTML = user.entrepot
-    //c_role.innerHTML = user.role
+    
+    c_nom.innerHTML = "Nom : " + user.nom
+    c_prenom.innerHTML = "Prénom : " + user.prenom
+    c_email.innerHTML = "Email : " + user.email
+    c_telephone.innerHTML = "Téléphone : " + user.telephone
+    c_date_inscription.innerHTML = "Date inscription : " + user.date_inscription
+    c_entrepot.innerHTML = "Entrepot : " + user.entrepot
+    c_role.innerHTML = "Role : " + user.roleString
 }
