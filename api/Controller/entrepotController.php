@@ -5,21 +5,22 @@ include_once './exceptions.php';
 
 
 
-function userController($uri, $apiKey) {
+function entrepotController($uri, $apiKey) {
     
     switch ($_SERVER['REQUEST_METHOD']) {
 
         // Get an entrepot
         case 'GET':
-
-            if($apiKey == null){
-                exit_with_message("Unauthorized, need the apikey", 403);
+            
+            if($uri[3]){
+                $entepotService = new EntrepotService($uri);
+                $entepotService->getEntrepotById($uri[3]);
+            }
+            else{
+                $entepotService = new EntrepotService($uri);
+                $entepotService->getAllEntrepot();
             }
 
-            //$userService = new UserService($uri);
-            $role = getRoleFromApiKey($apiKey);
-
-            
             break;
 
 
@@ -27,10 +28,14 @@ function userController($uri, $apiKey) {
 
         // Create an entrepot
         case 'POST':
-            $userService = new UserService($uri);
+            $entrepotService = new EntrepotService($uri);
 
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
+
+            if($apiKey == null){
+                exit_with_message("Unauthorized, need the apikey", 403);
+            }
 
             
 
@@ -40,12 +45,20 @@ function userController($uri, $apiKey) {
         // Update the entrepot
         case 'PUT':
 
+            if($apiKey == null){
+                exit_with_message("Unauthorized, need the apikey", 403);
+            }
+
             
 
             break;
 
         // Delete an entrepot
         case 'DELETE':
+
+            if($apiKey == null){
+                exit_with_message("Unauthorized, need the apikey", 403);
+            }
             
 
         default:

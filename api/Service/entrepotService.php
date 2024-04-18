@@ -20,7 +20,7 @@ class EntrepotService {
 
     public function getEntrepotById($id) {
         $entrepotRepository = new EntrepotRepository();
-        return $entrepotRepository->getEntrepot($id, $apiKey);
+        return $entrepotRepository->getEntrepot($id);
     }
 
     /*
