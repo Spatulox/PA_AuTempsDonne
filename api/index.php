@@ -93,6 +93,10 @@ function controller($uri) {
             userController($uri, $apiKey);
             break;
 
+        case 'entrepot':
+            entrepotController($uri, $apiKey);
+            break;
+
         case 'planning':
             planningController($uri, $apiKey);
             break;
