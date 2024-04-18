@@ -10,9 +10,13 @@ class User {
     this.date_inscription = null;
     this.role = null;
     this.password = null
+    this.entrepot = null
+    this.roleString = null
+
+    this.roleArray = ["Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
 
     if (password === null || email === null) {
-      this.loginApi()
+      this.loginApi() 
     } else {
       this.email = email
       this.password = password
@@ -108,7 +112,9 @@ class User {
         email: this.email,
         telephone: this.telephone,
         date_inscription: this.date_inscription,
-        role: this.role
+        role: this.role,
+        roleString : this.roleString,
+        entrepot: this.entrepot
       };
     }
   }
@@ -386,17 +392,35 @@ class User {
    * @returns {boolean}
    */
   setVar(rep){
-    this.apikey = rep.apikey
-    this.apikey = rep.apikey
+    if(rep.apikey != "hidden"){
+      this.apikey = rep.apikey
+    }
     this.nom = rep.nom
     this.prenom = rep.prenom
     this.email = rep.email
     this.telephone = rep.telephone
     this.date_inscription = rep.date_inscription
-    this.role = rep.role
+    this.role = rep.id_role
     this.password = null
+    this.entrepot = rep.id_entrepot
+    this.roleString = this.roleArray[rep.id_role]
 
     return true
+  }
+
+  /**
+   * Use console.log() to print information saved in the user class
+   */
+  printUser(){
+    console.log("apikey : "+this.apikey)
+    console.log("nom : "+this.nom)
+    console.log("prenom : "+this.prenom)
+    console.log("email : "+this.email)
+    console.log("telephone : "+this.telephone)
+    console.log("date_inscription : "+this.date_inscription)
+    console.log("role : "+this.role)
+    console.log("role string"+this.roleString)
+    console.log("entrepot : "+this.entrepot)
   }
 
   /**
