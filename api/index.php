@@ -4,6 +4,7 @@
 include_once './Repository/BDD.php';
 include_once './Controller/loginController.php';
 include_once './Controller/userController.php';
+include_once './Controller/entrepotController.php';
 include_once './Controller/planningController.php';
 
 /*include_once './Controller/apartmentController.php';
@@ -46,6 +47,9 @@ function exit_with_content($content = null, $code = 200) {
 }
 
 function getRoleFromApiKey($apiKey){
+    if($apiKey == null){
+        return false
+    }
     $role = selectDB("UTILISATEUR", 'id_role', "apikey='".$apiKey."'", "bool");
     if($role){
         $role = $role[0]["id_role"];
@@ -53,7 +57,11 @@ function getRoleFromApiKey($apiKey){
     return $role;
 }
 
-function getIdUserFromApiKey($apiKey){ 
+function getIdUserFromApiKey($apiKey){
+    if($apiKey == null){
+        return false
+    }
+    
     $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool"); 
     if($id){ 
         $id = $id[0]["id_user"]; 
