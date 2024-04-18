@@ -9,22 +9,22 @@ class UserModel {
     public $email;
     public $telephone;
     public $date_inscription;
-    public $type;
-    public $role;
+    public $id_role;
     public $apikey;
-    public $index;
+    public $id_index;
+    public $id_entrepot;
 
-    public function __construct($id_user, $nom, $prenom, $date_inscription, $email = null, $telephone = null, $type = null, $role = null, $apikey = null, $index = null) {
+    public function __construct($id_user, $nom, $prenom, $date_inscription, $email = null, $telephone = null, $id_role = null, $apikey = null, $id_index = null, $id_entrepot = null) {
         $this->id_user = $id_user;
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->email = $email;
         $this->telephone = $telephone;
         $this->date_inscription = $date_inscription;
-        $this->type = $type;
-        $this->role = $role;
+        $this->id_role = $id_role;
         $this->apikey = $apikey;
-        $this->index = $index;
+        $this->id_index = $id_index;
+        $this->id_entrepot = $id_entrepot;
     }
 }
 
