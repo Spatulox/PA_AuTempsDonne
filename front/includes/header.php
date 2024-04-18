@@ -31,7 +31,14 @@ foreach ($files22 as $filea) {
 			<?php
 
 				foreach ($data["header"]["li"] as $key => $value) {
-					echo('<li><a href="' . $key . '">' . $value . '</a></li>');
+					
+					if($key == "./signup_login.php" && isset($_COOKIE['apikey'])){
+						//var_dump($_COOKIE['apikey'])
+						echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
+					}
+					else{
+						echo('<li><a href="' . $key . '">' . $value . '</a></li>');
+					}
 				}
 			?>
 		</ul>
