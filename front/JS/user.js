@@ -16,7 +16,7 @@ class User {
     this.roleArray = ["Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
 
     if (password === null || email === null) {
-      this.loginApi() 
+      this.loginApi()
     } else {
       this.email = email
       this.password = password

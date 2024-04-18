@@ -78,7 +78,7 @@ async function myAccount(){
 
     const user = new User()
     await user.connect()
-    
+
     c_nom.innerHTML = "Nom : " + user.nom
     c_prenom.innerHTML = "Prénom : " + user.prenom
     c_email.innerHTML = "Email : " + user.email
