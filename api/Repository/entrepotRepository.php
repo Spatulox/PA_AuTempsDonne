@@ -101,7 +101,7 @@ class EntrepotRepository {
             exit_with_message("Impossible to select data for entrepot ".$id." in the DB, it may doesn't exist :/");
         }
 
-        if(updateDB("ENTREPOTS", "index_entrepot=".$id, "-1", "-@")){
+        if(updateDB("ENTREPOTS", "index_entrepot=".$id, "-1")){
             exit_with_message("Deleting successful", 200);
         }
         else{
