@@ -271,7 +271,7 @@ function updateDB($table, $columnArray, $columnData, $condition = null)
 
 # -------------------------------------------------------------- #
 
-function deleteDB($table, $condition)
+function deleteDB($table, $condition, $debug = null)
 {
 	checkData($table, -10, -10, $condition);
 
@@ -289,6 +289,10 @@ function deleteDB($table, $condition)
 		$dbRequest = 'DELETE FROM '. $table .' WHERE ' . $condition ;
 	}
 
+    if($debug == "-@"){
+        var_dump($dbRequest);
+    }
+
 	try{
 		$result = $db->prepare($dbRequest);
 		$result->execute();
@@ -302,6 +306,10 @@ function deleteDB($table, $condition)
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
 			exit_with_message("Error : ".str_replace('"', "'", $tmp));
 		}
+
+        if($debug == "-@"){
+            exit_with_message("PDO error :" . $e->getMessage());
+        }
 
 	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
 	}
