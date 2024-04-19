@@ -28,15 +28,19 @@ function entrepotController($uri, $apiKey) {
 
         // Create an entrepot
         case 'POST':
-            $entrepotService = new EntrepotService($uri);
 
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
 
-            if($apiKey == null){
-                exit_with_message("Unauthorized, need the apikey", 403);
+            if(getRoleFromApiKey($apiKey) > 2){
+                exit_with_message("You can't do a POST request for entrepots", 403);
             }
 
+
+            $entrepotService = new EntrepotService($uri);
+
+            $body = file_get_contents("php://input");
+            $json = json_decode($body, true);
             
 
             break;
@@ -45,10 +49,23 @@ function entrepotController($uri, $apiKey) {
         // Update the entrepot
         case 'PUT':
 
-            if($apiKey == null){
-                exit_with_message("Unauthorized, need the apikey", 403);
+            $body = file_get_contents("php://input");
+            $json = json_decode($body, true);
+
+            if(getRoleFromApiKey($apiKey) > 2){
+                exit_with_message("You can't do a PUT request for entrepots", 403);
             }
 
+            if(!isset($json["nom"]) && !isset($json["localisation"])){
+                exit_with_message("Missing nom & localisation of the entrepot, can't update it (need one at least)", 403);
+            }
+
+            $id_entrepot = $json["id_entrepot"];
+            $nom_entrepot = $json["nom"];
+            $localisation = $json["localisation"];
+
+            $entrepotService = new EntrepotService();
+            $entrepotService->updateEntrepot($id_entrepot, $nom_entrepot, $localisation);
             
 
             break;
@@ -56,9 +73,21 @@ function entrepotController($uri, $apiKey) {
         // Delete an entrepot
         case 'DELETE':
 
-            if($apiKey == null){
-                exit_with_message("Unauthorized, need the apikey", 403);
+            $body = file_get_contents("php://input");
+            $json = json_decode($body, true);
+
+            if(getRoleFromApiKey($apiKey) > 2){
+                exit_with_message("You can't do a DELETE request for entrepots", 403);
             }
+
+            if(!isset($json["id_entrepot"])){
+                exit_with_message("Missing id_entrepot", 403);
+            }
+
+            $entrepotService = new EntrepotService();
+            $entrepotService->deleteEntrepotById($json["id_entrepot"]);
+
+            break;
             
 
         default:

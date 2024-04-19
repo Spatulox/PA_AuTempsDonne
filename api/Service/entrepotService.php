@@ -7,56 +7,52 @@ class EntrepotService {
     public $uri;
 
     /*
-     *  Récupère tous les utilisateurs
+     *  Récupère tous les entrepots
     */
     public function getAllEntrepot() {
         $entrepotRepository = new EntrepotRepository();
-        return $entrepotRepository->getEntrepots();
+        $entrepotRepository->getEntrepots();
     }
 
     /*
-     *  Récupère un utilisateur par son id
+     *  Récupère un entrepot par son id
     */
 
     public function getEntrepotById($id) {
         $entrepotRepository = new EntrepotRepository();
-        return $entrepotRepository->getEntrepot($id);
+        $entrepotRepository->getEntrepot($id);
     }
 
     /*
-     *  Créer un utilisateur
+     *  Créer un entrepot
     */
 
-    public function createEntrepot(EntrepotModel $user, $apikey) {
+    public function createEntrepot(EntrepotModel $entrepot) {
         $entrepotRepository = new EntrepotRepository();
-        return $entrepotRepository->createEntrepot($entrepot, $password);
+        $entrepotRepository->createEntrepot($entrepot);
     }
 
     
     /*
-     *  Met à jour un utilisateur
+     *  Met à jour un entrepot
     */
 
     
-    public function updateEntrepot($id_entrepot, $nom, $localisation, $apikey) {
+    public function updateEntrepot($id_entrepot, $nom, $localisation) {
         $entrepotRepository = new EntrepotRepository();
-        return $entrepotRepository->updateEntrepot($id_entrepot, $nom, $localisation);
+        $enterpot = new EntrepotModel($id_entrepot, $nom, $localisation);
+        $entrepotRepository->updateEntrepot($enterpot);
     }
 
 
     /*
-     *  Supprime un utilisateur
+     *  Supprime un entrepot
     */
 
     
-    public function deleteEntrepotById($id, $apiKey) {
+    public function deleteEntrepotById($id) {
         $entrepotRepository = new EntrepotRepository();
-        if ($entrepotRepository->unreferenceEntrepotById($id, $apiKey)){
-            exit_with_message("Unreference Succeed !", 200);
-        }
-        else{
-            exit_with_message("Error when unreferencing entrepot ".$id);
-        }
+        $entrepotRepository->unreferenceEntrepotById($id);
     }
     
     

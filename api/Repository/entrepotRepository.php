@@ -38,7 +38,7 @@ class EntrepotRepository {
         }
 
          $entrepot = selectDB("ENTREPOTS", "*", "id_entrepot=".$id);
-        //$entrepot = selectDB("ENTREPOTS", "*", "entrepot_index=1");
+        //$entrepot = selectDB("ENTREPOTS", "*", "id_entrepot=".$id." AND entrepot_index=1");
 
         if(!$entrepot){
             exit_with_message("Impossible to select data for entrepot in the DB with the id : ".$id);
@@ -50,13 +50,43 @@ class EntrepotRepository {
 
     //-------------------------------------
     
-    public function createEntrepot(EntrepotModel $entr, $password){
-        
+    public function createEntrepot(EntrepotModel $entr){
+
+        if(selectDB("ENTREPOTS", "*", "nom_entrepot=".$entr->nom." AND localisation=".$entr->localisation, "bool")){
+            exit_with_message("Entrepot already exists");
+        }
+        if(insertDB("ENTREPOTS", ["nom_entrepot", "localisation"], [$entr->nom, $entr->localisation]) == true){
+            exit_with_message("Entrepot added successfully");
+        };
     }
 
     //-------------------------------------
     
-    public function updateEntrepot(EntrepotModel $entr, $apikey){
+    public function updateEntrepot(EntrepotModel $entr){
+
+        if($entr->id_entrepot == null){
+            exit_with_message("Impossible to update entrepot in the DB, need to specifie the entrepot you want to update");
+        }
+
+        $columnArray = [];
+        $valuesArray = [];
+
+        if($entr->nom != null){
+            array_push($columnArray, "nom");
+            array_push($valuesArray, $entr->nom);
+        }
+
+        if($entr->localisation != null){
+            array_push($columnArray, "localisation");
+            array_push($valuesArray, $entr->localisation);
+        }
+
+        if(updateDB("ENTREPOTS", $columnArray, $valuesArray, "id_entrepot=".$entr->id_entrepot)){
+            exit_with_message("Entrepot updated with success", 200);
+        }
+        else{
+            exit_with_message("An error occurred while updating the entrepot ".$entr->nom." (".$entr->id_entrepot.") in the DB");
+        }
 
     }
 
@@ -64,8 +94,19 @@ class EntrepotRepository {
 
     //-------------------------------------
 
-    public function unreferenceEntrepotById($id, $apiKey){
+    public function unreferenceEntrepotById($id){
 
+        $tmp = selectDB("ENTREPOTS", "*", "id_entrepot=".$id, "bool");
+        if(!$tmp){
+            exit_with_message("Impossible to select data for entrepot ".$id." in the DB, it may doesn't exist :/");
+        }
+
+        if(updateDB("ENTREPOTS", "index_entrepot=".$id, "-1", "-@")){
+            exit_with_message("Deleting successful", 200);
+        }
+        else{
+            exit_with_message("An error occurred while deleting the entrepot : ".$id);
+        }
     }
     
 }
