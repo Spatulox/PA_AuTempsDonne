@@ -86,6 +86,9 @@ class User {
   //----------------------------------METHODES--------------------------------------------------------------------------
   //
 
+
+
+
   //------------------------------------USER------------------------------------
   /**
    *
@@ -233,12 +236,108 @@ class User {
    */
   async getWaitingUser(){
     let response = await this.fetchSync(this.adresse+'/user/validate', this.optionGet())
-    console.log(response)
     if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs en attente")){
       return false
     }
     return response
   }
+
+
+
+
+
+
+
+
+
+  //-----------------------------------ENTREPOTS-----------------------------------
+
+  /**
+   *
+   * @param id of an entrepot | can be null
+   * @returns {Promise<*|boolean>}
+   */
+  async getEntrepot(id = null){
+    let tmp
+    if(id != null){
+      tmp = "/"+id
+    }
+    let response = await this.fetchSync(this.adresse+'/entrepot'+tmp, this.optionGet())
+    if(!this.compareAnswer(response, "Impossible de récupérer les entrepots")){
+      return false
+    }
+    return response
+  }
+
+  /**
+   * Update an entrepot
+   * @param name
+   * @param localisation
+   * @returns {Promise<*|boolean>}
+   */
+  async createEntrepot(name = null, localisation = null){
+    if(name == null || localisation == null){
+      alertDebug("Vous devez spécifier un nom et une localisation pour créer un entrepot");
+      return
+    }
+    const data ={
+      name: name,
+      localisation : localisation
+    }
+    let response = await this.fetchSync(this.adresse+'/entrepot', this.optionPost(data))
+    if(!this.compareAnswer(response, "Impossible de récupérer les entrepots")){
+      return false
+    }
+    return response
+  }
+
+  /**
+   * Update an entrepot
+   * @param id_entrepot to update
+   * @param nom_entrepot new name | can be null
+   * @param localisation new localisation | can be null
+   * @returns {Promise<*|boolean>}
+   */
+  async updateEntrepot(id_entrepot, nom_entrepot = null, localisation = null){
+
+    const data = {
+      id_entrepot:id_entrepot,
+      nom_entrepot:nom_entrepot,
+      localisation:localisation
+    }
+    let response = await this.fetchSync(this.adresse+'/entrepot', this.optionPost(data))
+    if(!this.compareAnswer(response, "Impossible de mettre à jour l'entrepot")){
+      return false
+    }
+    return response
+  }
+
+  /**
+   * Delete an entrepot
+   * @param id_entrepot to delete
+   * @returns {Promise<*|boolean>}
+   */
+  async deleteEntrepot(id_entrepot){
+    if(typeof(id) != "number"){
+      alertDebug("Il faut un nombre entier pour delete un entrepot")
+      return
+    }
+    const data = {
+      id_entrepot: id_entrepot
+    }
+    let response = await this.fetchSync(this.adresse+'/entrepot', this.optionDelete(data))
+    if(!this.compareAnswer(response, "Impossible de supprimer un entrepot")){
+      return false
+    }
+    return response
+  }
+
+
+
+
+
+
+
 
 
   //------------------------------------PLANNING------------------------------------
@@ -465,6 +564,10 @@ class User {
     return options;
   }
 
+  /**
+   * Create the header option for a PUT request
+   * @returns {{headers: {apikey: string, "Content-Type": string}, method: string}}
+   */
   optionPut(data) {
     if (this.apikey === "hidden") {
       this.loginApi();
@@ -481,6 +584,11 @@ class User {
 
     return options;
   }
+
+  /**
+   * Create the header option for a DELETE request
+   * @returns {{headers: {apikey: string, "Content-Type": string}, method: string}}
+   */
   optionDelete() {
     if (this.apikey === "hidden" || this.apikey === null) {
       this.loginApi();
