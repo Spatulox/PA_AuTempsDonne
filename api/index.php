@@ -79,6 +79,9 @@ function controller($uri) {
 
     // Check if the user exist
     if($uri[2] != "login"){
+        if($apiKey == null){
+            exit_with_message("Unauthorized, need the apikey", 403);
+        }
         $role = getRoleFromApiKey($apiKey);
         if(!$role){
             exit_with_message("Wrong APIKEY");
