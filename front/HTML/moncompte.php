@@ -1,20 +1,22 @@
 <?php include("../includes/loadLang.php");?>
 
 <!DOCTYPE html>
-<script type="text/javascript" src="../JS/functions.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+<script type="text/javascript" src="../JS/utils.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>-->
 <script type="text/javascript">
 
-  let userCookie = Cookies.get('apikey');
+  //let userCookie = Cookies.get('apikey');
+  let userCookie = getCookie('apikey')
 
-  let message = "<?php echo($data["moncompte"]["error"]["errorCo"]) ?>"
+  // PhpStorm detect it as an error, but don't touch plz
+  let messagere = "<?php echo($data["moncompte"]["error"]["errorCo"]) ?>"
 
-  if(message == ""){
-  	message="You can't do that"
+  if(messagere == ""){
+  	messagere="You can't do that"
   }
 
   if(!userCookie){
-  	redirect('./signup_login.php', message)
+  	redirect('./signup_login.php', messagere)
   }
 
 </script>

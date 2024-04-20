@@ -1,11 +1,4 @@
 // functions.js
-function redirect(page, message = null) {
-    if (message) {
-        window.location.href = page + "?message=" + message;
-    } else {
-        window.location.href = page;
-    }
-}
 
 async function connexion() {
 
@@ -14,7 +7,7 @@ async function connexion() {
 
     //Première mannière de se connecter (avec email et mot de passe)
     const premiereManiere = (async ()=>{
-        const user = await new User(email, password)//.connect();
+        const user = await new User(email, password)
         await user.connect()
     })
 
@@ -28,14 +21,13 @@ async function connexion() {
         return user
     })
 
-
     const user = await new User(email, password)
     if(!await user.connect()){
         popup("Impossible de se connecter :/ 🔁")
         return
     }
 
-    redirect("moncompte.php")
+    redirect("./moncompte.php")
     return
 
     //alert("Update user")
