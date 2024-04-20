@@ -301,12 +301,12 @@ class User {
   async updateEntrepot(id_entrepot, nom_entrepot = null, localisation = null){
 
     const data = {
-      id_entrepot:id_entrepot,
-      nom_entrepot:nom_entrepot,
-      localisation:localisation
+      "id_entrepot":id_entrepot,
+      "nom_entrepot":nom_entrepot,
+      "localisation":localisation
     }
     let response = await this.fetchSync(this.adresse+'/entrepot', this.optionPost(data))
-    if(!this.compareAnswer(response, "Impossible de mettre à jour l'entrepot")){
+    if(!this.compareAnswer(response)){
       return false
     }
     return response
@@ -318,15 +318,15 @@ class User {
    * @returns {Promise<*|boolean>}
    */
   async deleteEntrepot(id_entrepot){
-    if(typeof(id) != "number"){
+    if(typeof(id_entrepot) != "number"){
       alertDebug("Il faut un nombre entier pour delete un entrepot")
       return
     }
     const data = {
-      id_entrepot: id_entrepot
+      "id_entrepot": id_entrepot
     }
     let response = await this.fetchSync(this.adresse+'/entrepot', this.optionDelete(data))
-    if(!this.compareAnswer(response, "Impossible de supprimer un entrepot")){
+    if(!this.compareAnswer(response)){
       return false
     }
     return response
