@@ -1,8 +1,11 @@
 <?php
+
 //include_once './Service/globalFunctions.php';
 include_once './Repository/BDD.php';
 include_once './Controller/loginController.php';
 include_once './Controller/userController.php';
+include_once './Controller/entrepotController.php';
+include_once './Controller/planningController.php';
 
 /*include_once './Controller/apartmentController.php';
 include_once './Controller/reservationController.php';
@@ -21,10 +24,9 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 // On récupère l'URI de la requête et on le découpe en fonction des / 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$uri = explode( '/', $uri ); // On obtient un tableau de la forme ['index.php', 'todos', '1']
+$uri = explode('/', $uri); // On obtient un tableau de la forme ['index.php', 'todos', '1']
 
 // Si on a moins de 3 éléments dans l'URI, c'est que l'on est sur l'index de l'API
-
 if (sizeof($uri) < 3) {
     header("HTTP/1.1 200 OK");
     echo '{"message": "Welcome to the API"}';
@@ -32,7 +34,6 @@ if (sizeof($uri) < 3) {
 }
 
 // Ces fonctions nous permettent de centraliser la gestion des headers et du body de la réponse HTTP
-
 function exit_with_message($message = "Internal Server Error", $code = 500) {
     http_response_code($code);
     echo '{"message": "' . $message . '"}';
@@ -46,26 +47,61 @@ function exit_with_content($content = null, $code = 200) {
 }
 
 function getRoleFromApiKey($apiKey){
-    $role = selectDB("UTILISATEUR", 'role', "apikey='".$apiKey."'", "bool");
+    if($apiKey == null){
+        return false;
+    }
+    $role = selectDB("UTILISATEUR", 'id_role', "apikey='".$apiKey."'", "bool");
     if($role){
-        $role = $role[0]["role"];
+        $role = $role[0]["id_role"];
     }
     return $role;
 }
 
+function getIdUserFromApiKey($apiKey){
+    if($apiKey == null){
+        return false;
+    }
+
+    $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool"); 
+    if($id){ 
+        $id = $id[0]["id_user"]; 
+    } 
+    else{ 
+        exit_with_message("No one with this apikey", 403); 
+    } 
+    return $id; 
+} 
 
 // Composant principal du controlleur: cette fonction agit comme un routeur en redirigeant les requêtes vers le bon controlleur
 function controller($uri) {
     $headers = getallheaders();
     $apiKey = $headers['apikey'];
 
-    switch($uri[2]) {
+    // Check if the user exist
+    if($uri[2] != "login"){
+        if($apiKey == null){
+            exit_with_message("Unauthorized, need the apikey", 403);
+        }
+        $role = getRoleFromApiKey($apiKey);
+        if(!$role){
+            exit_with_message("Wrong APIKEY");
+        }
+    }
+
+    switch ($uri[2]) {
         case 'login':
             loginController($uri);
             break;
-
         case 'user':
             userController($uri, $apiKey);
+            break;
+
+        case 'entrepot':
+            entrepotController($uri, $apiKey);
+            break;
+
+        case 'planning':
+            planningController($uri, $apiKey);
             break;
 
         default:
@@ -79,5 +115,4 @@ function controller($uri) {
 // On appelle le controlleur principal
 controller($uri);
 
-return
 ?>

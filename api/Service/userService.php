@@ -58,11 +58,10 @@ class UserService {
      *  Met à jour un utilisateur
     */
 
-    /*
-    public function updateUser($id_users, $apiKey, $role, $pseudo, $user_index) {
+    
+    public function updateUser($apiKey, $nom, $prenom, $telephone, $email) {
         $userRepository = new UserRepository();
-        $newUser = new UserModel($id_users, $role, $pseudo, '1234', $user_index, null);
-        return $userRepository->updateUser($newUser, $apiKey);
+        return $userRepository->updateUser($apiKey, $nom, $prenom, $telephone, $email);
     }
 
 
@@ -71,10 +70,24 @@ class UserService {
     */
 
     
-    public function deleteUser($id, $apiKey) {
+    public function deleteUserById($id, $apiKey) {
         $userRepository = new UserRepository();
-        if ($userRepository->unreferenceUser($id, $apiKey)){
+        if ($userRepository->unreferenceUserById($id, $apiKey)){
             exit_with_message("Unreference Succeed !", 200);
+        }
+        else{
+            exit_with_message("Error when unreferencing user ".$id);
+        }
+    }
+
+
+    public function deleteUserByApikey($apiKey) {
+        $userRepository = new UserRepository();
+        if ($userRepository->unreferenceUserByApikey($apiKey)){
+            exit_with_message("Unreference Succeed !", 200);
+        }
+        else{
+            exit_with_message("Error when unreferencing user ".$apiKey);
         }
     }
     

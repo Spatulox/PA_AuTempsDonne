@@ -1,0 +1,45 @@
+{
+	"header":{
+		"li":{
+			"./actualites.php":"",
+			"./découvrir.php":"",
+			"./operations.php":"",
+			"./aide.php":"",
+			"./expertise.php":"",
+			"./carrieres.php":"",
+			"./donateur.php":"",
+			"./signup_login.php":""
+		}
+	},
+	"footer":{
+		"li":{
+			"contact.php":"",
+			"https://youtu.be/L0TB1IkhVds":"Mr Sananes sings rap in suit"
+		}
+	},
+	"actualites":{
+		"title":"",
+		"sectionTitle":""
+	},
+	"signup_login":{
+		"title":"",
+		"titleSignUp":"",
+		"formSignUp":{
+			"title":"",
+			"name":"",
+			"email":"",
+			"password":"",
+			"confirmPassword":"",
+			"input":"",
+			"switch":""
+		},
+		"titleLogin":"",
+		"formLogin":{
+			"title":"",
+			"email":"",
+			"password":"",
+			"input":"",
+			"switch":""
+		}
+	}
+}

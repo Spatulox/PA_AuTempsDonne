@@ -11,16 +11,18 @@ class HTTPException extends Exception {
     }
 }
 
-
 class NotFoundException extends HTTPException {
-    public function __construct($message = "Not Found") {
-        parent::__construct(message: $message, code: 404);
+    public function __construct($message = "Not Found", $code = 404) {
+        parent::__construct($message, $code);
     }
 }
 
 class BadRequestException extends HTTPException {
-    public function __construct($message = "Bad Request") {
-        parent::__construct(message: $message, code: 400);
+    public function __construct($message = "Bad Request", $code = 400) {
+        parent::__construct($message, $code);
     }
 }
+
+
+
 ?>

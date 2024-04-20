@@ -80,30 +80,45 @@ function userController($uri, $apiKey) {
 
             break;
 
-        /*
+        
         // update the user
         case 'PUT':
+
         	$userService = new UserService();
 
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
-            if (!isset($json["role"]) || !isset($json["pseudo"]) || !isset($json["user_index"])){
-                exit_with_message("Plz give, at least, the role, pseudo and the user_index");
+            if (!isset($json["nom"]) || !isset($json["prenom"]) || !isset($json["telephone"]) || !isset($json["email"]) ){
+                exit_with_message("Plz give the firstname, lastname, the phone and the email");
             }
             // Valider les données reçues ici
-            exit_with_content($userService->updateUser($uri[3], $apiKey, $json["role"], $json["pseudo"], $json["user_index"]));
+            exit_with_content($userService->updateUser($apiKey, $json["nom"], $json["prenom"], $json["telephone"], $json["email"]));
             break;
-
-        */
 
         case 'DELETE':
             // Gestion des requêtes DELETE pour supprimer un utilisateur
             $userService = new UserService();
+            $role = getRoleFromApiKey($apiKey);
 
-            if(!$uri[3]){
-                exit_with_message("No user specified", 400);
+            // If admin and no id specified
+            if (!isset($uri[3]) && $role == 1) {
+                exit_with_message("No user specified or, you can't unreferenced you as an admin", 403);
             }
-            $userService->deleteUser($uri[3], $apiKey);
+
+            $userId = getIdUserFromApiKey($apiKey);
+            
+            //If normal user and id specified
+            if($uri[3] != $userId && $role != 1){
+                exit_with_message("You can't delete a user wich is not you :/", 403);
+            }
+
+            if(isset($uri[3])){
+                $userService->deleteUserById($uri[3], $apiKey);
+            }
+            else{
+                $userService->deleteUserByApikey($apiKey);
+            }
+
             break;
 
         default:

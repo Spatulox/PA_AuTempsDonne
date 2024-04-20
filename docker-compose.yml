@@ -1,10 +1,10 @@
 services:
   frontend:
-    image: httpd:2.4  # Utilisation de l'image Apache 2
+    image: php:7.4-apache
     ports:
       - 8083:80
     volumes:
-      - ./front:/usr/local/apache2/htdocs/  # Modification du chemin du volume pour Apache
+      - ./front:/var/www/html/
 
   api:
     build: .
@@ -15,7 +15,6 @@ services:
 
   database:
     image: mysql
-    command: --default-authentication-plugin=mysql_native_password
     volumes:
       - db-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -28,5 +27,4 @@ services:
       - MYSQL_PASSWORD=password
 
 volumes:
-  pgadmin-data:
   db-data:
