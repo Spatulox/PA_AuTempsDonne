@@ -9,9 +9,10 @@ class User {
     this.telephone = null;
     this.date_inscription = null;
     this.role = null;
+    this.roleString = null
     this.password = null
     this.entrepot = null
-    this.roleString = null
+    this.entrepotString = null
 
     this.roleArray = ["Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
 
@@ -35,7 +36,7 @@ class User {
     let cookie = this.getCookie("apikey")
 
     if(cookie == null){
-      alertDebug("Bug de cookie")
+      alertDebug("Vous ne pouvoez pas vous connecter sans avoir un cookie")
       return false
     }
     this.apikey = cookie
@@ -50,14 +51,25 @@ class User {
    */
   async connect(){
 
+    if(this.email == null && this.password == null && this.apikey == null){
+      popup("You need to give the email and the password or the apikey need to be in a cookie to connect a user")
+      return false
+    }
+
+    // The api key is stored in a cookie
+    // There is nothing stored in client
     if(this.apikey != null){
       await this.me(true)
-      return
+      return false
     }
+
+    // There is thing stored inside the class
     if(this.email == null || this.password == null){
       await this.me()
       return true
     }
+
+
     const data = {
       email: this.email,
       mdp: this.password
@@ -78,6 +90,7 @@ class User {
     }
     this.setVar(rep)
     this.setCookie("apikey", rep.apikey, 7);
+    await this.myEntrepot()
     return true
   }
 
@@ -104,6 +117,7 @@ class User {
       }
       //alertDebug(rep)
       this.setVar(rep)
+      await this.myEntrepot()
       return rep
       //return true
     }
@@ -278,13 +292,13 @@ class User {
    * @param localisation
    * @returns {Promise<*|boolean>}
    */
-  async createEntrepot(name = null, localisation = null){
+  async createEntrepot(nom_entrepot = null, localisation = null){
     if(name == null || localisation == null){
       alertDebug("Vous devez spécifier un nom et une localisation pour créer un entrepot");
       return
     }
     const data ={
-      "name": name,
+      "nom": nom_entrepot,
       "localisation" : localisation,
     }
     let response = await this.fetchSync(this.adresse+'/entrepot', this.optionPost(data))
@@ -304,11 +318,11 @@ class User {
   async updateEntrepot(id_entrepot, nom_entrepot = null, localisation = null){
 
     const data = {
-      "id_entrepot":id_entrepot,
-      "nom_entrepot":nom_entrepot,
+      "id_entrepot": id_entrepot,
+      "nom":nom_entrepot,
       "localisation":localisation
     }
-    let response = await this.fetchSync(this.adresse+'/entrepot', this.optionPost(data))
+    let response = await this.fetchSync(this.adresse+'/entrepot', this.optionPut(data))
     if(!this.compareAnswer(response)){
       return false
     }
@@ -515,6 +529,26 @@ class User {
   }
 
   /**
+   * Get the entrepot link to the user.
+   * Need to connect the user before executing this command cause it need the user.entrepot ID before retriving the name
+   * @returns {Promise<void>}
+   */
+  async myEntrepot(){
+    const entre = await this.getEntrepot()
+    for (let i of entre){
+      if(this.entrepot === i.id_entrepot){
+        this.entrepotString = i.nom
+        break
+      }
+      this.entrepotString = entre[0].nom
+    }
+
+    this.entrepotString = this.entrepotString.replace("Ã´", "ô")
+
+    return true
+  }
+
+  /**
    * Use console.log() to print information saved in the user class
    */
   printUser(){
@@ -525,8 +559,9 @@ class User {
     console.log("telephone : "+this.telephone)
     console.log("date_inscription : "+this.date_inscription)
     console.log("role : "+this.role)
-    console.log("role string"+this.roleString)
+    console.log("role string : "+this.roleString)
     console.log("entrepot : "+this.entrepot)
+    console.log("entrepot string : "+this.entrepotString)
   }
 
   /**
