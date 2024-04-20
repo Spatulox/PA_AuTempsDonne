@@ -262,6 +262,9 @@ class User {
     if(id != null){
       tmp = "/"+id
     }
+    else{
+      tmp =""
+    }
     let response = await this.fetchSync(this.adresse+'/entrepot'+tmp, this.optionGet())
     if(!this.compareAnswer(response, "Impossible de récupérer les entrepots")){
       return false
@@ -281,11 +284,11 @@ class User {
       return
     }
     const data ={
-      name: name,
-      localisation : localisation
+      "name": name,
+      "localisation" : localisation,
     }
     let response = await this.fetchSync(this.adresse+'/entrepot', this.optionPost(data))
-    if(!this.compareAnswer(response, "Impossible de récupérer les entrepots")){
+    if(!this.compareAnswer(response)){
       return false
     }
     return response
@@ -409,18 +412,22 @@ class User {
     else{
       const text = await response.json()
       alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
-      //alertDebug(`${text.message}`)
-      popup(`${text.message}`)
-      console.log(response)
+      if(text.hasOwnProperty("message")) {
+        popup(text.message)
+      }
       return false
     }
 
   }
 
-  compareAnswer(response, msg){
-    if(response === false){
+  compareAnswer(response, msg = null){
+    if(response === false && msg != null){
       alertDebug(msg)
       popup(msg)
+      this.logout()
+      return false
+    }
+    else if(response === false && msg != null){
       this.logout()
       return false
     }
