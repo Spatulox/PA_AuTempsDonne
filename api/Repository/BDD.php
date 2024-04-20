@@ -205,7 +205,7 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 
 # -------------------------------------------------------------- #
 
-function updateDB($table, $columnArray, $columnData, $condition = null)
+function updateDB($table, $columnArray, $columnData, $condition = null, $debug = null)
 {
 	// -10 no condition enter by the user
 	// -1 : the user want no condition
@@ -248,6 +248,11 @@ function updateDB($table, $columnArray, $columnData, $condition = null)
 	else{
 		$dbRequest = 'UPDATE '. $table .' SET ' . $updatedData .'  WHERE ' . $condition ;
 	}
+
+    if($debug == "-@"){
+        var_dump($dbRequest);
+    }
+
 	try{
 		$result = $db->prepare($dbRequest);
 		$result->execute();
@@ -262,6 +267,13 @@ function updateDB($table, $columnArray, $columnData, $condition = null)
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
 			exit_with_message("Error : ".str_replace('"', "'", $tmp));
 		}
+
+        if($debug == "-@"){
+            exit_with_message("PDO error :" . $e->getMessage());
+        }
+        if($debug == "bool"){
+            return false;
+        }
 
 	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
 	}
@@ -311,7 +323,7 @@ function deleteDB($table, $condition, $debug = null)
             exit_with_message("PDO error :" . $e->getMessage());
         }
 
-	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
+	    //exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
 	}
 	
 	return false;
