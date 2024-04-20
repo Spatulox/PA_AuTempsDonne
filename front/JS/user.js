@@ -36,7 +36,9 @@ class User {
     let cookie = this.getCookie("apikey")
 
     if(cookie == null){
-      alertDebug("Vous ne pouvoez pas vous connecter sans avoir un cookie")
+      // The message is only for debug, it gonna be deleted anyway
+      alertDebug("Vous ne pouvez pas vous connecter (const user = new User() ) sans avoir un cookie, vous devez mettre l'email et le mot de passe")
+      redirect("./signup_login.php")
       return false
     }
     this.apikey = cookie
@@ -51,23 +53,24 @@ class User {
    */
   async connect(){
 
-    if(this.email == null && this.password == null && this.apikey == null){
-      popup("You need to give the email and the password or the apikey need to be in a cookie to connect a user")
+    if(this.email == "" && this.password == "" && this.apikey == null){
+      popup("You need to give the email and the password")
       return false
     }
 
-    // The api key is stored in a cookie
-    // There is nothing stored in client
+    // If the apikey is inside the class
+    // loginApi detect it and store it inside before this
     if(this.apikey != null){
       await this.me(true)
-      return false
-    }
-
-    // There is thing stored inside the class
-    if(this.email == null || this.password == null){
-      await this.me()
       return true
     }
+
+    // ??????????????????????????????????????????????????????????????????????
+    /*// There is thing stored inside the class
+    if(this.email == "" || this.password == ""){
+      await this.me()
+      return true
+    }*/
 
 
     const data = {
@@ -84,10 +87,10 @@ class User {
     };
 
     const rep = await this.fetchSync(this.adresse  + "/login", options)
-    if(rep === false){
-      popup("Impossible")
+    if(!this.compareAnswer(rep)){
       return false
     }
+
     this.setVar(rep)
     this.setCookie("apikey", rep.apikey, 7);
     await this.myEntrepot()
@@ -115,11 +118,9 @@ class User {
       if(!this.compareAnswer(rep, "Impossible de récupérer vos informations")){
         return false
       }
-      //alertDebug(rep)
       this.setVar(rep)
       await this.myEntrepot()
       return rep
-      //return true
     }
     else{
       return {
@@ -178,12 +179,10 @@ class User {
     }
 
     const response = await this.fetchSync(this.adresse+"/user", this.optionPut(data))
-    console.log(response)
-    alertDebug("Yetye")
     if(!this.compareAnswer(response, "Impossible de mettre à jour l'utilisateur")){
       return false
     }
-    alertDebug("Mise à jour terminée")
+    popup("Mise à jour de vos informations terminée")
     return response
 
   }
@@ -207,7 +206,7 @@ class User {
     if(!this.compareAnswer(response, "Impossible de supprimer l'utilisateur")){
       return false
     }
-    alertDebug("Votre compte à bien été désactivé")
+    popup("Votre compte à bien été désactivé")
     return response
 
   }
@@ -294,7 +293,7 @@ class User {
    */
   async createEntrepot(nom_entrepot = null, localisation = null){
     if(name == null || localisation == null){
-      alertDebug("Vous devez spécifier un nom et une localisation pour créer un entrepot");
+      popup("Vous devez spécifier un nom et une localisation pour créer un entrepot");
       return
     }
     const data ={
@@ -336,7 +335,7 @@ class User {
    */
   async deleteEntrepot(id_entrepot){
     if(typeof(id_entrepot) != "number"){
-      alertDebug("Il faut un nombre entier pour delete un entrepot")
+      popup("Il faut un nombre entier pour delete un entrepot")
       return
     }
     const data = {
@@ -368,7 +367,7 @@ class User {
     if(!this.compareAnswer(response, "Impossible de récupérer les plannings")){
       return false
     }
-    alertDebug("Tout les planning ont été récupéré")
+    popup("Tout les planning ont été récupéré")
     return response
   }
 
@@ -427,6 +426,7 @@ class User {
       const text = await response.json()
       alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
       if(text.hasOwnProperty("message")) {
+        alertDebug(text.message)
         popup(text.message)
       }
       return false
