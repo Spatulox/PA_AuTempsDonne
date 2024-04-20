@@ -72,8 +72,9 @@ class EntrepotRepository {
         $columnArray = [];
         $valuesArray = [];
 
+
         if($entr->nom != null){
-            array_push($columnArray, "nom");
+            array_push($columnArray, "nom_entrepot");
             array_push($valuesArray, $entr->nom);
         }
 
@@ -82,7 +83,8 @@ class EntrepotRepository {
             array_push($valuesArray, $entr->localisation);
         }
 
-        if(updateDB("ENTREPOTS", $columnArray, $valuesArray, "id_entrepot=".$entr->id_entrepot)){
+
+        if(updateDB("ENTREPOTS", $columnArray, $valuesArray, "id_entrepot=".$entr->id_entrepot, "bool")){
             exit_with_message("Entrepot updated with success", 200);
         }
         else{
@@ -116,16 +118,10 @@ class EntrepotRepository {
             exit_with_message("Deleting error", 200);
         }
         if(deleteDB("ENTREPOTS", "id_entrepot=".$id, "bool")){
-            exit_with_message("Deleting successful 2", 200);
+            exit_with_message("Deleting successful entrepot with id".$id, 200);
         }
 
-        /*if(updateDB("ENTREPOTS", "index_entrepot=".$id, "-1", "id_entrepot=".$id, "bool")){
-            exit_with_message("Deleting successful", 200);
-        }
-        else{
-            exit_with_message("An error occurred while deleting the entrepot : ".$id." DEBUG :: Unkown index_entrepot COLUMN", 500);
-        }*/
-
+        exit_with_message("Something went wrong when deleting entrepot with id".$id, 500);
 
     }
     

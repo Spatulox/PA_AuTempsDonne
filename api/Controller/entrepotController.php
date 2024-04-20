@@ -58,6 +58,10 @@ function entrepotController($uri, $apiKey) {
                 exit_with_message("You can't do a PUT request for entrepots", 403);
             }
 
+            if(!isset($json["id_entrepot"])){
+                exit_with_message("Missing id_entrepot", 403);
+            }
+
             if(!isset($json["nom"]) && !isset($json["localisation"])){
                 exit_with_message("Missing nom & localisation of the entrepot, can't update it (need one at least)", 403);
             }
