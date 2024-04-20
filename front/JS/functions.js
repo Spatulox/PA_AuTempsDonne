@@ -21,17 +21,16 @@ async function connexion() {
         return user
     })
 
-    const user = await new User(email, password)
+    //const user = await new User(email, password)
+    const user = await new User()
     if(!await user.connect()){
-        popup("Impossible de se connecter :/ 🔁")
         return
     }
 
     redirect("./moncompte.php")
     return
 
-    //alert("Update user")
-
+    
 
     // ----------- User -----------
     //console.log(await user.me())
@@ -47,6 +46,14 @@ async function connexion() {
     // --------- Planning ---------
     //console.log(await user.planning())
     //console.log(await user.allPlanning())
+
+    // --------- Entrepot ---------
+    //console.log(await user.getEntrepot())
+    //console.log(await user.getEntrepot(1))
+    //await user.createEntrepot("CoucouTest", "ChezToi,PasChezMoi")
+    //await user.updateEntrepot(3, "coucouRIP", null)
+    //await user.updateEntrepot(4, null, "coucouRIP2")
+    //await user.updateEntrepot(5, "test", "test2")
 
 
 
@@ -76,6 +83,6 @@ async function myAccount(){
     c_email.innerHTML = "Email : " + user.email
     c_telephone.innerHTML = "Téléphone : " + user.telephone
     c_date_inscription.innerHTML = "Date inscription : " + user.date_inscription
-    c_entrepot.innerHTML = "Entrepot : " + user.entrepot
+    c_entrepot.innerHTML = "Entrepot : " + user.entrepotString
     c_role.innerHTML = "Role : " + user.roleString
 }
