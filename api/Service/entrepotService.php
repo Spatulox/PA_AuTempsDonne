@@ -3,8 +3,7 @@ include_once './Repository/entrepotRepository.php';
 include_once './Models/entrepotModel.php';
 
 class EntrepotService {
-    
-    public $uri;
+
 
     /*
      *  Récupère tous les entrepots

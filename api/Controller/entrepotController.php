@@ -13,11 +13,11 @@ function entrepotController($uri, $apiKey) {
         case 'GET':
             
             if($uri[3]){
-                $entepotService = new EntrepotService($uri);
+                $entepotService = new EntrepotService();
                 $entepotService->getEntrepotById($uri[3]);
             }
             else{
-                $entepotService = new EntrepotService($uri);
+                $entepotService = new EntrepotService();
                 $entepotService->getAllEntrepot();
             }
 
@@ -37,7 +37,9 @@ function entrepotController($uri, $apiKey) {
             }
 
 
-            $entrepotService = new EntrepotService($uri);
+            $entrepotService = new EntrepotService();
+            $entreModel = new EntrepotModel(1, isset($json["nom"]) ? $json["nom"] : null, isset($json["localisation"]) ? $json["localisation"] : null);
+            $entrepotService->createEntrepot($entreModel);
 
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);

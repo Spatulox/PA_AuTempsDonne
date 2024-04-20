@@ -52,12 +52,13 @@ class EntrepotRepository {
     
     public function createEntrepot(EntrepotModel $entr){
 
-        if(selectDB("ENTREPOTS", "*", "nom_entrepot=".$entr->nom." AND localisation=".$entr->localisation, "bool")){
-            exit_with_message("Entrepot already exists");
+        //var_dump($entr);
+        if(selectDB("ENTREPOTS", "*", "nom_entrepot='".$entr->nom."' AND localisation='".$entr->localisation."'", "bool")){
+            exit_with_message("Entrepot already exists", 403);
         }
-        if(insertDB("ENTREPOTS", ["nom_entrepot", "localisation"], [$entr->nom, $entr->localisation]) == true){
-            exit_with_message("Entrepot added successfully");
-        };
+        if(insertDB("ENTREPOTS", ["nom_entrepot", "localisation"], [$entr->nom, $entr->localisation])){
+            exit_with_message("Entrepot added successfully", 200);
+        }
     }
 
     //-------------------------------------
@@ -96,17 +97,36 @@ class EntrepotRepository {
 
     public function unreferenceEntrepotById($id){
 
-        $tmp = selectDB("ENTREPOTS", "*", "id_entrepot=".$id, "bool");
-        if(!$tmp){
-            exit_with_message("Impossible to select data for entrepot ".$id." in the DB, it may doesn't exist :/");
+        if($id == 1){
+            exit_with_message("Impossible to delete the entrepot with id 1", 403);
         }
 
-        if(updateDB("ENTREPOTS", "index_entrepot=".$id, "-1")){
+        $tmp = selectDB("ENTREPOTS", "*", "id_entrepot=".$id, "bool");
+        if(!$tmp){
+            exit_with_message("Impossible to select data for entrepot ".$id." in the DB, it may doesn't exist :/", 200);
+        }
+
+        // Try to delete it
+        if(deleteDB("ENTREPOTS", "id_entrepot=".$id)){
+            exit_with_message("Deleting successful", 200);
+        }
+
+        // If there is a constrainst violation
+        if(!updateDB("UTILISATEUR", ["id_entrepot"], ["1"], "id_entrepot=".$id, "bool")){
+            exit_with_message("Deleting error", 200);
+        }
+        if(deleteDB("ENTREPOTS", "id_entrepot=".$id, "bool")){
+            exit_with_message("Deleting successful 2", 200);
+        }
+
+        /*if(updateDB("ENTREPOTS", "index_entrepot=".$id, "-1", "id_entrepot=".$id, "bool")){
             exit_with_message("Deleting successful", 200);
         }
         else{
-            exit_with_message("An error occurred while deleting the entrepot : ".$id);
-        }
+            exit_with_message("An error occurred while deleting the entrepot : ".$id." DEBUG :: Unkown index_entrepot COLUMN", 500);
+        }*/
+
+
     }
     
 }
