@@ -37,7 +37,7 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
 ?>
 
 <header>
-	<img src="../Images/Au_Temps_Donne.png" onclick="popup('ccc')">
+	<a href="./actualites.php"><img src="../Images/Au_Temps_Donne.png" onclick="redirect('./actualites.php')"></a>
 	<nav>
 		<ul>
 			<?php
@@ -45,7 +45,6 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
 				foreach ($data["header"]["li"] as $key => $value) {
 					
 					if($key == "./signup_login.php" && isset($_COOKIE['apikey'])){
-						//var_dump($_COOKIE['apikey'])
 						echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
 					}
 					else{
@@ -76,7 +75,7 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
 			$message = explode("?message=", $message)[1];
 			$message = str_replace("%20", " ", $message);
 
-			echo('	<h2 class="" id="titleFooter" style="position:absolute;">
+			echo('	<h2 class="" id="titleFooter" style="position:fixed;">
 						'.$message.'
 					</h2>
 				');
