@@ -42,9 +42,14 @@
   transition: all 0.5s ease-in-out;
 }
 
+#inscriptionBox{
+  height: 777px;
+}
+
 #inscriptionBox, #connectionBox{
-  max-height: 500px;
+  max-height: 777px;
   overflow: hidden;
+  margin: 10px 0px;
 }
 
 #titleFooter{
