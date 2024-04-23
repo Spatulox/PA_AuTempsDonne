@@ -49,7 +49,7 @@
 
 #titleFooter{
   position: absolute;
-  top: calc(-100vh);
+  top: -100vh; /*calc(-100vh);*/
   left: 50%;
   transform: translateX(-50%);
   background-color: #dea23c;
@@ -61,6 +61,6 @@
 }
 
 #titleFooter.active{
-  top: calc(-100vh + 210%);
+  top: 20px;/*calc(-100vh + 210%);*/
   transition: all 0.5s ease-in-out;
 }
