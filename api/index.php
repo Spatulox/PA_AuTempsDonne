@@ -77,8 +77,9 @@ function controller($uri) {
     $headers = getallheaders();
     $apiKey = $headers['apikey'];
 
-    // Check if the user exist
-    if($uri[2] != "login"){
+    // Check if the apikey exist
+    // To create a user, the apikey always null
+    if($uri[2] != "login" && $uri[2] != "user"){
         if($apiKey == null){
             exit_with_message("Unauthorized, need the apikey", 403);
         }
