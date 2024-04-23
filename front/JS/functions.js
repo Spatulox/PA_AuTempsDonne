@@ -21,8 +21,8 @@ async function connexion() {
         return user
     })
 
-    //const user = await new User(email, password)
-    const user = await new User()
+    const user = await new User(email, password)
+    //const user = await new User()
     if(!await user.connect()){
         return
     }
@@ -157,6 +157,7 @@ async function myAccount(){
     const user = new User()
     await user.connect()
 
+
     c_nom.innerHTML = "Nom : " + user.nom
     c_prenom.innerHTML = "Prénom : " + user.prenom
     c_email.innerHTML = "Email : " + user.email
@@ -164,4 +165,10 @@ async function myAccount(){
     c_date_inscription.innerHTML = "Date inscription : " + user.date_inscription
     c_entrepot.innerHTML = "Entrepot : " + user.entrepotString
     c_role.innerHTML = "Role : " + user.roleString
+
+    if(user.index == 3){
+        const h1 = document.getElementsByTagName("h1")[0]
+        h1.innerHTML += " (En attente de validation)"
+        popup("Votre compte est en attente de validation par la modération")
+    }
 }
