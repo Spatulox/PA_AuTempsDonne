@@ -15,9 +15,9 @@ class PlanningService {
     /*
      *  Récupère un planning par son id
     */
-    public function getPlanningById($apiKey) {
+    public function getPlanningByUser($apiKey) {
         $planningRepository = new PlanningRepository();
-        return $planningRepository->getPlanningById($apiKey);
+        return $planningRepository->getPlanningByUser($apiKey);
     }
 
     /*

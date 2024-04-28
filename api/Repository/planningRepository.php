@@ -2,6 +2,7 @@
 include_once './Repository/BDD.php';
 include_once './Models/planningModel.php';
 include_once './exceptions.php';
+include_once './index.php';
 
 class PlanningRepository {
     private $connection = null;
@@ -22,13 +23,13 @@ class PlanningRepository {
             $planning[$i] = new PlanningModel(
                 $planningArray[$i]['id_planning'],
                 $planningArray[$i]['description'],
-                $planningArray[$i]['lieux'],
                 $planningArray[$i]['date_activite'],
-                $planningArray[$i]['id_index'],
+                $planningArray[$i]['id_index_planning'],
                 $planningArray[$i]['id_activite']
             );
             $planning[$i]->setId($planningArray[$i]['id_planning']);
 
+            $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
         }
         return $planning;
@@ -36,23 +37,35 @@ class PlanningRepository {
 
     //-------------------------------------
 
-    public function getPlanningById($id){
-        $planning = selectDB("PLANNINGS", "*", "id_planning='".$id."'")[0];
-        
-        $planningModel = new PlanningModel(
-            $planning['id_planning'],
-            $planning['description'],
-            $planning['lieux'],
-            $planning['date_activite'],
-            $planning['id_index'],
-            $planning['id_activite']
-            
-        );
+    public function getPlanningByUser($apiKey)
+    {
+        $id = getIdUserFromApiKey($apiKey);
+        $id_planning = selectDB("PARTICIPE", "id_planning", "id_user='" . $id . "'");
 
-        $planningModel->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planning['id_activite'])[0]);
-        
-        return $planningModel;
+        $allPlanning = [];
+
+        foreach ($id_planning as $planning_id) {
+            $planningArray = selectDB("PLANNINGS", "*", "id_planning='" . $planning_id[0] . "'");
+
+            foreach ($planningArray as $planningData) {
+                $planning = new PlanningModel(
+                    $planningData['id_planning'],
+                    $planningData['description'],
+                    $planningData['date_activite'],
+                    $planningData['id_index_planning'],
+                    $planningData['id_activite']
+                );
+                $planning->setId($planningData['id_planning']);
+                $planning->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=" . $planningData['id_index_planning'])[0]);
+                $planning->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=" . $planningData['id_activite'])[0]);
+
+                $allPlanning[] = $planning;
+            }
+        }
+
+        return $allPlanning;
     }
+
 
     //-------------------------------------
     
@@ -68,9 +81,8 @@ class PlanningRepository {
        
         $create = insertDB("PLANNINGS", [ "description", "lieux", "date_activite", "id_index", "id_activite"], [
             $planning->description,
-            $planning->lieux,
             $planning->date_activite,
-            $planning->id_index,
+            $planning->id_index_planning,
             $planning->id_activite
         ]);
 
@@ -78,26 +90,24 @@ class PlanningRepository {
             exit_with_message("Error, the planning can't be created, plz try again", 500);
         }
 
-        $planning->setId($id_planning);
+       // $planning->setId($id_planning);
         return $create;
     }
 
     //-------------------------------------
     
     public function updatePlanning(PlanningModel $planning) {
-    $planningRepository = new PlanningRepository();
-    $updated = $planningRepository->updateDB(
+    $updated = updateDB(
         "PLANNINGS",
-        ["id_planning", "description", "lieux", "date_activite", "id_index", "id_activite"],
+        ["id_planning", "description", "date_activite", "id_index_planning", "id_activite"],
         [
             $planning->id_planning,
             $planning->description,
-            $planning->lieux,
             $planning->date_activite,
-            $planning->id_index,
+            $planning->id_index_planning,
             $planning->id_activite
         ],
-        "id_planning=" . $planning->id_planning
+        "id_planning=" . $planning->id_planning,"-@"
     );
 
     if (!$updated) {
@@ -133,11 +143,11 @@ class PlanningRepository {
             exit_with_message("Cet utilisateur n'existe pas");
         }
 
-        if($planning){
+        if(!$planning){
             exit_with_message("Ce planning n'existe pas");
         }
 
-        $create = insertDB("PARTICIPE", [ "id_user", "id_planning"], [$userId, $planningId]);
+        $create = insertDB("PARTICIPE", [ "id_user", "id_planning"], [$userId, $planningId],"-@");
 
 
         if ($create) {
