@@ -56,9 +56,9 @@ class PlanningService {
     /*
      *  Rejoindre une activité
     */
-    public function joinActivity($userId, $planningId) {
+    public function joinActivity($userId, $planningId,$confirme) {
     $planningRepository = new PlanningRepository();
-    return $planningRepository->joinActivity($userId, $planningId);
+    return $planningRepository->joinActivity($userId, $planningId,$confirme);
 }
 
 }
