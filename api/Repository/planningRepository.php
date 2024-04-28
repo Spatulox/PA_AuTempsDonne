@@ -37,7 +37,7 @@ class PlanningRepository {
 
     //-------------------------------------
 
-    public function getPlanningByUser($apiKey)
+        public function getPlanningByUser($apiKey)
     {
         $id = getIdUserFromApiKey($apiKey);
         $id_planning = selectDB("PARTICIPE", "id_planning", "id_user='" . $id . "'");
@@ -71,15 +71,8 @@ class PlanningRepository {
     
     public function createPlanning(PlanningModel $planning){
 
-        $string = "lieux='" . $planning->lieux . "' AND date_activite='" . $planning->date_activite."'";
 
-        $Select = selectDB("PLANNINGS", "*", $string, "bool");
-
-        if($Select){
-            exit_with_message("Y'a déjà une même activité", 403);
-        }
-       
-        $create = insertDB("PLANNINGS", [ "description", "lieux", "date_activite", "id_index", "id_activite"], [
+        $create = insertDB("PLANNINGS", [ "description", "date_activite", "id_index_planning", "id_activite"], [
             $planning->description,
             $planning->date_activite,
             $planning->id_index_planning,
@@ -90,7 +83,6 @@ class PlanningRepository {
             exit_with_message("Error, the planning can't be created, plz try again", 500);
         }
 
-       // $planning->setId($id_planning);
         return $create;
     }
 
@@ -133,7 +125,7 @@ class PlanningRepository {
      //-------------------------------------
 
 
-    public function joinActivity($userId, $planningId) {
+    public function joinActivity($userId, $planningId, $confirme) {
 
         $user = selectDB("UTILISATEUR", "*", "id_user=".$userId, "bool");
 
@@ -147,7 +139,7 @@ class PlanningRepository {
             exit_with_message("Ce planning n'existe pas");
         }
 
-        $create = insertDB("PARTICIPE", [ "id_user", "id_planning"], [$userId, $planningId],"-@");
+        $create = insertDB("PARTICIPE", [ "id_user", "id_planning","confirme"], [$userId, $planningId ,$confirme],"-@");
 
 
         if ($create) {
