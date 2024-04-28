@@ -99,9 +99,9 @@ class EntrepotRepository {
 
     public function unreferenceEntrepotById($id){
 
-        if($id == 1){
+        /*if($id == 1){
             exit_with_message("Impossible to delete the entrepot with id 1", 403);
-        }
+        }*/
 
         $tmp = selectDB("ENTREPOTS", "*", "id_entrepot=".$id, "bool");
         if(!$tmp){

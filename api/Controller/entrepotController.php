@@ -86,12 +86,13 @@ function entrepotController($uri, $apiKey) {
                 exit_with_message("You can't do a DELETE request for entrepots", 403);
             }
 
-            if(!isset($json["id_entrepot"])){
-                exit_with_message("Missing id_entrepot", 403);
+            if(!$uri[4]){
+                exit_with_message("Missing id entrepot to delete", 403);
             }
 
+
             $entrepotService = new EntrepotService();
-            $entrepotService->deleteEntrepotById($json["id_entrepot"]);
+            $entrepotService->deleteEntrepotById($uri[4]);
 
             break;
             
