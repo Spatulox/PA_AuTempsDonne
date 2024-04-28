@@ -5,7 +5,7 @@ include_once './Repository/BDD.php';
 include_once './Controller/loginController.php';
 include_once './Controller/userController.php';
 include_once './Controller/planningController.php';
-include_once './Controller/benevoleController.php';
+include_once './Controller/activiteController.php';
 
 /*include_once './Controller/apartmentController.php';
 include_once './Controller/reservationController.php';
@@ -82,9 +82,11 @@ function controller($uri) {
             userController($uri, $apiKey);
             break;
 
-        case 'benevole':
-            benevoleController($uri, $apiKey);
+        case 'planning':
+            planningController($uri, $apiKey);
             break;
+
+      break;
 
         default:
             // Si la ressource demandée n'existe pas, alors on renvoie une erreur 404
