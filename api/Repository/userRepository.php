@@ -71,8 +71,9 @@ class UserRepository {
             exit_with_message("Error, email already exist, plz chose another one", 403);
         }
         
+        //var_dump("email='".$user->email."'".'"');
 
-        $user = insertDB("UTILISATEUR", ["nom", "prenom", "email", "telephone", "id_index", "date_inscription", "id_role", "apikey", "mdp", "id_entrepot"], [$user->nom, $user->prenom, $user->email, $user->telephone, $index_user, date('Y-m-d'), $user->role, "null", strtoupper(hash('sha256', $password))], "email='".$user->email."'", -1);
+        $user = insertDB("UTILISATEUR", ["nom", "prenom", "email", "telephone", "id_index", "date_inscription", "id_role", "apikey", "mdp", "id_entrepot"], [$user->nom, $user->prenom, $user->email, $user->telephone, $user->id_index, date('Y-m-d'), $user->id_role, "null", strtoupper(hash('sha256', $password)), $user->id_entrepot], "email='".$user->email."'" );//
 
         if(!$user){
             exit_with_message("Error, your account don't exist, plz try again", 500);

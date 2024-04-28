@@ -49,24 +49,55 @@
 
         <div>
           <div class="form-group">
-            <label for="nom"> <?php echo($data["signup_login"]["formSignUp"]["name"]) ?> : </label>
-            <input type="text" id="nom" name="nom" placeholder=" <?php echo($data["signup_login"]["formSignUp"]["name"]) ?> ">
+            <label for="nom"> <?php echo($data["signup_login"]["formSignUp"]["name"]) ?>* : </label>
+            <input type="text" id="nomInsc" name="nom" placeholder=" <?php echo($data["signup_login"]["formSignUp"]["name"]) ?>* ">
           </div>
+
           <div class="form-group">
-            <label for="email"> <?php echo($data["signup_login"]["formSignUp"]["email"]) ?> : </label>
-            <input type="email" id="emailInsc" name="emailInsc" placeholder=" <?php echo($data["signup_login"]["formSignUp"]["email"]) ?> ">
+            <label for="prenom"> <?php echo($data["signup_login"]["formSignUp"]["firstname"]) ?>* : </label>
+            <input type="text" id="prenomInsc" name="prenom" placeholder=" <?php echo($data["signup_login"]["formSignUp"]["firstname"]) ?>* ">
           </div>
+          
           <div class="form-group">
-            <label for="motdepasse"> <?php echo($data["signup_login"]["formSignUp"]["password"]) ?> : </label>
-            <input type="password" id="motdepasseInsc" name="motdepasseInsc" placeholder=" <?php echo($data["signup_login"]["formSignUp"]["password"]) ?> ">
+            <label for="phone"> <?php echo($data["signup_login"]["formSignUp"]["phone"]) ?> : </label>
+            <input type="number" id="phoneInsc" name="phoneInsc" placeholder=" <?php echo($data["signup_login"]["formSignUp"]["phone"]) ?> ">
           </div>
+
           <div class="form-group">
-            <label for="confirmation"> <?php echo($data["signup_login"]["formSignUp"]["confirmPassword"]) ?> : </label>
-            <input type="password" id="confirmation" name="confirmation" placeholder=" <?php echo($data["signup_login"]["formSignUp"]["confirmPassword"]) ?> ">
+            <label for="email"> <?php echo($data["signup_login"]["formSignUp"]["email"]) ?>* : </label>
+            <input type="email" id="emailInsc" name="emailInsc" placeholder=" <?php echo($data["signup_login"]["formSignUp"]["email"]) ?>* ">
           </div>
+          
           <div class="form-group">
-            <input type="button" value=" <?php echo($data["signup_login"]["formSignUp"]["input"]) ?> ">
+            <label for="motdepasse"> <?php echo($data["signup_login"]["formSignUp"]["password"]) ?>* : </label>
+            <input type="password" id="motdepasseInsc" name="motdepasseInsc" placeholder=" <?php echo($data["signup_login"]["formSignUp"]["password"]) ?>* ">
           </div>
+          
+          <div class="form-group">
+            <label for="confirmation"> <?php echo($data["signup_login"]["formSignUp"]["confirmPassword"]) ?>* : </label>
+            <input type="password" id="confirmation" name="confirmation" placeholder=" <?php echo($data["signup_login"]["formSignUp"]["confirmPassword"]) ?>* ">
+          </div>
+          
+          <div>
+            <div class="form-group">
+              <label>Sélectionnez votre statut :</label>
+            </div>
+            <div class="radio-group">
+              <input type="radio" id="benevole" name="statut" value="3">
+              <label for="benevole">Bénévole</label>
+              <br>
+              <input type="radio" id="beneficiaire" name="statut" value="4">
+              <label for="beneficiaire">Bénéficiaire</label>
+              <br>
+              <input type="radio" id="prestataire" name="statut" value="5">
+              <label for="prestataire">Prestataire</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input type="button" onclick="signup()" value=" <?php echo($data["signup_login"]["formSignUp"]["input"]) ?> ">
+          </div>
+          
           <div class="form-group">
             <input type="button" id="inscriptionButton" value=" <?php echo($data["signup_login"]["formSignUp"]["switch"]) ?> ">
           </div>

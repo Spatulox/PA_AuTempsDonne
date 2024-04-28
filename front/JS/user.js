@@ -13,6 +13,7 @@ class User {
     this.password = null
     this.entrepot = null
     this.entrepotString = null
+    this.index = null
 
     this.roleArray = ["Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
 
@@ -74,23 +75,15 @@ class User {
 
 
     const data = {
-      email: this.email,
-      mdp: this.password
+      "email": this.email,
+      "mdp": this.password
     };
 
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    };
-
-    const rep = await this.fetchSync(this.adresse  + "/login", options)
+    const rep = await this.fetchSync(this.adresse  + "/login", this.optionPost(data))
     if(!this.compareAnswer(rep)){
       return false
-    }
 
+    }
     this.setVar(rep)
     this.setCookie("apikey", rep.apikey, 7);
     await this.myEntrepot()
@@ -524,6 +517,7 @@ class User {
     this.password = null
     this.entrepot = rep.id_entrepot
     this.roleString = this.roleArray[rep.id_role]
+    this.index = rep.id_index
 
     return true
   }

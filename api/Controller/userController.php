@@ -56,26 +56,29 @@ function userController($uri, $apiKey) {
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
 
-            if ( !isset($json['nom']) || !isset($json['prenom']) || !isset($json['email']) || !isset($json['mdp']) || !isset($json['role']) || !isset($json['type']))
+            if ( !isset($json['nom']) || !isset($json['prenom']) || !isset($json['email']) || !isset($json['mdp']) || !isset($json['role']))
             {
-                exit_with_message("Plz give the name, the lastname the password, the role and the type (group (2), solo (1) or old people (3)) of the futur user", 403);
+                exit_with_message("Plz give the name, the lastname the password, the email and the role of the futur user. You can add extra(s) = [telephone]", 403);
             }
 
-            if(isset($json["type"]) && filter_var($json["type"], FILTER_VALIDATE_INT) == false){
-                exit_with_message("The type need to be an integer between 1 and 3", 403);
-            }
-
-            if($json["type"] < 1 || $json["type"] > 3){
-                exit_with_message("The type need to be an integer between 1 and 3", 403);
+            if(isset($json["role"]) && filter_var($json["role"], FILTER_VALIDATE_INT) == false){
+                exit_with_message("The role need to be an integer between 1 and 3", 403);
             }
 
             if($json['role'] < 3){
                 exit_with_message("You can't register you as an Admin or modo...", 403); 
             }
 
-            $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], isset($json['telephone']) ? $json['telephone'] : "no_phone", isset($json['type']) ? $json['type'] : 1, $json['role'], null);
+            $pattern = '/^\+?[0-9]{5,15}$/';
+            if (isset($json['telephone']) && !preg_match($pattern, $json['telephone'])){
+                exit_with_message("Le numéro de téléphone $phoneNumber n'est pas valide.", 403);
+            }
 
-            // Valider les données reçues ici
+
+
+            $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], isset($json['telephone']) ? $json['telephone'] : "no_phone", $json['role'], null, 3, 1);
+
+ 
             exit_with_content($userService->createUser($user, $json["mdp"]));
 
             break;
@@ -83,6 +86,10 @@ function userController($uri, $apiKey) {
         
         // update the user
         case 'PUT':
+
+            if($apiKey == null){
+                exit_with_message("Unauthorized, need the apikey", 403);
+            }
 
         	$userService = new UserService();
 
@@ -97,6 +104,11 @@ function userController($uri, $apiKey) {
             break;
 
         case 'DELETE':
+
+            if($apiKey == null){
+                exit_with_message("Unauthorized, need the apikey", 403);
+            }
+
             // Gestion des requêtes DELETE pour supprimer un utilisateur
             $userService = new UserService();
             $role = getRoleFromApiKey($apiKey);

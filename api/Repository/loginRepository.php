@@ -15,7 +15,6 @@ class LoginRepository {
 
     public function getPersonnalApiKey($email, $mdp){
 		$hashedString = hash('sha256', $mdp);
-        //WHERE LOWER(nom) = LOWER('marc') AND LOWER(prenom) = LOWER('jean')
         $user = selectDB("UTILISATEUR", "*", "(mdp='".strtoupper($hashedString)."' OR mdp='". strtolower($hashedString) ."') AND (LOWER(email) = LOWER('". $email ."') ) AND (LOWER(email) = LOWER('". $email ."') )", "bool");
         if(!$user){ 
         	exit_with_message("Wrong username or password", 500);

@@ -21,8 +21,8 @@ async function connexion() {
         return user
     })
 
-    //const user = await new User(email, password)
-    const user = await new User()
+    const user = await new User(email, password)
+    //const user = await new User()
     if(!await user.connect()){
         return
     }
@@ -65,6 +65,85 @@ async function deconnection(){
     redirect("./index.php")
 }
 
+async function signup(){
+
+    let getSelectedValue = (()=>{
+        const radios = document.getElementsByName('statut');
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                return radios[i].value
+            }
+        }
+        return false
+    })
+
+
+
+    const nom = document.getElementById("nomInsc").value
+    const prenom = document.getElementById("prenomInsc").value
+    const telephone = document.getElementById("phoneInsc").value
+
+    const email = document.getElementById("emailInsc").value
+    const password = document.getElementById("motdepasseInsc").value
+
+    if(!nom || !prenom || !email || !password){
+        popup("Veuillez remplir le formulaire...")
+        return
+    }
+
+    const role = getSelectedValue()
+    if(role === false){
+        popup("Vous devez spécifier un rôle :/")
+        return
+    }
+
+    const data = {
+        "nom": nom,
+        "prenom": prenom,
+        "telephone": telephone,
+        "email" : email,
+        "mdp": password,
+        "role": role
+    }
+    console.log(data)
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+
+
+    // Fetch the api
+
+    const response = await fetch("http://localhost:8081/index.php/user", options)
+
+    if(!response.ok){
+        const text = await response.json()
+        alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
+        if(text.hasOwnProperty("message")) {
+            alertDebug(text.message)
+            popup(text.message)
+        }
+        return false
+    }
+
+    const message = await response.json()
+    if(message.hasOwnProperty("message")){
+        popup(message.message)
+        return true
+    }
+
+    const user = new User(email, password)
+    await user.connect()
+    user.printUser()
+
+    redirect("./moncompte.php?message=Votre compte est en attente de validation auprès de la modération")
+
+}
+
 
 async function myAccount(){
     const c_nom = document.getElementById("c_nom")
@@ -78,6 +157,7 @@ async function myAccount(){
     const user = new User()
     await user.connect()
 
+
     c_nom.innerHTML = "Nom : " + user.nom
     c_prenom.innerHTML = "Prénom : " + user.prenom
     c_email.innerHTML = "Email : " + user.email
@@ -85,4 +165,10 @@ async function myAccount(){
     c_date_inscription.innerHTML = "Date inscription : " + user.date_inscription
     c_entrepot.innerHTML = "Entrepot : " + user.entrepotString
     c_role.innerHTML = "Role : " + user.roleString
+
+    if(user.index == 3){
+        const h1 = document.getElementsByTagName("h1")[0]
+        h1.innerHTML += " (En attente de validation)"
+        popup("Votre compte est en attente de validation par la modération")
+    }
 }

@@ -6,11 +6,6 @@ class UserService {
     
     public $uri;
 
-    // public function __construct($uri)
-    // {       
-    //     $this->uri = $uri;
-    // }
-
     /*
      *  Récupère tous les utilisateurs
     */
