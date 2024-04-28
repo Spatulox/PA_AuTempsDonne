@@ -123,4 +123,20 @@ RequestApi().Put(this, "/someEndpoint", data) { responseData ->
     }
 }
 
+
+## EXEMPLE POUR DELETE ##
+
+RequestApi().Delete(this, "/someEndpoint") { responseData ->
+    if (responseData is JSONObject) {
+        // Traiter les données au format JSON
+        println(responseData)
+    } else if (responseData is String) {
+        // Traiter les données au format texte
+        println(responseData)
+    } else {
+        // Gérer le cas où les données ne sont pas au format attendu
+        println("Unexpected response format")
+    }
+}
+
  */
