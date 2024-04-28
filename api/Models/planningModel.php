@@ -31,6 +31,4 @@ class PlanningModel {
         $this->nom_index_planning = $id_index_planning[0];
     }
 
-}
-
-?>
+}?>

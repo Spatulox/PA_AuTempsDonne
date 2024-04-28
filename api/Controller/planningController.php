@@ -4,8 +4,10 @@
     include_once './exceptions.php';
 
     function planningController($uri, $apiKey) {
+
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'GET':
+
                 if($apiKey == null){
                     exit_with_message("Unauthorized, need the apikey", 403);
                 }
@@ -14,7 +16,7 @@
 
                
                 if(!$uri[3]){
-                    exit_with_content($planningService->getAllPlanning());
+                    exit_with_content($planningService->getAllPlanning($apiKey));
                 }
 
                 
@@ -30,6 +32,7 @@
                 break;
 
             case 'POST':
+
                 $planningService = new PlanningService();
 
                 $body = file_get_contents("php://input");
@@ -49,7 +52,7 @@
                             $json['id_activite']
                         );
 
-                        $createdPlanning = $planningService->createPlanning($planning);
+                        $createdPlanning = $planningService->createPlanning($planning, $apiKey);
 
                         if ($createdPlanning) {
                             exit_with_content($createdPlanning);
@@ -61,8 +64,8 @@
                         if (!isset($json['user_id']) || !isset($json['id_planning'])) {
                             exit_with_message("Please provide both user_id and id_planning to join an activity", 400);
                         }
-                        
-                        $result = $planningService->joinActivity($json['user_id'], $json['id_planning'], $json['confirme']);
+
+                        $result = $planningService->joinActivity($json['user_id'], $json['id_planning'], $json['confirme'],$apiKey);
                         
                         if ($result) {
                             exit_with_content("User joined activity successfully");
