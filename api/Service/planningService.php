@@ -15,9 +15,9 @@ class PlanningService {
     /*
      *  Récupère un planning par son id
     */
-    public function getPlanningById($id) {
+    public function getPlanningById($apiKey) {
         $planningRepository = new PlanningRepository();
-        return $planningRepository->getPlanningById($id);
+        return $planningRepository->getPlanningById($apiKey);
     }
 
     /*
@@ -41,7 +41,7 @@ class PlanningService {
             $id_index,
             $id_activite
         );
-        $updatedPlanning->setId($id);
+        $updatedPlanning->setId($id_planning);
         return $planningRepository->updatePlanning($updatedPlanning);
     }
 
