@@ -11,6 +11,8 @@ import com.example.autempsdonnee.login.Login
 import com.example.autempsdonnee.Managers.ApiKeyManager
 import com.example.autempsdonnee.login.Register
 import com.example.autempsdonnee.utils.Popup
+import com.example.autempsdonnee.api.RequestApi
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,19 +44,18 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, Login::class.java)
             ResultLauncher.launch(intent)
         } else {
-            //Do others things
-
-            // Tenter se de connecter à internet
-            // Si oui :
-            //  Prendre les informations d'internet et les afficher
-            // Si non :
-            //  Prendre les informations d'un truc (fichier, BDD locale) et les afficher
-
-            //printInformations()
+            var requestApi = RequestApi()
+            popup.makeToast(this, "Loading informations")
+            RequestApi().Get(this, "/user") { responseData ->
+                if (responseData !is JSONObject) {
+                    return@Get
+                }
+                println(responseData)
+            }
         }
     }
 
-    // Launch another activity and "wait" a response from it
+    // Launch another activity (login or register) and "wait" a response from it
     private val ResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -71,3 +72,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+
+
+/*
+
+## EXEMPLE POUR GET
+var requestApi = RequestApi()
+popup.makeToast(this, "Loading informations")
+RequestApi().Get(this, "/user") { responseData ->
+    if (responseData !is JSONObject) {
+        return@Get
+    }
+    println(responseData)
+}
+
+
+
+
+ */
