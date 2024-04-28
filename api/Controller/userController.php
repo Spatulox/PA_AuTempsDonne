@@ -91,6 +91,7 @@ function userController($uri, $apiKey) {
             if (!isset($json["nom"]) || !isset($json["prenom"]) || !isset($json["telephone"]) || !isset($json["email"]) ){
                 exit_with_message("Plz give the firstname, lastname, the phone and the email");
             }
+           
             // Valider les données reçues ici
             exit_with_content($userService->updateUser($apiKey, $json["nom"], $json["prenom"], $json["telephone"], $json["email"]));
             break;

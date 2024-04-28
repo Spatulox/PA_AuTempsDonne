@@ -30,35 +30,25 @@ CREATE TABLE CATEGORIES(
 );
 
 CREATE TABLE TRAJETS(
-   camion INT AUTO_INCREMENT,
-   date_collecte DATE,
-   id_entrepot INT NOT NULL,
-   PRIMARY KEY(camion),
-   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot)
+   id_trajets INT AUTO_INCREMENT,
+   PRIMARY KEY(id_trajets)
 );
 
-CREATE TABLE POINTCOLLECTE(
-   id_lieux INT AUTO_INCREMENT,
-   localisation_passage VARCHAR(255),
-   nom_lieux VARCHAR(50),
-   PRIMARY KEY(id_lieux)
+CREATE TABLE INDEXPLANNING(
+   id_index_planning INT AUTO_INCREMENT,
+   index_nom_planning VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id_index_planning)
 );
 
-CREATE TABLE PRODUIT(
-   id_produit INT AUTO_INCREMENT,
-   nom_produit VARCHAR(100),
-   PRIMARY KEY(id_produit)
-);
 
 CREATE TABLE PLANNINGS(
    id_planning INT AUTO_INCREMENT,
    description TEXT,
    date_activite DATE,
-   lieux VARCHAR(50),
-   id_index INT NOT NULL,
+   id_index_planning INT NOT NULL,
    id_activite INT NOT NULL,
    PRIMARY KEY(id_planning),
-   FOREIGN KEY(id_index) REFERENCES TABINDEX(id_index),
+   FOREIGN KEY(id_index_planning) REFERENCES INDEXPLANNING(id_index_planning),
    FOREIGN KEY(id_activite) REFERENCES ACTIVITES(id_activite)
 );
 
@@ -66,6 +56,32 @@ CREATE TABLE FORMATIONS(
    id_formation INT AUTO_INCREMENT,
    nom_formation VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_formation)
+);
+
+CREATE TABLE SEMAINE(
+   id_dispo INT AUTO_INCREMENT,
+   dispo VARCHAR(50),
+   PRIMARY KEY(id_dispo)
+);
+
+CREATE TABLE ETAPE(
+   id_etape INT AUTO_INCREMENT,
+   nom_etape VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id_etape)
+);
+
+CREATE TABLE TYPE(
+   id_type INT AUTO_INCREMENT,
+   type VARCHAR(50) NOT NULL,
+   unit_mesure VARCHAR(50),
+   PRIMARY KEY(id_type)
+);
+
+
+CREATE TABLE ADRESSE(
+   id_adresse INT AUTO_INCREMENT,
+   adresse VARCHAR(255) NOT NULL,
+   PRIMARY KEY(id_adresse)
 );
 
 CREATE TABLE UTILISATEUR(
@@ -77,13 +93,69 @@ CREATE TABLE UTILISATEUR(
    date_inscription DATE NOT NULL,
    apikey VARCHAR(255),
    mdp VARCHAR(255) NOT NULL,
-   id_entrepot INT NOT NULL,
+   id_adresse INT NOT NULL,
+   id_entrepot INT,
    id_index INT NOT NULL,
    id_role INT NOT NULL,
    PRIMARY KEY(id_user),
+   FOREIGN KEY(id_adresse) REFERENCES ADRESSE(id_adresse),
    FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
    FOREIGN KEY(id_index) REFERENCES TABINDEX(id_index),
    FOREIGN KEY(id_role) REFERENCES ROLES(id_role)
+);
+
+
+CREATE TABLE TICKETS(
+   id_ticket INT AUTO_INCREMENT,
+   description TEXT,
+   date_creation DATETIME NOT NULL,
+   date_cloture DATETIME,
+   id_etape INT NOT NULL,
+   id_categorie INT NOT NULL,
+   id_user INT NOT NULL,
+   PRIMARY KEY(id_ticket),
+   FOREIGN KEY(id_etape) REFERENCES ETAPE(id_etape),
+   FOREIGN KEY(id_categorie) REFERENCES CATEGORIES(id_categorie),
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
+);
+
+
+CREATE TABLE PRODUIT(
+   id_produit INT AUTO_INCREMENT,
+   nom_produit VARCHAR(100),
+   id_type INT NOT NULL,
+   PRIMARY KEY(id_produit),
+   FOREIGN KEY(id_type) REFERENCES TYPE(id_type)
+);
+
+CREATE TABLE DISCUSSION(
+   id_message INT AUTO_INCREMENT,
+   text TEXT,
+   date_message DATETIME NOT NULL,
+   id_user INT NOT NULL,
+   id_ticket INT NOT NULL,
+   PRIMARY KEY(id_message),
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user),
+   FOREIGN KEY(id_ticket) REFERENCES TICKETS(id_ticket)
+);
+
+CREATE TABLE DEMANDE(
+   id_demande INT AUTO_INCREMENT,
+   desc_demande VARCHAR(255),
+   id_planning INT,
+   id_user INT NOT NULL,
+   PRIMARY KEY(id_demande),
+   FOREIGN KEY(id_planning) REFERENCES PLANNINGS(id_planning),
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
+);
+
+CREATE TABLE DON(
+   id_don INT AUTO_INCREMENT,
+   prix INT NOT NULL,
+   date_don DATE NOT NULL,
+   id_user INT NOT NULL,
+   PRIMARY KEY(id_don),
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
 );
 
 CREATE TABLE STOCKS(
@@ -92,20 +164,12 @@ CREATE TABLE STOCKS(
    date_entree DATE,
    date_sortie DATE,
    date_peremption_ DATE,
+   desc_produit TEXT,
    id_produit INT NOT NULL,
    id_entrepot INT NOT NULL,
    PRIMARY KEY(id_stock),
    FOREIGN KEY(id_produit) REFERENCES PRODUIT(id_produit),
    FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot)
-);
-
-CREATE TABLE TICKETS(
-   id_ticket INT AUTO_INCREMENT,
-   description VARCHAR(50),
-   categorie INT,
-   id_user INT NOT NULL,
-   PRIMARY KEY(id_ticket),
-   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
 );
 
 CREATE TABLE COLLECTE(
@@ -116,41 +180,44 @@ CREATE TABLE COLLECTE(
    FOREIGN KEY(id_produit) REFERENCES PRODUIT(id_produit)
 );
 
-CREATE TABLE ORGANISE(
-   id_user INT,
-   camion INT,
-   PRIMARY KEY(id_user, camion),
-   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user),
-   FOREIGN KEY(camion) REFERENCES TRAJETS(camion)
-);
-
-CREATE TABLE LIE(
-   id_ticket INT,
-   id_categorie INT,
-   PRIMARY KEY(id_ticket, id_categorie),
-   FOREIGN KEY(id_ticket) REFERENCES TICKETS(id_ticket),
-   FOREIGN KEY(id_categorie) REFERENCES CATEGORIES(id_categorie)
-);
-
 CREATE TABLE LISTE(
-   camion INT,
-   id_lieux INT,
-   PRIMARY KEY(camion, id_lieux),
-   FOREIGN KEY(camion) REFERENCES TRAJETS(camion),
-   FOREIGN KEY(id_lieux) REFERENCES POINTCOLLECTE(id_lieux)
+   id_user INT,
+   id_trajets INT,
+   PRIMARY KEY(id_user, id_trajets),
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user),
+   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets)
+);
+
+CREATE TABLE STOCK(
+   id_entrepot INT,
+   id_trajets INT,
+   etape VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id_entrepot, id_trajets),
+   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
+   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets)
 );
 
 CREATE TABLE RECOLTE(
-   camion INT,
+   id_trajets INT,
    id_collecte INT,
-   PRIMARY KEY(camion, id_collecte),
-   FOREIGN KEY(camion) REFERENCES TRAJETS(camion),
+   PRIMARY KEY(id_trajets, id_collecte),
+   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets),
    FOREIGN KEY(id_collecte) REFERENCES COLLECTE(id_collecte)
 );
+
+CREATE TABLE UTILISER(
+   id_trajets INT,
+   id_adresse INT,
+   PRIMARY KEY(id_trajets, id_adresse),
+   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets),
+   FOREIGN KEY(id_adresse) REFERENCES ADRESSE(id_adresse)
+);
+
 
 CREATE TABLE PARTICIPE(
    id_user INT,
    id_planning INT,
+   confirme VARCHAR(50),
    PRIMARY KEY(id_user, id_planning),
    FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user),
    FOREIGN KEY(id_planning) REFERENCES PLANNINGS(id_planning)
@@ -164,134 +231,230 @@ CREATE TABLE FORMER(
    FOREIGN KEY(id_formation) REFERENCES FORMATIONS(id_formation)
 );
 
+CREATE TABLE PARKOUR(
+   id_trajets INT,
+   id_planning INT,
+   PRIMARY KEY(id_trajets, id_planning),
+   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets),
+   FOREIGN KEY(id_planning) REFERENCES PLANNINGS(id_planning)
+);
+
+CREATE TABLE DISPONIBILITE(
+   id_user INT,
+   id_dispo INT,
+   PRIMARY KEY(id_user, id_dispo),
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user),
+   FOREIGN KEY(id_dispo) REFERENCES SEMAINE(id_dispo)
+);
+
+CREATE TABLE RECU(
+   id_collecte INT,
+   id_demande INT,
+   recu INT NOT NULL,
+   PRIMARY KEY(id_collecte, id_demande),
+   FOREIGN KEY(id_collecte) REFERENCES COLLECTE(id_collecte),
+   FOREIGN KEY(id_demande) REFERENCES DEMANDE(id_demande)
+);
 
 
-INSERT INTO ENTREPOTS VALUES    
-(1, "Pas d'entrepôt", 'N/A'),
-(2, 'Entrepôt de Saint Quentin', '2 Rue André Missenard, 02100'),
-(3, 'Entrepôt de Laon', '34 Rue Roger Salengro, 02000 ');
 
-INSERT INTO ACTIVITES (id_activite, nom_activite) VALUES
-(1, 'Maraude'),
-(2, 'Collecte'),
-(3, 'aide scolaire'),
-(4, 'aide personne age'),
-(5, 'nettoiage rue');
+INSERT INTO TYPE (type, unit_mesure) VALUES
+('Alimentaire', 'kg'),
+('Vestimentaire', 'unité'),
+('Scolaire', 'unité'),
+('Médical', 'unité'),
+('Loisirs', 'unité');
 
-INSERT INTO ROLES (id_role, role)
-VALUES
-(1, 'Dirigeant'),
-(2, 'Administration'),
-(3, 'Bénévole'),
-(4, 'Bénéficiaire'),
-(5, 'Prestataires');
+INSERT INTO PRODUIT (nom_produit, id_type) VALUES
+('Riz', 1),
+('Pâtes', 1),
+('Conserves de légumes', 1),
+('Manteau d''hiver', 2),
+('Chaussures', 2),
+('Cahiers', 3),
+('Stylos', 3),
+('Médicaments', 4),
+('Jouets', 5);
 
-INSERT INTO TABINDEX (index_nom)
-VALUES 
-    ('inactif / déréférencé'),
-    ('actif'),
-    ('attente de validation'),
-    ('terminé'),
-    ('organiser'),
-    ('en attente');
+INSERT INTO INDEXPLANNING (index_nom_planning) VALUES
+('terminé'), 
+('organiser'),
+('en attente');
 
+INSERT INTO ENTREPOTS (nom_entrepot, localisation) VALUES    
+('Entrepôt de Saint Quentin', '2 Rue André Missenard, 02100'),
+('Entrepôt de Laon', '34 Rue Roger Salengro, 02000 ');
 
-INSERT INTO UTILISATEUR VALUES 
-(1, 'Doe', 'John', 'john.doe@gmail.com', '0635742201', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 1),
-(2, 'Smith', 'Alice', 'alice.smith@gmail.com', '0635752202', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 2),
-(3, 'Johnson', 'Michael', 'michael.johnson@gmail.com', '0635752203', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, 1, 3),
-(4, 'Brown', 'Emma', 'emma.brown@gmail.com', '0635752204', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 4),
-(5, 'Miller', 'Sophia', 'sophia.miller@gmail.com', '0635752205', '2022-04-01', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 5),
-(6, 'Davis', 'William', 'william.davis@gmail.com', '0635752206', '2021-01-02', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 3),
-(7, 'Wilson', 'Olivia', 'olivia.wilson@gmail.com', '0635752207', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 1),
-(8, 'Moore', 'Daniel', 'daniel.moore@gmail.com', '0635752208', '2024-01-18', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 2),
-(9, 'Taylor', 'Isabella', 'isabella.taylor@gmail.com', '0637752209', '2024-01-13', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 3),
-(10, 'Anderson', 'Mason', 'mason.anderson@gmail.com', '0635752210', '2024-01-12', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 4),
-(11, 'White', 'Emily', 'emily.white@gmail.com', '0635752211', '2021-02-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 5),
-(12, 'Martin', 'James', 'james.martin@gmail.com', '0635252212', '2021-02-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 3),
-(13, 'Johnson', 'Ella', 'ella.johnson@gmail.com', '0635752213', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 1),
-(14, 'Brown', 'Benjamin', 'benjamin.brown@gmail.com', '0638652214', '2021-04-24', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 2),
-(15, 'Miller', 'Ava', 'ava.miller@gmail.com', '0635752215', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 3),
-(16, 'Davis', 'William', 'william.davis@gmail.com', '0632332216', '2021-04-14', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 4),
-(17, 'Wilson', 'Charlotte', 'charlotte.wilson@gmail.com', '0635752217', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 5),
-(18, 'Moore', 'Jack', 'jack.moore@gmail.com', '0635752218', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 3),
-(19, 'Taylor', 'Harper', 'harper.taylor@gmail.com', '0635752219', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 1),
-(20, 'Anderson', 'Evelyn', 'evelyn.anderson@gmail.com', '0635752220', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 2),
-(21, 'White', 'Andrew', 'andrew.white@gmail.com', '0635752221', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 3),
-(22, 'Martin', 'Grace', 'grace.martin@gmail.com', '0635841222', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 4),
-(23, 'Johnson', 'Joseph', 'joseph.johnson@gmail.com', '063575186', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 5),
-(24, 'Brown', 'Scarlett', 'scarlett.brown@gmail.com', '0635752224', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 3),
-(25, 'Miller', 'Logan', 'logan.miller@gmail.com', '0635752225', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 1),
-(26, 'Davis', 'Elizabeth', 'elizabeth.davis@gmail.com', '0635752226', '2023-09-14', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 2),
-(27, 'Wilson', 'Aiden', 'aiden.wilson@gmail.com', '0635752227', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 3),
-(28, 'Moore', 'Grace', 'grace.moore@gmail.com', '0635752228', '2024-04-12', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 4),
-(29, 'Taylor', 'Elijah', 'elijah.taylor@gmail.com', '0635752229', '2023-12-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, 1, 5),
-(30, 'Anderson', 'Aria', 'aria.anderson@gmail.com', '0635752230', '2024-01-01', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, 1, 3);
+INSERT INTO ACTIVITES (nom_activite) VALUES
+('Collecte de vêtements'),
+('Distribution de repas chauds'),
+('Atelier d''informatique'),
+('Soutien scolaire'),
+('Visite de personnes âgées');
 
+INSERT INTO PLANNINGS (description, date_activite, id_index_planning, id_activite) VALUES
+('Collecte de vêtements d''hiver', '2024-05-01', 2, 1),
+('Distribution de repas chauds aux SDF', '2024-05-15', 2, 2),
+('Atelier d''initiation à l''informatique', '2024-06-01', 2, 3),
+('Soutien scolaire pour les élèves en difficulté', '2024-06-15', 2, 4),
+('Visite et animation pour les personnes âgées', '2024-07-01', 2, 5);
 
-INSERT INTO PLANNINGS (id_planning, description, lieux, date_activite, id_index, id_activite)
-VALUES 
-    (1, 'Description de l''événement 1', 'Lieu de l''événement 1', '2024-04-10', 4, 1),
-    (2, 'Description de l''événement 2', 'Lieu de l''événement 2', '2024-04-15', 4, 2),
-    (3, 'Description de l''événement 3', 'Lieu de l''événement 3', '2024-04-20', 5, 3),
-    (4, 'Description de l''événement 4', 'Lieu de l''événement 4', '2024-04-25', 5, 4),
-    (5, 'Description de l''événement 5', 'Lieu de l''événement 5', '2024-05-01', 5, 5),
-    (6, 'Description de l''événement 6', 'Lieu de l''événement 6', '2024-05-05', 5, 1),
-    (7, 'Description de l''événement 7', 'Lieu de l''événement 7', '2024-05-10', 5, 1),
-    (8, 'Description de l''événement 8', 'Lieu de l''événement 8', '2024-05-15', 5, 2),
-    (9, 'Description de l''événement 9', 'Lieu de l''événement 9', '2024-05-20', 6, 3),
-    (10, 'Description de l''événement 10', 'Lieu de l''événement 10', '2024-05-25', 6, 4);
+INSERT INTO STOCKS (quantite_produit, date_entree, date_sortie, date_peremption_, desc_produit, id_produit, id_entrepot) VALUES
+(500, '2024-04-01', NULL, '2025-04-01', 'Riz basmati', 1, 1),
+(300, '2024-04-05', NULL, '2025-06-01', 'Pâtes de blé', 2, 1),
+(200, '2024-04-10', NULL, '2025-08-01', 'Conserves de tomates', 3, 1),
+(100, '2024-04-15', NULL, '2025-10-01', 'Manteaux d''hiver taille M', 4, 2),
+(50, '2024-04-20', NULL, '2025-12-01', 'Chaussures de sport taille 42', 5, 2),
+(75, '2024-04-25', NULL, '2025-02-01', 'Cahiers à spirales', 6, 1),
+(125, '2024-04-30', NULL, '2025-04-01', 'Stylos à bille noirs', 7, 1),
+(30, '2024-05-01', NULL, '2026-01-01', 'Paracétamol 500mg', 8, 2),
+(80, '2024-05-05', NULL, '2025-06-01', 'Jouets en bois', 9, 2);
 
-INSERT INTO PARTICIPE (id_user, id_planning) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 7),
-(8, 8),
-(9, 9),
-(10, 10),
-(11, 1),
-(12, 2),
-(13, 1),
-(14, 2),
-(15, 1),
-(16, 3),
-(17, 3),
-(18, 4),
-(19, 1),
-(20, 2),
-(21, 3),
-(22, 5),
-(23, 4),
-(24, 4),
-(25, 5),
-(26, 6),
-(27, 2),
-(28, 2),
-(29, 1),
-(30, 3);
+INSERT INTO FORMATIONS (nom_formation) VALUES
+('Formation en gestion de projet'),
+('Formation en communication'),
+('Formation en comptabilité'),
+('Formation en informatique'),
+('Formation en animation');
 
+INSERT INTO SEMAINE (dispo) VALUES
+('Lundi'),
+('Mardi'),
+('Mercredi'),
+('Jeudi'),
+('Vendredi'),
+('Samedi'),
+('Dimanche'),
+('Vacances');
 
-INSERT INTO PRODUIT (id_produit, nom_produit)
-VALUES
-(1, 'Produit A'),
-(2, 'Produit B'),
-(3, 'Produit C'),
-(4, 'Produit D'),
-(5, 'Produit E'),
-(6, 'Produit F'),
-(7, 'Produit G'),
-(8, 'Produit H'),
-(9, 'Produit I'),
-(10, 'Produit J'),
-(11, 'Produit K'),
-(12, 'Produit L'),
-(13, 'Produit M'),
-(14, 'Produit N'),
-(15, 'Produit O'),
-(16, 'Produit P');
+INSERT INTO ETAPE (nom_etape) VALUES
+('En attente'),
+('En cours'),
+('Terminé'),
+('Annulé'),
+('Reporté');
+
+INSERT INTO ROLES (role) VALUES
+('Dirigeant'),
+('Administration'), 
+('Bénévole'),
+('Bénéficiaire'),
+('Prestataires');
+
+INSERT INTO CATEGORIES (categorie) VALUES
+('urgent'),
+('connexion'), 
+('perte'),
+('autre'),
+('je sais pas');
+
+INSERT INTO TABINDEX (index_nom) VALUES
+('inactif / déréférencé'),
+('actif'),
+('attente de validation');
+
+INSERT INTO ADRESSE (adresse) VALUES    
+( 'non référencer'),
+( '24 Rue Roger Martinio, 02000 ');
+
+INSERT INTO UTILISATEUR (nom, prenom, email, telephone, date_inscription, apikey, mdp, id_adresse, id_entrepot, id_index, id_role) VALUES
+(
+'Doe', 'John', 'john.doe@gmail.com', '0635742201', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 1
+),
+(
+'Smith', 'Alice', 'alice.smith@gmail.com', '0635752202', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 2
+),
+(
+'Johnson', 'Michael', 'michael.johnson@gmail.com', '0635752203', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 3
+),
+(
+'Brown', 'Emma', 'emma.brown@gmail.com', '0635752204', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 4
+),
+(
+'Miller', 'Sophia', 'sophia.miller@gmail.com', '0635752205', '2022-04-01', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 5
+),
+(
+'Davis', 'William', 'william.davis@gmail.com', '0635752206', '2021-01-02', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 3
+),
+(
+'Wilson', 'Olivia', 'olivia.wilson@gmail.com', '0635752207', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 1
+),
+(
+'Moore', 'Daniel', 'daniel.moore@gmail.com', '0635752208', '2024-01-18', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 2
+),
+(
+'Taylor', 'Isabella', 'isabella.taylor@gmail.com', '0637752209', '2024-01-13', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 3
+),
+(
+'Anderson', 'Mason', 'mason.anderson@gmail.com', '0635752210', '2024-01-12', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 4
+),
+(
+'White', 'Emily', 'emily.white@gmail.com', '0635752211', '2021-02-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 5
+),
+(
+'Martin', 'James', 'james.martin@gmail.com', '0635252212', '2021-02-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 3
+),
+(
+'Johnson', 'Ella', 'ella.johnson@gmail.com', '0635752213', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 1
+),
+(
+'Brown', 'Benjamin', 'benjamin.brown@gmail.com', '0638652214', '2021-04-24', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 2
+),
+(
+'Miller', 'Ava', 'ava.miller@gmail.com', '0635752215', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 3
+),
+(
+'Davis', 'William', 'william.davis@gmail.com', '0632332216', '2021-04-14', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 4
+),
+(
+'Wilson', 'Charlotte', 'charlotte.wilson@gmail.com', '0635752217', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 5
+),
+(
+'Moore', 'Jack', 'jack.moore@gmail.com', '0635752218', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 3
+),
+(
+'Taylor', 'Harper', 'harper.taylor@gmail.com', '0635752219', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 1
+),
+(
+'Anderson', 'Evelyn', 'evelyn.anderson@gmail.com', '0635752220', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 2
+),
+(
+'White', 'Andrew', 'andrew.white@gmail.com', '0635752221', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 3
+),
+(
+'Martin', 'Grace', 'grace.martin@gmail.com', '0635841222', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 4
+),
+(
+'Johnson', 'Joseph', 'joseph.johnson@gmail.com', '063575186', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 5
+),
+(
+'Brown', 'Scarlett', 'scarlett.brown@gmail.com', '0635752224', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 3
+),
+(
+'Miller', 'Logan', 'logan.miller@gmail.com', '0635752225', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 1
+),
+(
+'Davis', 'Elizabeth', 'elizabeth.davis@gmail.com', '0635752226', '2023-09-14', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 2
+),
+(
+'Wilson', 'Aiden', 'aiden.wilson@gmail.com', '0635752227', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 3
+),
+(
+'Moore', 'Grace', 'grace.moore@gmail.com', '0635752228', '2024-04-12', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 4
+),
+(
+'Taylor', 'Elijah', 'elijah.taylor@gmail.com', '0635752229', '2023-12-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 1, 5
+),
+(
+'Anderson', 'Aria', 'aria.anderson@gmail.com', '0635752230', '2024-01-01', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 1, NULL, 2, 3
+);
 
 UPDATE UTILISATEUR SET apikey = SHA2(CONCAT(id_user, nom, prenom, mdp, email), 256) WHERE id_user IS NOT NULL;
+
+INSERT INTO TICKETS (description, date_creation, date_cloture, id_etape, id_categorie, id_user) VALUES
+('Besoin de vêtements d''hiver pour les sans-abri', '2024-04-01 10:00:00', '2024-04-15 18:00:00', 1, 2, 3),
+('Manque de bénévoles pour la distribution de repas', '2024-04-05 14:30:00', '2024-04-20 20:00:00', 2, 1, 7),
+('Problème avec l''équipement informatique de l''atelier', '2024-04-10 09:00:00', '2024-04-25 17:00:00', 3, 3, 13),
+('Difficulté à trouver des tuteurs pour le soutien scolaire', '2024-04-15 11:00:00', '2024-04-30 19:00:00', 4, 4, 19),
+('Besoin de bénévoles pour animer les visites aux personnes âgées', '2024-04-20 15:00:00', '2024-05-05 21:00:00', 5, 5, 25);
+

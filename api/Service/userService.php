@@ -59,9 +59,28 @@ class UserService {
     */
 
     
-    public function updateUser($apiKey, $nom, $prenom, $telephone, $email) {
-        $userRepository = new UserRepository();
-        return $userRepository->updateUser($apiKey, $nom, $prenom, $telephone, $email);
+    public function updateUser($apiKey, $dataArray){
+        
+        if (!is_array($dataArray) && empty($dataArray)){
+            exit_with_message("Not an array / json data", 500);
+        }
+
+        $id_user = getIdUserFromApiKey($apiKey);
+        $cles = array_keys($dataArray);
+        $userRepo = new UserRepository;
+
+        foreach ($cles as $cle) {
+            if (!empty($dataArray[$cle]) && ( $cle != "role" && $cle != "mdp" && $cle != "type" ) ) {
+
+                $userRepo->updateUser($id_user, $cle, $dataArray[$cle]);
+            }
+            else{
+                exit_with_message("Unauthorized key : ".$cle, 403);
+            }
+        }
+
+        exit_with_content($userRepo->getUserApi($apiKey));
+
     }
 
 

@@ -6,6 +6,7 @@ include_once './Controller/loginController.php';
 include_once './Controller/userController.php';
 include_once './Controller/entrepotController.php';
 include_once './Controller/planningController.php';
+include_once './Controller/activiteController.php';
 
 /*include_once './Controller/apartmentController.php';
 include_once './Controller/reservationController.php';
@@ -53,6 +54,9 @@ function getRoleFromApiKey($apiKey){
     $role = selectDB("UTILISATEUR", 'id_role', "apikey='".$apiKey."'", "bool");
     if($role){
         $role = $role[0]["id_role"];
+    }
+    else{
+        exit_with_message("No one with this apikey", 403);
     }
     return $role;
 }
@@ -103,6 +107,8 @@ function controller($uri) {
         case 'planning':
             planningController($uri, $apiKey);
             break;
+
+      break;
 
         default:
             // Si la ressource demandée n'existe pas, alors on renvoie une erreur 404

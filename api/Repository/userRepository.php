@@ -4,13 +4,7 @@ include_once './Models/userModel.php';
 include_once './exceptions.php';
 
 class UserRepository {
-    private $connection = null;
 
-    // I'm not sure about this function lol (unuse)
-    function __construct() {
-       
-    }
-    
     //-------------------------------------
 
     public function getUsers($index = 1){
@@ -35,7 +29,10 @@ class UserRepository {
     //-------------------------------------
 
     public function getWaitUsers(){
-        $usersArray = selectDB("UTILISATEUR", "*", "id_index=3", "bool");
+        $usersArray = selectDB("UTILISATEUR", "*", "index_user=2", "bool");
+        if(!$usersArray){
+            exit_with_message("No users waiting user to validate", 200);
+        }
 
         if($usersArray == false){
             exit_with_message("No waiting user", 200);
@@ -52,7 +49,10 @@ class UserRepository {
 
     public function getUserApi($api){
 
-        $user = selectDB("UTILISATEUR", "*", "apikey='".$api."'");
+        $user = selectDB("UTILISATEUR", "*", "apikey='".$api."'", "bool");
+        if(!$user){
+            exit_with_message('Wrong apikey or no data');
+        }
 
         return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['telephone'], $user[0]['id_role'], "hidden", $user[0]['id_index'], $user[0]['id_entrepot']);
     }
@@ -88,43 +88,20 @@ class UserRepository {
     }
 
     //-------------------------------------
-    
-    public function updateUser($apiKey, $nom, $prenom, $telephone, $email){
+    /*
+    public function updateUser(UserModel $user, $apiKey){
         
-        $idUSer = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'")[0]["id_user"];
-        if (!$idUSer){
-            exit_with_message("Sadly you don't exist in the database ??");
+        $idUSer = selectDB("UTILISATEUR", 'id_users', "apikey='".$apiKey."'")[0]["id_users"];
+        if ($idUSer != $user->id_users){
+            exit_with_message("You can't update an user which is not you");
         }
 
-        $columnArray = [];
-        $valuesArray = [];
+        updateDB("UTILISATEUR", ["role", "pseudo", "user_index"], [$user->role, $user->pseudo, $user->user_index], 'id_users='.$user->id_users." AND apikey='".$apiKey."'");
 
-        if($nom != null){
-            array_push($columnArray, "nom");
-            array_push($valuesArray, $nom);
-        }
-
-        if($prenom != null){
-            array_push($columnArray, "prenom");
-            array_push($valuesArray, $prenom);
-        }
-
-        if($telephone != null){
-            array_push($columnArray, "telephone");
-            array_push($valuesArray, $telephone);
-        }
-
-        if($email != null){
-            array_push($columnArray, "email");
-            array_push($valuesArray, $email);
-        }
-
-        updateDB("UTILISATEUR", $columnArray, $valuesArray, "apikey='".$apiKey."'");
-
-        return $this->getUserApi($apiKey);
+        return $this->getUser($user->id_users, null);
     }
 
-    
+    */
 
     //-------------------------------------
 
