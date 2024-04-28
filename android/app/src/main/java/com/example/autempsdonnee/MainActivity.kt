@@ -77,7 +77,8 @@ class MainActivity : AppCompatActivity() {
 
 /*
 
-## EXEMPLE POUR GET
+## EXEMPLE POUR GET ##
+
 var requestApi = RequestApi()
 popup.makeToast(this, "Loading informations")
 RequestApi().Get(this, "/user") { responseData ->
@@ -89,5 +90,37 @@ RequestApi().Get(this, "/user") { responseData ->
 
 
 
+## EXEMPLE POUR POST ##
+
+val data = mapOf("key1" to "value1", "key2" to "value2")
+RequestApi().Post(this, "/someEndpoint", data) { responseData ->
+    if (responseData is JSONObject) {
+        // Traiter les données au format JSON
+        println(responseData)
+    } else if (responseData is String) {
+        // Traiter les données au format texte
+        println(responseData)
+    } else {
+        // Gérer le cas où les données ne sont pas au format attendu
+        println("Unexpected response format")
+    }
+}
+
+
+## EXEMPLE POUR PUT ##
+
+val data = mapOf("key1" to "value1", "key2" to "value2")
+RequestApi().Put(this, "/someEndpoint", data) { responseData ->
+    if (responseData is JSONObject) {
+        // Traiter les données au format JSON
+        println(responseData)
+    } else if (responseData is String) {
+        // Traiter les données au format texte
+        println(responseData)
+    } else {
+        // Gérer le cas où les données ne sont pas au format attendu
+        println("Unexpected response format")
+    }
+}
 
  */
