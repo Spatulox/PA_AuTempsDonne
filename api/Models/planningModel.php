@@ -27,7 +27,9 @@ class PlanningModel {
         $this->activity_desc = $activity[0];
     }
 
-    
+    public function setIndexPlanning($id_index_planning){
+        $this->nom_index_planning = $id_index_planning[0];
+    }
 
 }
 
