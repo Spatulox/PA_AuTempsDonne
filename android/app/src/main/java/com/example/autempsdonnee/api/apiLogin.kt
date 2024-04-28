@@ -8,7 +8,7 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.autempsdonnee.Managers.ApiKeyManager
-import com.example.autempsdonnee.constantes.ConstantesAPI.AppConstants
+//import com.example.autempsdonnee.constantes.ConstantesAPI.AppConstants
 import com.example.autempsdonnee.utils.Popup
 import org.json.JSONException
 
@@ -32,7 +32,7 @@ class apiLogin {
 
         val request = object : StringRequest(
             Request.Method.POST,
-            AppConstants.API_BASE_URL + "/login",
+            ConstantesAPI.AppConstants.API_BASE_URL + "/login",
             { response ->
                 val jsonObject = JSONObject(response)
                 ApiKeyManager.setApiKey(context, jsonObject.getString("apikey"))

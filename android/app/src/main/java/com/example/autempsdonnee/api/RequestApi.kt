@@ -7,7 +7,7 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.autempsdonnee.Managers.ApiKeyManager
-import com.example.autempsdonnee.constantes.ConstantesAPI.AppConstants
+//import com.example.autempsdonnee.constantes.ConstantesAPI.AppConstants
 import com.example.autempsdonnee.utils.Popup
 import org.json.JSONException
 
@@ -31,7 +31,7 @@ class RequestApi {
 
         val request = object : StringRequest(
             Request.Method.GET,
-            AppConstants.API_BASE_URL + endpoint,
+            ConstantesAPI.AppConstants.API_BASE_URL + endpoint,
             { response ->
                 val responseData = try {
                     JSONObject(response)
@@ -50,7 +50,6 @@ class RequestApi {
             override fun getHeaders(): Map<String, String> = headers
         }
 
-        println("LA VULVEEEEEEEEEEEE")
         queue.add(request)
     }
 
@@ -83,7 +82,7 @@ class RequestApi {
 
         val request = object : StringRequest(
             Request.Method.POST,
-            AppConstants.API_BASE_URL + endpoint,
+            ConstantesAPI.AppConstants.API_BASE_URL + endpoint,
             { response ->
                 println(response)
                 val responseData = try {
@@ -137,7 +136,7 @@ class RequestApi {
 
         val request = object : StringRequest(
             Request.Method.PUT,
-            AppConstants.API_BASE_URL + endpoint,
+            ConstantesAPI.AppConstants.API_BASE_URL + endpoint,
             { response ->
                 println(response)
                 val responseData = try {
@@ -191,7 +190,7 @@ class RequestApi {
 
         val request = object : StringRequest(
             Request.Method.DELETE,
-            AppConstants.API_BASE_URL + endpoint,
+            ConstantesAPI.AppConstants.API_BASE_URL + endpoint,
             { response ->
                 println(response)
                 val responseData = try {
