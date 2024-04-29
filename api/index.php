@@ -85,8 +85,11 @@ function controller($uri) {
         case 'planning':
             planningController($uri, $apiKey);
             break;
+        case 'activite':
+            activiteController($uri, $apiKey);
+            break;
 
-      break;
+
 
         default:
             // Si la ressource demandée n'existe pas, alors on renvoie une erreur 404
