@@ -6,12 +6,8 @@ include_once './Controller/loginController.php';
 include_once './Controller/userController.php';
 include_once './Controller/entrepotController.php';
 include_once './Controller/planningController.php';
-//include_once './Controller/activiteController.php';
 include_once './Controller/produitController.php';
-
-/*include_once './Controller/apartmentController.php';
-include_once './Controller/reservationController.php';
-*/
+include_once './Controller/demandeController.php';
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
 error_reporting(E_ERROR | E_PARSE);
@@ -118,6 +114,10 @@ function controller($uri) {
 
         case 'produit':
             collectController($uri, $apiKey);
+            break;
+
+        case 'demande':
+            demandeController($uri, $apiKey);
             break;
 
       break;
