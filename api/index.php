@@ -6,7 +6,8 @@ include_once './Controller/loginController.php';
 include_once './Controller/userController.php';
 include_once './Controller/entrepotController.php';
 include_once './Controller/planningController.php';
-include_once './Controller/activiteController.php';
+//include_once './Controller/activiteController.php';
+include_once './Controller/collectController.php';
 
 /*include_once './Controller/apartmentController.php';
 include_once './Controller/reservationController.php';
@@ -49,8 +50,9 @@ function exit_with_content($content = null, $code = 200) {
 
 function getRoleFromApiKey($apiKey){
     if($apiKey == null){
-        return false;
+        exit_with_message("The apikey is empty", 403);
     }
+
     $role = selectDB("UTILISATEUR", 'id_role', "apikey='".$apiKey."'", "bool");
     if($role){
         $role = $role[0]["id_role"];
@@ -63,7 +65,12 @@ function getRoleFromApiKey($apiKey){
 
 function getIdUserFromApiKey($apiKey){
     if($apiKey == null){
-        return false;
+        exit_with_message("The apikey is empty", 403);
+    }
+
+    $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool");
+    if($id){
+        $id = $id[0]["id_user"];
     }
 
     $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool"); 
@@ -107,6 +114,10 @@ function controller($uri) {
 
         case 'planning':
             planningController($uri, $apiKey);
+            break;
+
+        case 'collecte':
+            collectController($uri, $apiKey);
             break;
 
       break;
