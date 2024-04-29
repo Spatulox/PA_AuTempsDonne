@@ -44,7 +44,7 @@ class ActiviteRepository {
 
     public function createActivite(ActiviteModels $activite){
 
-            $string = "nom_activite='" . $activite->nom_activite ;
+            $string = "nom_activite='" . $activite->nom_activite ."'";
 
         $Select = selectDB("ACTIVITES", "*", $string, "bool");
 

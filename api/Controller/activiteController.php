@@ -36,11 +36,11 @@ function activiteController($uri, $apiKey) {
 
 
                 
-                    if (!isset($json['nom']) ) {
+                    if (!isset($json['nom_activite']) ) {
                         exit_with_message("Please provide all required fields to create a new activite", 400);
                     }
 
-                    $activite = new ActiviteModel(
+                    $activite = new ActiviteModels(
                         1,
                         $json['nom_activite']
                     );
