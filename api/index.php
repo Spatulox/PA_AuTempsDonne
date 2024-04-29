@@ -6,6 +6,7 @@ include_once './Controller/loginController.php';
 include_once './Controller/userController.php';
 include_once './Controller/planningController.php';
 include_once './Controller/activiteController.php';
+include_once './Controller/trajetController.php';
 
 /*include_once './Controller/apartmentController.php';
 include_once './Controller/reservationController.php';
@@ -88,7 +89,9 @@ function controller($uri) {
         case 'activite':
             activiteController($uri, $apiKey);
             break;
-
+        case 'trajet':
+            TrajetController($uri, $apiKey);
+            break;
 
 
         default:

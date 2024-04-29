@@ -7,7 +7,7 @@ class TrajetRepository {
         $this->model = new TrajetModel();
     }
 
-    function createTrajet($addressIds) {
+    public function createTrajet($addressIds) {
 
         if (empty($addressIds) || !is_array($addressIds)) {
             throw new Exception("Entrée des id_adresse invalide.");
@@ -16,7 +16,7 @@ class TrajetRepository {
         $allCreates = [];
 
         foreach ($addressIds as $addressId) {
-            $create = insertDB("UTILISER", ["id_trajets", "id_adresse"], [$trajetIds, $addressId]);
+            $create = insertDB("UTILISER", ["id_trajets", "id_adresse"], [$trajetIds, $addressId], "-@");
 
             if ($create) {
                 $allCreates = $create;
