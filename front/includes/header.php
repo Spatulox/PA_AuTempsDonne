@@ -22,16 +22,34 @@ foreach ($files22 as $filea) {
     }
 }
 
+
+function hasMessageInUrl($url) {
+    if (strpos($url, '?message=') !== false || strpos($url, '&message=') !== false) {
+
+    	$message = explode("?message=", $url)[1];
+        return "?message=".$message;
+    } else {
+        return null;
+    }
+}
+
+$message = hasMessageInUrl($_SERVER['REQUEST_URI']);
 ?>
 
 <header>
-	<img src="../Images/Au_Temps_Donne.png">
+	<a href="./actualites.php"><img src="../Images/Au_Temps_Donne.png" onclick="redirect('./actualites.php')"></a>
 	<nav>
 		<ul>
 			<?php
 
 				foreach ($data["header"]["li"] as $key => $value) {
-					echo('<li><a href="' . $key . '">' . $value . '</a></li>');
+					
+					if($key == "./signup_login.php" && isset($_COOKIE['apikey'])){
+						echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
+					}
+					else{
+						echo('<li><a href="' . $key . '">' . $value . '</a></li>');
+					}
 				}
 			?>
 		</ul>
@@ -52,6 +70,21 @@ foreach ($files22 as $filea) {
 		</select>
 
 	</nav>
+	<?php
+		if($message){
+			$message = explode("?message=", $message)[1];
+			$message = str_replace("%20", " ", $message);
+
+			echo('	<h2 class="" id="titleFooter" style="position:fixed;">
+						'.$message.'
+					</h2>
+				');
+		}
+		else{
+			echo('	<h2 class="" id="titleFooter" style="position:absolute;"></h2>
+				');
+		}
+	?>
 </header>
 
 <script type="text/javascript" defer>

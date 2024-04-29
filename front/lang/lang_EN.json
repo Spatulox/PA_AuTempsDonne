@@ -8,7 +8,8 @@
 			"./donateur.php":"Give us",
 			"./moncompte.php":"Account",
 			"./signup_login.php":"Login/Sign up"
-		}
+		},
+    	"disconnect":"Deconnection"
 	},
 	"footer":{
 		"li":{
@@ -26,8 +27,10 @@
 		"title":"Log In/Sign Up",
 		"formSignUp":{
 			"title":"Sign up",
-			"name":"Name",
+			"name":"Last Name",
+			"firstname":"First Name",
 			"email":"Email",
+			"phone":"Phone",
 			"password":"Password",
 			"confirmPassword":"Confirm password",
 			"input":"Sign up",

@@ -7,7 +7,7 @@ include_once './exceptions.php';
 function loginController($uri) {
     
     switch ($_SERVER['REQUEST_METHOD']) {
-        case 'GET':
+        case 'POST':
 
             $loginClass = new LoginService($uri);
             $body = file_get_contents("php://input");
@@ -24,19 +24,19 @@ function loginController($uri) {
 
 
         
-        case 'POST':
+        case 'GET':
          	exit_with_message('you don t have the right to make a POST request', 500);
             break;
 
 
         
         case 'PUT':
-        	exit_with_message('you don t have the right to make a PUT request', 500);
+        	exit_with_message('You don t have the right to make a PUT request', 500);
             break;
 
 
         case 'DELETE':
-            exit_with_message('you don t have the right to make a DELETE request', 500);
+            exit_with_message('You don t have the right to make a DELETE request', 500);
             break;
 
         default:

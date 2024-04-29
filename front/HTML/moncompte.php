@@ -1,20 +1,22 @@
 <?php include("../includes/loadLang.php");?>
 
 <!DOCTYPE html>
-<script type="text/javascript" src="../JS/functions.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+<script type="text/javascript" src="../JS/utils.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>-->
 <script type="text/javascript">
 
-  let userCookie = Cookies.get('apikey');
+  //let userCookie = Cookies.get('apikey');
+  let userCookie = getCookie('apikey')
 
-  let message = "<?php echo($data["moncompte"]["error"]["errorCo"]) ?>"
+  // PhpStorm detect it as an error, but don't touch plz
+  let messagere = "<?php echo($data["moncompte"]["error"]["errorCo"]) ?>"
 
-  if(message == ""){
-  	message="You can't do that"
+  if(messagere == ""){
+  	messagere="You can't do that"
   }
 
   if(!userCookie){
-  	redirect('./signup_login.php', message)
+  	redirect('./signup_login.php', messagere)
   }
 
 </script>
@@ -41,13 +43,13 @@
 				<div>
 					<h2 class="bold underline"> <?php echo($data["moncompte"]["form"]["titleF1"]) ?> </h2>
 					<ul class="noDecoration noPadding">
-						<li id="c_nom"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
-						<li id="c_prenom"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
-						<li id="c_email"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
-						<li id="c_telephone"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
-						<li id="c_date_inscription"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
-						<li id="c_entreprot"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
-						<li id="c_role"> <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_nom"> Nom : <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_prenom"> Prénom : <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_email"> Email : <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_telephone"> Téléphone : <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_date_inscription"> Date inscription :  <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_entrepot"> Entrepot : <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
+						<li id="c_role"> Role : <?php echo isset($selectionFromDB) ? $selectionFromDB : "My Informations"; ?> </li>
 					</ul>
 					<input class="noMarginImportant" type="button" name="planningRedirect" onclick="redirect('./planning.php')" value="<?php echo($data["moncompte"]["form"]["inputPlanning"]) ?>" id="planning">
 				</div>
@@ -71,3 +73,7 @@
 
 	</body>
 </html>
+
+<script type="text/javascript" defer>
+	myAccount()
+</script>

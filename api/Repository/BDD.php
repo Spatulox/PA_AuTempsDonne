@@ -313,9 +313,9 @@ function updateDB($table, $columnArray, $columnData, $condition = null, $debug =
 		$dbRequest = 'UPDATE '. $table .' SET ' . $updatedData .'  WHERE ' . $condition ;
 	}
 
-	if($debug == "-@"){
-		var_dump($dbRequest);
-	}
+    if($debug == "-@"){
+        var_dump($dbRequest);
+    }
 
 	try{
 		$result = $db->prepare($dbRequest);
@@ -341,6 +341,13 @@ function updateDB($table, $columnArray, $columnData, $condition = null, $debug =
 			exit_with_message("Error : ".str_replace('"', "'", $tmp));
 		}
 
+        if($debug == "-@"){
+            exit_with_message("PDO error :" . $e->getMessage());
+        }
+        if($debug == "bool"){
+            return false;
+        }
+
 	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
 	}
 	
@@ -349,7 +356,7 @@ function updateDB($table, $columnArray, $columnData, $condition = null, $debug =
 
 # -------------------------------------------------------------- #
 
-function deleteDB($table, $condition)
+function deleteDB($table, $condition, $debug = null)
 {
 	checkData($table, -10, -10, $condition);
 
@@ -367,6 +374,10 @@ function deleteDB($table, $condition)
 		$dbRequest = 'DELETE FROM '. $table .' WHERE ' . $condition ;
 	}
 
+    if($debug == "-@"){
+        var_dump($dbRequest);
+    }
+
 	try{
 		$result = $db->prepare($dbRequest);
 		$result->execute();
@@ -375,6 +386,11 @@ function deleteDB($table, $condition)
 	}
 	catch (PDOException $e)
 	{
+
+        if($debug == "-@"){
+            exit_with_message("PDO error :" . $e->getMessage());
+        }
+
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
