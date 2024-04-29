@@ -7,7 +7,7 @@ include_once './Controller/userController.php';
 include_once './Controller/entrepotController.php';
 include_once './Controller/planningController.php';
 //include_once './Controller/activiteController.php';
-include_once './Controller/collectController.php';
+include_once './Controller/produitController.php';
 
 /*include_once './Controller/apartmentController.php';
 include_once './Controller/reservationController.php';
@@ -116,7 +116,7 @@ function controller($uri) {
             planningController($uri, $apiKey);
             break;
 
-        case 'collecte':
+        case 'produit':
             collectController($uri, $apiKey);
             break;
 
