@@ -5,6 +5,8 @@ services:
       - 8083:80
     volumes:
       - ./front:/var/www/html/
+    depends_on:
+      - frontend
 
   api:
     build: .
@@ -12,6 +14,12 @@ services:
       - 8081:80
     volumes:
       - ./api:/var/www/html/
+    environment:
+      - DB_HOSTMYSQL_DATABASE=apiDev_db
+      - DB_NAME=apiDev
+      - DB_PASSWORD=password
+    depends_on:
+      - database
 
   database:
     image: mysql
@@ -20,6 +28,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 3306:3306
+    
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=apiDev_db
