@@ -9,19 +9,19 @@ class LocalUserManager {
 
     companion object {
         private const val PREF_NAME = "USER"
-        private const val NOM = ""
-        private const val PRENOM = ""
-        private const val EMAIL = ""
-        private const val TELEPHONE = ""
-        private const val ADDRESSE = ""
+        private const val KEY_NOM = "nom"
+        private const val KEY_PRENOM = "prenom"
+        private const val KEY_EMAIL = "email"
+        private const val KEY_TELEPHONE = "telephone"
+        private const val KEY_ADDRESSE = "addresse"
 
         fun getData(context: Context): Map<String, String?> {
             val sharedPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-            val nom = sharedPrefs.getString(NOM, null)
-            val prenom = sharedPrefs.getString(PRENOM, null)
-            val email = sharedPrefs.getString(EMAIL, null)
-            val telephone = sharedPrefs.getString(TELEPHONE, null)
-            val addresse = sharedPrefs.getString(ADDRESSE, null)
+            val nom = sharedPrefs.getString(KEY_NOM, null)
+            val prenom = sharedPrefs.getString(KEY_PRENOM, null)
+            val email = sharedPrefs.getString(KEY_EMAIL, null)
+            val telephone = sharedPrefs.getString(KEY_TELEPHONE, null)
+            val addresse = sharedPrefs.getString(KEY_ADDRESSE, null)
 
             return mapOf(
                 "nom" to nom,
@@ -32,51 +32,66 @@ class LocalUserManager {
             )
         }
 
-        fun setData(context: Context, key: String, value: String?) {
+        fun setData(context: Context, key: String, value: String?): Boolean  {
             val sharedPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             val editor = sharedPrefs.edit()
 
             when (key) {
-                "nom" -> editor.putString(NOM, value)
-                "prenom" -> editor.putString(PRENOM, value)
-                "email" -> editor.putString(EMAIL, value)
-                "telephone" -> editor.putString(TELEPHONE, value)
-                "addresse" -> editor.putString(ADDRESSE, value)
+                "nom" -> editor.putString(KEY_NOM, value)
+                "prenom" -> editor.putString(KEY_PRENOM, value)
+                "email" -> editor.putString(KEY_EMAIL, value)
+                "telephone" -> editor.putString(KEY_TELEPHONE, value)
+                "addresse" -> editor.putString(KEY_ADDRESSE, value)
             }
 
-            editor.apply()
+            return editor.commit()
         }
 
-        fun setDataAll(context: Context, jsonData: JSONObject?) {
-            var popup = Popup()
-
-            if(jsonData == null){
-                popup.makeToast(context, "L'object json doit être rempli (pas être null)")
-                return
+        fun setDataAll(context: Context, jsonData: JSONObject?): Boolean {
+            if (jsonData == null) {
+                Popup().makeToast(context, "L'objet JSON doit être rempli (pas être null)")
+                return false
             }
+
             val sharedPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             val editor = sharedPrefs.edit()
 
-            editor.putString(NOM, jsonData.optString("nom", null))
-            editor.putString(PRENOM, jsonData.optString("prenom", null))
-            editor.putString(EMAIL, jsonData.optString("email", null))
-            editor.putString(TELEPHONE, jsonData.optString("telephone", null))
-            editor.putString(ADDRESSE, jsonData.optString("addresse", null))
+            editor.putString(KEY_NOM, jsonData.optString(KEY_NOM))
+            editor.putString(KEY_PRENOM, jsonData.optString(KEY_PRENOM))
+            editor.putString(KEY_EMAIL, jsonData.optString(KEY_EMAIL))
+            editor.putString(KEY_TELEPHONE, jsonData.optString(KEY_TELEPHONE))
+            editor.putString(KEY_ADDRESSE, jsonData.optString(KEY_ADDRESSE))
+
+            return editor.commit()
+        }
+
+        fun clearData(context: Context, key: String) {
+            val sharedPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+            val editor = sharedPrefs.edit()
+
+            when (key) {
+                "nom" -> editor.remove(KEY_NOM)
+                "prenom" -> editor.remove(KEY_PRENOM)
+                "email" -> editor.remove(KEY_EMAIL)
+                "telephone" -> editor.remove(KEY_TELEPHONE)
+                "addresse" -> editor.remove(KEY_ADDRESSE)
+            }
 
             editor.apply()
         }
 
+        fun refreshData(context: Context) {
+            var popup = Popup()
+            val user = User(context)
+            val data = user.refreshUser()
 
-
-        fun clearData(context: Context, key: String){
-            val sharedPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-            sharedPrefs.edit().remove(key).apply()
-        }
-
-        fun refreshData(context: Context){
-            var user = User(context)
-            var data = user.refreshUser()
-            println(data)
+            try {
+                val jsonData = data as JSONObject
+                this.setDataAll(context, jsonData)
+            } catch (e: ClassCastException) {
+                popup.makeToast(context, "Erreur : Impossible to cast data to a json object")
+                return
+            }
         }
     }
 }
