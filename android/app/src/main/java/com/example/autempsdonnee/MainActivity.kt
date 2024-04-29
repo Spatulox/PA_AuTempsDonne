@@ -47,18 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         } else {
             popup.makeToast(this, "Loading informations")
-            var data: JSONObject? = null
-            RequestApi().Get(this, "/user") { responseData ->
-                if (responseData !is JSONObject) {
-                    return@Get
-                }
-                println(responseData)
-                data = responseData
-            }
-
-            var yep = LocalUserManager.setDataAll(this, data)
-            var tmp = LocalUserManager.getData(this)
-            println(tmp)
+            LocalUserManager.refreshData(this)
         }
     }
 
@@ -93,17 +82,6 @@ RequestApi().Get(this, "/user") { responseData ->
     }
     println(responseData)
 }
-
-Ou alors (pour retourner des données):
-
-var responseData: Any? = null
-RequestApi().Get(context, ENDPOINT) { data ->
-    if (data !is JSONObject) {
-        return@Get
-    }
-    responseData = data
-}
-return responseData
 
 
 
