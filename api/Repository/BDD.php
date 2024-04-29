@@ -386,17 +386,18 @@ function deleteDB($table, $condition, $debug = null)
 	}
 	catch (PDOException $e)
 	{
+
+        if($debug == "-@"){
+            exit_with_message("PDO error :" . $e->getMessage());
+        }
+
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
 			exit_with_message("Error : ".str_replace('"', "'", $tmp));
 		}
 
-        if($debug == "-@"){
-            exit_with_message("PDO error :" . $e->getMessage());
-        }
-
-	    //exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
+	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
 	}
 	
 	return false;
