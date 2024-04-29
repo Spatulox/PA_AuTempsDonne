@@ -1,34 +1,30 @@
 services:
+
   frontend:
-    image: php:7.4-apache
+    build: 
+      context: ./front
+      dockerfile: Dockerfile
     ports:
       - 8083:80
     volumes:
       - ./front:/var/www/html/
-    depends_on:
-      - frontend
 
   api:
-    build: .
+    build:
+      context: ./api 
+      dockerfile: Dockerfile
     ports:
       - 8081:80
     volumes:
       - ./api:/var/www/html/
-    environment:
-      - DB_HOSTMYSQL_DATABASE=apiDev_db
-      - DB_NAME=apiDev
-      - DB_PASSWORD=password
-    depends_on:
-      - database
 
   database:
     image: mysql
     volumes:
-      - db-data:/var/lib/mysql
+      - ./db-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 3306:3306
-    
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=apiDev_db
