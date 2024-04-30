@@ -6,8 +6,10 @@ class TrajetModel {
 
     private $bdd;
 
-    public function __construct() {
-        $this->bdd = getDatabaseConnection(); // Ensure you have a function to get a database connection
+    public $id_trajet;
+
+    public function __construct($id_trajet) {
+        $this->id_trajet = $id_trajet;
     }
 
     public function createTripEntry() {

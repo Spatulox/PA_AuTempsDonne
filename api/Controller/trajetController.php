@@ -1,23 +1,45 @@
 <?php
-
 include_once './Service/trajetService.php';
 include_once './Models/trajetModel.php';
+include_once './exceptions.php';
 
-class TrajetController {
+function trajetController($uri, $apiKey){
+    switch ($_SERVER['REQUEST_METHOD']){
+        case 'GET':
+            if($apiKey == null){
+                exit_with_message("Unauthorized, need the apikey", 403);
+            }
 
-    private $trajetService;
+            $TrajetService = new trajetService();
 
-    public function __construct() {
-        $this->trajetService = new TrajetService();
-    }
+            if(!$uri[4]){
+                exit_with_content($TrajetService->getAllTrajet());
+            }
 
-    public function createTrajet($addressIds) {
-        try {
-            $tripId = $this->trajetService->createTrajet($addressIds);
-            return json_encode(['status' => 'success', 'tripId' => $tripId]);
-        } catch (Exception $e) {
-            return json_encode(['status' => 'error', 'message' => $e->getMessage()]);
-        }
+            /*
+            elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
+                exit_with_content($TrajetService->getTrajetById($uri[3]));
+            }
+            */
+
+            else{
+                exit_with_message("You need to be admin to see all the trips", 403);
+            }
+
+            break;
+
+        case 'POST':
+            break;
+
+        case 'PUT':
+            break;
+
+        case 'DELETE':
+            break;
+
+        default:
+            exit_with_message("Not Found", 404);
+            exit();
     }
 }
 
