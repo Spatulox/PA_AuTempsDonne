@@ -3,7 +3,7 @@ services:
   frontend:
     build: 
       context: ./front
-      dockerfile: Dockerfile
+      dockerfile: ./front/Dockerfile
     ports:
       - 8083:80
     volumes:
@@ -12,17 +12,19 @@ services:
   api:
     build:
       context: ./api 
-      dockerfile: Dockerfile
+      dockerfile: ./api/Dockerfile
     ports:
       - 8081:80
     volumes:
       - ./api:/var/www/html/
 
   database:
-    image: mysql
+    #image: mysql
+    build:
+      context: ./db_data 
+      dockerfile: ./db_data/Dockerfile
     volumes:
-      - ./db-data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db_data/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 3306:3306
     environment:
