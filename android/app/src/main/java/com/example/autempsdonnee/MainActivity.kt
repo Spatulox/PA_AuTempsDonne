@@ -9,9 +9,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.example.autempsdonnee.login.Login
 import com.example.autempsdonnee.Managers.ApiKeyManager
 import com.example.autempsdonnee.Managers.LocalUserManager
+import com.example.autempsdonnee.api.Entrepot
 import com.example.autempsdonnee.login.Register
+import com.example.autempsdonnee.utils.Api
 import com.example.autempsdonnee.utils.Popup
-import com.example.autempsdonnee.api.RequestApi
+import org.json.JSONArray
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // If something went went wrong, there is still a posibiliti to connect
         var btn_connect = findViewById<Button>(R.id.connectingMain)
         var btn_register = findViewById<Button>(R.id.registerMain)
 
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        // Récupérer l'apikey
+        // Récupérer l'apikey pour afficher des truc différent
         val apiKey = ApiKeyManager.getApiKey(this)
 
         if (apiKey == null) {
@@ -47,8 +50,10 @@ class MainActivity : AppCompatActivity() {
 
         } else {
             popup.makeToast(this, "Loading informations")
-            LocalUserManager.refreshData(this)
+
+                LocalUserManager.refreshData(this@MainActivity)
         }
+
     }
 
     // Launch another activity (login or register) and "wait" a response from it
