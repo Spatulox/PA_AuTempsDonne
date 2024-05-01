@@ -1,21 +1,19 @@
 package com.example.autempsdonnee.api
 
 import android.content.Context
-import android.widget.Toast
 import org.json.JSONObject
 import com.android.volley.Request
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.autempsdonnee.Managers.ApiKeyManager
 //import com.example.autempsdonnee.constantes.ConstantesAPI.AppConstants
 import com.example.autempsdonnee.utils.Popup
-import org.json.JSONException
+import com.example.autempsdonnee.utils.Api
 
 /**
  * Request the API to connect the user
  */
-class apiLogin {
+class ApiLogin {
 
     var popup = Popup()
 
@@ -44,7 +42,7 @@ class apiLogin {
                 val errorResponse = String(error.networkResponse?.data ?: ByteArray(0), Charsets.UTF_8)
                 println("Error response: $errorResponse")
 
-                popup.makeToast(context, getErrorMessage(error))
+                popup.makeToast(context, Api().getErrorMessage(error))
             }
         ) {
             override fun getBody(): ByteArray {
@@ -59,20 +57,6 @@ class apiLogin {
         queue.add(request)
 
         return isLoginSuccessful
-    }
-
-    private fun getErrorMessage(error: VolleyError): String {
-        return if (error.networkResponse != null && error.networkResponse.data != null) {
-            val errorResponse = String(error.networkResponse.data, Charsets.UTF_8)
-            try {
-                val jsonObject = JSONObject(errorResponse)
-                jsonObject.getString("message")
-            } catch (e: JSONException) {
-                "Error when fetching API"
-            }
-        } else {
-            "Error when fetching API"
-        }
     }
 
 }
