@@ -40,21 +40,32 @@ function checkData($table = -10, $columnArray = -10, $columnData = -10, $conditi
 # -------------------------------------------------------------- #
 
 function connectDB(){
+
+	// Lire le contenu du fichier JSON
+	$json_file = file_get_contents('/var/www/html/env.json');
+
+	// Décoder le contenu JSON en un tableau PHP
+	$data = json_decode($json_file, true);
+
+	$dbHost = $data['DB_HOST'];
+	$dbPort = $data['DB_PORT'];
+	$dbName = $data['DB_NAME'];
+	$dbUser = $data['DB_USER'];
+	$dbPassword = $data['DB_PASSWORD'];
+
 	try {
 	    $db = new PDO(
-	        'mysql:host=pa_autempsdonne-database-1;
-	        port=3306;
-	        dbname=apiDev_db;
-	        user=apiDev;
-	        password=password',
+	        'mysql:host='.$dbHost.';
+	        port='.$dbPort.';
+	        dbname='.$dbName.';
+	        user='.$dbUser.';
+	        password='.$dbPassword.'',
 	        null,
 	        null,
 	        array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
 	    );
 	} catch (Exception $e) {
-
 		die($e);
-		//die(exit_with_message("ERROR : Connection BDD error"));
 	}
 
 	return $db;
