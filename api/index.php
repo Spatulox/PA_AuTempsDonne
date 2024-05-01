@@ -122,6 +122,9 @@ function controller($uri) {
         case 'demande':
             demandeController($uri, $apiKey);
             break;
+        case 'stock':
+            StockController($uri, $apiKey);
+            break;
 
 
 
