@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   frontend:
     build:
@@ -8,7 +6,7 @@ services:
     expose:
       - 8083:80
     volumes:
-      - ./front:/app  # Monter le code source pour le rechargement à chaud
+      - ./front:/var/www/html/  # Monter le code source pour le rechargement à chaud
 
 
   api:
@@ -17,12 +15,9 @@ services:
       dockerfile: ./api/Dockerfile
     expose:
       - 8081:80
-    environment:
-      - DATABASE_URL
-      - SECRET_KEY
     restart: on-failure
     volumes:
-      - ./api:/app  # Monter le code source pour le rechargement à chaud
+      - ./api:/var/www/html/  # Monter le code source pour le rechargement à chaud
     
 
 
@@ -35,13 +30,11 @@ services:
     expose:
       - 3306:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=apiDev_db
       - MYSQL_USER=apiDev
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_PASSWORD=password
     restart: always
-    env_file:
-      - ./test.env
 
 
 volumes:
