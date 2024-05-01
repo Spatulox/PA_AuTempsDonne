@@ -17,9 +17,9 @@ services:
     build:
       context: .
       dockerfile: ./api/Dockerfile
-    expose:
+    ports:
       - 8081:80
-    restart: on-failure
+    #restart: on-failure
     volumes:
       - ./api:/var/www/html/ # Monter le code source pour le rechargement à chaud
     
