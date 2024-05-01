@@ -6,7 +6,6 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.autempsdonnee.Managers.ApiKeyManager
-//import com.example.autempsdonnee.constantes.ConstantesAPI.AppConstants
 import com.example.autempsdonnee.utils.Popup
 import com.example.autempsdonnee.utils.Api
 
