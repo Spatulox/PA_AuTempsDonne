@@ -9,11 +9,7 @@ services:
       - 8083:80
     volumes:
       - ./front:/app  # Monter le code source pour le rechargement à chaud
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
+
 
   api:
     build:
@@ -28,11 +24,7 @@ services:
     volumes:
       - ./api:/app  # Monter le code source pour le rechargement à chaud
     
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
+
 
   database:
     build:
@@ -50,11 +42,7 @@ services:
     restart: always
     env_file:
       - ./test.env
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
+
 
 volumes:
   db-data:
