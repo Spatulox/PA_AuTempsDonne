@@ -70,6 +70,35 @@ class MainActivity : AppCompatActivity() {
 }
 
 
+/*
+EXEMPLE POUR RÉCUPÉRER LES ENTREPOTS
+Entrepot().getEntrepot(this){ response ->
+    var json = Api().castToJson(this, response)
+
+    when (json) {
+        is JSONObject -> {
+            val idEntrepot = json.getString("id_entrepot")
+            popup.showInformationDialog(this, idEntrepot)
+        }
+        is JSONArray -> {
+            if (json.length() > 0) {
+                val firstObject = json.getJSONObject(0)
+                val idEntrepot = firstObject.getString("id_entrepot")
+                popup.showInformationDialog(this, idEntrepot)
+                popup.showInformationDialog(this, json.toString())
+            } else {
+                popup.makeToast(this, "Le tableau JSON est vide")
+            }
+        }
+        else -> {
+            popup.makeToast(this, "Impossible de traiter les données JSON")
+        }
+    }
+}
+
+
+ */
+
 
 /*
 
