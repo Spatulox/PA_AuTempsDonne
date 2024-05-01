@@ -299,7 +299,7 @@ INSERT INTO PLANNINGS (description, date_activite, id_index_planning, id_activit
 ('Soutien scolaire pour les élèves en difficulté', '2024-06-15', 2, 4),
 ('Visite et animation pour les personnes âgées', '2024-07-01', 2, 5);
 
-INSERT INTO STOCKS (quantite_produit, date_entree, date_sortie, date_peremption_, desc_produit, id_produit, id_entrepot) VALUES
+INSERT INTO STOCKS (quantite_produit, date_entree, date_sortie, date_peremption, desc_produit, id_produit, id_entrepot) VALUES
 (500, '2024-04-01', NULL, '2025-04-01', 'Riz basmati', 1, 1),
 (300, '2024-04-05', NULL, '2025-06-01', 'Pâtes de blé', 2, 1),
 (200, '2024-04-10', NULL, '2025-08-01', 'Conserves de tomates', 3, 1),
