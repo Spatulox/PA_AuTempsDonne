@@ -163,7 +163,7 @@ CREATE TABLE STOCKS(
    quantite_produit INT NOT NULL,
    date_entree DATE,
    date_sortie DATE,
-   date_peremption_ DATE,
+   date_peremption DATE,
    desc_produit TEXT,
    id_produit INT NOT NULL,
    id_entrepot INT NOT NULL,
