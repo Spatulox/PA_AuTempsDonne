@@ -9,12 +9,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.example.autempsdonnee.login.Login
 import com.example.autempsdonnee.Managers.ApiKeyManager
 import com.example.autempsdonnee.Managers.LocalUserManager
-import com.example.autempsdonnee.api.Entrepot
 import com.example.autempsdonnee.login.Register
-import com.example.autempsdonnee.utils.Api
 import com.example.autempsdonnee.utils.Popup
-import org.json.JSONArray
-import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 

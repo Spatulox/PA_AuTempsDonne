@@ -1,12 +1,11 @@
-package com.example.autempsdonnee.api
+package com.example.autempsdonnee.api.endpoint
 
 import android.content.Context
+import com.example.autempsdonnee.api.RequestApi
 import com.example.autempsdonnee.utils.Api
-import org.json.JSONObject
 import com.example.autempsdonnee.utils.Popup
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 class Entrepot {
 
