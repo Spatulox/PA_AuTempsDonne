@@ -14,12 +14,12 @@ function activiteController($uri, $apiKey) {
 
            
             if(!$uri[3]){
-                exit_with_content($ActiviteService->getAllActivite());
+                exit_with_content($ActiviteService->getAllActivite($apiKey));
             }
 
             
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                exit_with_content($ActiviteService->getActiviteById($uri[3]));
+                exit_with_content($ActiviteService->getActiviteById($uri[3],$apiKey));
             }
 
             else{
@@ -45,7 +45,7 @@ function activiteController($uri, $apiKey) {
                         $json['nom_activite']
                     );
 
-                    $createdActivite = $ActiviteService->createActivite($activite);
+                    $ActiviteService->createActivite($activite, $apiKey);
 
 //                    if ($createdPlanning) {
 //                        exit_with_content($createdActivite);
@@ -67,7 +67,7 @@ function activiteController($uri, $apiKey) {
                     exit_with_message("Plz give, at least id_activite and nom_activite");
                 }
                 // Valider les données reçues ici
-                exit_with_content($ActiviteService->updateActivite($json["id_planning"], $json["nom_activite"] ));
+                exit_with_content($ActiviteService->updateActivite($json["id_planning"], $json["nom_activite"] ,$apiKey));
                 break;
 
         case 'DELETE':
@@ -76,7 +76,7 @@ function activiteController($uri, $apiKey) {
                 if(!$uri[3]){
                     exit_with_message("No activite specified", 400);
                 }
-                $ActiviteService->deleteActivite($uri[3]);
+                $ActiviteService->deleteActivite($uri[3],$apiKey);
                 break;
 
         

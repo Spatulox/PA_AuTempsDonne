@@ -9,7 +9,7 @@ class ActiviteRepository {
     }
 
     public function getAllActivite(){
-        $activiteArray = selectDB("ACTIVITES", "*",-1,"-@");
+        $activiteArray = selectDB("ACTIVITES", "*",-1);
 
         $activite = [];
 
@@ -58,7 +58,7 @@ class ActiviteRepository {
             exit_with_message("Error, the activite can't be created, plz try again", 500);
         }
 
-        return $create;
+        exit_with_message("Activity muy created", 200);
     }
 
     //-------------------------------------
@@ -87,13 +87,12 @@ class ActiviteRepository {
     //-------------------------------------
 
     public function deleteActivite($id){
-        $deleted = deleteDB("ACTIVITES", "id_activite=".$id);
+        $deleted = deleteDB("ACTIVITES", "id_activite=".$id ,"bool");
 
         if(!$deleted){
             exit_with_message("Error, the activite can't be deleted, plz try again", 500);
         }
-
-        return true;
+        exit_with_message("Activite deleted", 200);
     }
 }
 ?>
