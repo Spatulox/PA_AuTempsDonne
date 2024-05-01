@@ -4,6 +4,8 @@ import android.content.Context
 import com.example.autempsdonnee.api.RequestApi
 import com.example.autempsdonnee.utils.Popup
 import org.json.JSONObject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class User (private val context: Context) {
 
@@ -13,15 +15,16 @@ class User (private val context: Context) {
         const val ENDPOINT = "/user"
     }
 
-    fun refreshUser(): Any? {
-        var responseData: Any? = null
-        RequestApi().Get(context, ENDPOINT) { data ->
-            if (data !is JSONObject) {
-                return@Get
+    suspend fun refreshUser(): Any? {
+        return suspendCoroutine { continuation ->
+            RequestApi().Get(context, ENDPOINT) { data ->
+                if (data is JSONObject) {
+                    continuation.resume(data)
+                } else {
+                    continuation.resume(null)
+                }
             }
-            responseData = data
         }
-        return responseData
     }
 
 }

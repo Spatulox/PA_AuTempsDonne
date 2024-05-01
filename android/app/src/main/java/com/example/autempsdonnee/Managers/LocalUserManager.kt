@@ -3,6 +3,8 @@ package com.example.autempsdonnee.Managers
 import android.content.Context
 import com.example.autempsdonnee.api.endpoint.User
 import com.example.autempsdonnee.utils.Popup
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 class LocalUserManager {
@@ -83,15 +85,25 @@ class LocalUserManager {
         fun refreshData(context: Context) {
             var popup = Popup()
             val user = User(context)
-            val data = user.refreshUser()
 
-            try {
-                val jsonData = data as JSONObject
-                this.setDataAll(context, jsonData)
-            } catch (e: ClassCastException) {
-                popup.makeToast(context, "Erreur : Impossible to cast data to a json object")
-                return
+            GlobalScope.launch {
+                val data = user.refreshUser()
+
+                if (data == null) {
+                    popup.makeToast(context, "Erreur : Données nulles")
+                    return@launch
+                }
+
+                try {
+                    val jsonData = data as JSONObject
+                    setDataAll(context, jsonData)
+                } catch (e: ClassCastException) {
+                    popup.makeToast(context, "Erreur : Impossible to cast data to a json object")
+                    return@launch
+                }
             }
+
+
         }
     }
 }
