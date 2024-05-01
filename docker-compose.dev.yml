@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: ./front/Dockerfile
-    port:
+    ports:
       - 8083:80
     volumes:
       - ./front:/var/www/html/  # Monter le code source pour le rechargement à chaud
