@@ -1,3 +1,4 @@
+version: '3'
 services:
   frontend:
     build:
@@ -8,7 +9,7 @@ services:
     volumes:
       - ./front:/var/www/html/  # Monter le code source pour le rechargement à chaud
     logging:
-      driver: "json-file"
+      driver: "local"
       options:
         max-size: "10m"
         max-file: "5"
@@ -24,7 +25,7 @@ services:
       - ./api:/var/www/html/ # Monter le code source pour le rechargement à chaud
     
     logging:
-      driver: "json-file"
+      driver: "local"
       options:
         max-size: "10m"
         max-file: "5"
@@ -43,7 +44,7 @@ services:
       - MYSQL_USER=apiDev
       - MYSQL_PASSWORD=password
     logging:
-      driver: "json-file"
+      driver: "local"
       options:
         max-size: "10m"
         max-file: "5"
