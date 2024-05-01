@@ -6,7 +6,7 @@ services:
     port:
       - 8083:80
     volumes:
-      - ./front:/app  # Monter le code source pour le rechargement à chaud
+      - ./front:/var/www/html/  # Monter le code source pour le rechargement à chaud
     logging:
       driver: "json-file"
       options:
@@ -21,7 +21,7 @@ services:
       - 8081:80
     restart: on-failure
     volumes:
-      - ./api:/app  # Monter le code source pour le rechargement à chaud
+      - ./api:/var/www/html/ # Monter le code source pour le rechargement à chaud
     
     logging:
       driver: "json-file"
