@@ -36,160 +36,65 @@ function redirectToIdList(id) {
     window.location.href = `/list?idTicket=${id}`;
 }
 
-// Function to delete a reservation
-// Then redirect to the list
-function redirectDelete(id){
-    fetch(`/reservation/cancel?idReserv=${id}`, {
-        method: 'GET'
-    })
-    .then(response => {
-        if (response.ok) {
-            response.text().then(message => {
-                window.location.href = `/reservation?message=${message}`;
-                //showPopup(message);
-            });
-        } else {
-            response.text().then(errorMessage => {
-                showPopup(errorMessage);
-            });
-        }
-    })
-    .catch(error => {
-        showPopup('Erreur lors de la requête :', error);
-    });
-}
-
-function redirectDeleteSalles(idSalle){
-    fetch(`/salle/cancel?idSalle=${idSalle}`, {
-        method: 'GET'
-    })
-        .then(response => {
-            if (response.ok) {
-                response.text().then(message => {
-                    window.location.href = `/salle/getRoomAll?message=${message}`;
-                    //showPopup(message);
-                });
-            } else {
-                response.text().then(errorMessage => {
-                    showPopup(errorMessage);
-                });
-            }
-        })
-        .catch(error => {
-            showPopup('Erreur lors de la requête :', error);
-        });
-}
-
-// Function to update the state of the reservation
-// Then redirect to the list
-function redirectUpdate(id){
-
-    // Récupérer l'élément select
-    var selectElement = document.querySelector('select[name="etat"]');
-
-    // Récupérer la valeur sélectionnée
-    var etat = selectElement.value;
-
-    fetch(`/reservation/update?idReserv=${id}?etat=${etat}`, {
-        method: 'GET'
-    })
-    .then(response => {
-        if (response.ok) {
-            response.text().then(message => {
-                window.location.href = `/reservation/list?idReserv=${id}`;
-            });
-        } else {
-            response.text().then(errorMessage => {
-                showPopup(errorMessage);
-            });
-        }
-    })
-    .catch(error => {
-        showPopup('Erreur lors de la requête :', error);
-    });
-}
-
 //
-//-------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 //
 
-// Used in the creerReservation.html file
-// Get all the rooms available when creating a reservation
-async function getAllRoomAvailable() {
+async function creerTicket() {
+    // Récupérer les valeurs du formulaire
+    const description = document.getElementById("description").value;
+    const categorie = document.querySelector('select[name="categorie"]').value;
 
-    const horaire_start_date = document.getElementById("horaire_start_date").value
-    const horaire_start_time = document.getElementById("horaire_start_time").value
-
-    const horaire_end_date = document.getElementById("horaire_end_date").value
-    const horaire_end_time = document.getElementById("horaire_end_time").value
-
-    const ulCreateReservation = document.getElementById("ulCreateReservation")
-
-    if (horaire_start_date == null || horaire_start_time == null || horaire_end_date == null || horaire_end_time == null){
+    if(categorie === ""){
+        showPopup("Vous devez choisir une catégorie")
         return
     }
 
-     // Vérifier le format de la date
-    let dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-    if (!dateRegex.test(horaire_start_date) || !dateRegex.test(horaire_end_date)) {
-        showPopup("La date doit être au format AAAA-MM-JJ");
-        return;
+    // Prendre le cookie de l'apikey
+    //const idUser = document.querySelector('input[name="idUser"]').value;
+
+    // Préparer les données à envoyer
+    const form = {
+        "description": description,
+        "categorie": categorie
     }
 
-    // Vérifier le format de l'heure
-    let timeRegex = /^\d{2}:\d{2}$/;
-    if (!timeRegex.test(horaire_start_time) || !timeRegex.test(horaire_end_time)) {
-        showPopup("L'heure doit être au format HH:MM");
-        return;
-    }
+    console.log(form)
 
-    startDateTime = horaire_start_date + " " + horaire_start_time
-    endDateTime = horaire_end_date + " " + horaire_end_time
+    let response = await fecthSynch("/create", optionPost(form))
+}
+
+//
+// ---------------------------------------------------------------------------------------------------------------------
+//
 
 
-    const data = {
-        startDateTime: startDateTime,
-        endDateTime: endDateTime
-    };
+async function fecthSynch(url, data){
 
     try {
-        const response = await fetch('/salle/getAllAvail', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-
+        const response = await fetch(url, data);
 
         if (response.ok) {
-            const data = await response.json();
 
-            const ulCreateReservation = document.getElementById('ulCreateReservation');
-            ulCreateReservation.innerHTML = ""
-
-            if(data.length > 0){
-                data.forEach(salle => {
-                    let li = document.createElement("li");
-                    let tmp = `${salle.IdSalle} : ${salle.NomSalle} (${salle.PlaceSalle} Places)`;
-                    li.textContent = tmp;
-                    ulCreateReservation.appendChild(li);
-                    console.log(tmp);
-                });
+            try{
+                console.log(response)
+                const message = await response.text();
+                showPopup(message)
             }
-            else{
-                ulCreateReservation.innerHTML = "Veuillez choisir une date et heure de départ et de fin pour voir les salles disponibles"
+            catch (err){
+                console.log(err)
             }
 
-
-
-            
+            return response
         } else {
             const errorMessage = await response.text();
-            showPopup(errorMessage);
+            showPopup('Erreur' + errorMessage);
+            return false
         }
     } catch (error) {
+        // Erreur de réseau
         showPopup('Erreur lors de la requête :', error);
+        return false
     }
 }
 
@@ -197,29 +102,14 @@ async function getAllRoomAvailable() {
 //-------------------------------------------------------------------------------------
 //
 
-// akt the /reservation/export to export the BDD in a json file
-async function exportReservJson(){
-    try {
-        const response = await fetch('/reservation/export', {
-            method: 'GET',
-        });
-
-
-        if (response.ok) {
-            const msg = await response.text();
-            showPopup(msg)
-
-            const buttonAskToDownload = document.getElementById("buttonAskToDownload")
-            buttonAskToDownload.innerHTML = "Télécharger le fichier"
-            buttonAskToDownload.setAttribute('onclick', 'dataDownload()');
-
-
-        } else {
-            const errorMessage = await response.text();
-            showPopup(errorMessage);
-        }
-    } catch (error) {
-        showPopup('Erreur lors de la requête :', error);
+function optionPost(formData){
+    return {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'apikey': '8f96e6e91f136ea4ee7150d8a656cc57ab1de2021dac5e78e3a79242cf88c055'
+        },
+        body: JSON.stringify(formData)
     }
 }
 
@@ -227,88 +117,14 @@ async function exportReservJson(){
 //-------------------------------------------------------------------------------------
 //
 
-// Used in interface after the click to export json
-// Used in export.json, line 185
-// The server send the file to the client
-function dataDownload(){
-    fetch('/download')
-        .then(response => response.blob())
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.setAttribute('download', 'data.json');
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-
-            // Demander la confirmation à l'utilisateur
-            showYoutubePopup();
-        });
-}
-
-//
-//-------------------------------------------------------------------------------------
-//
-
-/*
-async function updloadJson(){
-    const form = document.getElementById("upload-form")
-    const fileInput = document.getElementById("file-input")
-    const file = fileInput.files[0]
-
-    const formData = new FormData()
-    formData.append("reservation", file)
-
-    try{
-        const data = {
-            method: "POST",
-            body: formData
-        }
-
-        const response = await fetch("/reservation/import", data)
-
-        if(response.ok){
-            showPopup(await response.text())
-        }
-        else{
-            showPopup(await response.text())
+function optionGet(formData){
+    return {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'apikey': '1234'
         }
     }
-    catch (err){
-        showPopup("Error : "+err)
-    }
-}
-*/
-
-//
-//-------------------------------------------------------------------------------------
-//
-
-// Show the video of M. Sananes singing Rap in suit
-function showYoutubePopup() {
-    // Créer la popup
-    const popup = document.createElement('div');
-    popup.classList.add('popup');
-
-    // Ajouter l'iframe YouTube
-    const iframe = document.createElement('iframe');
-    iframe.src = 'https://www.youtube.com/embed/L0TB1IkhVds?autoplay=1';
-    iframe.width = '560';
-    iframe.height = '315';
-    iframe.frameborder = '0';
-    iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
-    iframe.allowfullscreen = true;
-
-    popup.appendChild(iframe);
-    document.body.appendChild(popup);
-
-    document.addEventListener('click', (event) => {
-        if (!popup.contains(event.target)) {
-            popup.style.display = 'none';
-        }
-    });
 }
 
 //
