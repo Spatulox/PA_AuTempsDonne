@@ -150,5 +150,17 @@ class StockRepository {
         }
         return $stock;
     }
+
+    public function deleteStock($id)
+    {
+        $request = deleteDB("STOCKS", "id_stock=".$id, "bool");
+
+        if($request){
+            exit_with_message("stock has been deleted", 200);
+        }
+
+        exit_with_message("stock not deleted", 200);
+
+    }
 }
 ?>

@@ -139,5 +139,16 @@ class StockService {
             exit_with_message("Vous n'avais pas accès a cette commande");
         }
     }
+
+    public function deleteStock($id,$apiKey)
+    {
+        $userRole = getRoleFromApiKey($apiKey);
+        if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
+            $stockRepository = new StockRepository();
+            return $stockRepository->deleteStock($id);
+        }else{
+            exit_with_message("Vous n'avais pas accès a cette commande");
+        }
+    }
 }
 ?>

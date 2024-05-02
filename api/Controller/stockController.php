@@ -42,6 +42,17 @@ function StockController($uri, $apiKey)
             exit_with_content($stockService->createStock($stock,$apiKey));
             break;
 
+        case 'DELETE':
+            if(!$uri[3]){
+                exit_with_message("il manque qu'elle stock vous voulez supprimer", 403);
+            }
+
+            $stockService = new StockService();
+
+            $stockService->deleteStock($uri[3],$apiKey);
+
+            break;
+
 
         default:
             exit_with_message("Not Found", 404);
