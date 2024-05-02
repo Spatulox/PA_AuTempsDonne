@@ -12,10 +12,10 @@ const (
 
 // Constante pour les tables SQL
 const (
-	ETAT         = "ETATS"
-	RESERVATIONS = "RESERVATIONS"
-	RESERVER     = "RESERVER"
-	SALLES       = "SALLES"
+	ETAPES     = "ETAPES"
+	TICKETS    = "TICKETS"
+	DISCUSSION = "DISCUSSION"
+	CATEGORIES = "CATEGORIES"
 )
 
 // Instanciation d'une variable Log pour éviter de la faire dans les autres fichiers.
