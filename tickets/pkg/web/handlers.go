@@ -66,9 +66,25 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 
-	if r.Method == http.MethodGet {
+	// Récupérer les cookies de la requête
+	var apikey = getApikeyFromCookie(w, r)
 
-		//idTicket
+	if apikey == "" {
+		var msg = "Votre apikey est null, veuiller vous connecter sur le site officiel avant"
+		http.Redirect(w, r, RouteIndex+"?message="+msg, http.StatusSeeOther)
+		Log.Error(msg)
+		return
+	}
+
+	var role = getRoleFromApikey(apikey)
+	if role > 3 {
+		var msg = "Vous n'avez pas accès au listing des tickets"
+		http.Redirect(w, r, RouteIndex+"?message="+msg, http.StatusSeeOther)
+		Log.Error(msg)
+		return
+	}
+
+	if r.Method == http.MethodGet {
 
 		idTicketStr := r.URL.Query().Get("idTicket")
 
@@ -239,4 +255,26 @@ func getRoleFromApikey(apikey string) int64 {
 		Log.Error("User doesn't return anything")
 		return -1
 	}
+}
+
+func getApikeyFromCookie(w http.ResponseWriter, r *http.Request) string {
+	cookies := r.Cookies()
+
+	var apikey string
+	var leBool = false
+	for _, cookie := range cookies {
+		if cookie.Name == "apikey" {
+			apikey = cookie.Value
+			leBool = true
+		}
+	}
+
+	if leBool == false {
+		var msg = "Need to apikey"
+		http.Redirect(w, r, RouteIndex+"?message="+msg, http.StatusSeeOther)
+		Log.Error(msg)
+		return ""
+	}
+
+	return apikey
 }
