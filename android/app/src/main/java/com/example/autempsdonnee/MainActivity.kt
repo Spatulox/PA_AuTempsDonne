@@ -8,10 +8,9 @@ import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.autempsdonnee.login.Login
 import com.example.autempsdonnee.Managers.ApiKeyManager
+import com.example.autempsdonnee.Managers.LocalUserManager
 import com.example.autempsdonnee.login.Register
 import com.example.autempsdonnee.utils.Popup
-import com.example.autempsdonnee.api.RequestApi
-import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // If something went went wrong, there is still a posibiliti to connect
         var btn_connect = findViewById<Button>(R.id.connectingMain)
         var btn_register = findViewById<Button>(R.id.registerMain)
 
@@ -35,23 +35,21 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        // Récupérer l'apikey
+        // Récupérer l'apikey pour afficher des truc différent
         val apiKey = ApiKeyManager.getApiKey(this)
 
         if (apiKey == null) {
             // Launch the connection activity
             val intent = Intent(this, Login::class.java)
             ResultLauncher.launch(intent)
+
+
         } else {
-            var requestApi = RequestApi()
             popup.makeToast(this, "Loading informations")
-            RequestApi().Get(this, "/user") { responseData ->
-                if (responseData !is JSONObject) {
-                    return@Get
-                }
-                println(responseData)
-            }
+
+                LocalUserManager.refreshData(this@MainActivity)
         }
+
     }
 
     // Launch another activity (login or register) and "wait" a response from it
@@ -73,12 +71,40 @@ class MainActivity : AppCompatActivity() {
 }
 
 
+/*
+EXEMPLE POUR RÉCUPÉRER LES ENTREPOTS
+Entrepot().getEntrepot(this){ response ->
+    var json = Api().castToJson(this, response)
+
+    when (json) {
+        is JSONObject -> {
+            val idEntrepot = json.getString("id_entrepot")
+            popup.showInformationDialog(this, idEntrepot)
+        }
+        is JSONArray -> {
+            if (json.length() > 0) {
+                val firstObject = json.getJSONObject(0)
+                val idEntrepot = firstObject.getString("id_entrepot")
+                popup.showInformationDialog(this, idEntrepot)
+                popup.showInformationDialog(this, json.toString())
+            } else {
+                popup.makeToast(this, "Le tableau JSON est vide")
+            }
+        }
+        else -> {
+            popup.makeToast(this, "Impossible de traiter les données JSON")
+        }
+    }
+}
+
+
+ */
+
 
 /*
 
 ## EXEMPLE POUR GET ##
 
-var requestApi = RequestApi()
 popup.makeToast(this, "Loading informations")
 RequestApi().Get(this, "/user") { responseData ->
     if (responseData !is JSONObject) {

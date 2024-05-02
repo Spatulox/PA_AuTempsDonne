@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import com.example.autempsdonnee.Managers.ApiKeyManager
 import com.example.autempsdonnee.R
-import com.example.autempsdonnee.api.apiLogin
+import com.example.autempsdonnee.api.ApiLogin
 import com.example.autempsdonnee.utils.Popup
 
 
@@ -39,7 +39,7 @@ class Login : AppCompatActivity() {
                 return@setOnClickListener
             }
             else{
-                var apiLogin = apiLogin()
+                var apiLogin = ApiLogin()
                 var apiiiii = ApiKeyManager.getApiKey(this)
                 if(apiLogin.login(this, mailText, passwordText)){
                     popup.makeToast(this, apiiiii.toString())
