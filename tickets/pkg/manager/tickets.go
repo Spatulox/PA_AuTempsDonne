@@ -9,12 +9,12 @@ import (
 	"time"
 )
 
-func CreateTickets(idOwner int, description string, categorie int) bool {
+func CreateTickets(idOwner int64, description string, categorie int) bool {
 	var etape = "1"
 
 	var bdd Db
 
-	if !checkUserExist(idOwner) {
+	if !checkUserExist(int(idOwner)) {
 		return false
 	}
 
