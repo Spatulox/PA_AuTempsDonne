@@ -1,6 +1,7 @@
 package web
 
 import (
+	"strconv"
 	. "tickets/pkg/const"
 	. "tickets/pkg/manager"
 	//"encoding/json"
@@ -55,12 +56,32 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodGet {
 
-		resultT := RecupTickets(nil)
+		//idTicket
 
-		templates.ExecuteTemplate(w, "listTickets.html", map[string]interface{}{
-			"result":  resultT,
-			"message": nil,
-		})
+		idTicketStr := r.URL.Query().Get("idTicket")
+
+		if idTicketStr == "" {
+			resultT := RecupTickets(nil)
+
+			templates.ExecuteTemplate(w, "listTickets.html", map[string]interface{}{
+				"result":  resultT,
+				"message": nil,
+			})
+		} else {
+
+			idTicketInt, err := strconv.Atoi(idTicketStr)
+			if err != nil {
+				http.Error(w, "Le paramètre 'idTicket' doit être un entier", http.StatusBadRequest)
+				return
+			}
+
+			resultT := RecupTickets(&idTicketInt)
+
+			templates.ExecuteTemplate(w, "oneTicket.html", map[string]interface{}{
+				"result":  resultT,
+				"message": nil,
+			})
+		}
 
 	} else {
 		http.Redirect(w, r, RouteIndex, http.StatusSeeOther)

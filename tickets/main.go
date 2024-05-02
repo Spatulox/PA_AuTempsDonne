@@ -10,7 +10,7 @@ func main() {
 
 	// Start a goroutine for an asynchronous listen to have the CLI
 	//go EnableHandlers()
-	go EnableHandlers()
+	EnableHandlers()
 
 	RecupTickets(nil)
 
@@ -31,10 +31,10 @@ func main() {
 
 	AddMessageTickets("coucou", 5, 2)
 
-	result, err2 := RecupConversation(5)
+	/*result, err2 := RecupConversation(5)
 
 	if err2 != nil {
 		Log.Error("Error")
-	}
-	println(result)
+	}*/
+	//println(result)
 }

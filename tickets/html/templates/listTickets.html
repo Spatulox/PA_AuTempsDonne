@@ -33,6 +33,7 @@
                     <th>Id Admin</th>
                     <th>Étape</th>
                     <th>Catégorie</th>
+                    <th>Voir le Ticket</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -46,6 +47,7 @@
                     <td>{{ .IdAdmin }}</td>
                     <td>{{ .IdEtape }}</td>
                     <td>{{ .IdCategorie }}</td>
+                    <td><button class="marginAuto block" type="button" onclick="redirectToIdList('{{ .IdTicket }}')">Voir</button></td>
                 </tr>
                 {{ end }}
                 </tbody>

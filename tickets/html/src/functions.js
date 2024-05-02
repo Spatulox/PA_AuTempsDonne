@@ -23,33 +23,17 @@ function redirectToMainMenu(){
 
 // Function to redirect to the reservation list
 function redirectToMainList() {
-    window.location.href = `/reservation`;
+    window.location.href = `/list`;
 }
 
 // Function to redirect to create a reservation
-function redirectToCreateReserv() {
-    window.location.href = `/reservation/create`;
-}
-
-function redirectToCreateRoom(){
-    window.location.href = `/salle/create`;
-}
-
-// Function to redirect to the solo reservation corresponding to the id room entered
-function redirectToRoomList() {
-    const idRoom = document.querySelector('input[name="idRoom"]').value;
-    window.location.href = `/reservation/list?idRoom=${idRoom}`;
-}
-
-// Function to redirect to the solo reservation corresponding to the date entered
-function redirectToDateList() {
-    const idRoom = document.querySelector('input[name="idDate"]').value;
-    window.location.href = `/reservation/list?idDate=${idRoom}`;
+function redirectToCreateTicket() {
+    window.location.href = `/list/create`;
 }
 
 // Function to redirect to the solo reservation corresponding to the id entered
 function redirectToIdList(id) {
-    window.location.href = `/reservation/list?idReserv=${id}`;
+    window.location.href = `/list?idTicket=${id}`;
 }
 
 // Function to delete a reservation
