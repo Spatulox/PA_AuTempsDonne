@@ -117,12 +117,12 @@ function optionPost(formData){
 //-------------------------------------------------------------------------------------
 //
 
-function optionGet(formData){
+function optionGet(){
     return {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': '1234'
+            'apikey': '8f96e6e91f136ea4ee7150d8a656cc57ab1de2021dac5e78e3a79242cf88c055'
         }
     }
 }
@@ -133,6 +133,8 @@ function optionGet(formData){
 
 // Called in every page when they finisehd to load, to detect a message in the url
 const urlParams = new URLSearchParams(window.location.search);
+
+console.log(urlParams)
 
 if (urlParams.has('message')) {
     const messageValue = urlParams.get('message');
