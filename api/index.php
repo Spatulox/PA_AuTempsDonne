@@ -8,6 +8,8 @@ include_once './Controller/entrepotController.php';
 include_once './Controller/planningController.php';
 include_once './Controller/produitController.php';
 include_once './Controller/demandeController.php';
+include_once './Controller/stockController.php';
+
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
 error_reporting(E_ERROR | E_PARSE);
