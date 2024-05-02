@@ -19,9 +19,9 @@ class StockRepository {
         $stock = [];
 
         for ($i = 0; $i < count($stockArray); $i++) {
-            $dateEntre = $stockArray[$i]['date_entree'];// ? date('Y-m-d', strtotime($stockArray[$i]['date_entre'])) : 'Non définie';
-            $dateSortie = $stockArray[$i]['date_sortie'];// ? date('Y-m-d', strtotime($stockArray[$i]['date_sortie'])) : 'Non définie';
-            $datePeremption = $stockArray[$i]['date_peremption'];// ? date('Y-m-d', strtotime($stockArray[$i]['date_peremption'])) : 'Non définie';
+            $dateEntre = $stockArray[$i]['date_entree'] ? date('Y-m-d', strtotime($stockArray[$i]['date_entre'])) : 'Non définie';
+            $dateSortie = $stockArray[$i]['date_sortie'] ? date('Y-m-d', strtotime($stockArray[$i]['date_sortie'])) : 'Non définie';
+            $datePeremption = $stockArray[$i]['date_peremption'] ? date('Y-m-d', strtotime($stockArray[$i]['date_peremption'])) : 'Non définie';
         }
 
         for ($i = 0; $i < count($stockArray); $i++) {
