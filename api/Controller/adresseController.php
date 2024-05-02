@@ -1,25 +1,25 @@
 <?php
-include_once './Service/trajetService.php';
-include_once './Models/trajetModel.php';
+include_once './Service/adresseService.php';
+include_once './Models/adresseModel.php';
 include_once './exceptions.php';
 
 $googleApiKey = 'AIzaSyC9WzDphICufUy1vaD1xjwhK3cI7pWJi9c';
 
-function trajetController($uri, $apiKey){
+function adresseController($uri, $apiKey){
     switch ($_SERVER['REQUEST_METHOD']){
         case 'GET':
             if($apiKey == null){
                 exit_with_message("Unauthorized, need the apikey", 403);
             }
 
-            $TrajetService = new trajetService();
+            $AdresseService = new adresseService();
             if(!$uri[3]){
-                exit_with_content($TrajetService->getAllTrajet());
+                exit_with_content($AdresseService->getAllAdresse());
             }
 
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                exit_with_content($TrajetService->getTrajetById($uri[3]));
+                exit_with_content($AdresseService->getAdresseById($uri[3]));
             }
 
 

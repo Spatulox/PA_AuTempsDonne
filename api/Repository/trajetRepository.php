@@ -9,14 +9,19 @@ class TrajetRepository {
     }
 
     public function getAllTrajet(){
-        $trajetArray = selectDB("TRAJETS", "id_trajets", -1,"-@");
+        $trajetArray = selectDB("TRAJETS", "id_trajets", -1,"bool");
+
+        if(!$trajetArray){
+            exit_with_message("huh1");
+        }
 
         $trajet = [];
 
         for ($i=0; $i < count($trajetArray); $i++) {
 
             $test = new TrajetModel(
-                $trajetArray[$i]['id_trajets']
+                $trajetArray[$i]['id_trajets'],
+                "N/A"
             );
             $trajet[$i] = $test;
         }
@@ -24,14 +29,24 @@ class TrajetRepository {
     }
 
     public function getTrajetById($id){
-        $trajet = selectDB("TRAJETS", "*", "id_='".$id."'")[0];
+        $rows = selectDB("UTILISER", "id_trajets, id_adresse", "id_trajets=".$id, "-@");
 
-        $trajetModel = new TrajetModel(
-            $trajet['id_trajets']
-        );
+        if (!$rows) {
+            exit_with_message("huh2");
+        }
 
+        $trajet = [];
 
-        return $trajetModel;
+        foreach ($rows as $row) {
+            $trajetModel = new TrajetModel(
+                $row['id_trajets'],
+                $row['id_adresse']
+            );
+
+            $trajet[] = $trajetModel;
+        }
+
+        return $trajet;
     }
 
     public function createTrajet($addressIds) {
