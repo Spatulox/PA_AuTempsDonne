@@ -97,7 +97,7 @@ class StockService {
             }
 
             if (($stock->date_sortie != "NULL" && $stock->date_entree =="NULL")) {
-
+                $sum = 0;
                 if (!$this->isValidDate($stock->date_sortie)) {
                 exit_with_message("Erreur : La date de sortie est invalide. Le format attendu est AAAA-MM-JJ.", 403);
                 }
@@ -106,9 +106,24 @@ class StockService {
 
                 $id_produit_stock = array();
                 foreach ($test as $item) {
-                    $id_produit_stock[] = $item->id_stock;
+                    $id_produit_stock[] = array(
+                        'id_stock' => $item->id_stock,
+                        'quantite_produit' => $item->quantite_produit,
+                        'date_entree' => $item->date_entree,
+                        'date_sortie' => $item->date_sortie
+
+                    );
+                    if ($item->date_entree != null){
+                        $sum= $sum +$item->quantite_produit;
+                    }else{
+                        $sum=$sum-$item->quantite_produit;
+                    }
                 }
-                return $id_produit_stock;
+
+               if ($sum-$stock->quantite_produit <=0){
+                   exit_with_message(" il n'y a pas acces de stock de ce produit dans cette entrepots");
+               }
+
             }
 
             if ($stock->date_peremption == "NUlL"){

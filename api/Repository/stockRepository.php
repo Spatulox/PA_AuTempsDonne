@@ -60,22 +60,20 @@ class StockRepository {
         $stock = [];
 
         for ($i = 0; $i < count($stockArray); $i++) {
-            $dateEntre = $stockArray[$i]['date_entree'] ? date('Y-m-d', strtotime($stockArray[$i]['date_entre'])) : 'Non définie';
+
+            $dateEntre = $stockArray[$i]['date_entree'] ? date('Y-m-d', strtotime($stockArray[$i]['date_entree'])) : 'Non définie';
             $dateSortie = $stockArray[$i]['date_sortie'] ? date('Y-m-d', strtotime($stockArray[$i]['date_sortie'])) : 'Non définie';
             $datePeremption = $stockArray[$i]['date_peremption'] ? date('Y-m-d', strtotime($stockArray[$i]['date_peremption'])) : 'Non définie';
-        }
-
-        for ($i = 0; $i < count($stockArray); $i++) {
 
             $stock[$i] = new StockModel(
-                $stockArray[$i] ['id_stock'],
-                $stockArray[$i] ['quantite_produit'],
+                $stockArray[$i]['id_stock'],
+                $stockArray[$i]['quantite_produit'],
                 $dateEntre,
                 $dateSortie,
                 $datePeremption,
-                $stockArray[$i] ['desc_produit'],
-                $stockArray[$i] ['id_produit'],
-                $stockArray[$i] ['id_entrepot']
+                $stockArray[$i]['desc_produit'],
+                $stockArray[$i]['id_produit'],
+                $stockArray[$i]['id_entrepot']
             );
             $stock[$i]->setIndexProduit(selectDB("PRODUIT", "nom_produit", "id_produit=".$stockArray[$i]['id_produit'])[0]);
             $stock[$i]->setentrepot(selectDB("ENTREPOTS", "nom_entrepot", "id_entrepot=".$stockArray[$i]['id_entrepot'])[0]);
@@ -97,7 +95,7 @@ class StockRepository {
             $stock->desc_produit,
             $stock->id_produit,
             $stock->id_entrepot
-        ],"-@");
+        ]);
 
         if(!$create){
             exit_with_message("Error, the Stock can't be created, plz try again", 500);
@@ -120,6 +118,7 @@ class StockRepository {
         $string_produits = "id_produit=" .$produit ;
         $produits= selectDB("PRODUIT", "id_produit",$string_produits,"bool");
 
+
         if(!$produits){
             exit_with_message("ce produit n'existe pas  ", 200);
         }
@@ -129,15 +128,11 @@ class StockRepository {
 
         $stock = [];
 
-
-
         for ($i = 0; $i < count($stockArray); $i++) {
-            $dateEntre = $stockArray[$i]['date_entree'] ? date('Y-m-d', strtotime($stockArray[$i]['date_entre'])) : 'Non définie';
-            $dateSortie = $stockArray[$i]['date_sortie'] ? date('Y-m-d', strtotime($stockArray[$i]['date_sortie'])) : 'Non définie';
-            $datePeremption = $stockArray[$i]['date_peremption'] ? date('Y-m-d', strtotime($stockArray[$i]['date_peremption'])) : 'Non définie';
-        }
 
-        for ($i = 0; $i < count($stockArray); $i++) {
+            $dateEntre = $stockArray[$i]['date_entree'];
+            $dateSortie = $stockArray[$i]['date_sortie'];
+            $datePeremption = $stockArray[$i]['date_peremption'];
 
             $stock[$i] = new StockModel(
                 $stockArray[$i] ['id_stock'],
