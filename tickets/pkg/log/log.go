@@ -1,4 +1,4 @@
-package Projet_GO_Reservation
+package log
 
 import (
 	"fmt"
