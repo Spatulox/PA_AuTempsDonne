@@ -6,11 +6,10 @@ include_once './Controller/loginController.php';
 include_once './Controller/userController.php';
 include_once './Controller/entrepotController.php';
 include_once './Controller/planningController.php';
-include_once './Controller/activiteController.php';
+include_once './Controller/produitController.php';
+include_once './Controller/demandeController.php';
+include_once './Controller/stockController.php';
 
-/*include_once './Controller/apartmentController.php';
-include_once './Controller/reservationController.php';
-*/
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
 error_reporting(E_ERROR | E_PARSE);
@@ -49,8 +48,9 @@ function exit_with_content($content = null, $code = 200) {
 
 function getRoleFromApiKey($apiKey){
     if($apiKey == null){
-        return false;
+        exit_with_message("The apikey is empty", 403);
     }
+
     $role = selectDB("UTILISATEUR", 'id_role', "apikey='".$apiKey."'", "bool");
     if($role){
         $role = $role[0]["id_role"];
@@ -63,7 +63,12 @@ function getRoleFromApiKey($apiKey){
 
 function getIdUserFromApiKey($apiKey){
     if($apiKey == null){
-        return false;
+        exit_with_message("The apikey is empty", 403);
+    }
+
+    $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool");
+    if($id){
+        $id = $id[0]["id_user"];
     }
 
     $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool"); 
@@ -108,8 +113,22 @@ function controller($uri) {
         case 'planning':
             planningController($uri, $apiKey);
             break;
+        case 'activite':
+            activiteController($uri, $apiKey);
+            break;
 
-      break;
+        case 'produit':
+            collectController($uri, $apiKey);
+            break;
+
+        case 'demande':
+            demandeController($uri, $apiKey);
+            break;
+        case 'stock':
+            StockController($uri, $apiKey);
+            break;
+
+
 
         default:
             // Si la ressource demandée n'existe pas, alors on renvoie une erreur 404

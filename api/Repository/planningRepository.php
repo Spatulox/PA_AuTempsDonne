@@ -99,7 +99,7 @@ class PlanningRepository {
             $planning->id_index_planning,
             $planning->id_activite
         ],
-        "id_planning=" . $planning->id_planning,"-@"
+        "id_planning=" . $planning->id_planning
     );
 
     if (!$updated) {
@@ -139,7 +139,7 @@ class PlanningRepository {
             exit_with_message("Ce planning n'existe pas");
         }
 
-        $create = insertDB("PARTICIPE", [ "id_user", "id_planning","confirme"], [$userId, $planningId ,$confirme],"-@");
+        $create = insertDB("PARTICIPE", [ "id_user", "id_planning","confirme"], [$userId, $planningId ,$confirme]);
 
 
         if ($create) {

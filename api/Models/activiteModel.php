@@ -1,5 +1,8 @@
-<?php  
-class ActiviteModel {
+<?php
+
+include_once './Repository/BDD.php';
+
+class ActiviteModels{
     public $id_activite;
     public $nom_activite;
 
@@ -9,4 +12,6 @@ class ActiviteModel {
     }
 
 }
+
+
     ?>

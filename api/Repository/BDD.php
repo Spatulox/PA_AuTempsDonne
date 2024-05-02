@@ -40,21 +40,32 @@ function checkData($table = -10, $columnArray = -10, $columnData = -10, $conditi
 # -------------------------------------------------------------- #
 
 function connectDB(){
+
+	// Lire le contenu du fichier JSON
+	$json_file = file_get_contents('/var/www/html/env.json');
+
+	// Décoder le contenu JSON en un tableau PHP
+	$data = json_decode($json_file, true);
+
+	$dbHost = $data['DB_HOST'];
+	$dbPort = $data['DB_PORT'];
+	$dbName = $data['DB_NAME'];
+	$dbUser = $data['DB_USER'];
+	$dbPassword = $data['DB_PASSWORD'];
+
 	try {
 	    $db = new PDO(
-	        'mysql:host=pa_autempsdonne-database-1;
-	        port=3306;
-	        dbname=apiDev_db;
-	        user=apiDev;
-	        password=password',
+	        'mysql:host='.$dbHost.';
+	        port='.$dbPort.';
+	        dbname='.$dbName.';
+	        user='.$dbUser.';
+	        password='.$dbPassword.'',
 	        null,
 	        null,
 	        array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
 	    );
 	} catch (Exception $e) {
-
 		die($e);
-		//die(exit_with_message("ERROR : Connection BDD error"));
 	}
 
 	return $db;
@@ -386,17 +397,18 @@ function deleteDB($table, $condition, $debug = null)
 	}
 	catch (PDOException $e)
 	{
+
+        if($debug == "-@"){
+            exit_with_message("PDO error :" . $e->getMessage());
+        }
+
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
 			exit_with_message("Error : ".str_replace('"', "'", $tmp));
 		}
 
-        if($debug == "-@"){
-            exit_with_message("PDO error :" . $e->getMessage());
-        }
-
-	    //exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
+	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
 	}
 	
 	return false;
