@@ -220,29 +220,37 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 	if (gettype($columnData[0]) == "boolean") {
 	    $columnData[$i] == "1" ? $tmp = "true" : $tmp = "false";
 	    $data = $tmp;
-	} 
-	else if (gettype($columnData[0]) == "integer"){
-	    $data = $columnData[0];
 	}
+    else if (gettype($columnData[0]) == "integer"){
+        $data = $columnData[0];
+    }
+    else if ($columnData[0] == "NULL"){
+        $data = NULL;
+    }
 	else{
 		$data = "'".$columnData[0]."'";
 	}
+
 
 	for ($i=1; $i < count($columnData) ; $i++) { 
 		if (gettype($columnData[$i]) == "boolean") {
 		    $columnData[$i] == "1" ? $tmp = "true" : $tmp = "false";
 		    $data .= ", " . $tmp;
-		} 
-		else if (gettype($columnData[$i]) == "integer"){
-			
-		    $data .= ", " . $columnData[$i];
 		}
+        else if (gettype($columnData[$i]) == "integer"){
+
+            $data .= ", " . $columnData[$i];
+        }
+        else if ($columnData[$i] == "NULL"){
+            $data .= ", " . $columnData[$i];
+        }
 		else{
 			$data .= ", '" . $columnData[$i]."'";
 		}
 	}
 
-	$dbRequest = 'INSERT INTO '. $table .' (' . $colums . ') VALUES ('. $data . ')';
+
+    $dbRequest = 'INSERT INTO '. $table .' (' . $colums . ') VALUES ('. $data . ')';
 	
 	if($returningData == "-@"){
 		var_dump($dbRequest);
