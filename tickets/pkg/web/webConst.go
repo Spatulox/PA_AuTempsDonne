@@ -1,4 +1,4 @@
-package _const
+package web
 
 import (
 	"html/template"
@@ -8,6 +8,8 @@ const (
 	// Global things
 	PORT       = "8085"
 	RouteIndex = "/"
+
+	RouteListTickets = "/list"
 
 	// Route for reservation
 

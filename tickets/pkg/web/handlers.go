@@ -2,6 +2,7 @@ package web
 
 import (
 	. "tickets/pkg/const"
+	. "tickets/pkg/manager"
 	//"encoding/json"
 	"net/http"
 	//"strconv"
@@ -12,12 +13,13 @@ import (
 func EnableHandlers() {
 
 	// Create the directory with static file like CSS and JS
-	staticDir := http.Dir("templates/src")
+	staticDir := http.Dir("html/src")
 	staticHandler := http.FileServer(staticDir)
 	http.Handle("/static/", http.StripPrefix("/static/", staticHandler))
 
 	// Create all the handle to "listen" the right path using const in webConst.go
-	//http.HandleFunc(RouteIndex, IndexHandler)
+	http.HandleFunc(RouteIndex, IndexHandler)
+	http.HandleFunc(RouteListTickets, RecupTicketsHandler)
 
 	// Reservation Handlers
 
@@ -34,5 +36,34 @@ func EnableHandlers() {
 		return
 	}
 	Log.Infos("Server stopped on port " + PORT)
+
+}
+
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == http.MethodGet {
+
+		templates.ExecuteTemplate(w, "menu.html", nil)
+
+	} else {
+		http.Redirect(w, r, RouteIndex, http.StatusSeeOther)
+	}
+
+}
+
+func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == http.MethodGet {
+
+		resultT := RecupTickets(nil)
+
+		templates.ExecuteTemplate(w, "listTickets.html", map[string]interface{}{
+			"result":  resultT,
+			"message": nil,
+		})
+
+	} else {
+		http.Redirect(w, r, RouteIndex, http.StatusSeeOther)
+	}
 
 }
