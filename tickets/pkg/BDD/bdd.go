@@ -17,7 +17,7 @@ type Db struct {
 // Renvoie une structure database
 func connectDB() (db *sql.DB, errG error) {
 
-	db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/go_reserv")
+	db, err := sql.Open("mysql", "root:password@tcp(localhost:3306)/apiDev_db")
 	if err != nil {
 		Log.Error("Impossible de se connecter à la BDD", err)
 		return nil, errG
