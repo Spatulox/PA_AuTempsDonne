@@ -1,0 +1,453 @@
+body{
+    margin: 0px;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 8vh 1fr 10vh;
+}
+
+main{
+	padding: 20px 0px;
+    background-color: #FDF0E7;
+}
+
+header {
+  z-index: 1;
+  padding: 0px 10px
+}
+
+header, footer {
+    align-items: center;
+    background-color: #d48827;
+    background-color: #ffE28C;
+    position: relative;
+}
+
+button[type="submit"], button[type="button"], .btn, input[type="file"]{
+  cursor: pointer;
+}
+
+
+
+button[type="submit"], button[type="button"], .btn, input[type="file"] {
+  background-image: linear-gradient(to right, #FF9570, #ffAE70);
+  border: none;
+  color: white;
+  padding: 14px 28px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease-in-out;
+}
+
+button[type="submit"]:hover, button[type="button"]:hover, .btn:hover, input[type="file"]:hover {
+  background-color: #005A7E;
+  transform: scale(1.01);
+  transition: all 0.3s ease-in-out;
+}
+
+
+table {
+	margin: auto;
+    width: 80%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+
+tbody {
+    background-color: white;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+
+/* ID */
+
+#errorPopup{
+	width: 30%;
+	position: fixed;
+	z-index: 0;
+	max-height: 200px;
+	left: 50%;
+	top: -200px;
+	transform: translateX(-50%);
+	background-color: gray;
+	border-radius: 20px;
+	padding: 10px;
+	transition: all 0.5s ease-in-out;
+}
+
+#errorPopup.active{
+	top: 15px;
+	transition: all 0.5s ease-in-out;
+}
+
+#popup-content{
+	display: flex;
+	justify-content: center;
+	flex-wrap: nowrap;
+	z-index: 0;
+}
+
+#errorMessage{
+	margin: inherit;
+	width: 100%;
+	text-align: center;
+}
+
+#reservation{
+	margin-bottom: 20px;
+}
+
+#reservation input, #reservation button, #reservation label{
+	width: 50%;
+
+	display: block;
+  	margin: auto;
+    margin-top: auto;
+  	margin-top: 10px;
+}
+
+
+
+/* CLASSES */
+
+.popup iframe {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 560px;
+  height: 315px;
+}
+
+.menu-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 2rem 0;
+}
+
+.menu-list {
+	list-style-type: none;
+	padding: 0;
+	width: 100%;
+	max-width: 350px;
+}
+
+.menu-list li {
+	background-color: #d5d2d2;
+	border-radius: 5px;
+	margin-bottom: 1rem;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s ease-in-out;
+}
+
+.menu-list li:hover {
+	transform: translateX(5px);
+}
+
+.menu-list a {
+	display: block;
+	color: #333;
+	text-decoration: none;
+	padding: 1rem;
+	font-size: 1.1rem;
+}
+
+.menu-list a:hover {
+	color: #000;
+}
+
+.btn{
+	padding: 10px;
+	background-color: red;
+	border-radius: 5px;
+}
+
+
+/* FORM */
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  font-weight: bold;
+  margin-left: 5%;
+}
+
+.form-group input {
+  width: 80%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-left: 10%;
+
+}
+
+.form-group input:focus {
+  border-color: #999;
+}
+
+.form-group .button {
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.form-group .button:hover {
+  background-color: #444;
+}
+
+
+.title_form {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+
+/*############################ /* Utility */
+
+.alignCenter{
+  align-content: center;
+  align-items: center;
+  align-self: center
+}
+
+.block{
+  display: block;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.border {
+  border-radius: 20px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  padding: 50px;
+  margin: auto 50px;
+}
+
+.flex{
+  display: flex;
+}
+
+.flexCenter{
+  justify-content: center;
+}
+
+.flexAround{
+  justify-content: space-around;
+}
+
+.flexBetween{
+  justify-content: space-between;
+}
+
+.height20{
+    height: 20%;
+}
+
+.height30{
+    height: 30%;
+}
+
+.height40{
+    height: 40%;
+}
+
+.height50{
+    height: 50%;
+}
+
+.height60{
+    height: 60%;
+}
+
+.height80{
+    height: 80%;
+}
+
+.height100{
+    height: 100%;
+}
+
+.noDecoration{
+    text-decoration: none;
+    list-style: none;
+}
+
+.noDecoration > li {
+    text-decoration: none;
+    list-style: none;
+}
+
+.noMargin{
+    margin: 0px;
+}
+
+.noMarginImportant{
+    margin: 0px !important;
+}
+
+.noMarginBottom{
+    margin-bottom: 0px;
+}
+
+.noMarginTop{
+    margin-top: 0px;
+}
+
+.noMarginRight{
+    margin-right: 0px;
+}
+
+.noMarginLeft{
+    margin-left: 0px;
+}
+
+.noPadding{
+    padding: 0px;
+}
+
+.noPaddingBottom{
+    padding-bottom: 0px;
+}
+
+.noPaddingTop{
+    padding-top: 0px;
+}
+
+.noPaddingRight{
+    padding-right: 0px;
+}
+
+.noPaddingLeft{
+    padding-left: 0px;
+}
+
+.marginAuto{
+    margin: auto;
+}
+
+.marginTop10{
+    margin-top: 10px;
+}
+
+.marginBottom10{
+    margin-bottom: 10px;
+}
+
+.marginTop20{
+    margin-top: 20px;
+}
+
+.marginBottom20{
+    margin-bottom: 20px;
+}
+
+.marginTop30{
+    margin-top: 30px;
+}
+
+.marginBottom30{
+    margin-bottom: 30px;
+}
+
+.marginTop40{
+    margin-top: 40px;
+}
+
+.marginBottom40{
+    margin-bottom: 40px;
+}
+
+.marginTopBottom8Pourcent{
+    margin: 8% 0;
+}
+
+.nowrap{
+  flex-wrap: nowrap;
+}
+
+.padding5{
+    padding: 5px;
+}
+
+.padding10{
+    padding: 10px;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.textCenter{
+    text-align: center;
+}
+
+.underline{
+  text-decoration: underline;
+}
+
+.width10{
+    width: 10%;
+}
+
+.width20{
+    width: 20%;
+}
+
+.width30{
+    width: 30%;
+}
+
+.width40{
+    width: 40%;
+}
+
+.width50{
+    width: 50%;
+}
+
+.width60{
+    width: 60%;
+}
+
+.width80{
+    width: 80%;
+}
+
+.width100{
+    width: 100%;
+}
+
+.widthAuto{
+    width: auto;
+}
+
+.wrap{
+  flex-wrap: wrap;
+}
