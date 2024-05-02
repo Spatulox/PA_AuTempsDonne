@@ -1,7 +1,10 @@
 package web
 
 import (
+	"encoding/json"
+	"fmt"
 	"strconv"
+	. "tickets/pkg/BDD"
 	. "tickets/pkg/const"
 	. "tickets/pkg/manager"
 	//"encoding/json"
@@ -21,6 +24,7 @@ func EnableHandlers() {
 	// Create all the handle to "listen" the right path using const in webConst.go
 	http.HandleFunc(RouteIndex, IndexHandler)
 	http.HandleFunc(RouteListTickets, RecupTicketsHandler)
+	http.HandleFunc(RouteListCreerTickets, CreerTicketsHandler)
 
 	// Reservation Handlers
 
@@ -40,6 +44,10 @@ func EnableHandlers() {
 
 }
 
+//
+//---------------------------------------------------------------------------------
+//
+
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodGet {
@@ -51,6 +59,10 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+//
+//---------------------------------------------------------------------------------
+//
 
 func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -87,4 +99,144 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, RouteIndex, http.StatusSeeOther)
 	}
 
+}
+
+//
+//---------------------------------------------------------------------------------
+//
+
+func CreerTicketsHandler(w http.ResponseWriter, r *http.Request) {
+
+	var bdd Db
+
+	if r.Method == http.MethodGet {
+		result, err := bdd.SelectDB(CATEGORIES, []string{"*"}, nil, nil)
+
+		if err != nil {
+			Log.Error("Impossible de sélectionner les catégories")
+			http.Redirect(w, r, RouteIndex, http.StatusSeeOther)
+			return
+		}
+
+		templates.ExecuteTemplate(w, "creerTicket.html", map[string]interface{}{
+			"result":  result,
+			"message": nil,
+		})
+	} else if r.Method == http.MethodPost {
+
+		var params struct {
+			Description string `json:"description"`
+			Categorie   string `json:"categorie"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&params)
+		if err != nil {
+			var msg = "Erreur lors de la lecture du corps de la requête 1"
+			http.Error(w, msg, http.StatusBadRequest)
+			Log.Error(msg)
+			return
+		}
+
+		description := params.Description
+		var cat = stringToInt(params.Categorie, w)
+		if cat == -1 {
+			return
+		}
+
+		id_categorie := cat
+
+		apiKey := r.Header.Get("apikey")
+		if apiKey == "" {
+			var msg = "Missing API key"
+			http.Error(w, msg, http.StatusUnauthorized)
+			Log.Error(msg)
+			return
+		}
+
+		var idUser = getIdUserFromApikey(apiKey)
+
+		if idUser == -1 {
+			return
+		}
+
+		var role = getRoleFromApikey(apiKey)
+		if role == -1 {
+			return
+		}
+
+		if role == 1 || role == 2 {
+			var msg = "Vous ne pouvez pas créer un ticket en étant un admin"
+			http.Error(w, msg, http.StatusBadRequest)
+			Log.Error(msg)
+			return
+		}
+
+		if !CreateTickets(idUser, description, id_categorie) {
+			var msg = "Error when creating ticket"
+			http.Error(w, msg, http.StatusBadRequest)
+			Log.Error(msg)
+			return
+		}
+
+		var msg = "Ticket créé avec succès"
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprintf(w, msg)
+		return
+
+	}
+
+}
+
+//
+//----------------------------------------------------------------------------------------------------------------------
+//
+
+func stringToInt(leString string, w http.ResponseWriter) int {
+	categorieInt, err := strconv.Atoi(leString)
+	if err != nil {
+		var msg = "Erreur lors de la conversion de string vers int"
+		http.Error(w, msg, http.StatusBadRequest)
+		Log.Error(msg)
+		return -1
+	}
+
+	return categorieInt
+}
+
+func getIdUserFromApikey(apikey string) int64 {
+	var bdd Db
+
+	var condition = "apikey='" + apikey + "'"
+	user, err := bdd.SelectDB(UTILISATEUR, []string{"id_user"}, nil, &condition)
+
+	if err != nil {
+		Log.Error("Error when trying to retrieve the id user from apikey")
+		return -1
+	}
+
+	if len(user) > 0 {
+		return user[0]["id_user"].(int64)
+	} else {
+		Log.Error("User doesn't return anything")
+		return -1
+	}
+}
+
+func getRoleFromApikey(apikey string) int64 {
+	var bdd Db
+
+	var condition = "apikey='" + apikey + "'"
+	user, err := bdd.SelectDB(UTILISATEUR, []string{"id_role"}, nil, &condition)
+
+	if err != nil {
+		Log.Error("Error when trying to retrieve the id user from apikey")
+		return -1
+	}
+
+	if len(user) > 0 {
+		return user[0]["id_role"].(int64)
+	} else {
+		Log.Error("User doesn't return anything")
+		return -1
+	}
 }

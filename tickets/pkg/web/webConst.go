@@ -9,7 +9,8 @@ const (
 	PORT       = "8085"
 	RouteIndex = "/"
 
-	RouteListTickets = "/list"
+	RouteListTickets      = "/list"
+	RouteListCreerTickets = "/create"
 
 	// Route for reservation
 
