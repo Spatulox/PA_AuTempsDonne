@@ -64,7 +64,7 @@ CREATE TABLE SEMAINE(
    PRIMARY KEY(id_dispo)
 );
 
-CREATE TABLE ETAPE(
+CREATE TABLE ETAPES(
    id_etape INT AUTO_INCREMENT,
    nom_etape VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_etape)
@@ -105,19 +105,26 @@ CREATE TABLE UTILISATEUR(
 );
 
 
+
+
+
 CREATE TABLE TICKETS(
    id_ticket INT AUTO_INCREMENT,
    description TEXT,
    date_creation DATETIME NOT NULL,
    date_cloture DATETIME,
+   id_user_admin INT,
    id_etape INT NOT NULL,
    id_categorie INT NOT NULL,
-   id_user INT NOT NULL,
+   id_user_owner INT NOT NULL,
    PRIMARY KEY(id_ticket),
-   FOREIGN KEY(id_etape) REFERENCES ETAPE(id_etape),
+   FOREIGN KEY(id_user_admin) REFERENCES UTILISATEUR(id_user),
+   FOREIGN KEY(id_etape) REFERENCES ETAPES(id_etape),
    FOREIGN KEY(id_categorie) REFERENCES CATEGORIES(id_categorie),
-   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
+   FOREIGN KEY(id_user_owner) REFERENCES UTILISATEUR(id_user)
 );
+
+
 
 
 CREATE TABLE PRODUIT(
@@ -327,7 +334,7 @@ INSERT INTO SEMAINE (dispo) VALUES
 ('Dimanche'),
 ('Vacances');
 
-INSERT INTO ETAPE (nom_etape) VALUES
+INSERT INTO ETAPES (nom_etape) VALUES
 ('En attente'),
 ('En cours'),
 ('Terminé'),
@@ -353,9 +360,35 @@ INSERT INTO TABINDEX (index_nom) VALUES
 ('actif'),
 ('attente de validation');
 
-INSERT INTO ADRESSE (adresse) VALUES    
-( 'non référencer'),
-( '24 Rue Roger Martinio, 02000 ');
+INSERT INTO ADRESSE (adresse) VALUES
+('10 Avenue des Champs-Élysées, 75008 Paris'),
+('15 Boulevard Saint-Michel, 75005 Paris'),
+('48 Rue de Rivoli, 75004 Paris'),
+('7 Rue de la Paix, 75002 Paris'),
+('20 Rue de la Convention, 75015 Paris'),
+("3 Place de l'Opéra, 75009 Paris"),
+('9 Rue du Faubourg Saint-Honoré, 75008 Paris'),
+('2 Boulevard de la Madeleine, 75008 Paris'),
+('33 Rue du Bac, 75007 Paris'),
+('12 Rue de la République, 69002 Lyon');
+
+INSERT INTO TRAJETS VALUES
+(1),
+(2),
+(3),
+(4),
+(5);
+
+INSERT INTO UTILISER (id_trajets, id_adresse) VALUES 
+(1,2), 
+(1,3), 
+(1,4), 
+(2,5), 
+(2,6), 
+(2,7), 
+(2,8), 
+(3,9), 
+(3,10);
 
 INSERT INTO UTILISATEUR (nom, prenom, email, telephone, date_inscription, apikey, mdp, id_adresse, id_entrepot, id_index, id_role) VALUES
 (
@@ -451,10 +484,10 @@ INSERT INTO UTILISATEUR (nom, prenom, email, telephone, date_inscription, apikey
 
 UPDATE UTILISATEUR SET apikey = SHA2(CONCAT(id_user, nom, prenom, mdp, email), 256) WHERE id_user IS NOT NULL;
 
-INSERT INTO TICKETS (description, date_creation, date_cloture, id_etape, id_categorie, id_user) VALUES
-('Besoin de vêtements d''hiver pour les sans-abri', '2024-04-01 10:00:00', '2024-04-15 18:00:00', 1, 2, 3),
-('Manque de bénévoles pour la distribution de repas', '2024-04-05 14:30:00', '2024-04-20 20:00:00', 2, 1, 7),
-('Problème avec l''équipement informatique de l''atelier', '2024-04-10 09:00:00', '2024-04-25 17:00:00', 3, 3, 13),
-('Difficulté à trouver des tuteurs pour le soutien scolaire', '2024-04-15 11:00:00', '2024-04-30 19:00:00', 4, 4, 19),
-('Besoin de bénévoles pour animer les visites aux personnes âgées', '2024-04-20 15:00:00', '2024-05-05 21:00:00', 5, 5, 25);
+INSERT INTO TICKETS (description, date_creation, date_cloture, id_user_admin, id_etape, id_categorie, id_user_owner) VALUES
+('Besoin de vêtements d''hiver pour les sans-abri', '2024-04-01 10:00:00', '2024-04-15 18:00:00', 1, 1, 2, 3),
+('Manque de bénévoles pour la distribution de repas', '2024-04-05 14:30:00', '2024-04-20 20:00:00', 2, 2, 1, 7),
+('Problème avec l''équipement informatique de l''atelier', '2024-04-10 09:00:00', '2024-04-25 17:00:00', 2, 3, 3, 13),
+('Difficulté à trouver des tuteurs pour le soutien scolaire', '2024-04-15 11:00:00', '2024-04-30 19:00:00', 2, 4, 4, 19),
+('Besoin de bénévoles pour animer les visites aux personnes âgées', '2024-04-20 15:00:00', '2024-05-05 21:00:00', 1, 5, 5, 25);
 
