@@ -11,6 +11,16 @@ CREATE TABLE ENTREPOTS(
    PRIMARY KEY(id_entrepot)
 );
 
+CREATE TABLE VEHICULES(
+   id_vehicule INT AUTO_INCREMENT,
+   capacite INT,
+   nom_du_vehicules VARCHAR(255),
+   nombre_de_place INT,
+   id_entrepot INT,
+   PRIMARY KEY(id_vehicule),
+   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot)
+);
+
 CREATE TABLE TABINDEX(
    id_index INT AUTO_INCREMENT,
    index_nom VARCHAR(50) NOT NULL,
@@ -38,6 +48,14 @@ CREATE TABLE INDEXPLANNING(
    id_index_planning INT AUTO_INCREMENT,
    index_nom_planning VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_index_planning)
+);
+
+CREATE TABLE CONDUIT(
+   id_trajets INT,
+   id_vehicule INT,
+   PRIMARY KEY(id_trajets, id_vehicule),
+   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets),
+   FOREIGN KEY(id_vehicule) REFERENCES VEHICULES(id_vehicule)
 );
 
 
@@ -195,14 +213,6 @@ CREATE TABLE LISTE(
    FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets)
 );
 
-CREATE TABLE STOCK(
-   id_entrepot INT,
-   id_trajets INT,
-   etape VARCHAR(50) NOT NULL,
-   PRIMARY KEY(id_entrepot, id_trajets),
-   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
-   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets)
-);
 
 CREATE TABLE RECOLTE(
    id_trajets INT,
