@@ -47,7 +47,12 @@ function vehiculeController($uri, $apiKey){
         case 'PUT':
             break;
 
-        case 'DELETE':
+        case 'DELETE':$VehiculeService = new vehiculeService();
+
+            if(!$uri[3]){
+                exit_with_message("No Vehicule specified", 400);
+            }
+            $VehiculeService->deleteVehicule($uri[3],$apiKey);
             break;
 
         default:

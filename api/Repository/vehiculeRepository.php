@@ -59,5 +59,14 @@ class VehiculeRepository
 
         exit_with_message("vehicule created", 200);
     }
+//------------------------------------------------------------------------------------------
+    public function deleteVehicule($id)
+    {
+        $deleted = deleteDB("VEHICULES", "id_vehicule=".$id ,"bool");
 
+        if(!$deleted){
+            exit_with_message("Error, the activite can't be deleted, plz try again", 500);
+        }
+        exit_with_message("Vehicule deleted", 200);
+    }
 }

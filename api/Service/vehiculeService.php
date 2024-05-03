@@ -39,4 +39,15 @@ class VehiculeService
             exit_with_message("Vous n'avais pas accès a cette commande");
         }
     }
+
+    public function deleteVehicule($int, $apiKey)
+    {
+        $userRole = getRoleFromApiKey($apiKey);
+        if ($userRole[0]==1 || $userRole[0]==2) {
+            $vehiculeRepository = new VehiculeRepository();
+            return $vehiculeRepository->deleteVehicule($int);
+        }else{
+            exit_with_message("Vous n'avais pas accès a cette commande");
+        }
+    }
 }
