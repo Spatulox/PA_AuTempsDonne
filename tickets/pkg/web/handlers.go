@@ -278,3 +278,17 @@ func getApikeyFromCookie(w http.ResponseWriter, r *http.Request) string {
 
 	return apikey
 }
+
+func getApikeyFromHeader(w http.ResponseWriter, r *http.Request) string {
+
+	apiKey := r.Header.Get("apikey")
+	if apiKey == "" {
+		var msg = "Missing API key"
+		http.Error(w, msg, http.StatusUnauthorized)
+		Log.Error(msg)
+		return ""
+	}
+
+	return apiKey
+
+}
