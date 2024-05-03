@@ -132,7 +132,7 @@ func RecupConversation(idTicket int) (Conversation, error) {
 func UpdateTicketsDateClosure(idTicket int) bool {
 	var bdd Db
 
-	if !checkTicketExist(idTicket) {
+	if !CheckTicketExist(idTicket) {
 		return false
 	}
 
@@ -172,7 +172,7 @@ func UpdateTicketsEtape(newEtape int, idTicket int) bool {
 		return false
 	}
 
-	leBool = checkTicketExist(idTicket)
+	leBool = CheckTicketExist(idTicket)
 	if !leBool {
 		return false
 	}
@@ -197,7 +197,7 @@ func UpdateTicketsCategorie(newCategorie int, idTicket int) bool {
 		return false
 	}
 
-	if !checkTicketExist(idTicket) {
+	if !CheckTicketExist(idTicket) {
 		return false
 	}
 
@@ -218,7 +218,7 @@ func UpdateTicketsDescription(newDesc string, idTicket int) bool {
 
 	var bdd Db
 
-	leBool := checkTicketExist(idTicket)
+	leBool := CheckTicketExist(idTicket)
 	if !leBool {
 		return false
 	}
@@ -238,7 +238,7 @@ func AddMessageTickets(message string, idTicket int, idUser int) bool {
 
 	var bdd Db
 
-	leBool := checkTicketExist(idTicket)
+	leBool := CheckTicketExist(idTicket)
 	if !leBool {
 		return false
 	}
@@ -262,7 +262,26 @@ func AddMessageTickets(message string, idTicket int, idUser int) bool {
 //---------------------------------------------------------------------------------
 //
 
-func checkTicketExist(idTicket int) bool {
+func AssignTicket(idTicket int, idUser int) bool {
+
+	if !CheckTicketExist(idTicket) {
+		Log.Error("Id Ticket don't exist")
+		return false
+	}
+
+	if !checkUserExist(idUser) {
+		Log.Error("L'utilisateur n'existe pas")
+		return false
+	}
+
+	return true
+}
+
+//
+//---------------------------------------------------------------------------------
+//
+
+func CheckTicketExist(idTicket int) bool {
 
 	ticket := RecupTickets(&idTicket)
 
@@ -273,6 +292,39 @@ func checkTicketExist(idTicket int) bool {
 	}
 
 	return true
+}
+
+func checkTicketAssign(idTicket int) int {
+
+	var bdd Db
+	var condition = fmt.Sprintf("id_ticket=%d", idTicket)
+	user, err := bdd.SelectDB(UTILISATEUR, []string{"id_user_admin"}, nil, &condition)
+
+	if err != nil {
+		Log.Error("Error when fetching data")
+		return -1
+	}
+
+	if len(user) == 0 {
+		Log.Error("Error, no tickets like that ??")
+		return -1
+	}
+
+	idAdmin := user[0]["id_user_admin"].(string)
+
+	idAdminInt, err := strconv.Atoi(idAdmin)
+
+	if err != nil {
+		var smg = "Erreur lors de la converstion en int"
+		Log.Error(smg)
+		return -1
+	}
+
+	if idAdminInt > 0 {
+		return 1
+	}
+	return 0
+
 }
 
 func checkUserExist(idUser int) bool {
