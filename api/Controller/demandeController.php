@@ -70,7 +70,7 @@ function demandeController($uri, $apikey){
             }
 
             $service = new DemandeService();
-            $service->deleteDemande($uri[4], $apikey);
+            $service->deleteDemande($uri[3], $apikey);
             break;
 
         default:

@@ -44,7 +44,7 @@ class DemandeRepository
         return $array;
     }
 
-
+//------------------------------------------------------------------------------------------------------------
 
     function get($apikey = null){
 
@@ -80,6 +80,8 @@ class DemandeRepository
         exit_with_message("Why are you here ?", 500);
     }
 
+    //------------------------------------------------------------------------------------------------------------
+
     function getByUser($id_user){
         $colums="DEMANDE.id_demande, DEMANDE.desc_demande, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
         $string="INNER JOIN RECU R ON R.id_demande = DEMANDE.id_demande INNER JOIN COLLECTE C ON C.id_collecte = R.id_collecte;";
@@ -88,6 +90,8 @@ class DemandeRepository
 
         exit_with_content($this->affiche($request));
     }
+
+    //------------------------------------------------------------------------------------------------------------
 
     function createDemande($data, $idUser, $produits){
 
@@ -121,7 +125,7 @@ class DemandeRepository
             exit_with_message("Sucessfully created demande", 200);
     }
 
-
+//------------------------------------------------------------------------------------------------------------
 
     function updateDemande($id_demande, $id_planning){
         $request = updateDB("DEMANDE", ["id_planning"], [$id_planning], "id_demande=".$id_demande, bool);
@@ -131,19 +135,39 @@ class DemandeRepository
         }
         exit_with_message("Error updating demande", 400);
     }
-    function deleteDemande($id){
-        $resquest = selectDB("DEMANDE", "*", "id_demande=".$id, "bool");
 
-        if($resquest){
-            $tmp = deleteDB("DEMANDE", "id_demande=".$id, "bool");
-            if($tmp){
-                exit_with_message("Sucessfully deleted demande", 200);
+    //------------------------------------------------------------------------------------------------------------
+
+    function deleteDemande($id){
+        $colums="DEMANDE.id_demande, DEMANDE.desc_demande, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
+        $string="INNER JOIN RECU R ON R.id_demande = DEMANDE.id_demande INNER JOIN COLLECTE C ON C.id_collecte = R.id_collecte";
+        $resquest = selectJoinDB("DEMANDE", $colums ,$string,"DEMANDE.id_demande=".$id,"bool");
+
+        for ($i=0; $i < count($resquest); $i++) {
+
+            if ($resquest) {
+
+                $tmp = deleteDB("RECU", "id_collecte=" . $resquest[$i]['id_collecte'], "bool");
+                if (!$tmp) {
+                    exit_with_message("The demande doesn't exist", 200);
+                }
+                $tmp = deleteDB("COLLECTE", "id_collecte=" . $resquest[$i]['id_collecte'], "bool");
+                if (!$tmp) {
+                    exit_with_message("The demande doesn't exist", 200);
+                }
             }
         }
-        else{
-            exit_with_message("The demande doesn't exist", 400);
-        }
+
+        if($resquest)
+
+            $tmp = deleteDB("DEMANDE", "id_demande=".$id, "bool");
+            if(!$tmp){
+                exit_with_message("The demande doesn't exist", 200);
+            }
+        exit_with_message("Sucessfully deleted demande", 200);
     }
+
+    //----------------------------------------------------------------------------------------------------
 
     private function getLastInsertId($table,$id)
     {

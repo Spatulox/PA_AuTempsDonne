@@ -16,6 +16,6 @@ class DemandeModel {
         $this->desc_demande = $desc_demande;
         $this->id_planning = $id_planning;
         $this->id_user = $id_user;
-        $this->collecte = $collecte; 
+        $this->collecte = $collecte;
     }
 }
