@@ -11,6 +11,7 @@ const (
 
 	RouteListTickets      = "/list"
 	RouteListCreerTickets = "/create"
+	RouteClaimTicket      = "/claim"
 
 	// Route for reservation
 

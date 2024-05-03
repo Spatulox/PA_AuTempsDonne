@@ -25,6 +25,7 @@ func EnableHandlers() {
 	http.HandleFunc(RouteIndex, IndexHandler)
 	http.HandleFunc(RouteListTickets, RecupTicketsHandler)
 	http.HandleFunc(RouteListCreerTickets, CreerTicketsHandler)
+	http.HandleFunc(RouteClaimTicket, ClaimTicketHandler)
 
 	// Reservation Handlers
 
@@ -200,6 +201,60 @@ func CreerTicketsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	}
+
+}
+
+//
+//----------------------------------------------------------------------------------------------------------------------
+//
+
+func ClaimTicketHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == http.MethodPost {
+
+		apiKey := getApikeyFromHeader(w, r)
+		if apiKey == "" {
+			return
+		}
+
+		var params struct {
+			Ticket string `json:"idTicket"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&params)
+		if err != nil {
+			var msg = "Erreur lors de la lecture du corps de la requête 1"
+			http.Error(w, msg, http.StatusBadRequest)
+			Log.Error(msg)
+			return
+		}
+
+		var idTicketInt = stringToInt(params.Ticket, w)
+		if idTicketInt == -1 {
+			var msg = "L'ID ticket est nul"
+			http.Redirect(w, r, RouteListTickets+"?message="+msg, http.StatusSeeOther)
+			return
+		}
+
+		if !CheckTicketExist(idTicketInt) {
+			var msg = "L'ID ticket n'existe pas"
+			http.Redirect(w, r, RouteListTickets+"?message="+msg, http.StatusSeeOther)
+			return
+		}
+
+	} else {
+		var msg = "Only POST request for ClaimTicket"
+		http.Error(w, msg, http.StatusBadRequest)
+		Log.Error(msg)
+		return
+	}
+}
+
+//
+//----------------------------------------------------------------------------------------------------------------------
+//
+
+func ConversationHandler() {
 
 }
 
