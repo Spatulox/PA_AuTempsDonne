@@ -13,6 +13,11 @@ class TrajetService {
         $TrajetRepository = new TrajetRepository();
         return $TrajetRepository->getTrajetById($id);
     }
+
+    public function createTrajet() {
+        $TrajetRepository = new TrajetRepository();
+        return $TrajetRepository->createTrajet();
+    }
 }
 
 ?>

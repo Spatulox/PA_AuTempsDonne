@@ -11,6 +11,7 @@ class adresseModel {
         $this->id_adresse = $id_adresse;
         $this->adresse = $adresse;
     }
+
 }
 
 ?>

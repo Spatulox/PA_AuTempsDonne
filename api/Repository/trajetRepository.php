@@ -1,5 +1,6 @@
 <?php
 
+include_once './Repository/adresseRepository.php';
 include_once './Repository/BDD.php';
 include_once './exceptions.php';
 
@@ -49,47 +50,36 @@ class TrajetRepository {
         return $trajet;
     }
 
-    public function createTrajet($addressIds) {
+    public function createTrajet(){
 
-        if (empty($addressIds) || !is_array($addressIds)) {
-            throw new Exception("Entrée des id_adresse invalide.");
-        }
+        $string = "INNER JOIN UTILISER U ON U.id_adresse = ADRESSE.id_adresse INNER JOIN TRAJETS T ON U.id_trajets = T.id_trajets";
 
-        $allCreates = [];
+        $rows = selectJoinDB("ADRESSE", "adresse",$string ,-1, "-@");
 
-        foreach ($addressIds as $addressId) {
-            $create = insertDB("UTILISER", ["id_trajets", "id_adresse"], [$trajetIds, $addressId], "-@");
+        //$googleApiKey = 'AIzaSyC9WzDphICufUy1vaD1xjwhK3cI7pWJi9c';
 
-            if ($create) {
-                $allCreates = $create;
+        //$url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" . urlencode($origin) . "&destinations=" . urlencode($destination) . "&key=" . $apiKey;
+
+        $route = [2, 3, 4, 5, 9];
+
+        //$nbEtape = count($route);
+
+        foreach ($route as $id) {
+            $repo = new adresseRepository();
+            $address = $repo->getAdresseById($id)[0];
+
+            if ($address) {
+                $addresses[] = $address->adresse;
             }
-
         }
 
-        return $allCreates;
+        $origin = reset($addresses);
+        $end = end($addresses);
+
+        exit_with_content($addresses);
+        //return $addresses;
+
     }
-
-    /*
-    public function updateTrajet(TrajetModel $trajet) {
-        $trajetRepository = new TrajetRepository();
-        $updated = $trajetRepository->updateDB(
-            "UTILISER",
-            ["id_trajets"],
-            [
-                $trajet->id_trajet
-
-            ],
-            "id_trajets=" . $trajet->id_trajet
-        );
-
-        if (!$updated) {
-            exit_with_message("Erreur, le activite n'a pas pu être mis à jour. Veuillez réessayer.", 500);
-        }
-
-        return $trajet;
-    }
-    */
-
 
 }
 

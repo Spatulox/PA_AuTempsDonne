@@ -3,8 +3,6 @@ include_once './Service/trajetService.php';
 include_once './Models/trajetModel.php';
 include_once './exceptions.php';
 
-$googleApiKey = 'AIzaSyC9WzDphICufUy1vaD1xjwhK3cI7pWJi9c';
-
 function trajetController($uri, $apiKey){
     switch ($_SERVER['REQUEST_METHOD']){
         case 'GET':
@@ -14,7 +12,7 @@ function trajetController($uri, $apiKey){
 
             $TrajetService = new trajetService();
             if(!$uri[3]){
-                exit_with_content($TrajetService->getAllTrajet());
+                    exit_with_content($TrajetService->createTrajet());
             }
 
 

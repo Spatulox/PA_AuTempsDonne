@@ -3,8 +3,6 @@ include_once './Service/adresseService.php';
 include_once './Models/adresseModel.php';
 include_once './exceptions.php';
 
-$googleApiKey = 'AIzaSyC9WzDphICufUy1vaD1xjwhK3cI7pWJi9c';
-
 function adresseController($uri, $apiKey){
     switch ($_SERVER['REQUEST_METHOD']){
         case 'GET':
@@ -30,6 +28,7 @@ function adresseController($uri, $apiKey){
             break;
 
         case 'POST':
+
             break;
 
         case 'PUT':

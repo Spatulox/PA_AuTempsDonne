@@ -28,6 +28,26 @@ class adresseRepository {
         return $adresse;
     }
 
+    public function getAdresseById($id){
+        $rows = selectDB("ADRESSE", "id_adresse, adresse", "id_adresse=".$id, "-@");
+
+        if (!$rows) {
+            exit_with_message("huh2");
+        }
+
+        $trajet = [];
+
+        foreach ($rows as $row) {
+            $trajetModel = new adresseModel(
+                $row['id_adresse'],
+                $row['adresse']
+            );
+
+            $trajet[] = $trajetModel;
+        }
+
+        return $trajet;
+    }
 }
 
 ?>
