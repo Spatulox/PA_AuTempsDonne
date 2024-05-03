@@ -386,7 +386,7 @@ function deleteDB($table, $condition, $debug = null)
 
 	$db = connectDB();
 
-	if(!selectDB($table, "*", $condition, "to delete it, the data probably dont exist"))
+	if(!selectDB($table, "*", $condition, "bool"))
 	{
 		exit_with_message("ERROR : The apartment doesn't exist");
 	}
