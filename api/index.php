@@ -145,7 +145,7 @@ function controller($uri) {
             StockController($uri, $apiKey);
             break;
         case 'vehicule':
-            StockController($uri, $apiKey);
+            vehiculeController($uri, $apiKey);
             break;
 
 
