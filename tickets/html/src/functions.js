@@ -36,6 +36,10 @@ function redirectToIdList(id) {
     window.location.href = `/list?idTicket=${id}`;
 }
 
+function redirectToClaim(id){
+    window.location.href = `/claim?idTicket=${id}`;
+}
+
 //
 // ---------------------------------------------------------------------------------------------------------------------
 //
