@@ -40,21 +40,32 @@ function checkData($table = -10, $columnArray = -10, $columnData = -10, $conditi
 # -------------------------------------------------------------- #
 
 function connectDB(){
+
+	// Lire le contenu du fichier JSON
+	$json_file = file_get_contents('/var/www/html/env.json');
+
+	// Décoder le contenu JSON en un tableau PHP
+	$data = json_decode($json_file, true);
+
+	$dbHost = $data['DB_HOST'];
+	$dbPort = $data['DB_PORT'];
+	$dbName = $data['DB_NAME'];
+	$dbUser = $data['DB_USER'];
+	$dbPassword = $data['DB_PASSWORD'];
+
 	try {
 	    $db = new PDO(
-	        'mysql:host=pa_autempsdonne-database-1;
-	        port=3306;
-	        dbname=apiDev_db;
-	        user=apiDev;
-	        password=password',
+	        'mysql:host='.$dbHost.';
+	        port='.$dbPort.';
+	        dbname='.$dbName.';
+	        user='.$dbUser.';
+	        password='.$dbPassword.'',
 	        null,
 	        null,
 	        array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
 	    );
 	} catch (Exception $e) {
-
 		die($e);
-		//die(exit_with_message("ERROR : Connection BDD error"));
 	}
 
 	return $db;
@@ -209,29 +220,37 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 	if (gettype($columnData[0]) == "boolean") {
 	    $columnData[$i] == "1" ? $tmp = "true" : $tmp = "false";
 	    $data = $tmp;
-	} 
-	else if (gettype($columnData[0]) == "integer"){
-	    $data = $columnData[0];
 	}
+    else if (gettype($columnData[0]) == "integer"){
+        $data = $columnData[0];
+    }
+    else if ($columnData[0] == "NULL"){
+        $data = NULL;
+    }
 	else{
 		$data = "'".$columnData[0]."'";
 	}
+
 
 	for ($i=1; $i < count($columnData) ; $i++) { 
 		if (gettype($columnData[$i]) == "boolean") {
 		    $columnData[$i] == "1" ? $tmp = "true" : $tmp = "false";
 		    $data .= ", " . $tmp;
-		} 
-		else if (gettype($columnData[$i]) == "integer"){
-			
-		    $data .= ", " . $columnData[$i];
 		}
+        else if (gettype($columnData[$i]) == "integer"){
+
+            $data .= ", " . $columnData[$i];
+        }
+        else if ($columnData[$i] == "NULL"){
+            $data .= ", " . $columnData[$i];
+        }
 		else{
 			$data .= ", '" . $columnData[$i]."'";
 		}
 	}
 
-	$dbRequest = 'INSERT INTO '. $table .' (' . $colums . ') VALUES ('. $data . ')';
+
+    $dbRequest = 'INSERT INTO '. $table .' (' . $colums . ') VALUES ('. $data . ')';
 	
 	if($returningData == "-@"){
 		var_dump($dbRequest);
@@ -313,9 +332,9 @@ function updateDB($table, $columnArray, $columnData, $condition = null, $debug =
 		$dbRequest = 'UPDATE '. $table .' SET ' . $updatedData .'  WHERE ' . $condition ;
 	}
 
-	if($debug == "-@"){
-		var_dump($dbRequest);
-	}
+    if($debug == "-@"){
+        var_dump($dbRequest);
+    }
 
 	try{
 		$result = $db->prepare($dbRequest);
@@ -341,6 +360,13 @@ function updateDB($table, $columnArray, $columnData, $condition = null, $debug =
 			exit_with_message("Error : ".str_replace('"', "'", $tmp));
 		}
 
+        if($debug == "-@"){
+            exit_with_message("PDO error :" . $e->getMessage());
+        }
+        if($debug == "bool"){
+            return false;
+        }
+
 	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
 	}
 	
@@ -349,7 +375,7 @@ function updateDB($table, $columnArray, $columnData, $condition = null, $debug =
 
 # -------------------------------------------------------------- #
 
-function deleteDB($table, $condition)
+function deleteDB($table, $condition, $debug = null)
 {
 	checkData($table, -10, -10, $condition);
 
@@ -367,6 +393,10 @@ function deleteDB($table, $condition)
 		$dbRequest = 'DELETE FROM '. $table .' WHERE ' . $condition ;
 	}
 
+    if($debug == "-@"){
+        var_dump($dbRequest);
+    }
+
 	try{
 		$result = $db->prepare($dbRequest);
 		$result->execute();
@@ -375,6 +405,11 @@ function deleteDB($table, $condition)
 	}
 	catch (PDOException $e)
 	{
+
+        if($debug == "-@"){
+            exit_with_message("PDO error :" . $e->getMessage());
+        }
+
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";

@@ -6,11 +6,6 @@ class UserService {
     
     public $uri;
 
-    // public function __construct($uri)
-    // {       
-    //     $this->uri = $uri;
-    // }
-
     /*
      *  Récupère tous les utilisateurs
     */
@@ -89,10 +84,24 @@ class UserService {
     */
 
     
-    public function deleteUser($id, $apiKey) {
+    public function deleteUserById($id, $apiKey) {
         $userRepository = new UserRepository();
-        if ($userRepository->unreferenceUser($id, $apiKey)){
+        if ($userRepository->unreferenceUserById($id, $apiKey)){
             exit_with_message("Unreference Succeed !", 200);
+        }
+        else{
+            exit_with_message("Error when unreferencing user ".$id);
+        }
+    }
+
+
+    public function deleteUserByApikey($apiKey) {
+        $userRepository = new UserRepository();
+        if ($userRepository->unreferenceUserByApikey($apiKey)){
+            exit_with_message("Unreference Succeed !", 200);
+        }
+        else{
+            exit_with_message("Error when unreferencing user ".$apiKey);
         }
     }
     

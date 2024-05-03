@@ -4,14 +4,15 @@
 include_once './Repository/BDD.php';
 include_once './Controller/loginController.php';
 include_once './Controller/userController.php';
+include_once './Controller/entrepotController.php';
 include_once './Controller/planningController.php';
 include_once './Controller/activiteController.php';
 include_once './Controller/trajetController.php';
 include_once './Controller/adresseController.php';
+include_once './Controller/produitController.php';
+include_once './Controller/demandeController.php';
+include_once './Controller/stockController.php';
 
-/*include_once './Controller/apartmentController.php';
-include_once './Controller/reservationController.php';
-*/
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
 error_reporting(E_ERROR | E_PARSE);
@@ -49,6 +50,10 @@ function exit_with_content($content = null, $code = 200) {
 }
 
 function getRoleFromApiKey($apiKey){
+    if($apiKey == null){
+        exit_with_message("The apikey is empty", 403);
+    }
+
     $role = selectDB("UTILISATEUR", 'id_role', "apikey='".$apiKey."'", "bool");
     if($role){
         $role = $role[0]["id_role"];
@@ -60,21 +65,41 @@ function getRoleFromApiKey($apiKey){
 }
 
 function getIdUserFromApiKey($apiKey){
+    if($apiKey == null){
+        exit_with_message("The apikey is empty", 403);
+    }
+
     $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool");
     if($id){
         $id = $id[0]["id_user"];
     }
-    else{
-        exit_with_message("No one with this apikey", 403);
-    }
-    return $id;
-}
 
+    $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool"); 
+    if($id){ 
+        $id = $id[0]["id_user"]; 
+    } 
+    else{ 
+        exit_with_message("No one with this apikey", 403); 
+    } 
+    return $id; 
+} 
 
 // Composant principal du controlleur: cette fonction agit comme un routeur en redirigeant les requêtes vers le bon controlleur
 function controller($uri) {
     $headers = getallheaders();
     $apiKey = $headers['apikey'];
+
+    // Check if the apikey exist
+    // To create a user, the apikey always null
+    if($uri[2] != "login" && $uri[2] != "user"){
+        if($apiKey == null){
+            exit_with_message("Unauthorized, need the apikey", 403);
+        }
+        $role = getRoleFromApiKey($apiKey);
+        if(!$role){
+            exit_with_message("Wrong APIKEY");
+        }
+    }
 
     switch ($uri[2]) {
         case 'login':
@@ -82,6 +107,10 @@ function controller($uri) {
             break;
         case 'user':
             userController($uri, $apiKey);
+            break;
+
+        case 'entrepot':
+            entrepotController($uri, $apiKey);
             break;
 
         case 'planning':
@@ -96,6 +125,18 @@ function controller($uri) {
         case 'adresse':
             adresseController($uri, $apiKey);
             break;
+
+        case 'produit':
+            collectController($uri, $apiKey);
+            break;
+
+        case 'demande':
+            demandeController($uri, $apiKey);
+            break;
+        case 'stock':
+            StockController($uri, $apiKey);
+            break;
+
 
 
         default:

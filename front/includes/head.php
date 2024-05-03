@@ -8,6 +8,8 @@
 
 
 <script type="text/javascript" src="../JS/functions.js"></script>
+<script type="text/javascript" src="../JS/utils.js"></script>
+<script type="text/javascript" src="../JS/user.js"></script>
 <script type="text/javascript" src="../JS/popup.js"></script>
 
 

@@ -1,7 +1,9 @@
 function popup(message){
 
 	const la_popup = document.getElementById('titleFooter')
-	console.log(la_popup)
+	//console.log(la_popup)
+	//console.log(message)
+	la_popup.innerHTML = message
 
 	setTimeout(()=>{
 		la_popup.classList.add('active')	
@@ -12,3 +14,10 @@ function popup(message){
 	}, 5000)
 	
 }
+
+
+function alertDebug(message){
+	console.log(message)
+	alert(message)
+}
+

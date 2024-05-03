@@ -56,26 +56,29 @@ function userController($uri, $apiKey) {
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
 
-            if ( !isset($json['nom']) || !isset($json['prenom']) || !isset($json['email']) || !isset($json['mdp']) || !isset($json['role']) || !isset($json['type']))
+            if ( !isset($json['nom']) || !isset($json['prenom']) || !isset($json['email']) || !isset($json['mdp']) || !isset($json['role']))
             {
-                exit_with_message("Plz give the name, the lastname the password, the role and the type (group (2), solo (1) or old people (3)) of the futur user", 403);
+                exit_with_message("Plz give the name, the lastname the password, the email and the role of the futur user. You can add extra(s) = [telephone]", 403);
             }
 
-            if(isset($json["type"]) && filter_var($json["type"], FILTER_VALIDATE_INT) == false){
-                exit_with_message("The type need to be an integer between 1 and 3", 403);
-            }
-
-            if($json["type"] < 1 || $json["type"] > 3){
-                exit_with_message("The type need to be an integer between 1 and 3", 403);
+            if(isset($json["role"]) && filter_var($json["role"], FILTER_VALIDATE_INT) == false){
+                exit_with_message("The role need to be an integer between 1 and 3", 403);
             }
 
             if($json['role'] < 3){
                 exit_with_message("You can't register you as an Admin or modo...", 403); 
             }
 
-            $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], isset($json['telephone']) ? $json['telephone'] : "no_phone", isset($json['type']) ? $json['type'] : 1, $json['role'], null);
+            $pattern = '/^\+?[0-9]{5,15}$/';
+            if (isset($json['telephone']) && !preg_match($pattern, $json['telephone'])){
+                exit_with_message("Le numéro de téléphone $phoneNumber n'est pas valide.", 403);
+            }
 
-            // Valider les données reçues ici
+
+
+            $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], isset($json['telephone']) ? $json['telephone'] : "no_phone", $json['role'], null, 3, 1);
+
+ 
             exit_with_content($userService->createUser($user, $json["mdp"]));
 
             break;
@@ -83,29 +86,52 @@ function userController($uri, $apiKey) {
         
         // update the user
         case 'PUT':
+
+            if($apiKey == null){
+                exit_with_message("Unauthorized, need the apikey", 403);
+            }
+
         	$userService = new UserService();
 
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
-
-            if(!$json){
-                exit_with_message("Plz specifie what should be modified... (name, lastname, phone or email)");
+            if (!isset($json["nom"]) || !isset($json["prenom"]) || !isset($json["telephone"]) || !isset($json["email"]) ){
+                exit_with_message("Plz give the firstname, lastname, the phone and the email");
             }
            
             // Valider les données reçues ici
-            exit_with_content($userService->updateUser($apiKey, $json));
+            exit_with_content($userService->updateUser($apiKey, $json["nom"], $json["prenom"], $json["telephone"], $json["email"]));
             break;
 
-        
-
         case 'DELETE':
+
+            if($apiKey == null){
+                exit_with_message("Unauthorized, need the apikey", 403);
+            }
+
             // Gestion des requêtes DELETE pour supprimer un utilisateur
             $userService = new UserService();
+            $role = getRoleFromApiKey($apiKey);
 
-            if(!$uri[3]){
-                exit_with_message("No user specified", 400);
+            // If admin and no id specified
+            if (!isset($uri[3]) && $role == 1) {
+                exit_with_message("No user specified or, you can't unreferenced you as an admin", 403);
             }
-            $userService->deleteUser($uri[3], $apiKey);
+
+            $userId = getIdUserFromApiKey($apiKey);
+            
+            //If normal user and id specified
+            if($uri[3] != $userId && $role != 1){
+                exit_with_message("You can't delete a user wich is not you :/", 403);
+            }
+
+            if(isset($uri[3])){
+                $userService->deleteUserById($uri[3], $apiKey);
+            }
+            else{
+                $userService->deleteUserByApikey($apiKey);
+            }
+
             break;
 
         default:
