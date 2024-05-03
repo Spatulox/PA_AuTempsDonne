@@ -12,6 +12,7 @@ include_once './Controller/adresseController.php';
 include_once './Controller/produitController.php';
 include_once './Controller/demandeController.php';
 include_once './Controller/stockController.php';
+include_once './Controller/vehiculeController.php';
 
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
@@ -141,6 +142,9 @@ function controller($uri) {
             demandeController($uri, $apiKey);
             break;
         case 'stock':
+            StockController($uri, $apiKey);
+            break;
+        case 'vehicule':
             StockController($uri, $apiKey);
             break;
 
