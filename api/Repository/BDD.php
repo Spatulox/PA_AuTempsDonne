@@ -93,6 +93,10 @@ function selectDB($table, $colums, $condition = -1, $additionnalMessage = NULL){
 		$dbRequest = 'SELECT '. $colums .' FROM '. $table . ' WHERE ' . $condition;
 	}
 
+    if($additionnalMessage != '-@' && $additionnalMessage != "bool" && $additionnalMessage != NULL){
+        $dbRequest .= " ".$additionnalMessage;
+    }
+
 	if($additionnalMessage == "-@"){
 		var_dump($dbRequest);
 	}
@@ -132,6 +136,7 @@ function selectDB($table, $colums, $condition = -1, $additionnalMessage = NULL){
 
 	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]), 500);
 	}
+
 	return false;
 }
 
