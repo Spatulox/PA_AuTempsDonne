@@ -28,7 +28,22 @@ function demandeController($uri, $apikey){
 
             $service = new DemandeService();
 
-            $service->createDemande($apikey, $json);
+            if(!isset($json["desc_demande"])){
+                exit_with_message("vous n'avez pas mis de description");
+            }
+
+            $demande = array(
+                'desc_demande' => $json['desc_demande'],
+            );
+
+            $produits = $json['produits'];
+
+            foreach ($produits as $produit) {
+                $quantite = $produit['quantite'];
+                $id_produit = $produit['id_produit'];
+            }
+
+            $service->createDemande($apikey,$demande,$produits);
 
             break;
 
