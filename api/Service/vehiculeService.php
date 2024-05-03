@@ -27,4 +27,16 @@ class VehiculeService
             exit_with_message("Vous n'avais pas accès a cette commande");
         }
     }
+
+    public function createVehicule(VehiculeModel $vehicule, $apiKey)
+    {
+        $userRole = getRoleFromApiKey($apiKey);
+        if ($userRole[0]==1 || $userRole[0]==2) {
+            $vehiculeRepository = new VehiculeRepository();
+
+            return $vehiculeRepository->createVehicule($vehicule);
+        }else{
+            exit_with_message("Vous n'avais pas accès a cette commande");
+        }
+    }
 }

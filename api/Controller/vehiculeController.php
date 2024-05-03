@@ -29,6 +29,19 @@ function vehiculeController($uri, $apiKey){
 
         case 'POST':
 
+            $body = file_get_contents("php://input");
+            $json = json_decode($body, true);
+
+            $VehiculeService = new vehiculeService();
+
+            if ( !isset($json['capacite']) || !isset($json['nom_du_vehicules']) || !isset($json['nombre_de_place']) || !isset($json['id_entrepot']))
+            {
+                exit_with_message("Plz give the name, the capacite the nom_du_vehicules, the nombre_de_place and the id_entrepot ", 403);
+            }
+            $vehicule = new VehiculeModel(1, $json['capacite'], $json['nom_du_vehicules'], $json['nombre_de_place'], $json['id_entrepot']);
+
+            exit_with_content($VehiculeService->createVehicule($vehicule,$apiKey));
+
             break;
 
         case 'PUT':
