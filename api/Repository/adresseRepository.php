@@ -29,7 +29,7 @@ class adresseRepository {
     }
 
     public function getAdresseById($id){
-        $rows = selectDB("ADRESSE", "id_adresse, adresse", "id_adresse=".$id, "-@");
+        $rows = selectDB("ADRESSE", "id_adresse, adresse", "id_adresse=".$id);
 
         if (!$rows) {
             exit_with_message("huh2");

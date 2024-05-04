@@ -30,7 +30,7 @@ class TrajetRepository {
     }
 
     public function getTrajetById($id){
-        $rows = selectDB("UTILISER", "id_trajets, id_adresse", "id_trajets=".$id, "-@");
+        $rows = selectDB("UTILISER", "id_trajets, id_adresse", "id_trajets=".$id);
 
         if (!$rows) {
             exit_with_message("huh2");
@@ -50,17 +50,13 @@ class TrajetRepository {
         return $trajet;
     }
 
-    public function createTrajet(){
+    public function createTrajet($route){
 
         $string = "INNER JOIN UTILISER U ON U.id_adresse = ADRESSE.id_adresse INNER JOIN TRAJETS T ON U.id_trajets = T.id_trajets";
 
-        $rows = selectJoinDB("ADRESSE", "adresse",$string ,-1, "-@");
-
-        //$googleApiKey = 'AIzaSyC9WzDphICufUy1vaD1xjwhK3cI7pWJi9c';
+        $rows = selectJoinDB("ADRESSE", "adresse",$string ,-1);
 
         //$url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" . urlencode($origin) . "&destinations=" . urlencode($destination) . "&key=" . $apiKey;
-
-        $route = [2, 3, 4, 5, 9];
 
         //$nbEtape = count($route);
 
@@ -75,10 +71,10 @@ class TrajetRepository {
 
         $origin = reset($addresses);
         $end = end($addresses);
-
-        exit_with_content($addresses);
-        //return $addresses;
-
+        $data = [
+            "addresse" => $addresses
+        ];
+        exit_with_content($data);
     }
 
 }

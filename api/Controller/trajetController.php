@@ -6,13 +6,21 @@ include_once './exceptions.php';
 function trajetController($uri, $apiKey){
     switch ($_SERVER['REQUEST_METHOD']){
         case 'GET':
+
+            break;
+
+        case 'POST':
+
+            $body = file_get_contents("php://input");
+            $json = json_decode($body, true);
+
             if($apiKey == null){
                 exit_with_message("Unauthorized, need the apikey", 403);
             }
 
             $TrajetService = new trajetService();
             if(!$uri[3]){
-                    exit_with_content($TrajetService->createTrajet());
+                $TrajetService->createTrajet($json["address"]);
             }
 
 
@@ -25,15 +33,6 @@ function trajetController($uri, $apiKey){
                 exit_with_message("You need to be admin to see all the trips", 403);
             }
 
-            break;
-
-        case 'POST':
-            break;
-
-        case 'PUT':
-            break;
-
-        case 'DELETE':
             break;
 
         default:
