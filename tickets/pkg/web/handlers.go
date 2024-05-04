@@ -323,8 +323,6 @@ func CloseTicketHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		Log.Debug(idTicketStr)
-
 		var idTicketInt = stringToInt(idTicketStr, w)
 
 		if idTicketInt == -1 {
@@ -336,6 +334,13 @@ func CloseTicketHandler(w http.ResponseWriter, r *http.Request) {
 
 		if !CheckTicketExist(idTicketInt) {
 			var msg = "L'ID ticket n'existe pas"
+			sendError(w, msg, http.StatusBadRequest)
+			return
+		}
+
+		var state = CheckTicketState(idTicketInt)
+		if state == 3 || state == 4 {
+			var msg = "Ce ticket est déjà fermé"
 			sendError(w, msg, http.StatusBadRequest)
 			return
 		}
@@ -488,6 +493,13 @@ func AjouterMessageHandler(w http.ResponseWriter, r *http.Request) {
 			var msg = "Impossible de récupérer l'étape du ticket"
 			sendError(w, msg, http.StatusBadRequest)
 			Log.Error(msg)
+			return
+		}
+
+		var state = CheckTicketState(idTicket)
+		if state == 3 || state == 4 {
+			var msg = "Vous ne pouvez pas ajouter de message à un ticket fermé"
+			sendError(w, msg, http.StatusBadRequest)
 			return
 		}
 
