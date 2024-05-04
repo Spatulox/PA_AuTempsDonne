@@ -17,7 +17,8 @@ const (
 
 	RouteCloseTicket = "/close"
 
-	RouteAddMessageTicket = "/message"
+	RouteAddMessageTicket    = "/message"
+	RouteRequestFetchMessage = "/fetch/message"
 
 	// Route for reservation
 

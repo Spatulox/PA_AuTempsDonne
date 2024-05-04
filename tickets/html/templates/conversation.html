@@ -63,7 +63,7 @@
     {{ end }}
 
     <div class="flex flexAround">
-        <div class="block width50 marginTop30 marginBottom40 groupMessage">
+        <div class="block width50 marginTop30 marginBottom40 groupMessage" id="{{ $.vous }}">
             <p class="conversation">Conversation</p>
             {{ range .result.Messages }}
             <div class="message {{ if eq .IdUser $.vous }}droite{{ else }}gauche{{ end }}">

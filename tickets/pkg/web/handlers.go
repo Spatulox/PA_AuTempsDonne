@@ -32,6 +32,8 @@ func EnableHandlers() {
 
 	http.HandleFunc(RouteAddMessageTicket, AjouterMessageHandler)
 
+	http.HandleFunc(RouteRequestFetchMessage, SendMessageToJsonHandler)
+
 	// Reservation Handlers
 
 	// Rooms Handlers
@@ -489,6 +491,75 @@ func ConversationHandler(w http.ResponseWriter, r *http.Request) {
 		"vous":    idUser,
 		"role":    role,
 	})
+
+}
+
+//
+//---------------------------------------------------------------------------------
+//
+
+func SendMessageToJsonHandler(w http.ResponseWriter, r *http.Request) {
+
+	apikey := getApikeyFromHeader(w, r)
+
+	idUser := getIdUserFromApikey(apikey)
+
+	if r.Method == http.MethodGet {
+
+		idTicketStr := r.URL.Query().Get("idTicket")
+
+		if idTicketStr == "" {
+			var msg = "Spécifier l'id du ticket"
+			sendError(w, msg, http.StatusBadRequest)
+			return
+		}
+
+		// Check if the ticket exist and is link to an admin or the right person
+		var bdd Db
+		//ORDER BY date_message
+		var condition = fmt.Sprintf("id_ticket=%s AND id_user_owner=%d OR id_user_admin=%d", idTicketStr, idUser, idUser)
+		result, err := bdd.SelectDB(TICKETS, []string{"*"}, nil, &condition)
+
+		if err != nil {
+			return
+		}
+
+		if len(result) == 0 {
+			return
+		}
+
+		idTicket := stringToInt(idTicketStr, w)
+		if idTicket == -1 {
+			return
+		}
+
+		resultT, err := RecupConversation(idTicket)
+
+		if err != nil {
+			return
+		}
+
+		dataToSend, err := json.Marshal(resultT)
+
+		if err != nil {
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		_, err = w.Write(dataToSend)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		return
+
+	} else {
+		var msg = "Only GET request to request a message"
+		sendError(w, msg, http.StatusBadRequest)
+		Log.Error(msg)
+		return
+	}
 
 }
 
