@@ -12,7 +12,9 @@ type Tickets struct {
 	DateCreation string
 	DateCloture  string
 	IdOwner      int64
+	OwnerStr     string
 	IdAdmin      int64
+	AdminStr     string
 	IdEtape      int64 // En cours, fin, etc...
 	EtapeStr     string
 	IdCategorie  int64 // Urgent
