@@ -36,6 +36,10 @@ function redirectToMainMenu(){
     let newUrl = ""
     if(url.length > 1) {
 
+        if(url[0].includes("conversation")){
+            url[0] = url[0].replace("conversation", "/list?me=true")
+        }
+
         url.pop()
         newUrl = url.join("/")
         window.location.href = `${newUrl}`
