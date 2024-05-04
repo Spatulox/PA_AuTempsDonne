@@ -40,7 +40,9 @@
                     {{ end }}
                     <th>Voir la conversation</th>
                     {{ if le .role 2 }}
-                    <th>Claim le Ticket</th>
+                        {{ if and (not (eq $.filtre 1)) (not (eq $.filtre 2)) }}
+                        <th>Claim le Ticket</th>
+                        {{ end }}
                     {{ end }}
                 </tr>
                 </thead>
@@ -61,7 +63,9 @@
                     {{ end }}
                     <td><button class="marginAuto block" type="button" onclick="redirectToConversation('{{ .IdTicket }}')">Conversation</button></td>
                     {{ if le $.role 2 }}
-                    <td><button class="marginAuto block" type="button" onclick="redirectToClaim('{{ .IdTicket }}')">Claim</button></td>
+                        {{ if and (not (eq $.filtre 1)) (not (eq $.filtre 2)) }}
+                        <td><button class="marginAuto block" type="button" onclick="redirectToClaim('{{ .IdTicket }}')">Claim</button></td>
+                        {{ end }}
                     {{ end }}
                 </tr>
                 {{ end }}
