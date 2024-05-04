@@ -27,6 +27,8 @@ func CreateTickets(idOwner int64, description string, categorie int) bool {
 
 	var date = getCurrentDateTime()
 
+	Log.Debug("ID Owner : " + idOwnerString)
+
 	bdd.InsertDB(TICKETS, []string{"id_user_owner", "description", "id_categorie", "id_etape", "date_creation"}, []string{idOwnerString, description, categorieString, etape, date})
 	Log.Infos("Ticket created")
 	return true
@@ -60,48 +62,7 @@ func RecupTickets(idTicket *int) []Tickets {
 		return nil
 	}
 
-	tickets := make([]Tickets, 0, len(result))
-
-	for _, sResult := range result {
-
-		tiocket := Tickets{
-			IdTicket:     sResult["id_ticket"].(int64),
-			Description:  sResult["description"].(string),
-			DateCreation: sResult["date_creation"].(string),
-		}
-
-		dateCloture, ok := sResult["date_cloture"].(string)
-		if ok && dateCloture != "" {
-			tiocket.DateCloture = dateCloture
-		} else {
-			tiocket.DateCloture = ""
-		}
-
-		tiocket.IdOwner = sResult["id_user_owner"].(int64)
-		tiocket.OwnerStr = getEmailFromId(sResult["id_user_owner"].(int64))
-
-		idUserAdmin, ok := sResult["id_user_admin"].(int64)
-		if !ok {
-			//Log.Debug("Impossible de caster id_user_admin en int64")
-			tiocket.IdAdmin = 0
-		} else {
-			tiocket.IdAdmin = idUserAdmin
-		}
-
-		if tiocket.IdAdmin != 0 {
-			tiocket.AdminStr = getEmailFromId(idUserAdmin)
-		} else {
-			tiocket.AdminStr = "N/A"
-		}
-
-		tiocket.IdEtape = sResult["id_etape"].(int64)
-		tiocket.EtapeStr = SelectEtapeStr(sResult["id_etape"].(int64))
-
-		tiocket.IdCategorie = sResult["id_categorie"].(int64)
-		tiocket.CategorieStr = SelectCategorieStr(sResult["id_categorie"].(int64))
-
-		tickets = append(tickets, tiocket)
-	}
+	tickets := returnTickets(result)
 
 	return tickets
 
@@ -123,6 +84,57 @@ func RecupMyTicketAdmin(idUser int64) []Tickets {
 		return nil
 	}
 
+	tickets := returnTickets(result)
+
+	return tickets
+
+}
+
+func RecupClosedTickets() []Tickets {
+
+	var condition string
+
+	var result []map[string]interface{}
+	var err error
+	var bdd Db
+
+	condition = fmt.Sprintf("id_etape =3 OR id_etape =4")
+	result, err = bdd.SelectDB(TICKETS, []string{"*"}, nil, &condition)
+
+	if err != nil || result == nil {
+		Log.Error("Erreur lors de la lecture de la Base de donnée", err)
+		return nil
+	}
+
+	tickets := returnTickets(result)
+
+	return tickets
+
+}
+
+func RecupMyTickets(idUser int64) []Tickets {
+
+	var condition string
+
+	var result []map[string]interface{}
+	var err error
+	var bdd Db
+
+	condition = fmt.Sprintf("id_user_owner=%d", idUser)
+	result, err = bdd.SelectDB(TICKETS, []string{"*"}, nil, &condition)
+
+	if err != nil || result == nil {
+		Log.Error("Erreur lors de la lecture de la Base de donnée", err)
+		return nil
+	}
+
+	tickets := returnTickets(result)
+	return tickets
+
+}
+
+func returnTickets(result []map[string]interface{}) []Tickets {
+
 	tickets := make([]Tickets, 0, len(result))
 
 	for _, sResult := range result {
@@ -165,9 +177,7 @@ func RecupMyTicketAdmin(idUser int64) []Tickets {
 
 		tickets = append(tickets, tiocket)
 	}
-
 	return tickets
-
 }
 
 //
