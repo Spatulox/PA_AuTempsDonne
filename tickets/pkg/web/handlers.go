@@ -26,6 +26,11 @@ func EnableHandlers() {
 	http.HandleFunc(RouteListTickets, RecupTicketsHandler)
 	http.HandleFunc(RouteListCreerTickets, CreerTicketsHandler)
 	http.HandleFunc(RouteClaimTicket, ClaimTicketHandler)
+	http.HandleFunc(RouteConversationTicket, ConversationHandler)
+
+	http.HandleFunc(RouteCloseTicket, CloseTicketHandler)
+
+	http.HandleFunc(RouteAddMessageTicket, AjouterMessageHandler)
 
 	// Reservation Handlers
 
@@ -88,14 +93,37 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 
 		idTicketStr := r.URL.Query().Get("idTicket")
+		ticketAssign := r.URL.Query().Get("assign")
+		ticketMe := r.URL.Query().Get("me")
 
-		if idTicketStr == "" {
+		if idTicketStr == "" && ticketAssign == "" && ticketMe == "" {
 			resultT := RecupTickets(nil)
 
 			templates.ExecuteTemplate(w, "listTickets.html", map[string]interface{}{
 				"result":  resultT,
 				"message": nil,
 			})
+
+		} else if ticketAssign == "false" {
+
+			resultT := RecupNotAssignTickets()
+
+			templates.ExecuteTemplate(w, "listTickets.html", map[string]interface{}{
+				"result":  resultT,
+				"message": nil,
+			})
+
+		} else if ticketMe == "true" {
+
+			var idUser = getIdUserFromApikey(apikey)
+
+			resultT := RecupMyTicketAdmin(idUser)
+
+			templates.ExecuteTemplate(w, "listTickets.html", map[string]interface{}{
+				"result":  resultT,
+				"message": nil,
+			})
+
 		} else {
 
 			idTicketInt, err := strconv.Atoi(idTicketStr)
@@ -149,8 +177,7 @@ func CreerTicketsHandler(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&params)
 		if err != nil {
 			var msg = "Erreur lors de la lecture du corps de la requête 1"
-			http.Error(w, msg, http.StatusBadRequest)
-			Log.Error(msg)
+			sendError(w, msg, http.StatusBadRequest)
 			return
 		}
 
@@ -162,16 +189,11 @@ func CreerTicketsHandler(w http.ResponseWriter, r *http.Request) {
 
 		id_categorie := cat
 
-		apiKey := r.Header.Get("apikey")
-		if apiKey == "" {
-			var msg = "Missing API key"
-			http.Error(w, msg, http.StatusUnauthorized)
-			Log.Error(msg)
-			return
-		}
+		apiKey := getApikeyFromHeader(w, r)
 
 		var idUser = getIdUserFromApikey(apiKey)
 
+		// Handle error
 		if idUser == -1 {
 			return
 		}
@@ -181,23 +203,23 @@ func CreerTicketsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if role == 1 || role == 2 {
+		// SECURITY
+		/*if role == 1 || role == 2 {
 			var msg = "Vous ne pouvez pas créer un ticket en étant un admin"
 			http.Error(w, msg, http.StatusBadRequest)
 			Log.Error(msg)
 			return
-		}
+		}*/
 
 		if !CreateTickets(idUser, description, id_categorie) {
 			var msg = "Error when creating ticket"
-			http.Error(w, msg, http.StatusBadRequest)
-			Log.Error(msg)
+			sendError(w, msg, http.StatusBadRequest)
 			return
 		}
 
 		var msg = "Ticket créé avec succès"
-		w.WriteHeader(http.StatusCreated)
-		fmt.Fprintf(w, msg)
+
+		sendMessage(w, msg)
 		return
 
 	}
@@ -205,31 +227,27 @@ func CreerTicketsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 //
-//----------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 //
 
+// Fetch
 func ClaimTicketHandler(w http.ResponseWriter, r *http.Request) {
 
-	if r.Method == http.MethodPost {
+	if r.Method == http.MethodGet {
 
-		apiKey := getApikeyFromHeader(w, r)
+		apiKey := getApikeyFromCookie(w, r)
 		if apiKey == "" {
 			return
 		}
 
-		var params struct {
-			Ticket string `json:"idTicket"`
-		}
-
-		err := json.NewDecoder(r.Body).Decode(&params)
-		if err != nil {
-			var msg = "Erreur lors de la lecture du corps de la requête 1"
-			http.Error(w, msg, http.StatusBadRequest)
-			Log.Error(msg)
+		if getRoleFromApikey(apiKey) > 2 {
+			sendError(w, "Vous n'avez pas les droits pour claim un ticket", http.StatusBadRequest)
 			return
 		}
+		idTicketStr := r.URL.Query().Get("idTicket")
 
-		var idTicketInt = stringToInt(params.Ticket, w)
+		var idTicketInt = stringToInt(idTicketStr, w)
+
 		if idTicketInt == -1 {
 			var msg = "L'ID ticket est nul"
 			http.Redirect(w, r, RouteListTickets+"?message="+msg, http.StatusSeeOther)
@@ -242,10 +260,38 @@ func ClaimTicketHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		check := CheckTicketAssign(int64(idTicketInt))
+
+		if check == -1 {
+			sendError(w, "Error", http.StatusBadRequest)
+			return
+		}
+
+		if check == 1 {
+			var msg = "Le ticket est déjà assigné à un admin"
+			sendError(w, msg, http.StatusBadRequest)
+			return
+		}
+
+		idUser := getIdUserFromApikey(apiKey)
+
+		//Y4a pas assigné
+		if !AssignTicket(idTicketInt, idUser) {
+			sendError(w, "Error when assigning ticket", http.StatusConflict)
+			return
+		}
+
+		if !UpdateTicketsEtape(2, idTicketInt) {
+			var msg = "Ticket assigned, but the state can't be updated :/"
+			sendMessage(w, msg)
+			return
+		}
+
+		sendMessage(w, "Ticket assigned")
+
 	} else {
-		var msg = "Only POST request for ClaimTicket"
-		http.Error(w, msg, http.StatusBadRequest)
-		Log.Error(msg)
+		var msg = "Only GET request for ClaimTicket"
+		sendError(w, msg, http.StatusBadRequest)
 		return
 	}
 }
@@ -254,7 +300,67 @@ func ClaimTicketHandler(w http.ResponseWriter, r *http.Request) {
 //----------------------------------------------------------------------------------------------------------------------
 //
 
-func ConversationHandler() {
+// Fetch
+func CloseTicketHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == http.MethodGet {
+
+		apiKey := getApikeyFromCookie(w, r)
+		if apiKey == "" {
+			return
+		}
+
+		if getRoleFromApikey(apiKey) > 2 {
+			sendError(w, "Vous n'avez pas les droits pour fermer un ticket", http.StatusBadRequest)
+			return
+		}
+
+		idTicketStr := r.URL.Query().Get("idTicket")
+
+		if idTicketStr == "" {
+			var msg = "Vous devez spécifier l'id du ticket à fermer"
+			sendError(w, msg, http.StatusBadRequest)
+			return
+		}
+
+		Log.Debug(idTicketStr)
+
+		var idTicketInt = stringToInt(idTicketStr, w)
+
+		if idTicketInt == -1 {
+
+			var msg = "L'ID ticket est nul"
+			sendError(w, msg, http.StatusBadRequest)
+			return
+		}
+
+		if !CheckTicketExist(idTicketInt) {
+			var msg = "L'ID ticket n'existe pas"
+			sendError(w, msg, http.StatusBadRequest)
+			return
+		}
+
+		if !UpdateTicketsEtape(3, idTicketInt) {
+			var msg = "Impossible de fermer le ticket"
+			sendError(w, msg, http.StatusBadRequest)
+			return
+		}
+
+		if !UpdateTicketsDateClosure(idTicketInt) {
+			var msg = "Impossible d'ajouter une date de cloture au ticket"
+			sendError(w, msg, http.StatusBadRequest)
+			return
+		}
+
+		var msg = "Ticket updated"
+		sendMessage(w, msg)
+		return
+
+	} else {
+		var msg = "Only GET request to close a ticket"
+		sendError(w, msg, http.StatusBadRequest)
+		return
+	}
 
 }
 
@@ -262,12 +368,168 @@ func ConversationHandler() {
 //----------------------------------------------------------------------------------------------------------------------
 //
 
+func ConversationHandler(w http.ResponseWriter, r *http.Request) {
+
+	apikey := getApikeyFromCookie(w, r)
+
+	role := getRoleFromApikey(apikey)
+
+	idUser := getIdUserFromApikey(apikey)
+
+	idTicketStr := r.URL.Query().Get("idTicket")
+
+	if idTicketStr == "" {
+		var msg = "Vous devez spécifier l'id du ticket à voir"
+		http.Redirect(w, r, RouteListTickets+"?message="+msg, http.StatusSeeOther)
+		return
+	}
+
+	var idTicket int
+	if role > 2 {
+		// Pas admin (get le ticket depuis l'apikey => id_user)
+
+		idTicket1, err := strconv.Atoi(idTicketStr)
+
+		if err != nil {
+			var msg = "Impossible to cast the idTicket"
+			http.Redirect(w, r, RouteIndex+"?message="+msg, http.StatusSeeOther)
+			Log.Error(msg)
+			return
+		}
+
+		idTicket = int(getIdTiketFromIdUser(idUser, int64(idTicket1)))
+
+		if idTicket == -1 {
+			var msg = "Ce ticket n'est pas à vous"
+			http.Redirect(w, r, RouteIndex+"?message="+msg, http.StatusSeeOther)
+			Log.Error(msg)
+			return
+		}
+
+	} else {
+		// Admin (get le ticket depuis l'addresse url)
+
+		if idTicketStr == "" {
+			var msg = "Vous devez spécifier l'id du ticket à voir"
+			http.Redirect(w, r, RouteListTickets+"?message="+msg, http.StatusSeeOther)
+			return
+		}
+		var err error
+		idTicket, err = strconv.Atoi(idTicketStr)
+
+		if err != nil {
+			var msg = "Impossible to cast the idTicket from string to int64"
+			http.Redirect(w, r, RouteListTickets+"?message="+msg, http.StatusSeeOther)
+			Log.Error(msg)
+			return
+		}
+
+		if checkIdTiketLinkToAdmin(idUser, int64(idTicket)) == -1 {
+			var msg = "Ce ticket n'est pas à vous"
+			http.Redirect(w, r, RouteListTickets+"?message="+msg, http.StatusSeeOther)
+			Log.Error(msg)
+			return
+		}
+
+	}
+
+	conv, err := RecupConversation(idTicket)
+
+	if err != nil {
+		var msg = "Impossible to retrieve conversation"
+		http.Redirect(w, r, RouteListTickets+"?message="+msg, http.StatusSeeOther)
+		Log.Error(msg)
+		return
+	}
+
+	templates.ExecuteTemplate(w, "conversation.html", map[string]interface{}{
+		"result":  conv,
+		"message": nil,
+		"vous":    idUser,
+	})
+
+}
+
+//
+//----------------------------------------------------------------------------------------------------------------------
+//
+
+func AjouterMessageHandler(w http.ResponseWriter, r *http.Request) {
+
+	// idTicket int, idUser int, message string
+
+	if r.Method == http.MethodPost {
+
+		var params struct {
+			IdTicket string `json:"id_ticket"`
+			Message  string `json:"message"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&params)
+		if err != nil {
+			var msg = "Erreur lors de la lecture du corps de la requête"
+			sendError(w, msg, http.StatusBadRequest)
+			return
+		}
+
+		var idTicket = stringToInt(params.IdTicket, w)
+		if idTicket == -1 {
+			return
+		}
+
+		var apikey = getApikeyFromHeader(w, r)
+		if apikey == "" {
+			return
+		}
+
+		var idUser = getIdUserFromApikey(apikey)
+
+		if CheckTicketState(idTicket) == -1 {
+			var msg = "Impossible de récupérer l'étape du ticket"
+			sendError(w, msg, http.StatusBadRequest)
+			Log.Error(msg)
+			return
+		}
+
+		if !CheckUserExist(int(idUser)) {
+			var msg = "Cet utilisateur n'existe pas"
+			sendError(w, msg, http.StatusBadRequest)
+			Log.Error(msg)
+			return
+		}
+
+		if !AddMessageTickets(params.Message, idTicket, int(idUser)) {
+			var msg = "Impossible d'ajouter le message au ticket"
+			sendError(w, msg, http.StatusBadRequest)
+			Log.Error(msg)
+			return
+		}
+
+		var msg = "Message ajouté avec succès"
+		sendMessage(w, msg)
+		Log.Infos(msg)
+		return
+
+	} else {
+		var msg = "Only POST request to ass a mesage"
+		sendError(w, msg, http.StatusBadRequest)
+		Log.Error(msg)
+		return
+	}
+
+}
+
+//
+//----------------------------------------------------------------------------------------------------------------------
+//
+
+// ----------------- UTILS -----------------
+
 func stringToInt(leString string, w http.ResponseWriter) int {
 	categorieInt, err := strconv.Atoi(leString)
 	if err != nil {
 		var msg = "Erreur lors de la conversion de string vers int"
-		http.Error(w, msg, http.StatusBadRequest)
-		Log.Error(msg)
+		sendError(w, msg, http.StatusConflict)
 		return -1
 	}
 
@@ -339,11 +601,70 @@ func getApikeyFromHeader(w http.ResponseWriter, r *http.Request) string {
 	apiKey := r.Header.Get("apikey")
 	if apiKey == "" {
 		var msg = "Missing API key"
-		http.Error(w, msg, http.StatusUnauthorized)
-		Log.Error(msg)
+		sendError(w, msg, http.StatusUnauthorized)
+		return ""
+	}
+
+	var bdd Db
+	var condition = "apikey='" + apiKey + "'"
+	result, err := bdd.SelectDB(UTILISATEUR, []string{"id_user"}, nil, &condition)
+
+	if err != nil {
+		Log.Error("Erreur lors de la sélection de l'id user via apikey")
+		return ""
+	}
+
+	if len(result) == 0 {
+		Log.Error("La requête n'a rien renvoyé")
 		return ""
 	}
 
 	return apiKey
 
+}
+
+func getIdTiketFromIdUser(idUser int64, idTicket int64) int64 {
+	var bdd Db
+	// AND id_etape!=3 AND id_etape!=4
+	var condition = fmt.Sprintf("id_user_owner=%d AND id_ticket=%d", idUser, idTicket)
+	result, err := bdd.SelectDB(TICKETS, []string{"id_ticket"}, nil, &condition)
+
+	if err != nil {
+		return -1
+	}
+
+	if len(result) == 0 {
+		return -1
+	}
+
+	return result[0]["id_ticket"].(int64)
+}
+
+func checkIdTiketLinkToAdmin(idUser int64, idTicket int64) int64 {
+	var bdd Db
+	// AND id_etape!=3 AND id_etape!=4
+	var condition = fmt.Sprintf("id_user_admin=%d AND id_ticket=%d", idUser, idTicket)
+	result, err := bdd.SelectDB(TICKETS, []string{"id_ticket"}, nil, &condition)
+
+	if err != nil {
+		return -1
+	}
+
+	if len(result) == 0 {
+		return -1
+	}
+
+	return result[0]["id_ticket"].(int64)
+}
+
+func sendError(w http.ResponseWriter, msg string, status int) {
+	http.Error(w, msg, status)
+	Log.Error(msg)
+	return
+}
+
+func sendMessage(w http.ResponseWriter, msg string) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprint(w, msg)
 }

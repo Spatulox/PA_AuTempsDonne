@@ -13,6 +13,12 @@ const (
 	RouteListCreerTickets = "/create"
 	RouteClaimTicket      = "/claim"
 
+	RouteConversationTicket = "/conversation"
+
+	RouteCloseTicket = "/close"
+
+	RouteAddMessageTicket = "/message"
+
 	// Route for reservation
 
 	// Route for Rooms
