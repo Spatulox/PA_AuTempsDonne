@@ -100,6 +100,8 @@ async function UpdateStateCatDescTicket(){
     const state = document.getElementById("stateToUpdate")
     const categorie = document.getElementById("categorieToUpdate")
 
+    const id_ticket = document.getElementById("id_ticket").innerHTML
+
     if(desc.length > 0){
         desc = desc[0]
     } else{
@@ -136,7 +138,11 @@ async function UpdateStateCatDescTicket(){
         return
     }
 
+    data["id_ticket"] = id_ticket
+
     const response = await fecthSynch("/fetch/update", optionPost(data))
+
+    window.location.reload()
 }
 
 //
