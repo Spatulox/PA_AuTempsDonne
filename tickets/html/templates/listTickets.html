@@ -34,6 +34,8 @@
                     <th>Étape</th>
                     <th>Catégorie</th>
                     <th>Voir le Ticket</th>
+                    <th>Voir la conversation</th>
+                    <th>Claim le Ticket</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -45,20 +47,21 @@
                     <td>{{ .DateCloture }}</td>
                     <td>{{ .IdOwner }}</td>
                     <td>{{ .IdAdmin }}</td>
-                    <td>{{ .IdEtape }}</td>
-                    <td>{{ .IdCategorie }}</td>
+                    <td>{{ .EtapeStr }}</td>
+                    <td>{{ .CategorieStr }}</td>
                     <td><button class="marginAuto block" type="button" onclick="redirectToIdList('{{ .IdTicket }}')">Voir</button></td>
-                    <td><button class="marginAuto block" type="button" onclick="redirectToClaim('{{ .IdTicket }}')">Voir</button></td>
+                    <td><button class="marginAuto block" type="button" onclick="redirectToConversation('{{ .IdTicket }}')">Conversation</button></td>
+                    <td><button class="marginAuto block" type="button" onclick="redirectToClaim('{{ .IdTicket }}')">Claim</button></td>
                 </tr>
                 {{ end }}
                 </tbody>
             </table>
             {{ else }}
-            <p class="flex flexCenter">{{ .message }}</p>
+            <p class="flex flexCenter">Nothing to show here</p>
             {{ end }}
         </main>
 
-        <footer class="flex flexAround padding5 underline">
+        <footer class="flex flexAround padding20 underline">
             <div>
                 Copyright© 2024
             </div>
