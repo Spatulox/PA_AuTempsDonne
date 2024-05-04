@@ -180,10 +180,6 @@ func returnTickets(result []map[string]interface{}) []Tickets {
 	return tickets
 }
 
-//
-//---------------------------------------------------------------------------------
-//
-
 func RecupNotAssignTickets() []Tickets {
 
 	result := RecupTickets(nil)
@@ -200,6 +196,66 @@ func RecupNotAssignTickets() []Tickets {
 
 	return theTickets
 
+}
+
+//
+//---------------------------------------------------------------------------------
+//
+
+func RecupState() []Etats {
+
+	var result []map[string]interface{}
+	var err error
+	var bdd Db
+
+	result, err = bdd.SelectDB(ETAPES, []string{"*"}, nil, nil)
+
+	if err != nil || result == nil {
+		Log.Error("Erreur lors de la lecture de la Base de donnée", err)
+		return nil
+	}
+
+	theState := make([]Etats, 0, len(result))
+
+	for _, r := range result {
+
+		etat := Etats{
+			Id:  r["id_etape"].(int64),
+			Nom: r["nom_etape"].(string),
+		}
+
+		theState = append(theState, etat)
+
+	}
+
+	return theState
+}
+
+func RecuptCategories() []Categories {
+
+	var bdd Db
+
+	result, err := bdd.SelectDB(CATEGORIES, []string{"*"}, nil, nil)
+
+	if err != nil || result == nil {
+		Log.Error("Erreur lors de la lecture de la Base de donnée", err)
+		return nil
+	}
+
+	theCat := make([]Categories, 0, len(result))
+
+	for _, r := range result {
+
+		cat := Categories{
+			Id:  r["id_categorie"].(int64),
+			Nom: r["categorie"].(string),
+		}
+
+		theCat = append(theCat, cat)
+
+	}
+
+	return theCat
 }
 
 //
