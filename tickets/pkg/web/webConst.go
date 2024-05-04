@@ -20,6 +20,8 @@ const (
 	RouteAddMessageTicket    = "/message"
 	RouteRequestFetchMessage = "/fetch/message"
 
+	RouteResquestUpdate = "/fetch/update"
+
 	// Route for reservation
 
 	// Route for Rooms

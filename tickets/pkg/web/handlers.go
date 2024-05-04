@@ -34,6 +34,8 @@ func EnableHandlers() {
 
 	http.HandleFunc(RouteRequestFetchMessage, SendMessageToJsonHandler)
 
+	http.HandleFunc(RouteResquestUpdate, UpdateTicketHandler)
+
 	// Reservation Handlers
 
 	// Rooms Handlers
@@ -633,10 +635,67 @@ func AjouterMessageHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		var msg = "Only POST request to ass a mesage"
 		sendError(w, msg, http.StatusBadRequest)
-		Log.Error(msg)
 		return
 	}
 
+}
+
+//
+//----------------------------------------------------------------------------------------------------------------------
+//
+
+func UpdateTicketHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == http.MethodPost {
+
+		var params struct {
+			Desc  string `json:"desc"`
+			Cat   string `json:"cat"`
+			State string `json:"state"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&params)
+		if err != nil {
+			var msg = "Erreur lors de la lecture du corps de la requête "
+			sendError(w, msg, http.StatusBadRequest)
+			return
+		}
+
+		catInt := stringToInt(params.Cat, w)
+		if catInt == -1 {
+			return
+		}
+
+		stateInt := stringToInt(params.State, w)
+		if stateInt == -1 {
+			return
+		}
+
+		if !UpdateTicketsEtape(stateInt, 6) {
+			var msg = ""
+			sendError(w, msg, http.StatusInternalServerError)
+			return
+		}
+		if !UpdateTicketsCategorie(catInt, 6) {
+			var msg = ""
+			sendError(w, msg, http.StatusInternalServerError)
+			return
+		}
+		if !UpdateTicketsDescription(params.Desc, 6) {
+			var msg = ""
+			sendError(w, msg, http.StatusInternalServerError)
+			return
+		}
+		var msg = ""
+		sendMessage(w, msg)
+		Log.Infos(msg)
+		return
+
+	} else {
+		var msg = "Only POST request to update ticket"
+		sendError(w, msg, http.StatusBadRequest)
+		return
+	}
 }
 
 //
