@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script type="text/javascript" src="/static/functions.js" defer></script>
+    <title>Menu</title>
+</head>
+<body>
+
+<header class="flex flexBetween nowrap">
+    <button class="block" type="button" onclick="redirectToMainMenu()">Retour</button>
+    <div id="errorPopup" class="popup">
+        <div class="popup-content">
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <h1>Liste des tickets</h1>
+</header>
+
+<main>
+    {{ if .result }}
+    <table>
+        <thead>
+        <tr>
+            <th>ID Ticket</th>
+            <th>Description</th>
+            <th>Date Création</th>
+            <th>Date Cloture</th>
+            <th>Owner</th>
+            <th>Admin</th>
+            <th>Étape</th>
+            <th>Catégorie</th>
+            {{ if le .role 2 }}
+            <th>Voir la conversation</th>
+            <th>Fermer le Ticket</th>
+            {{ end }}
+        </tr>
+        </thead>
+        <tbody>
+        {{ range .result }}
+        <tr>
+            <td id="id_ticket">{{ .IdTicket }}</td>
+            <td><textarea placeholder="Description : {{ .Description }}"></textarea></td>
+            <td>{{ .DateCreation }}</td>
+            <td>{{ .DateCloture }}</td>
+            <td>{{ .OwnerStr }}</td>
+            <td>{{ .AdminStr }}</td>
+            <td>
+                <select name="state" id="stateToUpdate">
+                    <option value="nil">{{ .EtapeStr }}</option>
+                    <hr>
+                    {{ range $index, $state := $.state }}
+                    <option value="{{ $state.Id }}">{{ $state.Nom }}</option>
+                    {{ end }}
+                </select>
+            </td>
+            <td>
+                <select name="categorie" id="categorieToUpdate">
+                    <option value="nil">{{ .CategorieStr }}</option>
+                    <hr>
+                    {{ range $index, $categorie := $.categorie }}
+                    <option value="{{ $categorie.Id }}">{{ $categorie.Nom }}</option>
+                    {{ end }}
+                </select>
+            </td>
+
+            {{ if le $.role 2 }}
+            <td><button class="marginAuto block" type="button" onclick="redirectToConversation('{{ .IdTicket }}')">Conversation</button></td>
+            <td><button class="marginAuto block" type="button" onclick="redirectToCloseList('{{ .IdTicket }}')">Fermer</button></td>
+            {{ end }}
+
+        </tr>
+        {{ end }}
+        </tbody>
+    </table>
+
+    <div class="flex flexCenter marginTop40">
+        <button type="button" onclick="UpdateStateCatDescTicket()">Mettre à jour le ticket</button>
+    </div>
+
+    {{ else }}
+    <p class="flex flexCenter">{{ .message }}</p>
+    {{ end }}
+
+
+</main>
+
+<footer class="flex flexAround padding20 underline">
+    <div>
+        Copyright© 2024
+    </div>
+</footer>
+
+</body>
+</html>
+
+
+{{ if .message }}
+<script>
+    setTimeout(()=>{
+        showPopup("{{ .message }}")
+    }, 500)
+
+    setTimeout(()=>{
+        closePopup()
+    }, 5000)
+
+</script>
+{{ end }}

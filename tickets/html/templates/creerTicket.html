@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script type="text/javascript" src="/static/functions.js" defer></script>
+    <title>Menu</title>
+</head>
+<body>
+
+<header class="flex flexBetween nowrap">
+    <button class="block" type="button" onclick="redirectToMainMenu()">Retour</button>
+    <div id="errorPopup" class="popup">
+        <div class="popup-content">
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <h1>Creer un Ticket</h1>
+</header>
+
+<main>
+    <h1 class="underline bold flex flexCenter">Créer un Ticket</h1>
+    <div class="menu-container">
+        <form action="" class="flex flexCenter wrap width40">
+            <textarea name="description" id="description" class="width100" cols="30" rows="10" placeholder="Description"></textarea>
+
+            <h3 class="width100 flex flexCenter marginTop40">Choissisez une catégorie :</h3>
+            <select name="categorie"  class="width40">
+                <option value="">Sélectionnez une catégorie</option>
+                {{ range .result }}
+                <option value="{{ .id_categorie }}">{{ .categorie }}</option>
+                {{ end }}
+            </select>
+            <button type="button" class="width100 marginTop40" onclick="creerTicket()">Créer</button>
+        </form>
+
+    </div>
+</main>
+
+<footer class="flex flexAround padding20 underline">
+    <div>
+        Copyright© 2024
+    </div>
+</footer>
+</body>
+</html>
+
+
+{{ if .message }}
+<script>
+    setTimeout(()=>{
+        showPopup("{{ .message }}")
+    }, 500)
+
+    setTimeout(()=>{
+        closePopup()
+    }, 5000)
+
+</script>
+{{ end }}

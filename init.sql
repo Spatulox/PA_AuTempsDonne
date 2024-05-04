@@ -338,8 +338,7 @@ INSERT INTO ETAPES (nom_etape) VALUES
 ('En attente'),
 ('En cours'),
 ('Terminé'),
-('Annulé'),
-('Reporté');
+('Annulé');
 
 INSERT INTO ROLES (role) VALUES
 ('Dirigeant'),
