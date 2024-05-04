@@ -67,7 +67,7 @@
             <p class="conversation">Conversation</p>
             {{ range .result.Messages }}
             <div class="message {{ if eq .IdUser $.vous }}droite{{ else }}gauche{{ end }}">
-                <p class="dateMessage">{{ .DateMessage }}</p>
+                <p class="dateMessage">{{ .Email }} : {{ .DateMessage }}</p>
                 <p class="textMessage">{{ .Text }}</p>
             </div>
             {{ end }}

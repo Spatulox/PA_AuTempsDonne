@@ -288,6 +288,7 @@ func RecupConversation(idTicket int) (Conversation, error) {
 			DateMessage: r["date_message"].(string),
 			Text:        r["text"].(string),
 			IdUser:      r["id_user"].(int64),
+			Email:       getEmailFromId(r["id_user"].(int64)),
 		}
 
 		message = append(message, msg)

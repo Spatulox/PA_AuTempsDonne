@@ -5,4 +5,5 @@ type Message struct {
 	DateMessage string
 	Text        string
 	IdUser      int64
+	Email       string
 }
