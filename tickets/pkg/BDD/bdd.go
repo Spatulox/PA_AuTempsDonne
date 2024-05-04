@@ -468,7 +468,11 @@ func ConcatColumnWithValues(columns []string, values []string) string {
 		// Vérifie si c'est un nombre avant pour mettre ou non des '
 		_, err := strconv.Atoi(s)
 		if err != nil {
-			sb.WriteString(columns[i] + `='` + s + `'`)
+			if s == "NULL" {
+				sb.WriteString(columns[i] + `=` + s)
+			} else {
+				sb.WriteString(columns[i] + `='` + s + `'`)
+			}
 		} else {
 			sb.WriteString(columns[i] + "=" + s)
 		}
