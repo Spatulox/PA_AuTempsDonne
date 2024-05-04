@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 	. "tickets/pkg/BDD"
 	. "tickets/pkg/const"
 	. "tickets/pkg/manager"
@@ -401,7 +402,7 @@ func CloseTicketHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		var msg = "Ticket updated"
+		var msg = "Ticket Closed"
 		sendMessage(w, msg)
 		return
 
@@ -649,9 +650,10 @@ func UpdateTicketHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 
 		var params struct {
-			Desc  string `json:"desc"`
-			Cat   string `json:"cat"`
-			State string `json:"state"`
+			Desc     string `json:"desc"`
+			Cat      string `json:"cat"`
+			State    string `json:"state"`
+			IdTicket string `json:"id_ticket"`
 		}
 
 		err := json.NewDecoder(r.Body).Decode(&params)
@@ -661,32 +663,65 @@ func UpdateTicketHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		catInt := stringToInt(params.Cat, w)
-		if catInt == -1 {
+		idTicketInt := stringToInt(params.IdTicket, w)
+		if idTicketInt == -1 {
 			return
 		}
 
-		stateInt := stringToInt(params.State, w)
-		if stateInt == -1 {
-			return
+		if params.State != "" {
+			stateInt := stringToInt(params.State, w)
+			if stateInt == -1 {
+				return
+			}
+
+			if !UpdateTicketsEtape(stateInt, idTicketInt) {
+				var msg = "Cannot update the state of the ticket"
+				sendError(w, msg, http.StatusInternalServerError)
+				return
+			}
+
+			if stateInt == 3 || stateInt == 4 {
+
+				if !UpdateTicketsDateClosure(idTicketInt) {
+					var msg = "Impossible d'ajouter une date de cloture au ticket"
+					sendError(w, msg, http.StatusBadRequest)
+					return
+				}
+
+			} else {
+				if !RemoveDateClosure(idTicketInt) {
+					var msg = "Une erreur est arrivé lors du check de la date de cloture"
+					sendError(w, msg, http.StatusBadRequest)
+					return
+				}
+			}
 		}
 
-		if !UpdateTicketsEtape(stateInt, 6) {
-			var msg = ""
-			sendError(w, msg, http.StatusInternalServerError)
-			return
+		if params.Cat != "" {
+			catInt := stringToInt(params.Cat, w)
+			if catInt == -1 {
+				return
+			}
+
+			if !UpdateTicketsCategorie(catInt, idTicketInt) {
+				var msg = "Cannot update the categorie of the ticket"
+				sendError(w, msg, http.StatusInternalServerError)
+				return
+			}
 		}
-		if !UpdateTicketsCategorie(catInt, 6) {
-			var msg = ""
-			sendError(w, msg, http.StatusInternalServerError)
-			return
+
+		if params.Desc != "" {
+
+			newStr := strings.ReplaceAll(params.Desc, "'", " ")
+
+			if !UpdateTicketsDescription(newStr, idTicketInt) {
+				var msg = "Cannot update the description of the ticket"
+				sendError(w, msg, http.StatusInternalServerError)
+				return
+			}
 		}
-		if !UpdateTicketsDescription(params.Desc, 6) {
-			var msg = ""
-			sendError(w, msg, http.StatusInternalServerError)
-			return
-		}
-		var msg = ""
+
+		var msg = "Updated"
 		sendMessage(w, msg)
 		Log.Infos(msg)
 		return

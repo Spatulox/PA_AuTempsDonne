@@ -33,12 +33,16 @@
             <th>Admin</th>
             <th>Étape</th>
             <th>Catégorie</th>
+            {{ if le .role 2 }}
+            <th>Voir la conversation</th>
+            <th>Fermer le Ticket</th>
+            {{ end }}
         </tr>
         </thead>
         <tbody>
         {{ range .result }}
         <tr>
-            <td>{{ .IdTicket }}</td>
+            <td id="id_ticket">{{ .IdTicket }}</td>
             <td><textarea placeholder="Description : {{ .Description }}"></textarea></td>
             <td>{{ .DateCreation }}</td>
             <td>{{ .DateCloture }}</td>
@@ -62,6 +66,12 @@
                     {{ end }}
                 </select>
             </td>
+
+            {{ if le $.role 2 }}
+            <td><button class="marginAuto block" type="button" onclick="redirectToConversation('{{ .IdTicket }}')">Conversation</button></td>
+            <td><button class="marginAuto block" type="button" onclick="redirectToCloseList('{{ .IdTicket }}')">Fermer</button></td>
+            {{ end }}
+
         </tr>
         {{ end }}
         </tbody>

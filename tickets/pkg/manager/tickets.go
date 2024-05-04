@@ -320,6 +320,19 @@ func UpdateTicketsDateClosure(idTicket int) bool {
 	return true
 }
 
+func RemoveDateClosure(idTicket int) bool {
+	var bdd Db
+
+	if !CheckTicketExist(idTicket) {
+		return false
+	}
+	var condition = fmt.Sprintf("id_ticket=%d", idTicket)
+
+	bdd.UpdateDB(TICKETS, []string{"date_cloture"}, []string{"NULL"}, &condition)
+	Log.Infos("Ticket Closure updated")
+	return true
+}
+
 //
 //---------------------------------------------------------------------------------
 //
