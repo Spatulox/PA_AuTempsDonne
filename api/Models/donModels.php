@@ -14,6 +14,6 @@ class DonModels
         $this->date_don = $date_don;
         $this->id_user = $id_user;
     }
-    
+
 }
 ?>
