@@ -13,6 +13,37 @@ function closePopup() {
 }
 
 //
+// ---------------------------------------------------------------------------------------------------------------------
+//
+
+// Function to redirect to the reservation list
+function redirectToConversation(id) {
+    window.location.href = `/conversation?idTicket=${id}`;
+}
+
+// Function to redirect to the solo reservation corresponding to the id entered
+function redirectToIdList(id) {
+    window.location.href = `/list?idTicket=${id}`;
+}
+
+async function redirectToClaim(id){
+
+    const response = await fecthSynch(`/claim?idTicket=${id}`, optionGet())
+
+    if(typeof(response) == "string"){
+        window.location.reload()
+    }
+}
+
+async function redirectToCloseList(id){
+    const response = await fecthSynch(`/close?idTicket=${id}`, optionGet())
+
+    if(typeof(response) == "string"){
+        window.location.reload()
+    }
+}
+
+//
 //-------------------------------------------------------------------------------------
 //
 
@@ -60,6 +91,70 @@ function redirectToMainMenu(){
 
 }
 
+//
+// ---------------------------------------------------------------------------------------------------------------------
+//
+
+async function refreshMessages(){
+    //"/fetch/message"
+
+    const id = document.getElementById("id_ticket").innerHTML
+
+    const response = await fecthSynch(`/fetch/message?idTicket=${id}`, optionGet())
+    console.log(response)
+
+    const message = document.getElementsByClassName("message")
+
+    if(message.length === response.Messages.length){
+        //return
+    }
+
+    for (let i = message.length; i < response.Messages.length; i++) {
+
+        let groupMessage = document.getElementsByClassName("groupMessage")
+
+        if(groupMessage == null){
+            showPopup("An error ocurred, can't refresh message dynamically")
+            return
+        }
+
+        groupMessage = groupMessage[0]
+
+        const idUserOnThePage = groupMessage.id /1
+
+        const div = document.createElement("div")
+        const p1 = document.createElement("p")
+        const p2 = document.createElement("p")
+
+        p1.classList.add("dateMessage")
+        p2.classList.add("textMessage")
+
+        p1.innerHTML = response.Messages[i].DateMessage
+        p2.innerHTML = response.Messages[i].Text
+
+        div.classList.add("message")
+        if(response.Messages[i].IdUser === idUserOnThePage){
+            div.classList.add("droite")
+        }
+        else{
+            div.classList.add("gauche")
+        }
+
+        div.appendChild(p1)
+        div.appendChild(p2)
+
+        groupMessage.appendChild(div)
+
+        scrollToBottomOfMessages()
+        return
+    }
+
+}
+
+//
+// ---------------------------------------------------------------------------------------------------------------------
+//
+
 async function redirectAddMessage(){
 
     const messageToSend = document.getElementById("messageToSend").value
@@ -74,36 +169,13 @@ async function redirectAddMessage(){
     }
     const response = await fecthSynch("/message", optionPost(data))
 
-    window.location.reload()
 
+    await refreshMessages()
     scrollToBottomOfMessages();
-}
 
-// Function to redirect to the reservation list
-function redirectToConversation(id) {
-    window.location.href = `/conversation?idTicket=${id}`;
-}
-
-// Function to redirect to the solo reservation corresponding to the id entered
-function redirectToIdList(id) {
-    window.location.href = `/list?idTicket=${id}`;
-}
-
-async function redirectToClaim(id){
-
-   const response = await fecthSynch(`/claim?idTicket=${id}`, optionGet())
-
-    if(typeof(response) == "string"){
-        window.location.reload()
-    }
-}
-
-async function redirectToCloseList(id){
-    const response = await fecthSynch(`/close?idTicket=${id}`, optionGet())
-
-    if(typeof(response) == "string"){
-        window.location.reload()
-    }
+    const textarea = document.getElementsByTagName("textarea")[0]
+    console.log(textarea)
+    textarea.value = ""
 }
 
 //
@@ -150,6 +222,9 @@ async function fecthSynch(url, data){
 
             try{
                 console.log(response)
+                if (response.headers.get('Content-Type') === 'application/json') {
+                    return response.json();
+                }
                 const message = await response.text();
 
                 showPopup(message)
@@ -241,11 +316,18 @@ function getCookie(name) {
 //-------------------------------------------------------------------------------------
 //
 
-function scrollToBottomOfMessages() {
+/*function scrollToBottomOfMessages() {
     const groupMessages = document.querySelectorAll('.groupMessage');
     groupMessages.forEach(message => {
         message.scrollIntoView({ behavior: 'smooth', block: 'end' });
     });
+}*/
+
+function scrollToBottomOfMessages() {
+    const messageContainer = document.querySelector('.groupMessage');
+    if (messageContainer) {
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
 }
 
 //
@@ -269,11 +351,10 @@ if (urlParams.has('message')) {
 
 // Detect if it's the conversation page
 if (groupMessage.length > 0) {
+
     setInterval((async ()=>{
         await refreshMessages()
-
-        scrollToBottomOfMessages()
-    }), 5000)
+    }), 2000)
 }
 
 // This is to scrollBottom for conversation part
