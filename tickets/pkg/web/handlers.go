@@ -107,6 +107,7 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 			"result":  resultT,
 			"message": nil,
 			"role":    role,
+			"filtre":  1,
 		})
 		return
 	}
@@ -124,6 +125,7 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 				"result":  resultT,
 				"message": nil,
 				"role":    role,
+				"filtre":  0,
 			})
 
 		} else if ticketAssign == "false" {
@@ -134,6 +136,7 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 				"result":  resultT,
 				"message": nil,
 				"role":    role,
+				"filtre":  0,
 			})
 
 		} else if ticketMe == "true" {
@@ -146,6 +149,7 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 				"result":  resultT,
 				"message": nil,
 				"role":    role,
+				"filtre":  1,
 			})
 		} else if ticketClosed == "true" {
 
@@ -161,6 +165,7 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 				"result":  resultT,
 				"message": nil,
 				"role":    role,
+				"filtre":  2,
 			})
 
 		} else {
@@ -474,7 +479,7 @@ func ConversationHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if checkIdTiketLinkToAdmin(idUser, int64(idTicket)) == -1 {
+		if checkIdTiketLinkToAdmin(idUser, int64(idTicket)) == -1 && role == 2 {
 			var msg = "Ce ticket n'est pas à vous"
 			http.Redirect(w, r, RouteListTickets+"?message="+msg, http.StatusSeeOther)
 			Log.Error(msg)
@@ -649,6 +654,18 @@ func UpdateTicketHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodPost {
 
+		apikey := getApikeyFromHeader(w, r)
+
+		idUser := getIdUserFromApikey(apikey)
+
+		role := getRoleFromApikey(apikey)
+
+		if role > 2 {
+			var msg = "Vouc n'avez pas droit d'update les tickets"
+			sendError(w, msg, http.StatusBadRequest)
+			return
+		}
+
 		var params struct {
 			Desc     string `json:"desc"`
 			Cat      string `json:"cat"`
@@ -665,6 +682,20 @@ func UpdateTicketHandler(w http.ResponseWriter, r *http.Request) {
 
 		idTicketInt := stringToInt(params.IdTicket, w)
 		if idTicketInt == -1 {
+			return
+		}
+
+		var bdd Db
+		var condition = fmt.Sprintf("id_user_admin=%d AND id_ticket=%d", idUser, idTicketInt)
+		resutl, err := bdd.SelectDB(TICKETS, []string{"id_user_admin"}, nil, &condition)
+
+		if err != nil {
+			sendError(w, "Erreur lors de la sélection dans la BDD pour connaitre l'admin du ticket", http.StatusInternalServerError)
+			return
+		}
+
+		if len(resutl) == 0 && role == 2 {
+			sendError(w, "Vous n'êtes pas l'admin gérant du ticket", http.StatusBadRequest)
 			return
 		}
 
