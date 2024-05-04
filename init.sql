@@ -4,22 +4,6 @@ CREATE TABLE ACTIVITES(
    PRIMARY KEY(id_activite)
 );
 
-CREATE TABLE ENTREPOTS(
-   id_entrepot INT AUTO_INCREMENT,
-   nom_entrepot VARCHAR(100),
-   localisation VARCHAR(255),
-   PRIMARY KEY(id_entrepot)
-);
-
-CREATE TABLE VEHICULES(
-   id_vehicule INT AUTO_INCREMENT,
-   capacite INT,
-   nom_du_vehicules VARCHAR(255),
-   nombre_de_place INT,
-   id_entrepot INT,
-   PRIMARY KEY(id_vehicule),
-   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot)
-);
 
 CREATE TABLE TABINDEX(
    id_index INT AUTO_INCREMENT,
@@ -49,15 +33,6 @@ CREATE TABLE INDEXPLANNING(
    index_nom_planning VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_index_planning)
 );
-
-CREATE TABLE CONDUIT(
-   id_trajets INT,
-   id_vehicule INT,
-   PRIMARY KEY(id_trajets, id_vehicule),
-   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets),
-   FOREIGN KEY(id_vehicule) REFERENCES VEHICULES(id_vehicule)
-);
-
 
 CREATE TABLE PLANNINGS(
    id_planning INT AUTO_INCREMENT,
@@ -102,6 +77,35 @@ CREATE TABLE ADRESSE(
    PRIMARY KEY(id_adresse)
 );
 
+
+CREATE TABLE ENTREPOTS(
+   id_entrepot INT AUTO_INCREMENT,
+   nom_entrepot VARCHAR(100),
+   parking INT,
+   id_adresse INT NOT NULL,
+   PRIMARY KEY(id_entrepot),
+   FOREIGN KEY(id_adresse) REFERENCES ADRESSE(id_adresse)   
+);
+
+
+CREATE TABLE VEHICULES(
+   id_vehicule INT AUTO_INCREMENT,
+   capacite INT,
+   nom_du_vehicules VARCHAR(255),
+   nombre_de_place INT,
+   id_entrepot INT,
+   PRIMARY KEY(id_vehicule),
+   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot)
+);
+
+CREATE TABLE CONDUIT(
+   id_trajets INT,
+   id_vehicule INT,
+   PRIMARY KEY(id_trajets, id_vehicule),
+   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets),
+   FOREIGN KEY(id_vehicule) REFERENCES VEHICULES(id_vehicule)
+);
+
 CREATE TABLE UTILISATEUR(
    id_user INT AUTO_INCREMENT,
    nom VARCHAR(50) NOT NULL,
@@ -122,10 +126,6 @@ CREATE TABLE UTILISATEUR(
    FOREIGN KEY(id_role) REFERENCES ROLES(id_role)
 );
 
-
-
-
-
 CREATE TABLE TICKETS(
    id_ticket INT AUTO_INCREMENT,
    description TEXT,
@@ -141,9 +141,6 @@ CREATE TABLE TICKETS(
    FOREIGN KEY(id_categorie) REFERENCES CATEGORIES(id_categorie),
    FOREIGN KEY(id_user_owner) REFERENCES UTILISATEUR(id_user)
 );
-
-
-
 
 CREATE TABLE PRODUIT(
    id_produit INT AUTO_INCREMENT,
@@ -173,6 +170,14 @@ CREATE TABLE DEMANDE(
    FOREIGN KEY(id_planning) REFERENCES PLANNINGS(id_planning),
    FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
 );
+
+
+CREATE TABLE ETAGERES(
+   id_etagere INT AUTO_INCREMENT,
+   nombre_de_place INT NOT NULL,
+   PRIMARY KEY(id_etagere)
+);
+
 
 CREATE TABLE DON(
    id_don INT AUTO_INCREMENT,
@@ -273,6 +278,25 @@ CREATE TABLE RECU(
    FOREIGN KEY(id_demande) REFERENCES DEMANDE(id_demande)
 );
 
+CREATE TABLE STOCKAGE(
+   id_entrepot INT,
+   id_etagere INT,
+   PRIMARY KEY(id_entrepot, id_etagere),
+   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
+   FOREIGN KEY(id_etagere) REFERENCES ETAGERES(id_etagere)
+);
+
+INSERT INTO ADRESSE (adresse) VALUES
+('10 Avenue des Champs-Élysées, 75008 Paris'),
+('15 Boulevard Saint-Michel, 75005 Paris'),
+('48 Rue de Rivoli, 75004 Paris'),
+('7 Rue de la Paix, 75002 Paris'),
+('20 Rue de la Convention, 75015 Paris'),
+("3 Place de l'Opéra, 75009 Paris"),
+('9 Rue du Faubourg Saint-Honoré, 75008 Paris'),
+('2 Boulevard de la Madeleine, 75008 Paris'),
+('33 Rue du Bac, 75007 Paris'),
+('12 Rue de la République, 69002 Lyon');
 
 
 INSERT INTO TYPE (type, unit_mesure) VALUES
@@ -298,9 +322,6 @@ INSERT INTO INDEXPLANNING (index_nom_planning) VALUES
 ('organiser'),
 ('en attente');
 
-INSERT INTO ENTREPOTS (nom_entrepot, localisation) VALUES    
-('Entrepôt de Saint Quentin', '2 Rue André Missenard, 02100'),
-('Entrepôt de Laon', '34 Rue Roger Salengro, 02000 ');
 
 INSERT INTO ACTIVITES (nom_activite) VALUES
 ('Collecte de vêtements'),
@@ -315,6 +336,11 @@ INSERT INTO PLANNINGS (description, date_activite, id_index_planning, id_activit
 ('Atelier d''initiation à l''informatique', '2024-06-01', 2, 3),
 ('Soutien scolaire pour les élèves en difficulté', '2024-06-15', 2, 4),
 ('Visite et animation pour les personnes âgées', '2024-07-01', 2, 5);
+
+INSERT INTO ENTREPOTS (nom_entrepot, parking, id_adresse) VALUES
+('Entrepot Paris', 6, 1),
+('Entrepot Laon', 4, 2),
+('Entrepot Marseille', 8, 3);
 
 INSERT INTO STOCKS (quantite_produit, date_entree, date_sortie, date_peremption, desc_produit, id_produit, id_entrepot) VALUES
 (500, '2024-04-01', NULL, '2025-04-01', 'Riz basmati', 1, 1),
@@ -369,18 +395,6 @@ INSERT INTO TABINDEX (index_nom) VALUES
 ('inactif / déréférencé'),
 ('actif'),
 ('attente de validation');
-
-INSERT INTO ADRESSE (adresse) VALUES
-('10 Avenue des Champs-Élysées, 75008 Paris'),
-('15 Boulevard Saint-Michel, 75005 Paris'),
-('48 Rue de Rivoli, 75004 Paris'),
-('7 Rue de la Paix, 75002 Paris'),
-('20 Rue de la Convention, 75015 Paris'),
-("3 Place de l'Opéra, 75009 Paris"),
-('9 Rue du Faubourg Saint-Honoré, 75008 Paris'),
-('2 Boulevard de la Madeleine, 75008 Paris'),
-('33 Rue du Bac, 75007 Paris'),
-('12 Rue de la République, 69002 Lyon');
 
 INSERT INTO TRAJETS VALUES
 (1),
