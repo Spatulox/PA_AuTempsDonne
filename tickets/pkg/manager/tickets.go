@@ -234,7 +234,7 @@ func UpdateTicketsDateClosure(idTicket int) bool {
 	var date = getCurrentDateTime()
 	var condition = fmt.Sprintf("id_ticket=%d", idTicket)
 
-	bdd.UpdateDB(TICKETS, []string{"date_closure"}, []string{date}, &condition)
+	bdd.UpdateDB(TICKETS, []string{"date_cloture"}, []string{date}, &condition)
 	Log.Infos("Ticket Closure updated")
 	return true
 }
