@@ -30,13 +30,14 @@
             <th>Description</th>
             <th>Date Création</th>
             <th>Date Cloture</th>
-            <th>Id Owner</th>
-            <th>Id Admin</th>
+            <th>Owner</th>
+            <th>Admin</th>
             <th>Étape</th>
             <th>Priorité</th>
             <th>Fermer un ticket</th>
         </tr>
         </thead>
+
         <tbody>
 
         <tr>
@@ -44,8 +45,8 @@
             <td>{{ .result.Ticket.Description }}</td>
             <td>{{ .result.Ticket.DateCreation }}</td>
             <td>{{ .result.Ticket.DateCloture }}</td>
-            <td>{{ .result.Ticket.IdOwner }}</td>
-            <td>{{ .result.Ticket.IdAdmin }}</td>
+            <td>{{ .result.Ticket.OwnerStr }}</td>
+            <td>{{ .result.Ticket.AdminStr }}</td>
             <td>{{ .result.Ticket.EtapeStr }}</td>
             <td>{{ .result.Ticket.CategorieStr }}</td>
             <td><button class="marginAuto block" type="button" onclick="redirectToCloseList('{{ .result.Ticket.IdTicket }}')">Fermer</button></td>
