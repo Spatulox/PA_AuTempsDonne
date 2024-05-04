@@ -1,6 +1,6 @@
 <?php
-include_once './Service/dontService.php';
-include_once './Models/donModel.php';
+include_once './Service/donService.php';
+include_once './Models/donModels.php';
 include_once './exceptions.php';
 
 function donController($uri, $apiKey)
@@ -11,10 +11,10 @@ function donController($uri, $apiKey)
 
             if ($uri[3]) {
                 $donService = new DonService();
-                $donService->getDonById($uri[3],$apiKey);
+                exit_with_content( $donService->getDonById($uri[3],$apiKey));
             } else {
                 $donService = new DonService();
-                $donService->getDonEntrepot($apiKey);
+                exit_with_content($donService->getDonEntrepot($apiKey));
             }
 
             break;
@@ -30,7 +30,7 @@ function donController($uri, $apiKey)
                 }
 
                 $donService = new DonService();
-                $donService->getDonAnnuel($json['date'], $apiKey);
+                exit_with_content($donService->getDonAnnuel($json['date'], $apiKey));
 
             }
 //---------------------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ function donController($uri, $apiKey)
                 }
 
                 $donService = new DonService();
-                $donService->getDonMensuel($json['date'], $apiKey);
+                exit_with_content($donService->getDonMensuel($json['date'], $apiKey));
 
             }
 
