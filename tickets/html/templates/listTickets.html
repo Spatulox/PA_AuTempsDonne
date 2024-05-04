@@ -33,10 +33,15 @@
                     <th>Owner</th>
                     <th>Admin</th>
                     <th>Étape</th>
-                    <th>Priorité</th>
+                    <th>Catégorie/Priorité</th>
+
+                    {{ if le .role 2 }}
                     <th>Voir le Ticket</th>
+                    {{ end }}
                     <th>Voir la conversation</th>
+                    {{ if le .role 2 }}
                     <th>Claim le Ticket</th>
+                    {{ end }}
                 </tr>
                 </thead>
 
@@ -51,9 +56,13 @@
                     <td>{{ .AdminStr }}</td>
                     <td>{{ .EtapeStr }}</td>
                     <td>{{ .CategorieStr }}</td>
+                    {{ if le $.role 2 }}
                     <td><button class="marginAuto block" type="button" onclick="redirectToIdList('{{ .IdTicket }}')">Voir</button></td>
+                    {{ end }}
                     <td><button class="marginAuto block" type="button" onclick="redirectToConversation('{{ .IdTicket }}')">Conversation</button></td>
+                    {{ if le $.role 2 }}
                     <td><button class="marginAuto block" type="button" onclick="redirectToClaim('{{ .IdTicket }}')">Claim</button></td>
+                    {{ end }}
                 </tr>
                 {{ end }}
                 </tbody>

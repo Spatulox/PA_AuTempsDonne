@@ -22,12 +22,15 @@
         <main>
             <div class="menu-container">
                 <ul class="menu-list">
+                    {{ if gt .role 2 }}
                     <li><a href="/create">Créer un ticket</a></li>
-                    <li><a href="/list?assign=false">Lister les tickets libre</a></li>
                     <li><a href="/list?me=true">Lister mes tickets</a></li>
-                    <li><a href="/list">Lister les tickets</a></li>
-                    <li><a href="/list">Lister les tickets</a></li>
-                    <li><a href="/list">Lister les tickets</a></li>
+                    {{ else }}
+                    <li><a href="/list?me=true">Lister mes tickets</a></li>
+                    <li><a href="/list?assign=false">Lister les tickets libre</a></li>
+                    <li><a href="/list?closed=true">Lister les tickets fermé</a></li>
+                    <li><a href="/list">Lister tous les tickets sans filtre</a></li>
+                    {{ end }}
                 </ul>
             </div>
         </main>

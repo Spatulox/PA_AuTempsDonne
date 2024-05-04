@@ -58,7 +58,14 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodGet {
 
-		templates.ExecuteTemplate(w, "menu.html", nil)
+		var apikey = getApikeyFromCookie(w, r)
+
+		var role = getRoleFromApikey(apikey)
+
+		templates.ExecuteTemplate(w, "menu.html", map[string]interface{}{
+			"role":    role,
+			"message": nil,
+		})
 
 	} else {
 		http.Redirect(w, r, RouteIndex, http.StatusSeeOther)
@@ -82,11 +89,20 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	ticketMe := r.URL.Query().Get("me")
+
 	var role = getRoleFromApikey(apikey)
 	if role > 3 {
-		var msg = "Vous n'avez pas accès au listing des tickets"
-		http.Redirect(w, r, RouteIndex+"?message="+msg, http.StatusSeeOther)
-		Log.Error(msg)
+
+		var idUser = getIdUserFromApikey(apikey)
+
+		resultT := RecupMyTickets(idUser)
+
+		templates.ExecuteTemplate(w, "listTickets.html", map[string]interface{}{
+			"result":  resultT,
+			"message": nil,
+			"role":    role,
+		})
 		return
 	}
 
@@ -94,14 +110,15 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 
 		idTicketStr := r.URL.Query().Get("idTicket")
 		ticketAssign := r.URL.Query().Get("assign")
-		ticketMe := r.URL.Query().Get("me")
+		ticketClosed := r.URL.Query().Get("closed")
 
-		if idTicketStr == "" && ticketAssign == "" && ticketMe == "" {
+		if idTicketStr == "" && ticketAssign == "" && ticketMe == "" && ticketClosed == "" {
 			resultT := RecupTickets(nil)
 
 			templates.ExecuteTemplate(w, "listTickets.html", map[string]interface{}{
 				"result":  resultT,
 				"message": nil,
+				"role":    role,
 			})
 
 		} else if ticketAssign == "false" {
@@ -111,6 +128,7 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 			templates.ExecuteTemplate(w, "listTickets.html", map[string]interface{}{
 				"result":  resultT,
 				"message": nil,
+				"role":    role,
 			})
 
 		} else if ticketMe == "true" {
@@ -122,6 +140,23 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 			templates.ExecuteTemplate(w, "listTickets.html", map[string]interface{}{
 				"result":  resultT,
 				"message": nil,
+				"role":    role,
+			})
+		} else if ticketClosed == "true" {
+
+			if role > 2 {
+				var msg = "Vous ne pouvez pas faire ça"
+				sendError(w, msg, http.StatusBadRequest)
+				Log.Error(msg)
+				return
+			}
+
+			resultT := RecupClosedTickets()
+
+			templates.ExecuteTemplate(w, "listTickets.html", map[string]interface{}{
+				"result":  resultT,
+				"message": nil,
+				"role":    role,
 			})
 
 		} else {
@@ -137,6 +172,7 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 			templates.ExecuteTemplate(w, "oneTicket.html", map[string]interface{}{
 				"result":  resultT,
 				"message": nil,
+				"role":    role,
 			})
 		}
 
@@ -451,6 +487,7 @@ func ConversationHandler(w http.ResponseWriter, r *http.Request) {
 		"result":  conv,
 		"message": nil,
 		"vous":    idUser,
+		"role":    role,
 	})
 
 }
