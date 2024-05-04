@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script type="text/javascript" src="/static/functions.js" defer></script>
+    <title>Menu</title>
+</head>
+<body>
+
+<header class="flex flexBetween nowrap">
+    <button class="block" type="button" onclick="redirectToMainMenu()">Retour</button>
+    <div id="errorPopup" class="popup">
+        <div class="popup-content">
+            <p id="errorMessage"></p>
+        </div>
+    </div>
+
+    <h1>Index</h1>
+</header>
+
+<main>
+
+    {{ if .result }}
+    <table>
+        <thead>
+        <tr>
+            <th>ID Ticket</th>
+            <th>Description</th>
+            <th>Date Création</th>
+            <th>Date Cloture</th>
+            <th>Id Owner</th>
+            <th>Id Admin</th>
+            <th>Étape</th>
+            <th>Priorité</th>
+            <th>Fermer un ticket</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr>
+            <td id="id_ticket">{{ .result.Ticket.IdTicket }}</td>
+            <td>{{ .result.Ticket.Description }}</td>
+            <td>{{ .result.Ticket.DateCreation }}</td>
+            <td>{{ .result.Ticket.DateCloture }}</td>
+            <td>{{ .result.Ticket.IdOwner }}</td>
+            <td>{{ .result.Ticket.IdAdmin }}</td>
+            <td>{{ .result.Ticket.EtapeStr }}</td>
+            <td>{{ .result.Ticket.CategorieStr }}</td>
+            <td><button class="marginAuto block" type="button" onclick="redirectToCloseList('{{ .result.Ticket.IdTicket }}')">Fermer</button></td>
+        </tr>
+
+        </tbody>
+    </table>
+    {{ else }}
+    <p class="flex flexCenter">{{ .message }}</p>
+    {{ end }}
+
+    <div class="marginAuto block width50 marginTop30 marginBottom40 groupMessage">
+        {{ range .result.Messages }}
+        <div class="message {{ if eq .IdUser $.vous }}droite{{ else }}gauche{{ end }}">
+            <p class="dateMessage">{{ .DateMessage }}</p>
+            <p class="textMessage">{{ .Text }}</p>
+        </div>
+        {{ end }}
+
+        {{ range .result.Messages }}
+        <div class="message gauche">
+            <p class="dateMessage">{{ .DateMessage }}</p>
+            <p class="textMessage">{{ .Text }}</p>
+        </div>
+        {{ end }}
+
+    </div>
+
+    <div class="flex flexCenter marginTop10 height30">
+        <textarea id="messageToSend" class="width40 height80" placeholder="Ajouter un message"></textarea>
+    </div>
+    <div class="flex flexCenter">
+        <button type="button" id="newMessage" onclick="redirectAddMessage()">Envoyer le message</button>
+    </div>
+
+</main>
+
+<footer class="flex flexAround padding20 underline">
+    <div>
+        Copyright© 2024
+    </div>
+</footer>
+
+</body>
+</html>
+
+
+{{ if .message }}
+<script>
+    setTimeout(()=>{
+        showPopup("{{ .message }}")
+    }, 500)
+
+    setTimeout(()=>{
+        closePopup()
+    }, 5000)
+
+</script>
+{{ end }}
