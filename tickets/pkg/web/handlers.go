@@ -151,7 +151,6 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 			if role > 2 {
 				var msg = "Vous ne pouvez pas faire ça"
 				sendError(w, msg, http.StatusBadRequest)
-				Log.Error(msg)
 				return
 			}
 
@@ -173,10 +172,15 @@ func RecupTicketsHandler(w http.ResponseWriter, r *http.Request) {
 
 			resultT := RecupTickets(&idTicketInt)
 
+			states := RecupState()
+			categories := RecuptCategories()
+
 			templates.ExecuteTemplate(w, "oneTicket.html", map[string]interface{}{
-				"result":  resultT,
-				"message": nil,
-				"role":    role,
+				"result":    resultT,
+				"message":   nil,
+				"role":      role,
+				"state":     states,
+				"categorie": categories,
 			})
 		}
 
@@ -244,12 +248,12 @@ func CreerTicketsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// SECURITY
-		/*if role == 1 || role == 2 {
+		if role == 1 || role == 2 {
 			var msg = "Vous ne pouvez pas créer un ticket en étant un admin"
 			http.Error(w, msg, http.StatusBadRequest)
 			Log.Error(msg)
 			return
-		}*/
+		}
 
 		if !CreateTickets(idUser, description, id_categorie) {
 			var msg = "Error when creating ticket"
@@ -559,7 +563,6 @@ func SendMessageToJsonHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		var msg = "Only GET request to request a message"
 		sendError(w, msg, http.StatusBadRequest)
-		Log.Error(msg)
 		return
 	}
 
@@ -602,7 +605,6 @@ func AjouterMessageHandler(w http.ResponseWriter, r *http.Request) {
 		if CheckTicketState(idTicket) == -1 {
 			var msg = "Impossible de récupérer l'étape du ticket"
 			sendError(w, msg, http.StatusBadRequest)
-			Log.Error(msg)
 			return
 		}
 
@@ -616,14 +618,12 @@ func AjouterMessageHandler(w http.ResponseWriter, r *http.Request) {
 		if !CheckUserExist(int(idUser)) {
 			var msg = "Cet utilisateur n'existe pas"
 			sendError(w, msg, http.StatusBadRequest)
-			Log.Error(msg)
 			return
 		}
 
 		if !AddMessageTickets(params.Message, idTicket, int(idUser)) {
 			var msg = "Impossible d'ajouter le message au ticket"
 			sendError(w, msg, http.StatusBadRequest)
-			Log.Error(msg)
 			return
 		}
 
