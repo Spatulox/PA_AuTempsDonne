@@ -45,6 +45,21 @@ function donController($uri, $apiKey)
 
             }
 
+            if ($uri[3] && $uri[3]=== 'create'){
+                if (!isset($json['prix']) || !isset($json['date'])) {
+                    exit_with_message("Please provide all required fields to create a new don", 400);
+                }
+
+                $donService = new DonService();
+
+                exit_with_content($donService->CreateDonMensuel($json['prix'],$json['date'], $apiKey));
+
+            }
+
+            if (!$uri[3]){
+                    exit_with_message("Wrong redirection", 400);
+            }
+
             break;
 
 

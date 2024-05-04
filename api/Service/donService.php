@@ -49,5 +49,18 @@ class DonService
             exit_with_message("You didn't have access to this command");
         }
     }
+
+//-----------------------------------------------------------------------------------
+    public function CreateDonMensuel($prix, $date_don, $apiKey)
+    {
+        $id = getIdUserFromApiKey($apiKey);
+        $userRole = getRoleFromApiKey($apiKey);
+        if ($userRole==1 || $userRole==2 ) {
+            $donRepository = new DonRepository();
+            return $donRepository->CreateDonMensuel($prix, $date_don, $id);
+        }else{
+            exit_with_message("You didn't have access to this command");
+        }
+    }
 }
 ?>

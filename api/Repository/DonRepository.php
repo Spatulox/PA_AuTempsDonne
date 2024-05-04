@@ -12,7 +12,7 @@ class DonRepository
 
     public function getDonById($id)
     {
-       $arrayDon= selectDB("DON", "*","id_don=". $id,"-@");
+       $arrayDon= selectDB("DON", "*","id_don=". $id);
        $don=[];
         for ($i=0; $i < count($arrayDon); $i++) {
             $don[$i] = new DonModels(
@@ -43,7 +43,7 @@ class DonRepository
     public function getDonAnnuel($date)
     {
         $string="YEAR(date_don)= ".$date;
-        $arrayDon= selectDB("DON", "*",$string,"-@");
+        $arrayDon= selectDB("DON", "*",$string);
         $don=[];
         for ($i=0; $i < count($arrayDon); $i++) {
             $don[$i] = new DonModels(
@@ -59,13 +59,13 @@ class DonRepository
     //--------------------------------------------------------------------------------
     public function getDonMensuel($date)
     {
-        
+
         $parts = explode("-", $date);
         $year = $parts[0];
         $month = $parts[1];
 
         $string="YEAR(date_don)= ".$year. " AND MONTH(date_don)= ".$month;
-        $arrayDon= selectDB("DON", "*",$string,"-@");
+        $arrayDon= selectDB("DON", "*",$string);
         $don=[];
         for ($i=0; $i < count($arrayDon); $i++) {
             $don[$i] = new DonModels(
@@ -78,5 +78,13 @@ class DonRepository
         return $don;
     }
     //--------------------------------------------------------------------------------
+    public function CreateDonMensuel($prix, $date_don, $id)
+    {
+       $create= insertDB("DON",["prix","date_don","id_user"],
+           [$prix, $date_don, $id]);
+       if ($create){
+           exit_with_message("success create don");
+       }
+    }
 }
 ?>
