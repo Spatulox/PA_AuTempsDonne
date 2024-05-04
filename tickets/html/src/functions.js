@@ -95,6 +95,54 @@ function redirectToMainMenu(){
 // ---------------------------------------------------------------------------------------------------------------------
 //
 
+async function UpdateStateCatDescTicket(){
+    let desc = document.getElementsByTagName("textarea")
+    const state = document.getElementById("stateToUpdate")
+    const categorie = document.getElementById("categorieToUpdate")
+
+    if(desc.length > 0){
+        desc = desc[0]
+    } else{
+        return
+    }
+
+    if( categorie.value === "nil" && state.value === "nil" && desc.value === ""){
+        showPopup("Nothing to update")
+        return
+    }
+
+    let data = {}
+
+    if(categorie.value !== "nil"){
+        data["cat"] = categorie.value
+    } else{
+        data["cat"] = ""
+    }
+
+
+    if(state.value !== "nil"){
+        data["state"] = state.value
+    } else{
+        data["state"] = ""
+    }
+
+    if(desc.value !== ""){
+        data["desc"] = desc.value
+    } else{
+        data["desc"] = ""
+    }
+
+    if (data === {}){
+        return
+    }
+
+    const response = await fecthSynch("/fetch/update", optionPost(data))
+}
+
+//
+//-------------------------------------------------------------------------------------
+//
+
 async function refreshMessages(){
     //"/fetch/message"
 
@@ -315,13 +363,6 @@ function getCookie(name) {
 //
 //-------------------------------------------------------------------------------------
 //
-
-/*function scrollToBottomOfMessages() {
-    const groupMessages = document.querySelectorAll('.groupMessage');
-    groupMessages.forEach(message => {
-        message.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    });
-}*/
 
 function scrollToBottomOfMessages() {
     const messageContainer = document.querySelector('.groupMessage');
