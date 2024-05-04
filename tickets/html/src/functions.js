@@ -18,17 +18,62 @@ function closePopup() {
 
 // Function to redirect to the menu
 function redirectToMainMenu(){
-    window.location.href = `/`;
+    let url1 = window.location.href
+
+    console.log(url1)
+    let url = ""
+
+    url = url1.split("?")
+
+    const indexMessage = url.findIndex(param => param.includes("message"));
+
+    // Suppression de l'élément si trouvé
+    if (indexMessage !== -1) {
+        url.splice(indexMessage, 1);
+    }
+
+    // Redirect without any filter
+    let newUrl = ""
+    if(url.length > 1) {
+
+        url.pop()
+        newUrl = url.join("/")
+        window.location.href = `${newUrl}`
+        return
+
+    }
+
+    // Redirect to the parent page
+    url = url1.split("/")
+
+    if(url.length >= 4){
+        url.pop()
+        newUrl = url.join("/")
+        window.location.href = `${newUrl}`
+    }
+
+
+
+}
+
+async function redirectAddMessage(){
+
+    const messageToSend = document.getElementById("messageToSend").value
+    console.log(messageToSend)
+
+    const id_ticket = document.getElementById("id_ticket").innerHTML
+    console.log(id_ticket)
+
+    const data = {
+        "id_ticket":id_ticket,
+        "message":messageToSend
+    }
+    const response = await fecthSynch("/message", optionPost(data))
 }
 
 // Function to redirect to the reservation list
-function redirectToMainList() {
-    window.location.href = `/list`;
-}
-
-// Function to redirect to create a reservation
-function redirectToCreateTicket() {
-    window.location.href = `/list/create`;
+function redirectToConversation(id) {
+    window.location.href = `/conversation?idTicket=${id}`;
 }
 
 // Function to redirect to the solo reservation corresponding to the id entered
@@ -36,8 +81,21 @@ function redirectToIdList(id) {
     window.location.href = `/list?idTicket=${id}`;
 }
 
-function redirectToClaim(id){
-    window.location.href = `/claim?idTicket=${id}`;
+async function redirectToClaim(id){
+
+   const response = await fecthSynch(`/claim?idTicket=${id}`, optionGet())
+
+    if(typeof(response) == "string"){
+        window.location.reload()
+    }
+}
+
+async function redirectToCloseList(id){
+    const response = await fecthSynch(`/close?idTicket=${id}`, optionGet())
+
+    if(typeof(response) == "string"){
+        window.location.reload()
+    }
 }
 
 //
@@ -63,9 +121,11 @@ async function creerTicket() {
         "categorie": categorie
     }
 
-    console.log(form)
-
     let response = await fecthSynch("/create", optionPost(form))
+
+    if(typeof(response) == "string"){
+        window.location.href = "/conversation"
+    }
 }
 
 //
@@ -83,7 +143,9 @@ async function fecthSynch(url, data){
             try{
                 console.log(response)
                 const message = await response.text();
+
                 showPopup(message)
+                return message
             }
             catch (err){
                 console.log(err)
@@ -92,12 +154,12 @@ async function fecthSynch(url, data){
             return response
         } else {
             const errorMessage = await response.text();
-            showPopup('Erreur' + errorMessage);
+            showPopup('Erreur : ' + errorMessage);
             return false
         }
     } catch (error) {
         // Erreur de réseau
-        showPopup('Erreur lors de la requête :', error);
+        showPopup('Erreur lors de la requête : ', error);
         return false
     }
 }
