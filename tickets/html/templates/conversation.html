@@ -57,28 +57,25 @@
     <p class="flex flexCenter">{{ .message }}</p>
     {{ end }}
 
-    <div class="marginAuto block width50 marginTop30 marginBottom40 groupMessage">
-        {{ range .result.Messages }}
-        <div class="message {{ if eq .IdUser $.vous }}droite{{ else }}gauche{{ end }}">
-            <p class="dateMessage">{{ .DateMessage }}</p>
-            <p class="textMessage">{{ .Text }}</p>
+    <div class="flex flexAround">
+        <div class="block width50 marginTop30 marginBottom40 groupMessage">
+            <p class="conversation">Conversation</p>
+            {{ range .result.Messages }}
+            <div class="message {{ if eq .IdUser $.vous }}droite{{ else }}gauche{{ end }}">
+                <p class="dateMessage">{{ .DateMessage }}</p>
+                <p class="textMessage">{{ .Text }}</p>
+            </div>
+            {{ end }}
         </div>
-        {{ end }}
 
-        {{ range .result.Messages }}
-        <div class="message gauche">
-            <p class="dateMessage">{{ .DateMessage }}</p>
-            <p class="textMessage">{{ .Text }}</p>
-        </div>
-        {{ end }}
-
-    </div>
-
-    <div class="flex flexCenter marginTop10 height30">
-        <textarea id="messageToSend" class="width40 height80" placeholder="Ajouter un message"></textarea>
-    </div>
-    <div class="flex flexCenter">
-        <button type="button" id="newMessage" onclick="redirectAddMessage()">Envoyer le message</button>
+        <div class="width40 alignCenter" style="height: 211px">
+            <div class="flex flexCenter marginTop10 height100 width100">
+                <textarea id="messageToSend" class="width100 height80" placeholder="Ajouter un message"></textarea>
+            </div>
+            <div class="flex flexCenter">
+                <button type="button" id="newMessage" onclick="redirectAddMessage()">Envoyer le message</button>
+            </div>
+        </divclass>
     </div>
 
 </main>
