@@ -13,7 +13,7 @@ class VehiculeService
             $vehiculeRepository = new VehiculeRepository();
             return $vehiculeRepository->getAllVehicule();
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("You didn't have access to this command");
         }
     }
 
@@ -24,7 +24,7 @@ class VehiculeService
             $vehiculeRepository = new VehiculeRepository();
             return $vehiculeRepository->getVehiculeById($int);
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("You didn't have access to this command");
         }
     }
 
@@ -36,7 +36,7 @@ class VehiculeService
 
             return $vehiculeRepository->createVehicule($vehicule);
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("You didn't have access to this command");
         }
     }
 
@@ -47,7 +47,7 @@ class VehiculeService
             $vehiculeRepository = new VehiculeRepository();
             return $vehiculeRepository->deleteVehicule($int);
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("You didn't have access to this command");
         }
     }
 }

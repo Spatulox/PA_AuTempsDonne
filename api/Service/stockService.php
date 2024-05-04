@@ -27,7 +27,7 @@ class StockService {
             $stockRepository = new StockRepository();
             return $stockRepository->getAllStock();
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("You didn't have access to this command");
         }
 
     }
@@ -41,7 +41,7 @@ class StockService {
         $stockRepository = new StockRepository();
         return $stockRepository->getAllStockInEntrepots($id);
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("You didn't have access to this command");
         }
     }
 
@@ -54,7 +54,7 @@ class StockService {
             $stockRepository = new StockRepository();
             return $stockRepository->getAllProduitsInEntrepots($id,$produit);
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("You didn't have access to this command");
         }
     }
 
@@ -136,7 +136,7 @@ class StockService {
 
             return $stockRepository->createStock($stock);
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("You didn't have access to this command");
         }
     }
 
@@ -147,7 +147,7 @@ class StockService {
             $stockRepository = new StockRepository();
             return $stockRepository->deleteStock($id);
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("You didn't have access to this command");
         }
     }
 }

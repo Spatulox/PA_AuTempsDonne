@@ -30,7 +30,7 @@ function donController($uri, $apiKey)
                 }
 
                 $donService = new DonService();
-                $getDonAnnuel = $donService->getDonAnnuel($json['date'], $apiKey);
+                $donService->getDonAnnuel($json['date'], $apiKey);
 
             }
 //---------------------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ function donController($uri, $apiKey)
                 }
 
                 $donService = new DonService();
-                $getDonMensuel = $donService->getDonMensuel($json['date'], $apiKey);
+                $donService->getDonMensuel($json['date'], $apiKey);
 
             }
 
