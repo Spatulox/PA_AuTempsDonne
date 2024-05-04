@@ -39,20 +39,43 @@
         {{ range .result }}
         <tr>
             <td>{{ .IdTicket }}</td>
-            <td>{{ .Description }}</td>
+            <td><textarea placeholder="Description : {{ .Description }}"></textarea></td>
             <td>{{ .DateCreation }}</td>
             <td>{{ .DateCloture }}</td>
             <td>{{ .OwnerStr }}</td>
             <td>{{ .AdminStr }}</td>
-            <td>{{ .EtapeStr }}</td>
-            <td>{{ .CategorieStr }}</td>
+            <td>
+                <select name="state" id="stateToUpdate">
+                    <option value="nil">{{ .EtapeStr }}</option>
+                    <hr>
+                    {{ range $index, $state := $.state }}
+                    <option value="{{ $state.Id }}">{{ $state.Nom }}</option>
+                    {{ end }}
+                </select>
+            </td>
+            <td>
+                <select name="categorie" id="categorieToUpdate">
+                    <option value="nil">{{ .CategorieStr }}</option>
+                    <hr>
+                    {{ range $index, $categorie := $.categorie }}
+                    <option value="{{ $categorie.Id }}">{{ $categorie.Nom }}</option>
+                    {{ end }}
+                </select>
+            </td>
         </tr>
         {{ end }}
         </tbody>
     </table>
+
+    <div class="flex flexCenter marginTop40">
+        <button type="button" onclick="UpdateStateCatDescTicket()">Mettre à jour le ticket</button>
+    </div>
+
     {{ else }}
     <p class="flex flexCenter">{{ .message }}</p>
     {{ end }}
+
+
 </main>
 
 <footer class="flex flexAround padding20 underline">
