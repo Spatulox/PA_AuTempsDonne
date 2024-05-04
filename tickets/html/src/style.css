@@ -2,12 +2,13 @@ body{
     margin: 0px;
     min-height: 100vh;
     display: grid;
-    grid-template-rows: 8vh 1fr 10vh;
+    /*grid-template-rows: 8vh 1fr 10vh;*/
 }
 
 main{
 	padding: 20px 0px;
     background-color: #FDF0E7;
+    overflow: auto;
 }
 
 header {
@@ -129,6 +130,48 @@ th, td {
   height: 315px;
 }
 
+.groupMessage{
+    padding: 50px;
+    background-color: #999999;
+    max-height: 30vh;
+    overflow: auto;
+
+    border-color: white;
+    border-width: 10px;
+    border-radius: 10px;
+
+    border: 5px solid black;
+}
+
+.message{
+    margin-top: 10px;
+}
+
+.dateMessage{
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+.textMessage{
+    display: inline-block;
+}
+
+.droite, .gauche{
+    padding: 10px;
+}
+
+.droite{
+    background-color: blue;
+    text-align: right;
+}
+
+.gauche{
+    background-color: #ffe28c;
+    text-align: left;
+}
+
+
+
 .menu-container {
 	display: flex;
 	flex-direction: column;
@@ -235,6 +278,10 @@ th, td {
 
 .block{
   display: block;
+}
+
+.inlineBlock{
+    display: inline-block;
 }
 
 .bold{
@@ -398,6 +445,10 @@ th, td {
 
 .padding10{
     padding: 10px;
+}
+
+.padding20{
+    padding: 20px;
 }
 
 .pointer{
