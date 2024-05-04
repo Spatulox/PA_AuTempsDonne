@@ -14,7 +14,7 @@ func CreateTickets(idOwner int64, description string, categorie int) bool {
 
 	var bdd Db
 
-	if !checkUserExist(int(idOwner)) {
+	if !CheckUserExist(int(idOwner)) {
 		return false
 	}
 
@@ -56,6 +56,66 @@ func RecupTickets(idTicket *int) []Tickets {
 		return nil
 	}
 
+	if len(result) == 0 {
+		return nil
+	}
+
+	tickets := make([]Tickets, 0, len(result))
+
+	for _, sResult := range result {
+
+		tiocket := Tickets{
+			IdTicket:     sResult["id_ticket"].(int64),
+			Description:  sResult["description"].(string),
+			DateCreation: sResult["date_creation"].(string),
+		}
+
+		dateCloture, ok := sResult["date_cloture"].(string)
+		if ok && dateCloture != "" {
+			tiocket.DateCloture = dateCloture
+		} else {
+			tiocket.DateCloture = ""
+		}
+
+		tiocket.IdOwner = sResult["id_user_owner"].(int64)
+
+		idUserAdmin, ok := sResult["id_user_admin"].(int64)
+		if !ok {
+			tiocket.IdAdmin = 0
+			//Log.Debug("Impossible de caster id_user_admin en int64")
+		} else {
+			tiocket.IdAdmin = idUserAdmin
+		}
+
+		tiocket.IdEtape = sResult["id_etape"].(int64)
+		tiocket.EtapeStr = SelectEtapeStr(sResult["id_etape"].(int64))
+
+		tiocket.IdCategorie = sResult["id_categorie"].(int64)
+		tiocket.CategorieStr = SelectCategorieStr(sResult["id_categorie"].(int64))
+
+		tickets = append(tickets, tiocket)
+	}
+
+	return tickets
+
+}
+
+func RecupMyTicketAdmin(idUser int64) []Tickets {
+
+	var condition string
+
+	var result []map[string]interface{}
+	var err error
+	var bdd Db
+
+	condition = fmt.Sprintf("id_user_admin=%d AND id_etape !=3 AND id_etape !=4", idUser)
+	result, err = bdd.SelectDB(TICKETS, []string{"*"}, nil, &condition)
+
+	if err != nil || result == nil {
+		Log.Error("Erreur lors de la lecture de la Base de donnée", err)
+		return nil
+	}
+
 	tickets := make([]Tickets, 0, len(result))
 
 	for _, sResult := range result {
@@ -74,16 +134,19 @@ func RecupTickets(idTicket *int) []Tickets {
 
 		tiocket.IdOwner = sResult["id_user_owner"].(int64)
 
-		idUserAdmin, ok := sResult["id_user_admin"].(string)
-		if ok && idUserAdmin != "" {
-			// Convertir la chaîne de caractères en int64
-			tiocket.IdAdmin, _ = strconv.ParseInt(idUserAdmin, 10, 64)
-		} else {
+		idUserAdmin, ok := sResult["id_user_admin"].(int64)
+		if !ok {
 			tiocket.IdAdmin = 0
+			//Log.Debug("Impossible de caster id_user_admin en int64")
+		} else {
+			tiocket.IdAdmin = idUserAdmin
 		}
 
 		tiocket.IdEtape = sResult["id_etape"].(int64)
+		tiocket.EtapeStr = SelectEtapeStr(sResult["id_etape"].(int64))
+
 		tiocket.IdCategorie = sResult["id_categorie"].(int64)
+		tiocket.CategorieStr = SelectCategorieStr(sResult["id_categorie"].(int64))
 
 		tickets = append(tickets, tiocket)
 	}
@@ -92,8 +155,40 @@ func RecupTickets(idTicket *int) []Tickets {
 
 }
 
+//
+//---------------------------------------------------------------------------------
+//
+
+func RecupNotAssignTickets() []Tickets {
+
+	result := RecupTickets(nil)
+
+	theTickets := make([]Tickets, 0, len(result))
+
+	for _, tickets := range result {
+
+		if CheckTicketAssign(tickets.IdTicket) == 0 {
+			theTickets = append(theTickets, tickets)
+		}
+
+	}
+
+	return theTickets
+
+}
+
+//
+//---------------------------------------------------------------------------------
+//
+
 func RecupConversation(idTicket int) (Conversation, error) {
-	var ticket = RecupTickets(&idTicket)[0]
+	var ticket1 = RecupTickets(&idTicket)
+
+	if len(ticket1) == 0 {
+		return Conversation{}, fmt.Errorf("Nothing")
+	}
+
+	ticket := ticket1[0]
 
 	var bdd Db
 	var condition = fmt.Sprintf("id_ticket=%d", idTicket)
@@ -180,7 +275,7 @@ func UpdateTicketsEtape(newEtape int, idTicket int) bool {
 	// Update it
 	var etapeString = fmt.Sprintf("%d", newEtape)
 	var condition = fmt.Sprintf("id_ticket=%d", idTicket)
-	bdd.UpdateDB(TICKETS, []string{"id_etape"}, []string{etapeString}, &condition, true)
+	bdd.UpdateDB(TICKETS, []string{"id_etape"}, []string{etapeString}, &condition)
 	Log.Infos("Ticket Etape updated")
 	return true
 }
@@ -236,6 +331,10 @@ func UpdateTicketsDescription(newDesc string, idTicket int) bool {
 
 func AddMessageTickets(message string, idTicket int, idUser int) bool {
 
+	if CheckTicketState(idTicket) == -1 {
+		return false
+	}
+
 	var bdd Db
 
 	leBool := CheckTicketExist(idTicket)
@@ -243,7 +342,7 @@ func AddMessageTickets(message string, idTicket int, idUser int) bool {
 		return false
 	}
 
-	leBool = checkUserExist(idUser)
+	leBool = CheckUserExist(idUser)
 	if !leBool {
 		return false
 	}
@@ -262,18 +361,22 @@ func AddMessageTickets(message string, idTicket int, idUser int) bool {
 //---------------------------------------------------------------------------------
 //
 
-func AssignTicket(idTicket int, idUser int) bool {
+func AssignTicket(idTicket int, idUser int64) bool {
 
 	if !CheckTicketExist(idTicket) {
 		Log.Error("Id Ticket don't exist")
 		return false
 	}
 
-	if !checkUserExist(idUser) {
+	if !CheckUserExist(int(idUser)) {
 		Log.Error("L'utilisateur n'existe pas")
 		return false
 	}
 
+	var bdd Db
+
+	var condition = fmt.Sprintf("id_ticket=%d", idTicket)
+	bdd.UpdateDB(TICKETS, []string{"id_user_admin"}, []string{strconv.Itoa(int(idUser))}, &condition)
 	return true
 }
 
@@ -294,11 +397,11 @@ func CheckTicketExist(idTicket int) bool {
 	return true
 }
 
-func checkTicketAssign(idTicket int) int {
+func CheckTicketAssign(idTicket int64) int {
 
 	var bdd Db
 	var condition = fmt.Sprintf("id_ticket=%d", idTicket)
-	user, err := bdd.SelectDB(UTILISATEUR, []string{"id_user_admin"}, nil, &condition)
+	user, err := bdd.SelectDB(TICKETS, []string{"id_user_admin"}, nil, &condition)
 
 	if err != nil {
 		Log.Error("Error when fetching data")
@@ -310,9 +413,11 @@ func checkTicketAssign(idTicket int) int {
 		return -1
 	}
 
-	idAdmin := user[0]["id_user_admin"].(string)
-
-	idAdminInt, err := strconv.Atoi(idAdmin)
+	idAdmin, ok := user[0]["id_user_admin"].(int64)
+	if !ok {
+		idAdmin = 0
+		//Log.Debug("Impossible de caster id_user_admin en int64")
+	}
 
 	if err != nil {
 		var smg = "Erreur lors de la converstion en int"
@@ -320,14 +425,38 @@ func checkTicketAssign(idTicket int) int {
 		return -1
 	}
 
-	if idAdminInt > 0 {
+	// Si y'a quelqu'un
+	if idAdmin > 0 {
 		return 1
 	}
 	return 0
 
 }
 
-func checkUserExist(idUser int) bool {
+func CheckTicketState(idTicket int) int {
+
+	var bdd Db
+	var condition = fmt.Sprintf("id_ticket=%d", idTicket)
+
+	ticket, err := bdd.SelectDB(TICKETS, []string{"id_etape"}, nil, &condition)
+
+	if err != nil {
+		Log.Error("Error when selecting Ticket to check the state")
+		return -1
+	}
+
+	if len(ticket) == 0 {
+		Log.Error("No ticket with this ID")
+		return -1
+	}
+
+	idStateInt := ticket[0]["id_etape"].(int64)
+
+	return int(idStateInt)
+
+}
+
+func CheckUserExist(idUser int) bool {
 
 	var bdd Db
 	var condition = fmt.Sprintf("id_user=%d", idUser)
