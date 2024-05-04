@@ -73,6 +73,10 @@ async function redirectAddMessage(){
         "message":messageToSend
     }
     const response = await fecthSynch("/message", optionPost(data))
+
+    window.location.reload()
+
+    scrollToBottomOfMessages();
 }
 
 // Function to redirect to the reservation list
@@ -128,7 +132,7 @@ async function creerTicket() {
     let response = await fecthSynch("/create", optionPost(form))
 
     if(typeof(response) == "string"){
-        window.location.href = "/conversation"
+        window.location.href = "/list"
     }
 }
 
@@ -173,11 +177,19 @@ async function fecthSynch(url, data){
 //
 
 function optionPost(formData){
+
+    let cookie = getCookie("apikey")
+    if(cookie === null){
+        alert("Le Cookie ets nul, on ne peux pas s'authentifier")
+        window.location.href("http://localhost:8083/HTML/signup_login.php")
+        return
+    }
+
     return {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': '8f96e6e91f136ea4ee7150d8a656cc57ab1de2021dac5e78e3a79242cf88c055'
+            'apikey': cookie
         },
         body: JSON.stringify(formData)
     }
@@ -188,11 +200,19 @@ function optionPost(formData){
 //
 
 function optionGet(){
+
+    let cookie = getCookie("apikey")
+    if(cookie === null){
+        alert("Le Cookie est nul, on ne peux pas s'authentifier")
+        window.location.href("http://localhost:8083/HTML/signup_login.php")
+        return
+    }
+
     return {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': '8f96e6e91f136ea4ee7150d8a656cc57ab1de2021dac5e78e3a79242cf88c055'
+            'apikey': cookie
         }
     }
 }
@@ -201,12 +221,60 @@ function optionGet(){
 //-------------------------------------------------------------------------------------
 //
 
-// Called in every page when they finisehd to load, to detect a message in the url
+function getCookie(name) {
+    const cookies = document.cookie;
+
+    const cookieArray = cookies.split(';');
+
+    for (let i = 0; i < cookieArray.length; i++) {
+        const cookie = cookieArray[i].trim();
+
+        if (cookie.startsWith(name + '=')) {
+            return cookie.substring(name.length + 1);
+        }
+    }
+
+    return null;
+}
+
+//
+//-------------------------------------------------------------------------------------
+//
+
+function scrollToBottomOfMessages() {
+    const groupMessages = document.querySelectorAll('.groupMessage');
+    groupMessages.forEach(message => {
+        message.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    });
+}
+
+//
+//-------------------------------------------------------------------------------------
+//
+
+
+
+
+
+
+// Called when a page is loaded
 const urlParams = new URLSearchParams(window.location.search);
+const groupMessage = document.getElementsByClassName('groupMessage')
 
-console.log(urlParams)
-
+// check if there is a "message" in the url
 if (urlParams.has('message')) {
     const messageValue = urlParams.get('message');
     showPopup(messageValue)
 }
+
+// Detect if it's the conversation page
+if (groupMessage.length > 0) {
+    setInterval((async ()=>{
+        await refreshMessages()
+
+        scrollToBottomOfMessages()
+    }), 5000)
+}
+
+// This is to scrollBottom for conversation part
+window.addEventListener('load', scrollToBottomOfMessages);
