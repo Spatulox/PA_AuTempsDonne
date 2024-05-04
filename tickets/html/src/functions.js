@@ -142,7 +142,11 @@ async function UpdateStateCatDescTicket(){
 
     const response = await fecthSynch("/fetch/update", optionPost(data))
 
-    window.location.reload()
+    console.log(response)
+
+    if (response === "Updated"){
+        window.location.reload()
+    }
 }
 
 //
