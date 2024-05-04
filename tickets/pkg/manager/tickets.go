@@ -78,13 +78,20 @@ func RecupTickets(idTicket *int) []Tickets {
 		}
 
 		tiocket.IdOwner = sResult["id_user_owner"].(int64)
+		tiocket.OwnerStr = getEmailFromId(sResult["id_user_owner"].(int64))
 
 		idUserAdmin, ok := sResult["id_user_admin"].(int64)
 		if !ok {
-			tiocket.IdAdmin = 0
 			//Log.Debug("Impossible de caster id_user_admin en int64")
+			tiocket.IdAdmin = 0
 		} else {
 			tiocket.IdAdmin = idUserAdmin
+		}
+
+		if tiocket.IdAdmin != 0 {
+			tiocket.AdminStr = getEmailFromId(idUserAdmin)
+		} else {
+			tiocket.AdminStr = "N/A"
 		}
 
 		tiocket.IdEtape = sResult["id_etape"].(int64)
@@ -134,12 +141,20 @@ func RecupMyTicketAdmin(idUser int64) []Tickets {
 
 		tiocket.IdOwner = sResult["id_user_owner"].(int64)
 
+		tiocket.OwnerStr = getEmailFromId(sResult["id_user_owner"].(int64))
+
 		idUserAdmin, ok := sResult["id_user_admin"].(int64)
 		if !ok {
 			tiocket.IdAdmin = 0
 			//Log.Debug("Impossible de caster id_user_admin en int64")
 		} else {
 			tiocket.IdAdmin = idUserAdmin
+		}
+
+		if tiocket.IdAdmin != 0 {
+			tiocket.AdminStr = getEmailFromId(idUserAdmin)
+		} else {
+			tiocket.AdminStr = "N/A"
 		}
 
 		tiocket.IdEtape = sResult["id_etape"].(int64)
@@ -507,4 +522,26 @@ func checkCategorie(newCategorie int) bool {
 func getCurrentDateTime() string {
 	currentTime := time.Now()
 	return currentTime.Format("2006-01-02 15:04:05")
+}
+
+func getEmailFromId(idUser int64) string {
+	var bdd Db
+
+	condition := fmt.Sprintf("id_user=%d", idUser)
+	result, err := bdd.SelectDB(UTILISATEUR, []string{"email"}, nil, &condition)
+
+	if err != nil || result == nil {
+		Log.Error("Erreur lors de la lecture de la Base de donnée", err)
+		return ""
+	}
+
+	if len(result) == 0 {
+		Log.Error("Pas d'utilisateur avec cet id")
+		return ""
+	}
+
+	email := result[0]["email"].(string)
+
+	return email
+
 }
