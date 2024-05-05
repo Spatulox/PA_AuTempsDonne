@@ -175,8 +175,11 @@ CREATE TABLE DEMANDE(
 CREATE TABLE ETAGERES(
    id_etagere INT AUTO_INCREMENT,
    nombre_de_place INT NOT NULL,
-   PRIMARY KEY(id_etagere)
+   id_entrepot INT NOT NULL,
+   PRIMARY KEY(id_etagere),
+   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot)
 );
+
 
 
 CREATE TABLE DON(
@@ -276,14 +279,6 @@ CREATE TABLE RECU(
    PRIMARY KEY(id_collecte, id_demande),
    FOREIGN KEY(id_collecte) REFERENCES COLLECTE(id_collecte),
    FOREIGN KEY(id_demande) REFERENCES DEMANDE(id_demande)
-);
-
-CREATE TABLE STOCKAGE(
-   id_entrepot INT,
-   id_etagere INT,
-   PRIMARY KEY(id_entrepot, id_etagere),
-   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
-   FOREIGN KEY(id_etagere) REFERENCES ETAGERES(id_etagere)
 );
 
 INSERT INTO ADRESSE (adresse) VALUES
