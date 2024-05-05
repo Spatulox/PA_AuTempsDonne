@@ -1,9 +1,56 @@
 <?php
 include_once './Repository/BDD.php';
 include_once './exceptions.php';
+include_once './Models/entrepotModel.php';
 
 class EntrepotRepository {
     private $connection = null;
+
+    //--------------------------------------------------------------------------------------
+    private function stock($request){
+
+        $array = [];
+
+        $entrepots = [];
+
+        foreach ($request as $item) {
+            $id_entrepot = $item["id_entrepot"];
+
+            if (!isset($entrepots[$id_entrepot])) {
+                $entrepots[$id_entrepot] = [
+                    "id_entrepot" => $id_entrepot,
+                    "nom_entrepot" => $item["nom_entrepot"],
+                    "parking" => $item["parking"],
+                    "id_adresse" => $item["id_adresse"],
+                    "etagere" => []
+                ];
+            }
+
+
+
+            $etagere = [
+                "id_etagere" => $item["id_etagere"],
+                "nombre_de_place" => $item["nombre_de_place"],
+            ];
+
+            $entrepots[$id_entrepot]["etagere"][] = $etagere;
+        }
+
+        foreach ($entrepots as $entrepot) {
+            $entrepotModel = new EntrepotModel(
+                $entrepot["id_entrepot"],
+                $entrepot["nom_entrepot"],
+                $entrepot["parking"],
+                $entrepot["id_adresse"],
+                $entrepot["etagere"]
+            );
+            $entrepotModel->setAddresse(selectDB("ADRESSE", "adresse", "id_adresse=" . $entrepot['id_adresse'])[0]);
+            $array[] = $entrepotModel;
+        }
+        return $array;
+    }
+
+    //-----------------------------------------------------------------------------------
 
     // I'm not sure about this function lol (unuse)
     function __construct() {
@@ -14,19 +61,14 @@ class EntrepotRepository {
 
     public function getEntrepots(){
         $entrepot = selectDB("ENTREPOTS", "*");
-        //$entrepot = selectDB("ENTREPOTS", "*", "entrepot_index=1");
+        $string = "INNER JOIN ETAGERES E ON E.id_entrepot = ENTREPOTS.id_entrepot;";
+        $request = selectJoinDB("ENTREPOTS", "*",$string,);
 
         if(!$entrepot){
             exit_with_message("Impossible to select data for entrepot in the DB");
         }
 
-        $entrepotArray = [];
-
-        for ($i=0; $i < count($entrepot) ; $i++) { 
-            $entrepotArray[$i] = new EntrepotModel($entrepot[$i]["id_entrepot"], $entrepot[$i]["nom_entrepot"], $entrepot[$i]["localisation"]);
-        }
-
-        exit_with_content($entrepotArray);
+        exit_with_content($this->stock($request));
     }
 
     //-------------------------------------
@@ -37,14 +79,15 @@ class EntrepotRepository {
             exit_with_content("Plz specifie a id for the entepot");
         }
 
-         $entrepot = selectDB("ENTREPOTS", "*", "id_entrepot=".$id);
-        //$entrepot = selectDB("ENTREPOTS", "*", "id_entrepot=".$id." AND entrepot_index=1");
+        $entrepot = selectDB("ENTREPOTS", "*", "id_entrepot = ".$id);
+        $string = "INNER JOIN ETAGERES E ON E.id_entrepot = ENTREPOTS.id_entrepot";
+        $request = selectJoinDB("ENTREPOTS", "*",$string,"ENTREPOTS.id_entrepot = ".$id);
 
         if(!$entrepot){
             exit_with_message("Impossible to select data for entrepot in the DB with the id : ".$id);
         }
 
-        exit_with_content(new EntrepotModel($entrepot[0]["id_entrepot"], $entrepot[0]["nom_entrepot"], $entrepot[0]["localisation"]));
+        exit_with_content($this->stock($request));
     }
 
 
