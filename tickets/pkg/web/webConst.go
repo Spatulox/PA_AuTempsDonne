@@ -9,6 +9,9 @@ const (
 	PORT       = "8085"
 	RouteIndex = "/"
 
+	RouteConnexion   = "http://localhost:8083/HTML/signup_login.php"
+	RouteIndexTicket = "http://localhost:8085"
+
 	RouteListTickets      = "/list"
 	RouteListCreerTickets = "/create"
 	RouteClaimTicket      = "/claim"

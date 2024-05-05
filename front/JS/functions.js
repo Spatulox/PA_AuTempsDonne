@@ -27,8 +27,12 @@ async function connexion() {
         return
     }
 
+    if(window.location.href.includes("?return=")){
+        redirect(getParamFromUrl("return"))
+        return
+    }
+
     redirect("./moncompte.php")
-    return
 
     
 

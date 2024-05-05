@@ -832,8 +832,9 @@ func getApikeyFromCookie(w http.ResponseWriter, r *http.Request) string {
 	}
 
 	if leBool == false {
-		var msg = "Need to apikey"
-		http.Redirect(w, r, RouteIndex+"?message="+msg, http.StatusSeeOther)
+		var msg = "Vous devez vous connecter avant d_acceder aux tickets"
+		var returnPage = "?return=" + RouteIndexTicket
+		http.Redirect(w, r, RouteConnexion+returnPage+"?message="+msg, http.StatusSeeOther)
 		Log.Error(msg)
 		return ""
 	}

@@ -8,6 +8,10 @@ function redirect(page, message = null) {
     }
 }
 
+function getParamFromUrl(param){
+    return window.location.href.split("?"+param+"=")[1].split("?")[0]
+}
+
 /**
  * Set a cookie
  * @param name name of the cookie
