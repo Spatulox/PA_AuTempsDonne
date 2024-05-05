@@ -93,14 +93,23 @@ class EntrepotRepository {
 
     //-------------------------------------
     
-    public function createEntrepot(EntrepotModel $entr){
+    public function createEntrepot($entrepot,$etageres){
 
-        //var_dump($entr);
-        if(selectDB("ENTREPOTS", "*", "nom_entrepot='".$entr->nom."' AND localisation='".$entr->localisation."'", "bool")){
-            exit_with_message("Entrepot already exists", 403);
+        $request = insertDB("ENTREPOTS", ["nom_entrepot", "parking", "id_adresse"], [$entrepot["nom_entrepot"], $entrepot["parking"],$entrepot["id_adresse"] ],"-@");
+
+        if (!$request) {
+            exit_with_message("Error creating demande", 400);
         }
-        if(insertDB("ENTREPOTS", ["nom_entrepot", "localisation"], [$entr->nom, $entr->localisation])){
-            exit_with_message("Entrepot added successfully", 200);
+        $id_entrepot = $this->getLastInsertId("ENTREPOTS","id_entrepot");
+
+        foreach ($etageres as $etagere) {
+            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etagere["nombre_de_place"], $id_entrepot[0]["id_entrepot"]],"-@");
+
+            if (!$request_collecte) {
+                exit_with_message("Error creating collecte", 400);
+            }
+
+        exit_with_message("Sucessfully created entrepot", 200);
         }
     }
 
@@ -167,7 +176,14 @@ class EntrepotRepository {
         exit_with_message("Something went wrong when deleting entrepot with id".$id, 500);
 
     }
-    
+
+
+    private function getLastInsertId($table,$id)
+    {
+        $string = "ORDER BY ".$id." DESC LIMIT 1";
+        $envoie= selectDB($table,$id,-1, $string);
+        return $envoie;
+    }
 }
 
 

@@ -26,9 +26,9 @@ class EntrepotService {
      *  Créer un entrepot
     */
 
-    public function createEntrepot(EntrepotModel $entrepot) {
+    public function createEntrepot($apiKey,$entrepot,$etageres) {
         $entrepotRepository = new EntrepotRepository();
-        $entrepotRepository->createEntrepot($entrepot);
+        $entrepotRepository->createEntrepot($entrepot,$etageres);
     }
 
     
