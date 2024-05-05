@@ -8,6 +8,11 @@ function redirect(page, message = null) {
     }
 }
 
+/**
+ * Retun the thing in the url corresponding to the param
+ * @param param
+ * @returns {string}
+ */
 function getParamFromUrl(param){
     return window.location.href.split("?"+param+"=")[1].split("?")[0]
 }
