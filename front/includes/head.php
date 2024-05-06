@@ -13,3 +13,9 @@
 <script type="text/javascript" src="../JS/popup.js"></script>
 
 
+<?php
+if($returnCode === false){
+echo '<script type="text/javascript" defer>redirect("./index.php")</script>';
+}?>
+
+
