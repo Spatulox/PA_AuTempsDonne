@@ -199,10 +199,10 @@ CREATE TABLE STOCKS(
    date_peremption DATE,
    desc_produit TEXT,
    id_produit INT NOT NULL,
-   id_entrepot INT NOT NULL,
+   id_etagere INT NOT NULL,
    PRIMARY KEY(id_stock),
    FOREIGN KEY(id_produit) REFERENCES PRODUIT(id_produit),
-   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot)
+   FOREIGN KEY(id_etagere) REFERENCES ETAGERES(id_etagere)
 );
 
 CREATE TABLE COLLECTE(
@@ -337,7 +337,24 @@ INSERT INTO ENTREPOTS (nom_entrepot, parking, id_adresse) VALUES
 ('Entrepot Laon', 4, 2),
 ('Entrepot Marseille', 8, 3);
 
-INSERT INTO STOCKS (quantite_produit, date_entree, date_sortie, date_peremption, desc_produit, id_produit, id_entrepot) VALUES
+INSERT INTO ETAGERES (nombre_de_place , id_entrepot) VALUES
+(50,1),
+(100,1),
+(600,1),
+(250,1),
+(70,1),
+(50,2),
+(100,2),
+(600,2),
+(250,2),
+(70,2),
+(50,3),
+(100,3),
+(600,3),
+(250,3),
+(70,3);
+
+INSERT INTO STOCKS (quantite_produit, date_entree, date_sortie, date_peremption, desc_produit, id_produit, id_etagere) VALUES
 (500, '2024-04-01', NULL, '2025-04-01', 'Riz basmati', 1, 1),
 (300, '2024-04-05', NULL, '2025-06-01', 'Pâtes de blé', 2, 1),
 (200, '2024-04-10', NULL, '2025-08-01', 'Conserves de tomates', 3, 1),
