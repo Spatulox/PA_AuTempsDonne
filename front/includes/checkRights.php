@@ -4,9 +4,14 @@ $apikey = $_COOKIE["apikey"];
 
 $returnCode = true;
 
-if($apikey !== ""){
+$currPage = basename($_SERVER["PHP_SELF"]);
 
-    $currPage = basename($_SERVER["PHP_SELF"]);
+$rightfile = file_get_contents("../includes/rights.json");
+$right = json_decode($rightfile, true);
+
+
+if($apikey !== NULL){
+
 
 
 // Prepare address for others page
@@ -56,11 +61,7 @@ if($apikey !== ""){
     }
 
 
-// Check if the user can be here
-
-    $rightfile = file_get_contents("../includes/rights.json");
-    $right = json_decode($rightfile, true);
-
+    // Check if the user can be here
     if ($returnCode == true) {
 
         if (in_array($currPage, $right[$results["id_role"]]) || in_array($currPage, $right["all"]) ) {
@@ -73,7 +74,12 @@ if($apikey !== ""){
 
     }
 } else{
-    $returnCode = true;
+
+    if (in_array($currPage, $right["all"]) ) {
+        $returnCode = true;
+    } else {
+        $returnCode = false;
+    }
 }
 
 
