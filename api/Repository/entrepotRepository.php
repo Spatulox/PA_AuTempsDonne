@@ -151,31 +151,21 @@ class EntrepotRepository {
 
     public function unreferenceEntrepotById($id){
 
-        /*if($id == 1){
-            exit_with_message("Impossible to delete the entrepot with id 1", 403);
-        }*/
 
-        $tmp = selectDB("ENTREPOTS", "*", "id_entrepot=".$id, "bool");
-        if(!$tmp){
-            exit_with_message("Impossible to select data for entrepot ".$id." in the DB, it may doesn't exist :/", 200);
-        }
+        $resquest = selectDB("ETAGERES", "*" ,"id_entrepot=".$id,"bool");
 
-        // Try to delete it
-        if(deleteDB("ENTREPOTS", "id_entrepot=".$id)){
-            exit_with_message("Deleting successful", 200);
-        }
-
-        // If there is a constrainst violation
-        if(!updateDB("UTILISATEUR", ["id_entrepot"], ["1"], "id_entrepot=".$id, "bool")){
-            exit_with_message("Deleting error", 200);
-        }
-        if(deleteDB("ENTREPOTS", "id_entrepot=".$id, "bool")){
-            exit_with_message("Deleting successful entrepot with id".$id, 200);
-        }
-
-        exit_with_message("Something went wrong when deleting entrepot with id".$id, 500);
+            if ($resquest) {
+                $tmp = deleteDB("ETAGERES", "id_entrepot=" . $id);
+                if (!$tmp) {
+                    exit_with_message("The demande doesn't exist", 200);
+                }}
+                $tmp = deleteDB("ENTREPOTS", "id_entrepot=" . $id);
+                if (!$tmp) {
+                    exit_with_message("The demande doesn't exist", 200);
+            }
 
     }
+
 
 
     private function getLastInsertId($table,$id)
