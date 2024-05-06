@@ -1,4 +1,10 @@
 {
+	"ticket": {
+		"title": "Ticket Menu",
+		"assignFalse": "See non assign tickets",
+		"me": "See my tickets",
+		"all": "See all tickets"
+	},
 	"header":{
 		"li":{
 			"./actualites.php":"Actualities",
@@ -16,6 +22,11 @@
 			"contact.php":"Contact us",
 			"https://youtu.be/L0TB1IkhVds":"Mr Sananes sings rap in suit"
 		}
+	},
+	"404": {
+		"title": "404 Page",
+		"errorMessage" : "Oops ! The page doesn't exist",
+		"goBack": "Go back to main menu"
 	},
 	"actualites":{
 		"title":"Actuality",
