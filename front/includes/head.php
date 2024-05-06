@@ -15,7 +15,7 @@
 
 <?php
 if($returnCode === false){
-echo '<script type="text/javascript" defer>redirect("./index.php")</script>';
+echo '<script type="text/javascript" defer>redirect("./index.php?message=Vous n\'avez pas accès à cette page")</script>';
 }?>
 
 
