@@ -15,21 +15,29 @@
   <style>
     /* Styles généraux */
     body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 0;
+        font-family: 'Roboto', sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    html{
+        height: 100vh;
+        width: 100vw;
     }
 
     /* Styles pour le contenu principal */
     .container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        margin: 0;
+        border-width: 0px;
     }
 
     .error-code {
