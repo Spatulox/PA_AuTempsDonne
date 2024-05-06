@@ -53,7 +53,13 @@ class EntrepotService {
         $entrepotRepository = new EntrepotRepository();
         $entrepotRepository->unreferenceEntrepotById($id);
     }
-    
-    
+
+    public function createEtageres($apiKey, $entrepot, $etageres_place)
+    {
+        $entrepotRepository = new EntrepotRepository();
+        $entrepotRepository->createEtageres($entrepot,$etageres_place);
+    }
+
+
 }
 ?>
