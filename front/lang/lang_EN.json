@@ -11,7 +11,7 @@
 			"./decouvrir.php":"Discover Us",
 			"./operations.php":"Our Operation",
 			"./aide.php":"Help us",
-			"./donateur.php":"Give us",
+			"./don.php":"Give us",
 			"./moncompte.php":"Account",
 			"./signup_login.php":"Login/Sign up"
 		},
