@@ -12,11 +12,12 @@ class StockModel
     public $desc_produit;
     public $id_produit;
     public $produit_desc;
+    public $id_etagere;
     public $id_entrepot;
     public $entrepot_desc;
 
 
-    public function __construct($id_stock, $quantite_produit, $date_entree, $date_sortie, $date_peremption,$desc_produit,$id_produit,$id_entrepot) {
+    public function __construct($id_stock, $quantite_produit, $date_entree, $date_sortie, $date_peremption,$desc_produit,$id_produit,$id_etagere) {
         $this->id_stock = $id_stock;
         $this->quantite_produit = $quantite_produit;
         $this->date_entree = $date_entree;
@@ -24,11 +25,13 @@ class StockModel
         $this->date_peremption = $date_peremption;
         $this->desc_produit = $desc_produit;
         $this->id_produit = $id_produit;
-        $this->id_entrepot = $id_entrepot;
+        $this->id_etagere = $id_etagere;
     }
 
     public function setentrepot($ENTREPOTS){
-        $this->entrepot_desc = $ENTREPOTS[0];
+        $this->id_entrepot = $ENTREPOTS[0];
+        $this->entrepot_desc = $ENTREPOTS[1];
+
     }
 
     public function setIndexProduit($produit){

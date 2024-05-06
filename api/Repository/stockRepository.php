@@ -34,10 +34,11 @@ class StockRepository {
                 $datePeremption,
                 $stockArray[$i] ['desc_produit'],
                 $stockArray[$i] ['id_produit'],
-                $stockArray[$i] ['id_entrepot']
+                $stockArray[$i] ['id_etagere']
             );
             $stock[$i]->setIndexProduit(selectDB("PRODUIT", "nom_produit", "id_produit=".$stockArray[$i]['id_produit'])[0]);
-            $stock[$i]->setentrepot(selectDB("ENTREPOTS", "nom_entrepot", "id_entrepot=".$stockArray[$i]['id_entrepot'])[0]);
+            $string="INNER JOIN ENTREPOTS ON ENTREPOTS.id_entrepot = ETAGERES.id_entrepot";
+            $stock[$i]->setentrepot(selectJoinDB("ETAGERES", "ETAGERES.id_entrepot ,ENTREPOTS.nom_entrepot",$string ,"id_etagere=".$stockArray[$i]['id_etagere'])[0]);
 
             //    var_dump($stockArray[4]);
         }
@@ -54,8 +55,8 @@ class StockRepository {
         if(!$entrepots){
             exit_with_message("cette entrepot n'existe pas ", 200);
         }
-
-        $stockArray = selectDB("STOCKS", "*",$string);
+        $string_join =""  ;
+        $stockArray = selectJoinDB("STOCKS", "*", $string_join ,$string);
 
         $stock = [];
 
@@ -73,10 +74,11 @@ class StockRepository {
                 $datePeremption,
                 $stockArray[$i]['desc_produit'],
                 $stockArray[$i]['id_produit'],
-                $stockArray[$i]['id_entrepot']
+                $stockArray[$i]['id_etagere']
             );
             $stock[$i]->setIndexProduit(selectDB("PRODUIT", "nom_produit", "id_produit=".$stockArray[$i]['id_produit'])[0]);
-            $stock[$i]->setentrepot(selectDB("ENTREPOTS", "nom_entrepot", "id_entrepot=".$stockArray[$i]['id_entrepot'])[0]);
+            $string="INNER JOIN ENTREPOTS ON ENTREPOTS.id_entrepot = ETAGERES.id_entrepot";
+            $stock[$i]->setentrepot(selectJoinDB("ETAGERES", "ETAGERES.id_entrepot ,ENTREPOTS.nom_entrepot",$string ,"id_etagere=".$stockArray[$i]['id_etagere'])[0]);
 
         }
         return $stock;
