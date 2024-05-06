@@ -60,6 +60,12 @@ class EntrepotService {
         $entrepotRepository->createEtageres($entrepot,$etageres_place);
     }
 
+    public function deleteEtageretById($id)
+    {
+        $entrepotRepository = new EntrepotRepository();
+        $entrepotRepository->DeleteEtagere($id);
+    }
+
 
 }
 ?>

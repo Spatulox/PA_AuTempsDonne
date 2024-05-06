@@ -119,13 +119,25 @@ function entrepotController($uri, $apiKey) {
                 exit_with_message("You can't do a DELETE request for entrepots", 403);
             }
 
-            if(!$uri[4]){
-                exit_with_message("Missing id entrepot to delete", 403);
+            if ($uri[3]==="delete_entrepot") {
+                if (!$uri[4]) {
+                    exit_with_message("Missing id entrepot to delete", 403);
+                }
+
+
+                $entrepotService = new EntrepotService();
+                $entrepotService->deleteEntrepotById($uri[4]);
             }
 
+            if ($uri[3]==="delete_etagere") {
+                if (!$uri[4]) {
+                    exit_with_message("Missing id entrepot to delete", 403);
+                }
 
-            $entrepotService = new EntrepotService();
-            $entrepotService->deleteEntrepotById($uri[4]);
+
+                $entrepotService = new EntrepotService();
+                $entrepotService->deleteEtageretById($uri[4]);
+            }
 
             break;
             

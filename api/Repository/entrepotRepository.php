@@ -51,7 +51,7 @@ class EntrepotRepository
         return $array;
     }
 
-    //-----------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------------------
 
     // I'm not sure about this function lol (unuse)
     function __construct()
@@ -59,7 +59,7 @@ class EntrepotRepository
 
     }
 
-    //-------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------------------
 
     public function getEntrepots()
     {
@@ -74,7 +74,7 @@ class EntrepotRepository
         exit_with_content($this->stock($request));
     }
 
-    //-------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------------------
 
     public function getEntrepot($id = null)
     {
@@ -95,7 +95,7 @@ class EntrepotRepository
     }
 
 
-    //-------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------------------
 
     public function createEntrepot($entrepot, $etageres)
     {
@@ -118,7 +118,7 @@ class EntrepotRepository
         }
     }
 
-    //-------------------------------------
+    //--------------------------------------------------------------------------------------------------------------------------
 
     public function updateEntrepot(EntrepotModel $entr)
     {
@@ -151,7 +151,7 @@ class EntrepotRepository
     }
 
 
-    //-------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------
 
     public function unreferenceEntrepotById($id)
     {
@@ -172,6 +172,7 @@ class EntrepotRepository
 
     }
 
+    //-------------------------------------------------------------------------------------
 
     public function createEtageres($entrepot, $etageres_place)
     {
@@ -182,17 +183,31 @@ class EntrepotRepository
                 exit_with_message("Error creating collecte", 400);
             }
         }
-
-        exit_with_message("Sucessfully created entrepot", 200);
+        exit_with_message("Etagere add with success", 200);
     }
 
-
+    //-------------------------------------------------------------------------------------
 
     private function getLastInsertId($table, $id)
     {
         $string = "ORDER BY " . $id . " DESC LIMIT 1";
         $envoie = selectDB($table, $id, -1, $string);
         return $envoie;
+    }
+
+    //-------------------------------------------------------------------------------------
+
+    public function DeleteEtagere($id)
+    {
+        $resquest = selectDB("ETAGERES", "*", "id_etagere=" . $id, "bool");
+
+        if ($resquest) {
+            deleteDB("ETAGERES", "id_etagere=" . $id);
+            exit_with_message("Etagere deleted with success ", 200);
+        }else{
+            exit_with_message("The Etagere doesn't exist", 200);
+        }
+
     }
 }
 
