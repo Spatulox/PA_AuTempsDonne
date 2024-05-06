@@ -21,11 +21,14 @@ services:
       - database
 
   ticket:
+    build: 
+      context: ./tickets/
+      dockerfile: Dockerfile
     image: spatulox/pa-ticket:latest
     ports:
       - 8085:8085
-    #volumes:
-    #  - ./tickets:/var/www/html/
+    volumes:
+      - ./tickets:/var/www/html/
     environment:
       - DB_CONTAINER_NAME=database
     depends_on:
