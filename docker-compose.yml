@@ -1,10 +1,17 @@
 services:
   frontend:
-    image: php:7.4-apache
+    build: .
     ports:
       - 8083:80
     volumes:
       - ./front:/var/www/html/
+
+  # Uncomment to create image
+  #frontend:
+    #build: ./front
+    #image: php:7.4-apache
+    #ports:
+    #  - 8083:80
 
   api:
     build: .
