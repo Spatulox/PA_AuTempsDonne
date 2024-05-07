@@ -15,7 +15,7 @@ class User {
     this.entrepotString = null
     this.index = null
 
-    this.roleArray = ["Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
+    this.roleArray = ["roleBait", "Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
 
     if (password === null || email === null) {
       this.loginApi()
