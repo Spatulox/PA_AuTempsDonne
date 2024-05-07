@@ -36,9 +36,9 @@ class DemandeService
         $repo->getByUser($id);
     }
 
-    function createDemande($apikey, $data){
-        $role = getRoleFromApiKey($apikey);
+    function createDemande($apikey, $data,$produits){
 
+        $role = getRoleFromApiKey($apikey);
 
         if($role != 5){
             exit_with_message("You can't create a demande, unless you're a Partenaire");
@@ -48,7 +48,7 @@ class DemandeService
 
         $service = new DemandeRepository();
 
-        $service->createDemande($data, $idUser);
+        $service->createDemande($data, $idUser ,$produits);
 
     }
 

@@ -19,7 +19,7 @@ class PlanningService {
             $planningRepository = new PlanningRepository();
             return $planningRepository->getAllPlanning();
     }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("You didn't have access to this command");
         }
 
     }
@@ -43,7 +43,7 @@ class PlanningService {
         $planningRepository = new PlanningRepository();
         return $planningRepository->createPlanning($planning);
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("You didn't have access to this command");
         }
     }
 

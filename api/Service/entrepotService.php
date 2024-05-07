@@ -26,9 +26,9 @@ class EntrepotService {
      *  Créer un entrepot
     */
 
-    public function createEntrepot(EntrepotModel $entrepot) {
+    public function createEntrepot($apiKey,$entrepot,$etageres) {
         $entrepotRepository = new EntrepotRepository();
-        $entrepotRepository->createEntrepot($entrepot);
+        $entrepotRepository->createEntrepot($entrepot,$etageres);
     }
 
     
@@ -53,7 +53,19 @@ class EntrepotService {
         $entrepotRepository = new EntrepotRepository();
         $entrepotRepository->unreferenceEntrepotById($id);
     }
-    
-    
+
+    public function createEtageres($apiKey, $entrepot, $etageres_place)
+    {
+        $entrepotRepository = new EntrepotRepository();
+        $entrepotRepository->createEtageres($entrepot,$etageres_place);
+    }
+
+    public function deleteEtageretById($id)
+    {
+        $entrepotRepository = new EntrepotRepository();
+        $entrepotRepository->DeleteEtagere($id);
+    }
+
+
 }
 ?>

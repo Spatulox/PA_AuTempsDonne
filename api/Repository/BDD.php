@@ -93,6 +93,10 @@ function selectDB($table, $colums, $condition = -1, $additionnalMessage = NULL){
 		$dbRequest = 'SELECT '. $colums .' FROM '. $table . ' WHERE ' . $condition;
 	}
 
+    if($additionnalMessage != '-@' && $additionnalMessage != "bool" && $additionnalMessage != NULL){
+        $dbRequest .= " ".$additionnalMessage;
+    }
+
 	if($additionnalMessage == "-@"){
 		var_dump($dbRequest);
 	}
@@ -132,6 +136,7 @@ function selectDB($table, $colums, $condition = -1, $additionnalMessage = NULL){
 
 	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]), 500);
 	}
+
 	return false;
 }
 
@@ -220,29 +225,37 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 	if (gettype($columnData[0]) == "boolean") {
 	    $columnData[$i] == "1" ? $tmp = "true" : $tmp = "false";
 	    $data = $tmp;
-	} 
-	else if (gettype($columnData[0]) == "integer"){
-	    $data = $columnData[0];
 	}
+    else if (gettype($columnData[0]) == "integer"){
+        $data = $columnData[0];
+    }
+    else if ($columnData[0] == "NULL"){
+        $data = NULL;
+    }
 	else{
 		$data = "'".$columnData[0]."'";
 	}
+
 
 	for ($i=1; $i < count($columnData) ; $i++) { 
 		if (gettype($columnData[$i]) == "boolean") {
 		    $columnData[$i] == "1" ? $tmp = "true" : $tmp = "false";
 		    $data .= ", " . $tmp;
-		} 
-		else if (gettype($columnData[$i]) == "integer"){
-			
-		    $data .= ", " . $columnData[$i];
 		}
+        else if (gettype($columnData[$i]) == "integer"){
+
+            $data .= ", " . $columnData[$i];
+        }
+        else if ($columnData[$i] == "NULL"){
+            $data .= ", " . $columnData[$i];
+        }
 		else{
 			$data .= ", '" . $columnData[$i]."'";
 		}
 	}
 
-	$dbRequest = 'INSERT INTO '. $table .' (' . $colums . ') VALUES ('. $data . ')';
+
+    $dbRequest = 'INSERT INTO '. $table .' (' . $colums . ') VALUES ('. $data . ')';
 	
 	if($returningData == "-@"){
 		var_dump($dbRequest);
@@ -373,7 +386,7 @@ function deleteDB($table, $condition, $debug = null)
 
 	$db = connectDB();
 
-	if(!selectDB($table, "*", $condition, "to delete it, the data probably dont exist"))
+	if(!selectDB($table, "*", $condition, "bool"))
 	{
 		exit_with_message("ERROR : The apartment doesn't exist");
 	}
