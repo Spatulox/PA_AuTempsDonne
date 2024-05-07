@@ -60,22 +60,91 @@ class StockService {
 
 //----------------------------------------------------------------------------------
 
-    public function createStock(StockModel $stock, $apiKey)
+    public function createStock(StockModel $stock,$id_entrepots, $apiKey)
     {
         $stockRepository = new StockRepository();
 
         $userRole = getRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
 
-            $string = "id_entrepot=" .$stock->id_entrepot;
-            $entrepots= selectDB("ENTREPOTS", "id_entrepot",$string,"bool");
 
-            if(!$entrepots){
-                exit_with_message("cette entrepot n'existe pas ", 500);
+
+            $string = "id_entrepot=" .$id_entrepots;
+            $etagere= selectDB("ETAGERES", "id_etagere,nombre_de_place",$string);
+
+
+            if(!$etagere){
+                exit_with_message("cette etagere n'existe pas ", 500);
             }
 
-            $string = "id_produit=" .$stock->id_produit ;
-            $produit= selectDB("PRODUIT", "id_produit",$string,"bool");
+            $toutranger = 0;
+
+            $tabb = [];
+
+            for ($j = 0; $j < count($etagere); $j++) {
+
+
+                // Regrde le nombre de place disponible dns l'étagère
+                $nbProduitsEtagere = $this->getnbplace($etagere[$j]['id_etagere']);
+
+                if ($nbProduitsEtagere < $etagere[$j]['nombre_de_place']) {
+
+                    //la place dans l'etagere
+                    $place = $etagere[$j]['nombre_de_place'] - $nbProduitsEtagere;
+
+                    $qte = 0;
+                    $toutranger = $toutranger + $stock->quantite_produit;
+
+                    if($stock->quantite_produit > $place){
+                        $toutranger = $toutranger + $place;
+                        $qte = $place;
+                    } else {
+                        $toutranger = $toutranger + $stock->quantite_produit;
+                        $qte = $stock->quantite_produit;
+                    }
+
+
+                    $qte = $stock->quantite_produit;
+                    // Ranger des trucs
+                    $stock->quantite_produit = $stock->quantite_produit - $qte;
+
+
+//                    $qte=$stock->quantite_produit;
+//
+//                    $stock->quantite_produit=$stock->quantite_produit-$place;
+//
+//                    $arentre=$qte-$stock->quantite_produit;
+
+                    var_dump($stock->quantite_produit);
+                    echo "/";
+                    var_dump($toutranger);
+
+                    $tabb[$etagere[$j]['id_etagere']] = $arentre;
+                    $tabb[$etagere[$j]['id_etagere']] = $qte;
+
+
+                    if($stock->quantite_produit <= 0){
+                        break;
+                    }
+                }
+
+            }
+
+            var_dump($tabb);
+            exit();
+
+
+
+
+
+
+
+
+
+
+
+            $string_prod = "id_produit=" .$stock->id_produit ;
+            $produit= selectDB("PRODUIT", "id_produit",$string_prod,"bool");
 
             if(!$produit){
                 exit_with_message("ce produit n'existe pas ", 500);
@@ -94,6 +163,19 @@ class StockService {
                 if (!$this->isValidDate($stock->date_entree)) {
                 exit_with_message("Erreur : La date d'entrée est invalide. Le format attendu est AAAA-MM-JJ.", 403);
                 }
+                $sum=0;
+
+
+               if($entrepots[0]["nombre_de_place"]<=$sum){
+                  exit_with_message("il n'y a plus de place sur cette etagere");
+               }elseif ($entrepots[0]["nombre_de_place"]-$sum<=$stock->quantite_produit) {
+                   $new_quantite = $entrepots[0]["nombre_de_place"] - $sum;
+                   $stock->quantite_produit = $new_quantite;
+                   echo $stock->quantite_produit;
+
+               }
+
+                exit();
             }
 
             if (($stock->date_sortie != "NULL" && $stock->date_entree =="NULL")) {
@@ -132,8 +214,6 @@ class StockService {
                 exit_with_message("Erreur : La date de péremption est invalide. Le format attendu est AAAA-MM-JJ.", 403);
             }
 
-
-
             return $stockRepository->createStock($stock);
         }else{
             exit_with_message("You didn't have access to this command");
@@ -149,6 +229,17 @@ class StockService {
         }else{
             exit_with_message("You didn't have access to this command");
         }
+    }
+
+    private function getnbplace($id)
+    {
+        $string = "id_etagere=".$id;
+        $number= selectDB("STOCKS","quantite_produit",$string,"bool");
+        for ($i = 0; $i < count($number); $i++) {
+            $sum=$sum+$number[$i]["quantite_produit"];
+        }
+
+        return $sum;
     }
 }
 ?>

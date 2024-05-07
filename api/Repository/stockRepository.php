@@ -55,8 +55,11 @@ class StockRepository {
         if(!$entrepots){
             exit_with_message("cette entrepot n'existe pas ", 200);
         }
-        $string_join =""  ;
-        $stockArray = selectJoinDB("STOCKS", "*", $string_join ,$string);
+        $string_join ="INNER JOIN ETAGERES ON STOCKS.id_etagere = ETAGERES.id_etagere INNER JOIN ENTREPOTS ON ETAGERES.id_entrepot = ENTREPOTS.id_entrepot ";  ;
+        $stockArray = selectJoinDB("STOCKS", "*", $string_join ,"ENTREPOTS.$string","-@");
+
+
+
 
         $stock = [];
 
@@ -89,14 +92,14 @@ class StockRepository {
     public function createStock(StockModel $stock)
 
     {
-        $create = insertDB("STOCKS", [ "quantite_produit", "date_entree", "date_sortie", "date_peremption", "desc_produit", "id_produit", "id_entrepot" ], [
+        $create = insertDB("STOCKS", [ "quantite_produit", "date_entree", "date_sortie", "date_peremption", "desc_produit", "id_produit", "id_etagere" ], [
             $stock->quantite_produit,
             $stock->date_entree,
             $stock->date_sortie,
             $stock->date_peremption,
             $stock->desc_produit,
             $stock->id_produit,
-            $stock->id_entrepot
+            $stock->id_etagere
         ]);
 
         if(!$create){
