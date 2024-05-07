@@ -69,82 +69,16 @@ class StockService {
 
 
 
-            $string = "id_entrepot=" .$id_entrepots;
-            $etagere= selectDB("ETAGERES", "id_etagere,nombre_de_place",$string);
+            // Vérifications
 
-
-            if(!$etagere){
-                exit_with_message("cette etagere n'existe pas ", 500);
-            }
-
-            $toutranger = 0;
-
-            $tabb = [];
-
-            for ($j = 0; $j < count($etagere); $j++) {
-
-
-                // Regrde le nombre de place disponible dns l'étagère
-                $nbProduitsEtagere = $this->getnbplace($etagere[$j]['id_etagere']);
-
-                if ($nbProduitsEtagere < $etagere[$j]['nombre_de_place']) {
-
-                    //la place dans l'etagere
-                    $place = $etagere[$j]['nombre_de_place'] - $nbProduitsEtagere;
-
-                    $qte = 0;
-                    $toutranger = $toutranger + $stock->quantite_produit;
-
-                    if($stock->quantite_produit > $place){
-                        $toutranger = $toutranger + $place;
-                        $qte = $place;
-                    } else {
-                        $toutranger = $toutranger + $stock->quantite_produit;
-                        $qte = $stock->quantite_produit;
-                    }
-
-
-                    $qte = $stock->quantite_produit;
-                    // Ranger des trucs
-                    $stock->quantite_produit = $stock->quantite_produit - $qte;
-
-
-//                    $qte=$stock->quantite_produit;
-//
-//                    $stock->quantite_produit=$stock->quantite_produit-$place;
-//
-//                    $arentre=$qte-$stock->quantite_produit;
-
-                    var_dump($stock->quantite_produit);
-                    echo "/";
-                    var_dump($toutranger);
-
-                    $tabb[$etagere[$j]['id_etagere']] = $arentre;
-                    $tabb[$etagere[$j]['id_etagere']] = $qte;
-
-
-                    if($stock->quantite_produit <= 0){
-                        break;
-                    }
+            if ($stock->date_peremption != "NUlL"){
+                if (!$this->isValidDate($stock->date_peremption)) {
+                    exit_with_message("Erreur : La date de péremption est invalide. Le format attendu est AAAA-MM-JJ.", 403);
                 }
-
             }
-
-            var_dump($tabb);
-            exit();
-
-
-
-
-
-
-
-
-
-
 
             $string_prod = "id_produit=" .$stock->id_produit ;
-            $produit= selectDB("PRODUIT", "id_produit",$string_prod,"bool");
+            $produit = selectDB("PRODUIT", "id_produit",$string_prod,"bool");
 
             if(!$produit){
                 exit_with_message("ce produit n'existe pas ", 500);
@@ -159,24 +93,96 @@ class StockService {
             }
 
 
+
+            //
+            // Produit à entrer dans la BDD
+            //
+
             if (($stock->date_sortie == "NULL" && $stock->date_entree !="NULL")) {
+
                 if (!$this->isValidDate($stock->date_entree)) {
-                exit_with_message("Erreur : La date d'entrée est invalide. Le format attendu est AAAA-MM-JJ.", 403);
+                    exit_with_message("Erreur : La date d'entrée est invalide. Le format attendu est AAAA-MM-JJ.", 403);
                 }
-                $sum=0;
+
+                $string = "id_entrepot=" .$id_entrepots;
+                $etagere= selectDB("ETAGERES", "id_etagere,nombre_de_place",$string);
 
 
-               if($entrepots[0]["nombre_de_place"]<=$sum){
-                  exit_with_message("il n'y a plus de place sur cette etagere");
-               }elseif ($entrepots[0]["nombre_de_place"]-$sum<=$stock->quantite_produit) {
-                   $new_quantite = $entrepots[0]["nombre_de_place"] - $sum;
-                   $stock->quantite_produit = $new_quantite;
-                   echo $stock->quantite_produit;
+                if(!$etagere){
+                    exit_with_message("cette etagere n'existe pas ", 500);
+                }
 
-               }
+                //
+                // ------------  Quel produit et où ca va être rangé
+                //
 
+                $toutranger = 0;
+                $bkpProduit = $stock->quantite_produit;
+
+                $tabb = [];
+                $tabRenvoyer = [];
+
+                for ($j = 0; $j < count($etagere); $j++) {
+
+
+                    // Regrde le nombre de place disponible dns l'étagère
+                    $nbProduitsEtagere = $this->getnbplace($etagere[$j]['id_etagere']);
+
+                    if ($nbProduitsEtagere < $etagere[$j]['nombre_de_place']) {
+
+                        //la place dans l'etagere
+                        $place = $etagere[$j]['nombre_de_place'] - $nbProduitsEtagere;
+
+
+                        $qte=$stock->quantite_produit;
+
+                        $stock->quantite_produit=$stock->quantite_produit-$place;
+                        if ($stock->quantite_produit<=0){
+                            $arentre=$qte;
+                        }else{
+                            $arentre=$qte-$stock->quantite_produit;
+                        }
+
+                        $tabb[$etagere[$j]['id_etagere']] = $arentre;
+                        $tabRenvoyer[$j] = [$arentre];
+
+                        $toutranger += $arentre;
+
+                        if($stock->quantite_produit <= 0){
+                            break;
+                        }
+                    }
+
+                }
+
+                $msg = "";
+
+                if($toutranger != $bkpProduit){
+                    $msg = "Il reste ". ($bkpProduit - $toutranger) . " produit(s) à ranger car plus de place dans cet entrepot";
+                }
+
+                //
+                // ------------  FIN
+                //
+
+                // Creer où ranger les produits
+
+                var_dump($tabb);
                 exit();
+
+                return $stockRepository->addStock($tabb);
+
+
+
+
+
+
+
+
+                //exit_with_content();
+
             }
+
 
             if (($stock->date_sortie != "NULL" && $stock->date_entree =="NULL")) {
                 $sum = 0;
@@ -220,6 +226,7 @@ class StockService {
         }
     }
 
+
     public function deleteStock($id,$apiKey)
     {
         $userRole = getRoleFromApiKey($apiKey);
@@ -230,6 +237,7 @@ class StockService {
             exit_with_message("You didn't have access to this command");
         }
     }
+
 
     private function getnbplace($id)
     {
