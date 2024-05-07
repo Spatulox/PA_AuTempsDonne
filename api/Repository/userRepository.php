@@ -76,6 +76,8 @@ class UserRepository {
             $index_user = 2;
         }
 
+        $user->email = strtolower($user->email);
+
         $tmp = selectDB('UTILISATEUR', '*', 'email="'.$user->email.'"', "bool");
         if($tmp){
             exit_with_message("Error, email already exist, plz chose another one", 403);
