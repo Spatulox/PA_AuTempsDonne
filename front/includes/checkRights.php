@@ -13,7 +13,6 @@ $right = json_decode($rightfile, true);
 if($apikey !== NULL){
 
 
-
 // Prepare address for others page
     $file = file_get_contents("../includes/address.json");
     $address = json_decode($file, true);
@@ -33,6 +32,7 @@ if($apikey !== NULL){
     $dbPassword = $dataBDD['DB_PASSWORD'];
 
     try {
+
         $db = new PDO(
             'mysql:host=' . $dbHost . ';
 	        port=' . $dbPort . ';
@@ -49,7 +49,6 @@ if($apikey !== NULL){
         $stmt = $db->prepare($sql);
         $stmt->execute();
 
-
         // Traiter les résultats
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC)[0];
         if (count($results) == 0) {
@@ -57,7 +56,9 @@ if($apikey !== NULL){
         }
 
     } catch (Exception $e) {
+        var_dump($e);
         $returnCode = false;
+        exit();
     }
 
 
@@ -81,7 +82,5 @@ if($apikey !== NULL){
         $returnCode = false;
     }
 }
-
-
 
 ?>
