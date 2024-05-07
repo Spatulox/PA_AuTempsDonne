@@ -1,19 +1,12 @@
 services:
   frontend:
-    build: .
+    image: php:7.4-apache
     ports:
       - 8083:80
     volumes:
       - ./front:/var/www/html/
     depends_on:
       - api
-
-  # Uncomment to create image
-  #frontend:
-    #build: ./front
-    #image: php:7.4-apache
-    #ports:
-    #  - 8083:80
 
   api:
     build: 
@@ -28,11 +21,14 @@ services:
       - database
 
   ticket:
+    build: 
+      context: ./tickets/
+      dockerfile: Dockerfile
     image: spatulox/pa-ticket:latest
     ports:
       - 8085:8085
-    #volumes:
-    #  - ./tickets:/var/www/html/
+    volumes:
+      - ./tickets:/var/www/html/
     environment:
       - DB_CONTAINER_NAME=database
     depends_on:
