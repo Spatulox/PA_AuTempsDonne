@@ -1,0 +1,2 @@
+## Redirection vers la page 404.php
+ErrorDocument 404 /HTML/404.php

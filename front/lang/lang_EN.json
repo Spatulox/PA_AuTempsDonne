@@ -1,11 +1,17 @@
 {
+	"ticket": {
+		"title": "Ticket Menu",
+		"assignFalse": "See non assign tickets",
+		"me": "See my tickets",
+		"all": "See all tickets"
+	},
 	"header":{
 		"li":{
 			"./actualites.php":"Actualities",
 			"./decouvrir.php":"Discover Us",
 			"./operations.php":"Our Operation",
 			"./aide.php":"Help us",
-			"./donateur.php":"Give us",
+			"./don.php":"Give us",
 			"./moncompte.php":"Account",
 			"./signup_login.php":"Login/Sign up"
 		},
@@ -16,6 +22,11 @@
 			"contact.php":"Contact us",
 			"https://youtu.be/L0TB1IkhVds":"Mr Sananes sings rap in suit"
 		}
+	},
+	"404": {
+		"title": "404 Page",
+		"errorMessage" : "Oops ! The page doesn't exist",
+		"goBack": "Go back to main menu"
 	},
 	"actualites":{
 		"title":"Actuality",

@@ -1,9 +1,17 @@
+function decodeURIComponentSafe(str) {
+	try {
+		return decodeURIComponent(str.replace(/\+/g, ' '));
+	} catch (e) {
+		return str;
+	}
+}
+
 function popup(message){
 
 	const la_popup = document.getElementById('titleFooter')
 	//console.log(la_popup)
 	//console.log(message)
-	la_popup.innerHTML = message
+	la_popup.innerHTML = decodeURIComponentSafe(message)
 
 	setTimeout(()=>{
 		la_popup.classList.add('active')	
