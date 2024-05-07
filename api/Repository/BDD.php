@@ -276,7 +276,6 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
-			//exit_with_message("caca");
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
 			exit_with_message("Error : ".str_replace('"', "'", $tmp));
 		}

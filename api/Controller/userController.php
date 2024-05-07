@@ -56,9 +56,9 @@ function userController($uri, $apiKey) {
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
 
-            if ( !isset($json['nom']) || !isset($json['prenom']) || !isset($json['email']) || !isset($json['mdp']) || !isset($json['role']))
+            if ( !isset($json['nom']) || !isset($json['prenom']) || !isset($json['email']) || !isset($json['mdp']) || !isset($json['role']) || !isset($json['address']))
             {
-                exit_with_message("Plz give the name, the lastname the password, the email and the role of the futur user. You can add extra(s) = [telephone]", 403);
+                exit_with_message("Plz give the name, the lastname the password, the email, the role and the address of the futur user. You can add extra(s) = [telephone]", 403);
             }
 
             if(isset($json["role"]) && filter_var($json["role"], FILTER_VALIDATE_INT) == false){
@@ -71,13 +71,12 @@ function userController($uri, $apiKey) {
 
             $pattern = '/^\+?[0-9]{5,15}$/';
             if (isset($json['telephone']) && !preg_match($pattern, $json['telephone'])){
-                exit_with_message("Le numéro de téléphone $phoneNumber n'est pas valide.", 403);
+                exit_with_message("Le numéro de téléphone" . $json['telephone'] ." n'est pas valide.", 403);
             }
 
 
 
-            $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], isset($json['telephone']) ? $json['telephone'] : "no_phone", $json['role'], null, 3, 1);
-
+            $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], $json["address"] ,isset($json['telephone']) ? $json['telephone'] : "no_phone", $json['role'], null, 3, 1);
  
             exit_with_content($userService->createUser($user, $json["mdp"]));
 
