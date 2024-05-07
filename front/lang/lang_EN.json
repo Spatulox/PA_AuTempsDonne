@@ -19,8 +19,7 @@
 	},
 	"footer":{
 		"li":{
-			"contact.php":"Contact us",
-			"https://youtu.be/L0TB1IkhVds":"Mr Sananes sings rap in suit"
+			"contact.php":"Contact us"
 		}
 	},
 	"404": {
@@ -98,6 +97,8 @@
 			"titleF2":"Update my Informations",
 			"placeholderEmail":"New Email",
 			"placeholderPhone":"New Phone",
+			"placeholderName":"New Name",
+			"placeholderLastname":"New Lastname",
 			"inputUpdate":"Update"
 		},
 		"error":{
