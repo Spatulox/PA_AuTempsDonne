@@ -6,9 +6,14 @@ include_once './Controller/loginController.php';
 include_once './Controller/userController.php';
 include_once './Controller/entrepotController.php';
 include_once './Controller/planningController.php';
+include_once './Controller/activiteController.php';
+include_once './Controller/trajetController.php';
+include_once './Controller/adresseController.php';
 include_once './Controller/produitController.php';
 include_once './Controller/demandeController.php';
 include_once './Controller/stockController.php';
+include_once './Controller/vehiculeController.php';
+include_once './Controller/donController.php';
 
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
@@ -22,10 +27,12 @@ header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS,PATCH');
 header('Access-Control-Allow-Headers: Origin, Content-Type, Authorization, apikey, Accept');
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { 
-    http_response_code(200); 
-    exit; 
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
 }
+
 
 // On récupère l'URI de la requête et on le découpe en fonction des / 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -121,6 +128,12 @@ function controller($uri) {
         case 'activite':
             activiteController($uri, $apiKey);
             break;
+        case 'trajet':
+            TrajetController($uri, $apiKey);
+            break;
+        case 'adresse':
+            adresseController($uri, $apiKey);
+            break;
 
         case 'produit':
             collectController($uri, $apiKey);
@@ -132,7 +145,12 @@ function controller($uri) {
         case 'stock':
             StockController($uri, $apiKey);
             break;
-
+        case 'vehicule':
+            vehiculeController($uri, $apiKey);
+            break;
+        case 'don':
+            donController($uri, $apiKey);
+            break;
 
 
         default:

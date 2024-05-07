@@ -5,9 +5,7 @@ include_once './exceptions.php';
 include_once './index.php';
 
 class PlanningRepository {
-    private $connection = null;
 
-   
     function __construct() {
        
     }
