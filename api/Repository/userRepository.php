@@ -11,7 +11,6 @@ class UserRepository {
         $usersArray = selectDB("UTILISATEUR", "*", "id_index='".$index."'");
 
         $user = [];
-        $usersTest = [];
 
         for ($i=0; $i < count($usersArray); $i++) {
             $address = selectDB("ADRESSE", "*", "id_adresse='".$usersArray[0]['id_adresse']."'")[0]["adresse"];
