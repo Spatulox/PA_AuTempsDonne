@@ -90,16 +90,34 @@ function userController($uri, $apiKey) {
                 exit_with_message("Unauthorized, need the apikey", 403);
             }
 
-        	$userService = new UserService();
+            $userService = new UserService();
 
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
+
+            $email = getEmailFromApiKey($apiKey);
+            $role = getRoleFromApiKey($apiKey);
+
+            if($email != $json['email'] && $role > 2){
+                exit_with_message("Vous ne pouvez pas update un utilisateur qui n'est pas vous", 403);
+            }
+
+
+            if(isset($uri[3]) && $uri[3] == "validate"){
+
+                if($role > 3){
+                    exit_with_message("Vouys n'avez pas les permissions requises", 403);
+                }
+
+                $userService->updateUserValidate($json["id_user"], $json["id_index"]);
+            }
+
             if (!isset($json["nom"]) || !isset($json["prenom"]) || !isset($json["telephone"]) || !isset($json["email"]) ){
                 exit_with_message("Plz give the firstname, lastname, the phone and the email");
             }
-           
+
             // Valider les données reçues ici
-            exit_with_content($userService->updateUser($apiKey, $json["nom"], $json["prenom"], $json["telephone"], $json["email"]));
+            $userService->updateUser($apiKey, ["nom" => $json["nom"], "prenom" => $json["prenom"], "telephone" => $json["telephone"], "email" => $json["email"]]);
             break;
 
         case 'DELETE':

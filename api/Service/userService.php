@@ -36,7 +36,7 @@ class UserService {
 
     public function getUserById($id) {
         $userRepository = new UserRepository();
-        return $userRepository->getUser($id, $apiKey);
+        return $userRepository->getUser($id);
     }
 
     /*
@@ -76,6 +76,12 @@ class UserService {
 
         exit_with_content($userRepo->getUserApi($apiKey));
 
+    }
+
+    public function updateUserValidate($id_user, $id_index){
+        $userRepository = new UserRepository();
+        $userRepository->updateUserValidate($id_user, $id_index);
+        exit_with_content($this->getUserById($id_user));
     }
 
 

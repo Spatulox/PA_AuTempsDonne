@@ -70,14 +70,28 @@ class UserRepository {
         if($tmp){
             exit_with_message("Error, email already exist, plz chose another one", 403);
         }
-        
-        //var_dump("email='".$user->email."'".'"');
 
-        $user = insertDB("UTILISATEUR", ["nom", "prenom", "email", "telephone", "id_index", "date_inscription", "id_role", "apikey", "mdp", "id_entrepot"], [$user->nom, $user->prenom, $user->email, $user->telephone, $user->id_index, date('Y-m-d'), $user->id_role, "null", strtoupper(hash('sha256', $password)), $user->id_entrepot], "email='".$user->email."'" );//
+        $address = insertDB("ADRESSE", ["adresse"], [$user->address]);
+
+        if(!$address){
+            exit_with_message("Error when insert adresse");
+        }
+
+        $address = selectDB('ADRESSE', '*', "adresse='".$user->address."'", "bool");
+        if(!$address){
+            exit_with_message("Error, address not found");
+        }
+
+        $address = selectDB('ADRESSE', '*', "adresse='".$user->address."'");
+        $addresse = $address[0]["id_adresse"];
+
+
+        $user = insertDB("UTILISATEUR", ["nom", "prenom", "email", "id_adresse", "telephone", "id_index", "date_inscription", "id_role", "apikey", "mdp", "id_entrepot"], [$user->nom, $user->prenom, $user->email, $addresse, $user->telephone, $user->id_index, date('Y-m-d'), $user->id_role, "NULL", strtoupper(hash('sha256', $password)), "NULL"], "email='".$user->email."'");//
 
         if(!$user){
             exit_with_message("Error, your account don't exist, plz try again", 500);
         }
+
 
         $apiKey = hash('sha256', $user[0]["id_user"] . $user[0]["nom"] . $user[0]["prenom"] . $password . $user[0]["email"]);
         updateDB("UTILISATEUR", ["apikey"], [$apiKey], "email='".$user[0]["email"]."'");
@@ -103,6 +117,18 @@ class UserRepository {
     }
 
     */
+
+    public function updateUser($id_user, $cle, $data){
+        updateDB("UTILISATEUR", [$cle], [$data] , "id_user='".$id_user."'");
+    }
+
+    public function updateUserValidate($id_user, $id_index){
+        $debug = updateDB("UTILISATEUR", ["id_index"], [$id_index], "id_user='".$id_user."'");
+
+        if(!$debug){
+            exit_with_message("Error while update user");
+        }
+    }
 
     //-------------------------------------
 
@@ -130,7 +156,7 @@ class UserRepository {
             exit_with_message("You can't unrefence a user wich is not you", 403);
         }
 
-        return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id, "-@");
+        return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id);
     }
 
     public function unreferenceUserByApikey($apiKey){
@@ -159,7 +185,7 @@ class UserRepository {
             exit_with_message("You can't unrefence a user wich is not you", 403);
         }
 
-        return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id, "-@");
+        return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id);
     }
     
 }
