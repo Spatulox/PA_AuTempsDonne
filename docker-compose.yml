@@ -1,9 +1,17 @@
 services:
-  frontend:
-    build:
-      context: ./front
-      dockerfile: Dockerfile
+  #frontend:
+    #build:
+    #  context: ./front
+    #  dockerfile: Dockerfile
     #image: php:7.4-apache
+    #ports:
+    #  - 8083:80
+
+  # DEV
+  frontend:
+    build: .
+    volumes:
+      - ./front:/var/www/html
     ports:
       - 8083:80
 
