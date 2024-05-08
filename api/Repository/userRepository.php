@@ -1,9 +1,11 @@
 <?php
 include_once './Repository/BDD.php';
 include_once './Models/userModel.php';
+include_once './Models/DispoModel.php';
 include_once './exceptions.php';
 
 class UserRepository {
+
 
     //-------------------------------------
 
@@ -200,6 +202,8 @@ class UserRepository {
         return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id);
     }
 
+//--------------------------------------------------------------------------------
+
     public function dispoUser($id_dispo, $id)
     {
         for ($i = 0; $i <count($id_dispo) ; $i++) {
@@ -210,7 +214,41 @@ class UserRepository {
         return $res;
     }
 
+    //--------------------------------------------------------------------------------
+
+    public function getAllDispoUsers()
+    {
+        $conditions = "id_index= 1 AND id_role=3 ";
+        $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
+        $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
+        $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions );
+
+        $uniqueUsers = [];
+
+        foreach ($usersArray as $user) {
+            $id_user = $user["id_user"];
+            if (!in_array($id_user, $uniqueUsers)) {
+                $uniqueUsers[] = $id_user;
+            }
+        }
+
+        for ($i = 0; $i <count($uniqueUsers); $i++) {
+            $res = selectJoinDB("DISPONIBILITE", $columns, $join,"UTILISATEUR.id_user=".$uniqueUsers[$i]["id_user"]);
+
+            for ($j = 0; $j <count($res); $j++) {
+
+                $dispoArray[] = [
+                    "id_dispo" => $res[$j]["id_dispo"],
+                    "dispo" => $res[$j]["dispo"],
+                ];
+            }
+
+            $dispos[] = new DispoModel( $uniqueUsers[$i]["id_user"],$dispoArray);
+            unset($res);
+            unset($dispoArray);
+        }
+        return $dispos;
+    }
+
 }
-
-
 ?>

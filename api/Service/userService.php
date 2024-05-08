@@ -126,6 +126,13 @@ class UserService {
         return $userRepository->dispoUser($id_dispo, $id);
     }
 
+    public function getAllDispoUsers($apiKey)
+    {
+        $id= getIdUserFromApiKey($apiKey);
+        $userRepository = new UserRepository();
+        return $userRepository->getAllDispoUsers();
+    }
+
 
 }
 ?>

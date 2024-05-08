@@ -40,9 +40,8 @@ function userController($uri, $apiKey) {
                 exit_with_content($userService->getAllWaitingUsers());
             }
             elseif ($uri[3] == "dispo") {
-
-
-
+                $userService = new UserService();
+                exit_with_content($userService->getAllDispoUsers($apiKey));
             }
 
             else{
