@@ -199,7 +199,17 @@ class UserRepository {
 
         return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id);
     }
-    
+
+    public function dispoUser($id_dispo, $id)
+    {
+        for ($i = 0; $i <count($id_dispo) ; $i++) {
+
+            $res=insertDB("DISPONIBILITE" ,["id_dispo", "id_user"], [$id_dispo[$i], $id]);
+        }
+
+        return $res;
+    }
+
 }
 
 

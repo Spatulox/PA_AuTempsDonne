@@ -39,6 +39,11 @@ function userController($uri, $apiKey) {
                 $userService = new UserService();
                 exit_with_content($userService->getAllWaitingUsers());
             }
+            elseif ($uri[3] == "dispo") {
+
+
+
+            }
 
             else{
                 exit_with_message("You need to be admin to see all the users", 403);
@@ -56,29 +61,40 @@ function userController($uri, $apiKey) {
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
 
-            if ( !isset($json['nom']) || !isset($json['prenom']) || !isset($json['email']) || !isset($json['mdp']) || !isset($json['role']) || !isset($json['address']))
-            {
-                exit_with_message("Plz give the name, the lastname the password, the email, the role and the address of the futur user. You can add extra(s) = [telephone]", 403);
+            if (!$uri[3]){
+                if ( !isset($json['nom']) || !isset($json['prenom']) || !isset($json['email']) || !isset($json['mdp']) || !isset($json['role']) || !isset($json['address']))
+                {
+                    exit_with_message("Plz give the name, the lastname the password, the email, the role and the address of the futur user. You can add extra(s) = [telephone]", 403);
+                }
+
+                if(isset($json["role"]) && filter_var($json["role"], FILTER_VALIDATE_INT) == false){
+                    exit_with_message("The role need to be an integer between 1 and 3", 403);
+                }
+
+                if($json['role'] < 3){
+                    exit_with_message("You can't register you as an Admin or modo...", 403);
+                }
+
+                $pattern = '/^\+?[0-9]{5,15}$/';
+                if (isset($json['telephone']) && !preg_match($pattern, $json['telephone'])){
+                    exit_with_message("Le numéro de téléphone" . $json['telephone'] ." n'est pas valide.", 403);
+                }
+
+
+
+                $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], $json["address"] ,isset($json['telephone']) ? $json['telephone'] : "no_phone", $json['role'], null, 3, 1);
+
+                exit_with_content($userService->createUser($user, $json["mdp"]));
             }
 
-            if(isset($json["role"]) && filter_var($json["role"], FILTER_VALIDATE_INT) == false){
-                exit_with_message("The role need to be an integer between 1 and 3", 403);
+            elseif ($uri[3] == "dispo") {
+
+                if(!isset($json["id_dispo"]) ){
+                    exit_with_message("", 403);
+                }
+
+                exit_with_content($userService->dispoUser($json["id_dispo"],$apiKey));
             }
-
-            if($json['role'] < 3){
-                exit_with_message("You can't register you as an Admin or modo...", 403); 
-            }
-
-            $pattern = '/^\+?[0-9]{5,15}$/';
-            if (isset($json['telephone']) && !preg_match($pattern, $json['telephone'])){
-                exit_with_message("Le numéro de téléphone" . $json['telephone'] ." n'est pas valide.", 403);
-            }
-
-
-
-            $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], $json["address"] ,isset($json['telephone']) ? $json['telephone'] : "no_phone", $json['role'], null, 3, 1);
- 
-            exit_with_content($userService->createUser($user, $json["mdp"]));
 
             break;
 

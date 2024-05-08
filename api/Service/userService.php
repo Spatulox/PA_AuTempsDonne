@@ -110,8 +110,22 @@ class UserService {
             exit_with_message("Error when unreferencing user ".$apiKey);
         }
     }
-    
-    
-    
+
+    public function dispoUser($id_dispo ,$apikey)
+    {
+        $id= getIdUserFromApiKey($apikey);
+
+         for ($i = 0; $i <count($id_dispo) ; $i++) {
+            if ($id_dispo[$i] >8) {
+                exit_with_message("mauvais selection", 200);
+            }
+         }
+
+
+        $userRepository = new UserRepository();
+        return $userRepository->dispoUser($id_dispo, $id);
+    }
+
+
 }
 ?>
