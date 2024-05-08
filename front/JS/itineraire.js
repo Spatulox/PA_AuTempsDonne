@@ -13,6 +13,14 @@ btn.addEventListener("click", async () => {
     const response = await fetch("http://localhost:8081/index.php/trajet", optionPost(address));
     const data = await response.json();
 
+    // Save id of the address as values. The key of the object if the name of the address
+    const interData = {}
+    for (const dataKey in data.addresse) {
+
+        interData[data.addresse[dataKey]] = address.address[dataKey]
+
+    }
+
     const sortedAddresses = [];
     const startAddress = data.addresse[0]; // Adresse de l'entrepôt de départ
     sortedAddresses.push(startAddress);
@@ -26,104 +34,98 @@ btn.addEventListener("click", async () => {
 
         let shortestDistance = Infinity;
         let closestAddress = null;
-        console.log("-------------------------------");
-        console.log(`Origin: ${origin}`);
+        //console.log("-------------------------------");
+        //console.log(`Origin: ${origin}`);
 
         for (let i = 0; i < intermediateAddresses.length; i++) {
             const destination = intermediateAddresses[i];
             const distance = await getDistance(origin, destination);
-            console.log(destination, distance);
+            //console.log(destination, distance);
 
             if (distance < shortestDistance) {
                 shortestDistance = distance;
                 closestAddress = destination;
-                console.log(`Nouvelle adresse la plus proche: ${closestAddress} (distance: ${shortestDistance})`);
+                //console.log(`Nouvelle adresse la plus proche: ${closestAddress} (distance: ${shortestDistance})`);
             }
         }
 
         if (closestAddress !== null) {
             sortedAddresses.push(closestAddress);
-            console.log(`Ajout ${closestAddress} dans sortedAddresses`);
+            //console.log(`Ajout ${closestAddress} dans sortedAddresses`);
         } else {
-            console.log('Aucune adresse proche');
+            //console.log('Aucune adresse proche');
         }
 
         const indexToRemove = intermediateAddresses.indexOf(closestAddress);
         if (indexToRemove !== -1) {
             intermediateAddresses.splice(indexToRemove, 1);
         }
-        console.log(`Adresses restantes: ${intermediateAddresses}`);
+        //console.log(`Adresses restantes: ${intermediateAddresses}`);
     }
 
     sortedAddresses.push(endAddress); // Ajouter l'adresse de l'entrepôt d'arrivée à la fin
     console.log("Sorted addresses:", sortedAddresses);
-});
 
 
+    // Create the data to send it to the api
+    const dataToSend = {}
+    let array = []
 
-async function  fetchSync(url, options){
+    // Get the id (values) for the address (key)
+    for (const addressKey in sortedAddresses) {
+        array.push(interData[sortedAddresses[addressKey]])
 
-    if(options === false){
-        popup("Impossible de se connecter, veuillez entrer vos identifiant sur la page de connexion")
-        return false
+        console.log(sortedAddresses[addressKey])
+
     }
 
-    const response = await fetch(url, options)
+    dataToSend["address"] = array
+
+    // API AUTEMPDONNEE
+    const response = awaitfetch(endpointDuTrajet, optionPost(dataToSend))
 
     if(response.ok){
-        const message = await response.json()
-        if(message.hasOwnProperty("message")){
-            popup(message.message)
-            return true
+        showPopup("Le trajet a été crée")
+    } else {
+        const data = await response.json();
+
+        if (data.hasOwnProperty("message")){
+            showPopup(data.message)
         }
-        return message
-    }
-    else{
-        const text = await response.json()
-        alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
-        if(text.hasOwnProperty("message")) {
-            alertDebug(text.message)
-            popup(text.message)
-        }
-        return false
     }
 
+
+
+});
+
+function getCookie(cookieName) {
+    const cookies = document.cookie.split(';');
+
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.startsWith(cookieName + '=')) {
+            return cookie.substring(cookieName.length + 1);
+        }
+    }
+
+    return null;
 }
 
-function compareAnswer(response, msg = null){
-    if(response === false && msg != null){
-        alertDebug(msg)
-        popup(msg)
-        return false
-    }
-    else if(response === false && msg != null){
-        return false
-    }
-    else if (response === true){
-        return false
-    }
-    return response
-}
 
 function optionGet(){
+
+    const apikey = getCookie("apikey")
+
+    if(apikey == null){
+        alert('Pas d\'apikey dans les cookies :/')
+        return false
+    }
 
     const options = {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': `8f96e6e91f136ea4ee7150d8a656cc57ab1de2021dac5e78e3a79242cf88c055`
-        }
-    };
-    return options
-}
-
-function optionGetNoCors(){
-
-    const options = {
-        method: 'GET',
-        mode: "no-cors",
-        headers: {
-            'Content-Type': 'application/json'
+            'apikey': apikey
         }
     };
     return options
@@ -135,11 +137,19 @@ function optionGetNoCors(){
  * @returns {{headers: {apikey: string, "Content-Type": string}, method: string, body: string}}
  */
 function optionPost(data) {
+
+    const apikey = getCookie("apikey")
+
+    if(apikey == null){
+        alert('Pas d\'apikey dans les cookies :/')
+        return false
+    }
+
    const options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': `8f96e6e91f136ea4ee7150d8a656cc57ab1de2021dac5e78e3a79242cf88c055`
+            'apikey': apikey
         },
         body: JSON.stringify(data)
     };
@@ -152,11 +162,19 @@ function optionPost(data) {
  * @returns {{headers: {apikey: string, "Content-Type": string}, method: string}}
  */
 function optionPut(data) {
-  const options = {
+
+    const apikey = getCookie("apikey")
+
+    if(apikey == null){
+        alert('Pas d\'apikey dans les cookies :/')
+        return false
+    }
+
+    const options = {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': `8f96e6e91f136ea4ee7150d8a656cc57ab1de2021dac5e78e3a79242cf88c055`
+            'apikey': apikey
         },
         body: JSON.stringify(data)
     };
@@ -170,13 +188,19 @@ function optionPut(data) {
  */
 function optionDelete(data) {
 
+    const apikey = getCookie("apikey")
+
+    if(apikey == null){
+        alert('Pas d\'apikey dans les cookies :/')
+        return false
+    }
+
     const options = {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': `8f96e6e91f136ea4ee7150d8a656cc57ab1de2021dac5e78e3a79242cf88c055`
-        },
-        body: JSON.stringify(data)
+            'apikey': apikey
+        }
     };
 
     return options;
