@@ -1,4 +1,4 @@
-class User {
+class UserOld {
 
   constructor(email = null, password = null) {
     this.adresse = "http://localhost:8081/index.php";
