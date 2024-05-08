@@ -2,6 +2,25 @@ class UserAdmin extends Admin{
 
 
 
+    async updateUser(email, prenom, telephone, nom){
+
+        const data = {
+            "email" : this.email,
+            "prenom" : this.prenom,
+            "telephone" : this.telephone,
+            "nom" : this.nom
+        }
+
+        const response = await this.fetchSync(this.adresse+"/user", this.optionPut(data))
+        if(!this.compareAnswer(response, "Impossible de mettre à jour l'utilisateur")){
+            popup(dico[this.lang]["update"] + dico[this.lang]["failed"])
+            return false
+        }
+        popup(dico[this.lang]["update"] + dico[this.lang]["success"])
+        return response
+
+    }
+
     /**
      * Retrieve all the users
      * @returns {Promise<boolean>}
