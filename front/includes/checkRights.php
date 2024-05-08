@@ -9,6 +9,7 @@ $currPage = basename($_SERVER["PHP_SELF"]);
 $rightfile = file_get_contents("../includes/rights.json");
 $right = json_decode($rightfile, true);
 
+$role = -1;
 
 if($apikey !== NULL){
 
@@ -65,6 +66,8 @@ if($apikey !== NULL){
     // Check if the user can be here
     if ($returnCode == true) {
 
+        $role = $results["id_role"];
+
         if (in_array($currPage, $right[$results["id_role"]]) || in_array($currPage, $right["all"]) ) {
             $returnCode = true;
         } else {
@@ -72,7 +75,7 @@ if($apikey !== NULL){
         }
 
     } else {
-
+        return false;
     }
 } else{
 
