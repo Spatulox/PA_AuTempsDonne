@@ -18,13 +18,15 @@
         <h1 class="textCenter"><?php echo($data["user"]["title"]) ?></h1>
 
         <div class="tab flex flexAround nowrap">
-            <button class="tablinks width100" onclick="openTab('tab1')">Onglet 1</button>
-            <button class="tablinks width100" onclick="openTab('tab2')">Onglet 2</button>
-            <button class="tablinks width100" onclick="openTab('tab3')">Onglet 3</button>
+            <button class="tablinks width100" onclick="openTab('tab1')"><?php echo($data["user"]["tab1"]["title"]) ?></button>
+            <button class="tablinks width100" onclick="openTab('tab2')"><?php echo($data["user"]["tab2"]["title"]) ?></button>
+            <button class="tablinks width100" onclick="openTab('tab3')"><?php echo($data["user"]["tab3"]["title"]) ?></button>
         </div>
 
         <div id="tab1" class="tabcontent marginBottom20">
-            <h3><?php echo$data["user"]["titleTab1"] ?></h3>
+            <h3><?php echo$data["user"]["tab1"]["title"] ?></h3>
+            
+            <div><input class="marginBottom20 search-box" type="text" id="searchUser" oninput="searchUser()" placeholder="Email..."></div>
 
             <table>
                 <thead>
@@ -45,15 +47,18 @@
 
         <div id="tab2" class="tabcontent">
             <h3 class="textCenter"><?php echo$data["user"]["tab2"]["title"]?></h3>
-            <div id="tab2Child" class="width50 padding10 marginAuto border">
+            <div id="tab2Child" class="width50 padding10 marginBottom20 marginAuto border">
                 <?php echo$data["user"]["tab2"]["errorMsg"]?>
             </div>
         </div>
 
         <div id="tab3" class="tabcontent">
-            <h3>Contenu de l'onglet 3</h3>
-            <p>Voici le contenu de l'onglet 3.</p>
+            <h3 class="textCenter"><?php echo$data["user"]["tab3"]["title"]?></h3>
+            <div id="tab2Child" class="width50 padding10 marginBottom20 marginAuto border">
+                <?php echo$data["user"]["tab3"]["errorMsg"]?>
+            </div>
         </div>
+        
     </div>
 
     <?php
@@ -120,7 +125,7 @@
             row.appendChild(entrepotCell);
 
             const buttonCell = document.createElement('td');
-            const button = createButton(dico[lang]["buttonSee"])
+            const button = createButton(dico[lang]["See"])
             button.setAttribute("onclick", "showUser("+item.id_user+")")
             buttonCell.appendChild(button)
             row.appendChild(buttonCell);
@@ -172,7 +177,7 @@
         userInfoContainer.appendChild(lesDivs)
 
         // Create button to Update
-        const button = createButton(dico[lang]["updateUser"])
+        let button = createButton(dico[lang]["Update"]+dico[lang]["user"])
         button.setAttribute("onclick", "updateLeUser()")
         button.classList.add("marginTop20")
         button.classList.add("marginBottom10")
@@ -180,7 +185,28 @@
         button.classList.add("block")
         userInfoContainer.appendChild(button)
 
+        // Create button to Update
+        button = createButton(dico[lang]["Delete"]+dico[lang]["user"])
+        button.setAttribute("onclick", "deleteLeUser("+userWithId.id_user+")")
+        button.classList.add("marginTop20")
+        button.classList.add("marginBottom10")
+        button.classList.add("marginAuto")
+        button.classList.add("block")
+        userInfoContainer.appendChild(button)
+
         openTab('tab2')
+    }
+
+    async function searchUser(){
+        const emailToSearch = document.getElementById("searchUser").value
+
+        if(emailToSearch == ""){
+            data = await user.getAllUser()
+        } else {
+            data = await user.getUserViaEmail(emailToSearch)
+        }
+
+        fillTbodyUser()
     }
 
     function createLabelValueElement(label, value) {
@@ -216,23 +242,33 @@
     }
 
     async function updateLeUser(){
-        let in_nom = document.getElementById("in_nom")
-        let in_prenom = document.getElementById("in_prenom")
-        let in_email = document.getElementById("in_email")
-        let in_telephone = document.getElementById("in_telephone")
+        let in_nom = document.getElementById("in_nom").value
+        let in_prenom = document.getElementById("in_prenom").value
+        let in_email = document.getElementById("in_email").value
+        let in_telephone = document.getElementById("in_telephone").value
 
-        const va_nom = document.getElementById("va_nom")
-        const va_prenom = document.getElementById("va_prenom")
-        const va_email = document.getElementById("va_email")
-        const va_tel = document.getElementById("va_telephone")
+        const va_nom = document.getElementById("va_nom").innerHTML
+        const va_prenom = document.getElementById("va_prenom").innerHTML
+        const va_email = document.getElementById("va_email").innerHTML
+        const va_tel = document.getElementById("va_telephone").innerHTML
 
         in_nom = in_nom ? in_nom : va_nom
         in_prenom = in_prenom ? in_prenom : va_prenom
         in_email = in_email ? in_email : va_email
         in_telephone = in_telephone ? in_telephone : va_tel
 
+        console.log(in_nom)
 
-        await user.updateUser(in_email, in_prenom, in_telephone, in_nom)
+        const response = await user.updateUser(in_email, in_prenom, in_telephone, in_nom)
+
+        if(response){
+            data = await user.getAllUser()
+            showUser(response["id_user"])
+        }
+    }
+
+    async function deleteLeUser(id){
+        const response = await user.deleteUser(id)
     }
 
     onload()

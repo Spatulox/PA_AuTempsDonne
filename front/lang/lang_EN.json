@@ -122,12 +122,17 @@
 		"title": "User Menu",
 		"titleTab1" : "Users list",
 		"tab1": {
+			"title" : "Users list",
 			"name": "Name/Lastname",
 			"storehouse": "Storehouse",
 			"buttonSee": "See"
 		},
 		"tab2": {
 			"title" : "User details",
+			"errorMsg" : "No user selected"
+		},
+		"tab3": {
+			"title" : "User planning",
 			"errorMsg" : "No user selected"
 		}
 	}
