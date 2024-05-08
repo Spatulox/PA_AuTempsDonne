@@ -8,7 +8,7 @@
 
     <title><?php echo($data["storehouse"]["title"]) ?></title>
 </head>
-<body onload="openTab(event, 'tab1')">
+<body>
 
 <?php include("../includes/header.php");?>
 
@@ -18,9 +18,9 @@
         <h1 class="textCenter"><?php echo($data["storehouse"]["title"]) ?></h1>
 
         <div class="tab flex flexAround nowrap">
-            <button class="tablinks width100" onclick="openTab(event, 'tab1')">Onglet 1</button>
-            <button class="tablinks width100" onclick="openTab(event, 'tab2')">Onglet 2</button>
-            <button class="tablinks width100" onclick="openTab(event, 'tab3')">Onglet 3</button>
+            <button class="tablinks width100" onclick="openTab('tab1')">Onglet 1</button>
+            <button class="tablinks width100" onclick="openTab('tab2')">Onglet 2</button>
+            <button class="tablinks width100" onclick="openTab('tab3')">Onglet 3</button>
         </div>
 
         <div id="tab1" class="tabcontent">
@@ -49,3 +49,13 @@
 
 </body>
 </html>
+
+<script type="text/javascript" defer>
+    const tab = getParamFromUrl("tab")
+
+    if(tab && idExistInPage("tab"+tab)){
+        openTab('tab'+tab)
+    } else {
+        openTab('tab1')
+    }
+</script>
