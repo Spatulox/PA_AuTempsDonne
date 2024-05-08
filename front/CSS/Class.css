@@ -58,6 +58,23 @@
   background-color: #fff;
 }
 
+.search-box {
+    background-color: lightgrey;
+    width: 400px;
+    height: 40px;
+    padding: 0 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: box-shadow 0.3s ease;
+}
+
+.search-box:focus {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
 /* Style des onglets */
 .tab {
     overflow: hidden;
