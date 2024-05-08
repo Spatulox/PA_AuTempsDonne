@@ -18,7 +18,7 @@ class PlanningService {
         if ($userRole[0]==1 || $userRole[0]==2) {
             $planningRepository = new PlanningRepository();
             return $planningRepository->getAllPlanning();
-    }else{
+        }else{
             exit_with_message("You didn't have access to this command");
         }
 
@@ -53,8 +53,8 @@ class PlanningService {
     public function createPlanning(PlanningModel $planning,$apiKey) {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==4) {
-        $planningRepository = new PlanningRepository();
-        return $planningRepository->createPlanning($planning);
+            $planningRepository = new PlanningRepository();
+            return $planningRepository->createPlanning($planning);
         }else{
             exit_with_message("You didn't have access to this command");
         }

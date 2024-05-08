@@ -57,10 +57,26 @@
                             $json['id_activite']
                         );
 
+                        $dateString = $json['date_activite'];
+
+                        try {
+                            $dateTime = new DateTime($dateString);
+                            $dateTimeString = $dateTime->format("Y-m-d H:i:s");
+                            $hour = $dateTime->format('H');
+                            $min = $dateTime->format('i');
+                            $sec = $dateTime->format('s');
+
+                            if ($hour === '00' && $min === '00' && $sec === '00') {
+                                exit_with_message("Vous devez spécifier le bon format de l'heure ou l'heure ne peut pas être minuit.");
+                            }
+                        } catch (Exception $e) {
+                            exit_with_message("Erreur Controller : " . $e->getMessage());
+                        }
+
                         $createdPlanning = $planningService->createPlanning($planning, $apiKey);
 
                         if ($createdPlanning) {
-                            exit_with_content($createdPlanning);
+                            exit_with_message("Succes", 200);
                         } else {
                             exit_with_message("Error while creating the planning.", 500);
                         }
