@@ -12,7 +12,7 @@ function trajetController($uri, $apiKey){
 
             $TrajetService = new trajetService();
             if(!$uri[3]){
-                    exit_with_content($TrajetService->createTrajet());
+                    exit_with_message("pas de trajets selectionner");
             }
 
 
@@ -28,6 +28,12 @@ function trajetController($uri, $apiKey){
             break;
 
         case 'POST':
+
+            $TrajetService = new trajetService();
+
+            $body = file_get_contents("php://input");
+            $json = json_decode($body, true);
+
             break;
 
         case 'PUT':
