@@ -73,6 +73,8 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
 
                     }
 
+                    echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
+
                 } else {
                     // Not connected
 
@@ -80,8 +82,6 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
                         echo('<li><a href="' . $key . '">' . $value . '</a></li>');
                     }
                 }
-
-                echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
 
 			?>
 		</ul>
