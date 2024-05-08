@@ -29,12 +29,30 @@ function trajetController($uri, $apiKey){
 
         case 'POST':
 
-            $TrajetService = new trajetService();
-
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
 
+            if($apiKey == null){
+                exit_with_message("Unauthorized, need the apikey", 403);
+            }
+
+            $TrajetService = new trajetService();
+            if(!$uri[3]){
+                $TrajetService->createTrajet($json["address"]);
+            }
+
+
+            elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
+                exit_with_content($TrajetService->getTrajetById($uri[3]));
+            }
+
+
+            else{
+                exit_with_message("You need to be admin to see all the trips", 403);
+            }
+
             break;
+
 
         case 'PUT':
             break;
