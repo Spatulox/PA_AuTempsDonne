@@ -15,6 +15,7 @@ btn.addEventListener("click", async () => {
 
     const data = await response.json();
 
+    console.log("DATA :")
     console.log(data)
 
     // Save id of the address as values. The key of the object if the name of the address
@@ -84,6 +85,8 @@ btn.addEventListener("click", async () => {
     }
 
     dataToSend["address"] = array
+
+    console.log(dataToSend)
 
     // API AUTEMPDONNEE
     const response2 = await fetch(endpointDuTrajet, optionPost(dataToSend))
