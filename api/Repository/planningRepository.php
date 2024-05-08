@@ -148,5 +148,26 @@ class PlanningRepository {
 
     }
 
+    public function linkPlanning(array $planning)
+    {
+        $check =selectDB("PLANNINGS" , "id_planning" ,"id_planning=" .$planning[1],'bool');
+        if (!$check){
+            exit_with_message("Erreur: planning n'existe pas ");
+        }
+
+        $check =selectDB("TRAJETS" , "id_trajets" ,"id_trajets=" .$planning[0],'bool');
+
+        if (!$check){
+            exit_with_message("Erreur: planning n'existe pas ");
+        }
+
+        $create = updateDB("PLANNINGS", [ "id_trajets"], [$planning[0]], "id_planning=".$planning[1]);
+        if ($create) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
 ?>

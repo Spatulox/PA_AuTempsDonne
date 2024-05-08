@@ -65,14 +65,29 @@
                             exit_with_message("Please provide both user_id and id_planning to join an activity", 400);
                         }
 
-                        $result = $planningService->joinActivity($json['user_id'], $json['id_planning'], $json['confirme'],$apiKey);
-                        
+                        $result = $planningService->joinActivity($json['user_id'], $json['id_planning'], $json['confirme'], $apiKey);
+
                         if ($result) {
                             exit_with_content("User joined activity successfully");
                         } else {
                             exit_with_message("Failed to join activity", 500);
                         }
-                    } else {
+                    }elseif ($uri[3] && $uri[3]=== 'link') {
+                        if (!isset($json['id_trajet']) || !isset($json['id_planning'])) {
+                            exit_with_message("Please provide both user_id and id_planning to join an activity", 400);
+                        }
+                        $planning = array(
+                            $json['id_trajet'],
+                            $json['id_planning']
+                        );
+                        $linkPlanning = $planningService->linkPlanning($planning, $apiKey);
+                        if ($linkPlanning) {
+                            exit_with_content($linkPlanning);
+                        } else {
+                            exit_with_message("Error while creating the planning.", 500);
+                        }
+
+                    }else {
                         exit_with_message("Invalid action specified", 400);
                     }
 
