@@ -5,18 +5,19 @@ class UserAdmin extends Admin{
     async updateUser(email, prenom, telephone, nom){
 
         const data = {
-            "email" : this.email,
-            "prenom" : this.prenom,
-            "telephone" : this.telephone,
-            "nom" : this.nom
+            "email" : email,
+            "prenom" : prenom,
+            "telephone" : telephone,
+            "nom" : nom
         }
-
         const response = await this.fetchSync(this.adresse+"/user", this.optionPut(data))
-        if(!this.compareAnswer(response, "Impossible de mettre à jour l'utilisateur")){
-            popup(dico[this.lang]["update"] + dico[this.lang]["failed"])
+
+
+        if(!this.compareAnswer(response, this.msg["Update"] + this.msg["failed"])){
+            popup(this.msg["Update"] + this.msg["failed"])
             return false
         }
-        popup(dico[this.lang]["update"] + dico[this.lang]["success"])
+        popup(this.msg["Update"] + this.msg["success"])
         return response
 
     }
@@ -27,6 +28,14 @@ class UserAdmin extends Admin{
      */
     async getAllUser(){
         let response = await this.fetchSync(this.adresse+'/user/all', this.optionGet())
+        if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs")){
+            return false
+        }
+        return response
+    }
+
+    async getUserViaEmail(email){
+        let response = await this.fetchSync(this.adresse+'/user?email='+email, this.optionGet())
         if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs")){
             return false
         }
@@ -61,7 +70,6 @@ class UserAdmin extends Admin{
         }
 
         let response = await this.fetchSync(this.adresse+'/user'+complementPath, this.optionDelete())
-        console.log(response)
         if(!this.compareAnswer(response, "Impossible de supprimer l'utilisateur")){
             return false
         }

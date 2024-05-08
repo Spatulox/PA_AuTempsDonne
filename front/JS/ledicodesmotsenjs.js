@@ -1,21 +1,35 @@
 const dico = {
     "EN":{
-        "msg":{
-            "update":"Update",
-            "success":"succed",
-            "failed":"failed"
-        },
-        "buttonSee":"See",
-        "updateUser":"Update User"
+        "update":"update ",
+        "Update":"Update ",
+        "succed":"succed ",
+        "success":"success ",
+        "failed":"failed ",
+        "Failed":"Failed ",
+        "delete":"delete ",
+        "Delete":"Delete ",
+        "deleted":"deleted ",
+        "Delete":"Delete ",
+        "user":"user ",
+        "User":"User ",
+        "see":"see ",
+        "See":"See ",
 
     },
     "FR":{
-        "msg":{
-            "update":"Mise à jour",
-            "success":"terminé(e)",
-            "failed":"échoué"
-        },
-        "buttonSee":"Voir",
-        "updateUser":"Mettre à jour l'utilistaeur"
+        "update":"mise à jour ",
+        "Update":"Mise à jour ",
+        "Success":"Succès ",
+        "success":"succès ",
+        "failed":"échoué ",
+        "Failed":"Échoué ",
+        "delete":"supprimé ",
+        "Delete":"Supprimé ",
+        "deleted":"supprimer ",
+        "Delete":"Supprimé ",
+        "user":"utilisateur ",
+        "User":"Utilisateur ",
+        "See":"Voir ",
+        "see":"voir ",
     }
 }

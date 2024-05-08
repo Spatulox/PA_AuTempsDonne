@@ -2,6 +2,7 @@ class General {
 
     constructor() {
         this.lang = getCookie("lang")
+        this.msg = dico[lang]
     }
 
 
