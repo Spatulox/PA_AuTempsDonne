@@ -82,19 +82,11 @@ class TrajetRepository {
         exit_with_content($this->affiche($rows));
     }
 
-    public function createTrajet(){
+    public function createTrajet($route){
 
         $string = "INNER JOIN UTILISER U ON U.id_adresse = ADRESSE.id_adresse INNER JOIN TRAJETS T ON U.id_trajets = T.id_trajets";
 
         $rows = selectJoinDB("ADRESSE", "adresse",$string ,-1);
-
-        //$googleApiKey = 'AIzaSyC9WzDphICufUy1vaD1xjwhK3cI7pWJi9c';
-
-        //$url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" . urlencode($origin) . "&destinations=" . urlencode($destination) . "&key=" . $apiKey;
-
-        $route = [2, 3, 4, 5, 9];
-
-        //$nbEtape = count($route);
 
         foreach ($route as $id) {
             $repo = new adresseRepository();
@@ -107,10 +99,10 @@ class TrajetRepository {
 
         $origin = reset($addresses);
         $end = end($addresses);
-
-        exit_with_content($addresses);
-        //return $addresses;
-
+        $data = [
+            "addresse" => $addresses
+        ];
+        exit_with_content($data);
     }
 
 }
