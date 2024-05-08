@@ -38,12 +38,15 @@ CREATE TABLE PLANNINGS(
    id_planning INT AUTO_INCREMENT,
    description TEXT,
    date_activite DATE,
+   id_trajets INT,
    id_index_planning INT NOT NULL,
    id_activite INT NOT NULL,
    PRIMARY KEY(id_planning),
+   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets),
    FOREIGN KEY(id_index_planning) REFERENCES INDEXPLANNING(id_index_planning),
    FOREIGN KEY(id_activite) REFERENCES ACTIVITES(id_activite)
 );
+
 
 CREATE TABLE FORMATIONS(
    id_formation INT AUTO_INCREMENT,
@@ -256,14 +259,6 @@ CREATE TABLE FORMER(
    FOREIGN KEY(id_formation) REFERENCES FORMATIONS(id_formation)
 );
 
-CREATE TABLE PARKOUR(
-   id_trajets INT,
-   id_planning INT,
-   PRIMARY KEY(id_trajets, id_planning),
-   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets),
-   FOREIGN KEY(id_planning) REFERENCES PLANNINGS(id_planning)
-);
-
 CREATE TABLE DISPONIBILITE(
    id_user INT,
    id_dispo INT,
@@ -325,12 +320,12 @@ INSERT INTO ACTIVITES (nom_activite) VALUES
 ('Soutien scolaire'),
 ('Visite de personnes âgées');
 
-INSERT INTO PLANNINGS (description, date_activite, id_index_planning, id_activite) VALUES
-('Collecte de vêtements d''hiver', '2024-05-01', 2, 1),
-('Distribution de repas chauds aux SDF', '2024-05-15', 2, 2),
-('Atelier d''initiation à l''informatique', '2024-06-01', 2, 3),
-('Soutien scolaire pour les élèves en difficulté', '2024-06-15', 2, 4),
-('Visite et animation pour les personnes âgées', '2024-07-01', 2, 5);
+INSERT INTO PLANNINGS (description, date_activite,id_trajets, id_index_planning, id_activite) VALUES
+('Collecte de vêtements d''hiver', '2024-05-01',NULL, 2, 1),
+('Distribution de repas chauds aux SDF', '2024-05-15',NULL, 2, 2),
+('Atelier d''initiation à l''informatique', '2024-06-01',NULL, 2, 3),
+('Soutien scolaire pour les élèves en difficulté', '2024-06-15',NULL, 2, 4),
+('Visite et animation pour les personnes âgées', '2024-07-01',NULL, 2, 5);
 
 INSERT INTO ENTREPOTS (nom_entrepot, parking, id_adresse) VALUES
 ('Entrepot Paris', 6, 1),
