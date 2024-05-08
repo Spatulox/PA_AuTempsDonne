@@ -82,12 +82,12 @@ btn.addEventListener("click", async () => {
     dataToSend["address"] = array
 
     // API AUTEMPDONNEE
-    const response = awaitfetch(endpointDuTrajet, optionPost(dataToSend))
+    const response2 = awaitfetch(endpointDuTrajet, optionPost(dataToSend))
 
-    if(response.ok){
+    if(response2.ok){
         showPopup("Le trajet a été crée")
     } else {
-        const data = await response.json();
+        const data = await response2.json();
 
         if (data.hasOwnProperty("message")){
             showPopup(data.message)
