@@ -133,6 +133,19 @@ class UserService {
         return $userRepository->getAllDispoUsers();
     }
 
+    public function updatedispoUser($apiKey, $id_dispo)
+    {
+        $id= getIdUserFromApiKey($apiKey);
+
+        for ($i = 0; $i <count($id_dispo) ; $i++) {
+            if ($id_dispo[$i] >8) {
+                exit_with_message("mauvais selection", 200);
+            }
+        }
+        $userRepository = new UserRepository();
+        return $userRepository->updatedispoUser($id_dispo, $id);
+    }
+
 
 }
 ?>

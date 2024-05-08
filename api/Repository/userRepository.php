@@ -250,5 +250,27 @@ class UserRepository {
         return $dispos;
     }
 
+    //-------------------------------------------------------------------------------------------------------
+
+    public function updatedispoUser($id_dispo, $id)
+    {
+        deleteDB("DISPONIBILITE", "id_user=".$id);
+        $dispos = [];
+
+        for ($i = 0; $i < count($id_dispo); $i++) {
+            insertDB("DISPONIBILITE", ["id_dispo", "id_user"], [$id_dispo[$i], $id]);
+        }
+
+        $res = selectDB("DISPONIBILITE", "*", "id_user=".$id);
+
+        foreach ($res as $dispo) {
+            $dispos[] = new DispoModel($dispo["id_user"], $dispo["id_dispo"]);
+        }
+
+
+        return($dispos);
+    }
+
+
 }
 ?>

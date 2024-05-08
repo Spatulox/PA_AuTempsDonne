@@ -113,26 +113,35 @@ function userController($uri, $apiKey) {
             $email = getEmailFromApiKey($apiKey);
             $role = getRoleFromApiKey($apiKey);
 
-            if($email != $json['email'] && $role > 2){
-                exit_with_message("Vous ne pouvez pas update un utilisateur qui n'est pas vous", 403);
-            }
 
 
             if(isset($uri[3]) && $uri[3] == "validate"){
 
+                if($email != $json['email'] && $role > 2){
+                    exit_with_message("Vous ne pouvez pas update un utilisateur qui n'est pas vous", 403);
+                }
                 if($role > 3){
                     exit_with_message("Vouys n'avez pas les permissions requises", 403);
                 }
 
                 $userService->updateUserValidate($json["id_user"], $json["id_index"]);
-            }
+            }elseif (!$uri[3]) {
 
-            if (!isset($json["nom"]) || !isset($json["prenom"]) || !isset($json["telephone"]) || !isset($json["email"]) ){
-                exit_with_message("Plz give the firstname, lastname, the phone and the email");
-            }
+                if (!isset($json["nom"]) || !isset($json["prenom"]) || !isset($json["telephone"]) || !isset($json["email"])) {
+                    exit_with_message("Plz give the firstname, lastname, the phone and the email");
 
-            // Valider les données reçues ici
-            $userService->updateUser($apiKey, ["nom" => $json["nom"], "prenom" => $json["prenom"], "telephone" => $json["telephone"], "email" => $json["email"]]);
+
+                    // Valider les données reçues ici
+                    $userService->updateUser($apiKey, ["nom" => $json["nom"], "prenom" => $json["prenom"], "telephone" => $json["telephone"], "email" => $json["email"]]);
+                }
+            }
+            elseif ($uri[3] && $uri[3] == "dispo"){
+                if(!isset($json["id_dispo"]) ) {
+                    exit_with_message("", 403);
+                }
+
+                exit_with_content( $userService->updatedispoUser($apiKey, ($json["id_dispo"])));
+        }
             break;
 
         case 'DELETE':
