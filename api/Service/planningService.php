@@ -82,5 +82,14 @@ class PlanningService {
         }
     }
 
+    public function linkPlanning(array $planning, $apiKey)
+    {
+        $userRole = $this->getUserRoleFromApiKey($apiKey);
+        if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
+            $planningRepository = new PlanningRepository();
+            return $planningRepository->linkPlanning($planning);
+        }
+    }
+
 }
 ?>

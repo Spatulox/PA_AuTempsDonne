@@ -73,6 +73,26 @@ function getRoleFromApiKey($apiKey){
     return $role;
 }
 
+function getEmailFromApiKey($apiKey){
+    if($apiKey == null){
+        exit_with_message("The apikey is empty", 403);
+    }
+
+    $id = selectDB("UTILISATEUR", 'email', "apikey='".$apiKey."'", "bool");
+    if($id){
+        $id = $id[0]["id_user"];
+    }
+
+    $id = selectDB("UTILISATEUR", 'email', "apikey='".$apiKey."'", "bool");
+    if($id){
+        $id = $id[0]["email"];
+    }
+    else{
+        exit_with_message("No one with this apikey", 403);
+    }
+    return $id;
+}
+
 function getIdUserFromApiKey($apiKey){
     if($apiKey == null){
         exit_with_message("The apikey is empty", 403);
@@ -83,15 +103,15 @@ function getIdUserFromApiKey($apiKey){
         $id = $id[0]["id_user"];
     }
 
-    $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool"); 
-    if($id){ 
-        $id = $id[0]["id_user"]; 
-    } 
-    else{ 
-        exit_with_message("No one with this apikey", 403); 
-    } 
-    return $id; 
-} 
+    $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool");
+    if($id){
+        $id = $id[0]["id_user"];
+    }
+    else{
+        exit_with_message("No one with this apikey", 403);
+    }
+    return $id;
+}
 
 // Composant principal du controlleur: cette fonction agit comme un routeur en redirigeant les requêtes vers le bon controlleur
 function controller($uri) {
@@ -129,7 +149,7 @@ function controller($uri) {
             activiteController($uri, $apiKey);
             break;
         case 'trajet':
-            TrajetController($uri, $apiKey);
+            trajetController($uri, $apiKey);
             break;
         case 'adresse':
             adresseController($uri, $apiKey);

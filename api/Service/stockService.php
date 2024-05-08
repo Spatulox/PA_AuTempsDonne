@@ -121,10 +121,11 @@ class StockService {
 
                 $tabb = [];
                 $tabRenvoyer = [];
+                $compteur=0;
 
                 for ($j = 0; $j < count($etagere); $j++) {
 
-
+                    $compteur++;
                     // Regrde le nombre de place disponible dns l'étagère
                     $nbProduitsEtagere = $this->getnbplace($etagere[$j]['id_etagere']);
 
@@ -144,7 +145,8 @@ class StockService {
                         }
 
                         $tabb[$etagere[$j]['id_etagere']] = $arentre;
-                        $tabRenvoyer[$j] = [$arentre];
+
+                        $tabRenvoyer[] = $compteur;
 
                         $toutranger += $arentre;
 
@@ -155,29 +157,24 @@ class StockService {
 
                 }
 
+
+
                 $msg = "";
 
                 if($toutranger != $bkpProduit){
                     $msg = "Il reste ". ($bkpProduit - $toutranger) . " produit(s) à ranger car plus de place dans cet entrepot";
+                    return $stockRepository->addStock($tabb, $stock, $msg, $tabRenvoyer);
                 }
 
                 //
                 // ------------  FIN
                 //
-
                 // Creer où ranger les produits
+                if ($tabRenvoyer==null){
+                    echo "1";
+                }
 
-                var_dump($tabb);
-                exit();
-
-                return $stockRepository->addStock($tabb);
-
-
-
-
-
-
-
+                return $stockRepository->addStock($tabb ,$stock,$msg,$tabRenvoyer);
 
                 //exit_with_content();
 
@@ -190,7 +187,9 @@ class StockService {
                 exit_with_message("Erreur : La date de sortie est invalide. Le format attendu est AAAA-MM-JJ.", 403);
                 }
 
-                $test = $this->getAllProduitsInEntrepots($stock->id_entrepot,$stock->id_produit,$apiKey);
+                $test = $this->getAllProduitsInEntrepots($id_entrepots,$stock->id_produit,$apiKey);
+
+
 
                 $id_produit_stock = array();
                 foreach ($test as $item) {
@@ -198,29 +197,54 @@ class StockService {
                         'id_stock' => $item->id_stock,
                         'quantite_produit' => $item->quantite_produit,
                         'date_entree' => $item->date_entree,
-                        'date_sortie' => $item->date_sortie
+                        'date_sortie' => $item->date_sortie,
+                        'id_etagere' => $item->id_etagere,
 
                     );
+
                     if ($item->date_entree != null){
                         $sum= $sum +$item->quantite_produit;
-                    }else{
-                        $sum=$sum-$item->quantite_produit;
                     }
+
                 }
 
-               if ($sum-$stock->quantite_produit <=0){
-                   exit_with_message(" il n'y a pas acces de stock de ce produit dans cette entrepots");
+
+                if ($sum-$stock->quantite_produit <0){
+                   exit_with_message("Il y a ". $sum ."l de ce produit dans cet entrepot, vous ne pouvez pas retirer ". $stock->quantite_produit ."l de ce produit");
                }
 
+                $tabRenvoyer = [];
+                $compteur=0;
+                $tabb = [];
+                for ($j = 0; $j < count($id_produit_stock); $j++) {
+                    $compteur++;
+                    $qteEtagere = $id_produit_stock[$j]['quantite_produit'];
+                    $tabRenvoyer[] = $compteur;
+                    if ($qteEtagere < $stock->quantite_produit){
+                        $tabb[$id_produit_stock[$j]['id_etagere']] = $qteEtagere;
+                        $stock->quantite_produit = $stock->quantite_produit - $qteEtagere;
+
+                        $this->updateStock($id_produit_stock[$j]["id_stock"], $qteEtagere);
+
+                    } else {
+                        $tabb[$id_produit_stock[$j]['id_etagere']] = $stock->quantite_produit;
+                        $qteEtagere=$stock->quantite_produit ;
+
+                        $this->updateStock($id_produit_stock[$j]["id_stock"],$qteEtagere);
+                        $stock->quantite_produit = 0;
+                        break;
+                    }
+
+
+
+                }
+
+                $msg="";
+                return $stockRepository->addStock($tabb ,$stock,$msg,$tabRenvoyer);
+
+
             }
 
-            if ($stock->date_peremption == "NUlL"){
-                return $stockRepository->createStock($stock);
-             } else if (!$this->isValidDate($stock->date_peremption)) {
-                exit_with_message("Erreur : La date de péremption est invalide. Le format attendu est AAAA-MM-JJ.", 403);
-            }
-
-            return $stockRepository->createStock($stock);
         }else{
             exit_with_message("You didn't have access to this command");
         }
@@ -236,18 +260,28 @@ class StockService {
         }else{
             exit_with_message("You didn't have access to this command");
         }
+
     }
 
 
     private function getnbplace($id)
     {
-        $string = "id_etagere=".$id;
+        $string = "id_etagere=".$id . " AND ". "date_sortie IS NULL";
         $number= selectDB("STOCKS","quantite_produit",$string,"bool");
         for ($i = 0; $i < count($number); $i++) {
             $sum=$sum+$number[$i]["quantite_produit"];
         }
 
         return $sum;
+    }
+
+    public function updateStock($id_stock, $qteEtagere)
+
+    {
+
+        $act=selectDB("STOCKS","quantite_produit"  ,"id_stock=".$id_stock);
+        $act= (int) $act[0]["quantite_produit"]- (int)$qteEtagere;
+        updateDB("STOCKS",["quantite_produit"] , [$act] ,"id_stock=".$id_stock);
     }
 }
 ?>
