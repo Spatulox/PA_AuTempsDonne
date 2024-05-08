@@ -19,10 +19,15 @@
                     exit_with_content($planningService->getAllPlanning($apiKey));
                 }
 
-                
+
                 elseif($uri[3] && $uri[3]==="me"){
-                    
+
                     exit_with_content($planningService->getPlanningByUser($apiKey));
+                }
+
+
+                elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
+                    $planningService->getPlanningByIdUser($uri[3], $apiKey);
                 }
 
                 else{

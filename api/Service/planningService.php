@@ -24,6 +24,19 @@ class PlanningService {
 
     }
 
+    public function getPlanningByIdUser($id, $apiKey) {
+
+        $role = getRoleFromApiKey($apiKey);
+        $idUser = getIdUserFromApiKey($apiKey);
+
+        if($role > 2 && $idUser != $id) {
+            exit_with_message("You don't have access to this command");
+        }
+
+        $planningRepository = new PlanningRepository();
+        $planningRepository->getPlanningByIdUser($id);
+    }
+
     /*
      *  Récupère un planning par son id
     */
