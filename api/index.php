@@ -149,7 +149,7 @@ function controller($uri) {
             activiteController($uri, $apiKey);
             break;
         case 'trajet':
-            TrajetController($uri, $apiKey);
+            trajetController($uri, $apiKey);
             break;
         case 'adresse':
             adresseController($uri, $apiKey);

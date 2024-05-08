@@ -28,7 +28,7 @@ class TrajetRepository {
             }
             //var_dump($request);
 
-           $res= selectDB("ADRESSE","adresse","id_adresse=".$request["id_adresse"].$request[$num]["id_adresse"]);
+            $res= selectDB("ADRESSE","adresse","id_adresse=".$request["id_adresse"].$request[$num]["id_adresse"]);
 
 
             $addresses = [
@@ -87,13 +87,6 @@ class TrajetRepository {
         $string = "INNER JOIN UTILISER U ON U.id_adresse = ADRESSE.id_adresse INNER JOIN TRAJETS T ON U.id_trajets = T.id_trajets";
 
         $rows = selectJoinDB("ADRESSE", "adresse",$string ,-1);
-<<<<<<< HEAD
-=======
-
-        //$url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" . urlencode($origin) . "&destinations=" . urlencode($destination) . "&key=" . $apiKey;
-
-        //$nbEtape = count($route);
->>>>>>> itineraire
 
         foreach ($route as $id) {
             $repo = new adresseRepository();

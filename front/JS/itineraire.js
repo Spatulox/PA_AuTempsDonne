@@ -10,8 +10,12 @@ btn.addEventListener("click", async () => {
     const address = {
         "address": [3, 4, 5, 6, 7, 3]
     };
+
     const response = await fetch("http://localhost:8081/index.php/trajet", optionPost(address));
+
     const data = await response.json();
+
+    console.log(data)
 
     // Save id of the address as values. The key of the object if the name of the address
     const interData = {}
@@ -82,7 +86,7 @@ btn.addEventListener("click", async () => {
     dataToSend["address"] = array
 
     // API AUTEMPDONNEE
-    const response2 = awaitfetch(endpointDuTrajet, optionPost(dataToSend))
+    const response2 = await fetch(endpointDuTrajet, optionPost(dataToSend))
 
     if(response2.ok){
         showPopup("Le trajet a été crée")
