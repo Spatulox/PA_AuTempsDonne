@@ -119,6 +119,16 @@
 		"all": "See all tickets"
 	},
 	"user": {
-		"title": "User Menu"
+		"title": "User Menu",
+		"titleTab1" : "Users list",
+		"tab1": {
+			"name": "Name/Lastname",
+			"storehouse": "Storehouse",
+			"buttonSee": "See"
+		},
+		"tab2": {
+			"title" : "User details",
+			"errorMsg" : "No user selected"
+		}
 	}
 }
