@@ -1,3 +1,7 @@
+
+<?php include("../includes/checkRights.php");?>
+
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="">
@@ -9,7 +13,25 @@
 
 <script type="text/javascript" src="../JS/functions.js"></script>
 <script type="text/javascript" src="../JS/utils.js"></script>
-<script type="text/javascript" src="../JS/user.js"></script>
+<!--<script type="text/javascript" src="../JSManager/user_old.js"></script>-->
+<script type="text/javascript" src="../JSManager/General.js"></script>
+<script type="text/javascript" src="../JSManager/User.js"></script>
+<script type="text/javascript" src="../JSManager/Planning.js"></script>
+
+
+<?php
+
+if($role == 1 || $role == 2){
+
+    echo '<script type="text/javascript" src="../JSManager/Admin.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionUserAdmin.js"></script>';
+    //echo '<script type="text/javascript" src="../JSManager/GestionPlanning.js"></script>';
+
+}
+
+?>
+
 <script type="text/javascript" src="../JS/popup.js"></script>
 <script type="text/javascript" src="../JS/tabs.js"></script>
 

@@ -1,7 +1,5 @@
 <?php include("../includes/loadLang.php");?>
 
-<?php include("../includes/checkRights.php");?>
-
 <!DOCTYPE html>
 <html>
 	<head>

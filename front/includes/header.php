@@ -8,8 +8,6 @@ EATNow : Header
 
 <?php
 
-include("../includes/checkRights.php");
-
 $directory = '../lang/';
 
 $files22 = scandir($directory);
