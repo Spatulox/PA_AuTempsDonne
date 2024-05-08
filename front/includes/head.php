@@ -34,6 +34,7 @@ if($role == 1 || $role == 2){
 
 <script type="text/javascript" src="../JS/popup.js"></script>
 <script type="text/javascript" src="../JS/tabs.js"></script>
+<script type="text/javascript" src="../JS/ledicodesmotsenjs.js"></script>
 
 
 <?php
