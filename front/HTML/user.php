@@ -25,6 +25,22 @@
 
         <div id="tab1" class="tabcontent">
             <h3>Contenu de l'onglet 1</h3>
+
+            <table>
+                <thead>
+                <tr>
+                    <td>ID_User</td>
+                    <td>Nom/Prenom</td>
+                    <td>Email</td>
+                    <td>Telephone</td>
+                    <td>Rôle</td>
+                    <td>Entrepot</td>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
             <p>Voici le contenu de l'onglet 1.</p>
         </div>
 
@@ -58,4 +74,18 @@
     } else {
         openTab('tab1')
     }
+</script>
+
+
+<script type="text/javascript" defer>
+
+    async function onload(){
+        const user = new UserAdmin()
+        await user.connect()
+        const users = await user.getAllUser()
+        console.log(users)
+    }
+
+    onload()
+
 </script>
