@@ -73,7 +73,7 @@
                         $result = $planningService->joinActivity($json['user_id'], $json['id_planning'], $json['confirme'], $apiKey);
 
                         if ($result) {
-                            exit_with_content("User joined activity successfully");
+                            exit_with_message("User joined activity successfully");
                         } else {
                             exit_with_message("Failed to join activity", 500);
                         }
