@@ -33,6 +33,20 @@ function idExistInPage(id){
     }
 }
 
+function createButton(value, id = null, name = null){
+    const button = document.createElement("button")
+    button.type = "button"
+    button.innerHTML = value
+
+    if(name != null){
+        button.name = name
+    }
+    if (id != null){
+        button.id = id
+    }
+    return button
+}
+
 /**
  * Set a cookie
  * @param name name of the cookie
