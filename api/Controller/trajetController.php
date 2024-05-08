@@ -6,13 +6,25 @@ include_once './exceptions.php';
 function trajetController($uri, $apiKey){
     switch ($_SERVER['REQUEST_METHOD']){
         case 'GET':
+
+            break;
+
+        case 'POST':
+
+            $body = file_get_contents("php://input");
+            $json = json_decode($body, true);
+
             if($apiKey == null){
                 exit_with_message("Unauthorized, need the apikey", 403);
             }
 
             $TrajetService = new trajetService();
             if(!$uri[3]){
+<<<<<<< HEAD
                     exit_with_message("pas de trajets selectionner");
+=======
+                $TrajetService->createTrajet($json["address"]);
+>>>>>>> itineraire
             }
 
 
@@ -27,6 +39,7 @@ function trajetController($uri, $apiKey){
 
             break;
 
+<<<<<<< HEAD
         case 'POST':
 
             $body = file_get_contents("php://input");
@@ -60,6 +73,8 @@ function trajetController($uri, $apiKey){
         case 'DELETE':
             break;
 
+=======
+>>>>>>> itineraire
         default:
             exit_with_message("Not Found", 404);
             exit();

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="../JS/itineraire.js" defer></script>
-	<title>Itinéraire</title>
-</head>
-<body>
-<input type="button" value="click" id="btnItineraire">
-</body>
+	<head>
+		<title>Itinéraire</title>
+	</head>
+
+	<body>
+		<div id="map"></div>
+		<input type="button" value="click" id="btnItineraire">
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRgUYpS2R7KL3eZeSGVQYj8Gs9_lVy0x0&libraries=places"></script>
+		<script src="../JS/getDistance.js"></script>
+		<script src="../JS/itineraire.js" defer></script>
+	</body>
 </html>
