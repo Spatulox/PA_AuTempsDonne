@@ -167,6 +167,17 @@ class PlanningService {
 
     }
 
+    public function updateValidatePlanning($id_index_planning, $id, $apiKey)
+    {
+        $userRole = $this->getUserRoleFromApiKey($apiKey);
+        if ($userRole[0]==1 || $userRole[0]==2) {
+            $planningRepository = new PlanningRepository();
+            return $planningRepository->updateValidatePlanning($id_index_planning,$id);
+        }else{
+            exit_with_message("You didn't have access to this command");
+        }
+    }
+
 
 }
 ?>

@@ -35,7 +35,7 @@ class PlanningRepository {
 
     //--------------------------------------------------------------------------
 
-    public function getAllPlanningByid($id){
+    public function getPlanningByid($id){
         $planningArray = selectDB("PLANNINGS", "*", "id_planning=".$id);
 
         $planning = [];
@@ -143,7 +143,7 @@ class PlanningRepository {
         }
 
         $lastId = selectJoinDB("PLANNINGS", "id_planning", "ORDER BY id_planning DESC LIMIT 1");
-        exit_with_content($this->getAllPlanningByid($lastId[0]["id_planning"])[0]);
+        exit_with_content($this->getPlanningByid($lastId[0]["id_planning"])[0]);
     }
 
     //--------------------------------------------------------------------------------------------------------------------------
@@ -341,6 +341,19 @@ class PlanningRepository {
         return $planning;
     }
 
+    //----------------------------------------------------------------------------------------------
+
+    public function updateValidatePlanning($id_index_planning, $id)
+    {
+        $check = updateDB("PLANNINGS", ["id_index_planning"], [$id_index_planning] ,"id_planning=".$id);
+
+        if(!$check){
+            exit_with_message("erreur update planning",500);
+        }
+
+        exit_with_content($this->getPlanningByid($id),200);
+
+    }
 
 
 }

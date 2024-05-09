@@ -99,13 +99,8 @@
                             exit_with_message("Please provide both user_id and id_planning to join an activity", 400);
                         }
 
-                        $result = $planningService->joinActivity($json['user_id'], $json['id_planning'], $json['confirme'], $apiKey);
+                        $planningService->joinActivity($json['user_id'], $json['id_planning'], $json['confirme'], $apiKey);
 
-                        if ($result) {
-                            exit_with_message("User joined activity successfully");
-                        } else {
-                            exit_with_message("Failed to join activity", 500);
-                        }
                     }
                     elseif ($uri[3] && $uri[3]=== 'link') {
                         if (!isset($json['id_trajet']) || !isset($json['id_planning'])) {
@@ -150,7 +145,12 @@
                         }
                         exit_with_content($planningService->updatePlanning($json["id_planning"], $json["description"], $json["date_activite"], $json["id_index_planning"], $json["id_activite"]));
                     }
-                    elseif ($uri[3] && $uri[3]=== 'validate' && $uri) {}
+                    elseif ($uri[3] && $uri[3]=== 'validate' && filter_var($uri[4], FILTER_VALIDATE_INT)) {
+                        if (!isset($json["id_index_planning"])) {
+                            exit_with_message("Plz give,id_index_planning");
+                        }
+                        exit_with_content($planningService->updateValidatePlanning($json["id_index_planning"],$uri[4],$apiKey));
+                    }
                     break;
 
             case 'DELETE':
