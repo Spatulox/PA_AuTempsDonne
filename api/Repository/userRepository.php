@@ -130,7 +130,20 @@ class UserRepository {
         return $this->getUser($user->id_users, null);
     }
 
+
     */
+
+    public function getUserEmail($email){
+
+        $user = selectDB('UTILISATEUR', '*', 'email="'.$email.'"');
+
+        if(count($user) > 0){
+            return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['adresse'], $user[0]['telephone'], $user[0]['id_role'], $user[0]['apikey'], $user[0]['id_index'], $user[0]['id_entrepot']);
+        }
+        exit_with_message('Email not exist');
+
+
+    }
 
     public function updateUser($id_user, $cle, $data){
         $data = updateDB("UTILISATEUR", [$cle], [$data] , "id_user='".$id_user."'");
