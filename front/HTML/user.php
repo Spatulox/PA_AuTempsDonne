@@ -54,8 +54,21 @@
 
         <div id="tab3" class="tabcontent">
             <h3 class="textCenter"><?php echo$data["user"]["tab3"]["title"]?></h3>
-            <div id="tab2Child" class="width50 padding10 marginBottom20 marginAuto border">
-                <?php echo$data["user"]["tab3"]["errorMsg"]?>
+            <div id="tab3Child" class="widthAuto padding10 marginBottom20 marginAuto border">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID Planning</th>
+                        <th>Description</th>
+                        <th>Date Activité</th>
+                        <th>Description Activité</th>
+                        <th>Nom Index Planning</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tab3ChildBody">
+                    <!-- Les lignes de données seront insérées ici par JavaScript -->
+                    </tbody>
+                </table>
             </div>
         </div>
         
@@ -88,7 +101,9 @@
     const lang = getCookie("lang")
 
     const user = new UserAdmin()
+    const planning = new PlanningAdmin()
     let data = {}
+    let plannings = {}
 
     async function fillTbodyUser(){
         const tbodyUser = document.getElementById("tbodyUser")
@@ -132,6 +147,39 @@
 
             tbodyUser.appendChild(row);
         });
+    }
+
+    async function fillPlanningTab3(id){
+        plannings = await planning.getPlanningByIdUSer(id)
+        console.log(plannings)
+
+        const container = document.getElementById('tab3ChildBody');
+        container.innerHTML = ""
+
+        // Créer les lignes de données
+        if (plannings.length > 0) {
+            plannings.forEach(item => {
+                const row = document.createElement('tr');
+                const values = [item.id_planning, item.description, item.date_activite, item.activity_desc, item.nom_index_planning];
+                values.forEach(value => {
+                    const td = document.createElement('td');
+                    td.textContent = value;
+                    row.appendChild(td);
+                });
+                container.appendChild(row);
+            });
+        } else {
+            const emptyRow = document.createElement('tr');
+            const emptyCell = document.createElement('td');
+            emptyCell.textContent = 'No Data';
+            emptyCell.classList.add('empty-message');
+            emptyCell.colSpan = 5;
+            emptyRow.appendChild(emptyCell);
+            container.appendChild(emptyRow);
+        }
+
+        replaceCharacters()
+
     }
 
     async function showUser(id){
@@ -195,6 +243,9 @@
         userInfoContainer.appendChild(button)
 
         openTab('tab2')
+
+        fillPlanningTab3(id)
+        replaceCharacters()
     }
 
     async function searchUser(){
@@ -212,11 +263,16 @@
     function createLabelValueElement(label, value) {
         const container = document.createElement("div");
         const labelElement = document.createElement("span");
+
         labelElement.textContent = `${label} :`;
         labelElement.classList.add("underline")
         labelElement.classList.add("bold")
         const valueElement = document.createElement("span");
-        valueElement.textContent = " "+ value || " N/A";
+        if(label === "id_role") {
+            valueElement.textContent = " " + user.roleArray[value] || " N/A";
+        } else {
+            valueElement.textContent = " " + value || " N/A"
+        }
         valueElement.id = "va_"+label
         container.appendChild(labelElement);
         container.appendChild(valueElement);
@@ -238,7 +294,10 @@
         await user.connect()
         data = await user.getAllUser()
 
+        await planning.connect()
+
         fillTbodyUser()
+        replaceCharacters()
     }
 
     async function updateLeUser(){
@@ -256,8 +315,6 @@
         in_prenom = in_prenom ? in_prenom : va_prenom
         in_email = in_email ? in_email : va_email
         in_telephone = in_telephone ? in_telephone : va_tel
-
-        console.log(in_nom)
 
         const response = await user.updateUser(in_email, in_prenom, in_telephone, in_nom)
 
