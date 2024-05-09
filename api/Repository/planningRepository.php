@@ -56,7 +56,7 @@ class PlanningRepository {
         return $planning;
     }
 
-    //-------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------------
 
         public function getPlanningByUser($apiKey)
         {
@@ -90,6 +90,8 @@ class PlanningRepository {
 
         return $allPlanning;
     }
+
+    //-----------------------------------------------------------------------------------------
 
     public function getPlanningByIdUser($id){
         $id_planning = selectDB("PARTICIPE", "id_planning", "id_user='" . $id . "'", "bool");
@@ -144,7 +146,7 @@ class PlanningRepository {
         exit_with_content($this->getAllPlanningByid($lastId[0]["id_planning"])[0]);
     }
 
-    //-------------------------------------
+    //--------------------------------------------------------------------------------------------------------------------------
     
     public function updatePlanning(PlanningModel $planning) {
     $updated = updateDB(
@@ -167,7 +169,7 @@ class PlanningRepository {
 }
 
 
-    //-------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
 
     public function deletePlanning($id){
         $deleted = deleteDB("PLANNINGS", "id_planning=".$id);
@@ -180,7 +182,7 @@ class PlanningRepository {
 
     }
 
-     //-------------------------------------
+     //------------------------------------------------------------------------------------------------------------------------------
 
 
     public function joinActivity($userId, $planningId, $confirme) {
@@ -197,16 +199,23 @@ class PlanningRepository {
             exit_with_message("Ce planning n'existe pas");
         }
 
+        $check=selectDB("PARTICIPE", "*", "id_planning=".$planningId." AND id_user=".$userId,"bool");
+        if ($check){
+            exit_with_message("cette utilisateur est deja inscript",500);
+        }
+
         $create = insertDB("PARTICIPE", [ "id_user", "id_planning","confirme"], [$userId, $planningId ,$confirme]);
 
 
         if ($create) {
-            return true;
+            exit_with_message("le benevole a bien etait attribuer aux plannings",200);
         } else {
-            return false;
+            exit_with_message("le benevole n'a pas peux etre attribuer aux plannings",500);
         }
 
     }
+
+    //-----------------------------------------------------------------------------------------
 
     public function linkPlanning(array $planning)
     {
@@ -223,11 +232,13 @@ class PlanningRepository {
 
         $create = updateDB("PLANNINGS", [ "id_trajets"], [$planning[0]], "id_planning=".$planning[1]);
         if ($create) {
-            return true;
+            exit_with_message("le trajet a bien etait attribuer aux plannings",200);
         } else {
-            return false;
+            exit_with_message("le trajet n'a pas peux etre attribuer aux plannings",500);
         }
     }
+
+    //-----------------------------------------------------------------------------------------
 
     public function getAllPlanningeindex(int $index)
     {
@@ -250,6 +261,8 @@ class PlanningRepository {
         }
         return $planning;
     }
+
+    //-----------------------------------------------------------------------------------------
 
     public function getAllPlanningeDate($date)
     {
