@@ -33,6 +33,29 @@ class PlanningRepository {
         return $planning;
     }
 
+    //--------------------------------------------------------------------------
+
+    public function getAllPlanningByid($id){
+        $planningArray = selectDB("PLANNINGS", "*", "id_planning=".$id);
+
+        $planning = [];
+
+        for ($i=0; $i < count($planningArray); $i++) {
+            $planning[$i] = new PlanningModel(
+                $planningArray[$i]['id_planning'],
+                $planningArray[$i]['description'],
+                $planningArray[$i]['date_activite'],
+                $planningArray[$i]['id_index_planning'],
+                $planningArray[$i]['id_activite']
+            );
+            $planning[$i]->setId($planningArray[$i]['id_planning']);
+
+            $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
+            $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
+        }
+        return $planning;
+    }
+
     //-------------------------------------
 
         public function getPlanningByUser($apiKey)
@@ -112,11 +135,13 @@ class PlanningRepository {
             $planning->id_activite
         ]);
 
+
         if(!$create){
             exit_with_message("Error, the planning can't be created, plz try again", 500);
         }
 
-        return $create;
+        $lastId = selectJoinDB("PLANNINGS", "id_planning", "ORDER BY id_planning DESC LIMIT 1");
+        exit_with_content($this->getAllPlanningByid($lastId[0]["id_planning"])[0]);
     }
 
     //-------------------------------------
