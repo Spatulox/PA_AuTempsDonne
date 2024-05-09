@@ -192,7 +192,6 @@ class User extends General{
             return false
         }
         let response = await this.fetchSync(this.adresse+'/user/'+id, this.optionGet())
-        console.log(response)
         if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs en attente")){
             return false
         }

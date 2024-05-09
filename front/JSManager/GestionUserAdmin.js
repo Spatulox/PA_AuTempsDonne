@@ -5,14 +5,16 @@ class UserAdmin extends Admin{
     async updateUser(email, prenom, telephone, nom){
 
         const data = {
-            "email" : email,
+            "email" : email.trim(),
             "prenom" : prenom,
             "telephone" : telephone,
             "nom" : nom
         }
-        const response = await this.fetchSync(this.adresse+"/user", this.optionPut(data))
+
+        console.log(data)
 
 
+        const response = await this.fetchSync(this.adresse+"/user/", this.optionPut(data))
         if(!this.compareAnswer(response, this.msg["Update"] + this.msg["failed"])){
             popup(this.msg["Update"] + this.msg["failed"])
             return false
@@ -48,8 +50,45 @@ class UserAdmin extends Admin{
      * @returns {Promise<void>}
      */
     async getWaitingUser(){
-        let response = await this.fetchSync(this.adresse+'/user/validate', this.optionGet())
-        if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs en attente")){
+        let response = await this.fetchSync(this.adresse+'/user/validate', this.optionGet(), false)
+        if(!this.compareAnswer(response)){
+            return false
+        }
+        return response
+    }
+
+    /**
+     *
+     * @param data data to post
+     * @returns {Promise<*|boolean>}
+     */
+    async updateUserValidate(id){
+
+        const data = {
+            "id_user": id,
+            "id_index": 2
+        };
+
+        let response = await this.fetchSync(this.adresse+'/user/validate', this.optionPut(data), false)
+        if(!this.compareAnswer(response)){
+            return false
+        }
+        return response
+    }
+
+    async updateUserRole(id_role, id_user){
+
+        id_role = id_role.trim()
+        console.log("idRole"+id_role)
+
+        const data = {
+            "id_role": id_role
+        };
+
+        id_user = id_user.trim()
+
+        let response = await this.fetchSync(this.adresse+'/user/role/'+id_user, this.optionPut(data))
+        if(!this.compareAnswer(response)){
             return false
         }
         return response

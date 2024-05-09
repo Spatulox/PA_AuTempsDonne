@@ -67,6 +67,12 @@
 		"button":"Buy us a coffe",
 		"buttonLink":"./donateur.php"
 	},
+	"gestPlanning": {
+		"title": "Planning Menu",
+		"tab1": "Assing a task",
+		"tab2": "Daily Planning",
+		"tab3": "Validate waiting Planning"
+	},
 	"moncompte":{
 		"title":"Account",
 		"sectionTitle":"Account",
@@ -120,7 +126,7 @@
 	},
 	"user": {
 		"title": "User Menu",
-		"titleTab1" : "Users list",
+		"AffectToPlanning":"Assign someone to planning",
 		"tab1": {
 			"title" : "Users list",
 			"name": "Name/Lastname",
@@ -134,6 +140,11 @@
 		"tab3": {
 			"title" : "User planning",
 			"errorMsg" : "No user selected"
+		},
+		"tab4": {
+			"title": "User Waiting to Validate",
+			"errorMsg": "Nothing to show",
+			"button": "Validate"
 		}
 	}
 }

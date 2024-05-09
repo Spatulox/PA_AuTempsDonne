@@ -100,6 +100,9 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
 		</select>
 
 	</nav>
+    <div id="overlay">
+        <div class="loader"></div>
+    </div>
 	<?php
 		if($message){
 			$message = explode("?message=", $message)[1];

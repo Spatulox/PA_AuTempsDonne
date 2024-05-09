@@ -119,7 +119,7 @@ class UserRepository {
     //-------------------------------------
     /*
     public function updateUser(UserModel $user, $apiKey){
-        
+
         $idUSer = selectDB("UTILISATEUR", 'id_users', "apikey='".$apiKey."'")[0]["id_users"];
         if ($idUSer != $user->id_users){
             exit_with_message("You can't update an user which is not you");
@@ -133,7 +133,12 @@ class UserRepository {
     */
 
     public function updateUser($id_user, $cle, $data){
-        updateDB("UTILISATEUR", [$cle], [$data] , "id_user='".$id_user."'");
+        $data = updateDB("UTILISATEUR", [$cle], [$data] , "id_user='".$id_user."'");
+
+        if($data){
+            exit_with_content($this->getUser($id_user));
+        }
+        exit_with_message("User was not updated");
     }
 
     public function updateUserValidate($id_user, $id_index){

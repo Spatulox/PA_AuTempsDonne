@@ -150,6 +150,7 @@ async function signup(){
 
 
 async function myAccount(){
+    startLoading()
     const c_nom = document.getElementById("c_nom")
     const c_prenom = document.getElementById("c_prenom")
     const c_email = document.getElementById("c_email")
@@ -175,4 +176,5 @@ async function myAccount(){
         h1.innerHTML += " (En attente de validation)"
         popup("Votre compte est en attente de validation par la modération")
     }
+    stopLoading()
 }

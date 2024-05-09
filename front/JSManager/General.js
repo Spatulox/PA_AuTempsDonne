@@ -2,7 +2,7 @@ class General {
 
     constructor() {
         this.lang = getCookie("lang")
-        this.msg = dico[lang]
+        this.msg = dico[this.lang]
     }
 
 
@@ -13,7 +13,7 @@ class General {
      * @param options option get by this.optionGet() or this.optionPost()
      * @returns {Promise<any|boolean>}
      */
-    async fetchSync(url, options) {
+    async fetchSync(url, options, showMessage = true) {
 
         if (options === false) {
             popup("Impossible de se connecter, veuillez entrer vos identifiant sur la page de connexion")
@@ -24,18 +24,20 @@ class General {
 
         if (response.ok) {
             const message = await response.json()
-            //console.log(message)
-            if (message.hasOwnProperty("message")) {
+            if (message.hasOwnProperty("message") && showMessage === true) {
                 popup(message.message)
-                return true
+                return
             }
             return message
         } else {
             const text = await response.json()
-            alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
+            if(showMessage === true){
+                alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
+            }
             if (text.hasOwnProperty("message")) {
-                alertDebug(text.message)
-                popup(text.message)
+                if(showMessage === true){
+                    popup(text.message)
+                }
             }
             return false
         }
@@ -44,12 +46,8 @@ class General {
 
     compareAnswer(response, msg = null) {
         if (response === false && msg != null) {
-            alertDebug(msg)
+            //alertDebug(msg)
             popup(msg)
-            this.logout()
-            return false
-        } else if (response === false && msg != null) {
-            this.logout()
             return false
         } else if (response === true) {
             return false

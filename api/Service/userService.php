@@ -60,21 +60,34 @@ class UserService {
             exit_with_message("Not an array / json data", 500);
         }
 
+
+
+        $role = getRoleFromApiKey($apiKey);
         $id_user = getIdUserFromApiKey($apiKey);
+
+
+        $idUserUpdate = getIdUSerFromEmail($dataArray["email"]);
+
+        if($role > 2 && $id_user != $idUserUpdate){
+            exit_with_message("Vous ne pouvez pas update un utilisateur qui n'est pas vous");
+
+        }
+
         $cles = array_keys($dataArray);
         $userRepo = new UserRepository;
+
 
         foreach ($cles as $cle) {
             if (!empty($dataArray[$cle]) && ( $cle != "role" && $cle != "mdp" && $cle != "type" ) ) {
 
-                $userRepo->updateUser($id_user, $cle, $dataArray[$cle]);
+                $userRepo->updateUser($idUserUpdate, $cle, $dataArray[$cle]);
             }
             else{
                 exit_with_message("Unauthorized key : ".$cle, 403);
             }
         }
 
-        exit_with_content($userRepo->getUserApi($apiKey));
+        exit_with_content($userRepo->getUser($idUserUpdate));
 
     }
 
