@@ -204,16 +204,16 @@ class PlanningRepository {
 
         $check=selectDB("PARTICIPE", "*", "id_planning=".$planningId." AND id_user=".$userId,"bool");
         if ($check){
-            exit_with_message("cette utilisateur est deja inscript",500);
+            exit_with_message("Cet utilisateur est deja inscrit",500);
         }
 
         $create = insertDB("PARTICIPE", [ "id_user", "id_planning","confirme"], [$userId, $planningId ,$confirme]);
 
 
         if ($create) {
-            exit_with_message("le benevole a bien etait attribuer aux plannings",200);
+            exit_with_message("le bénévole à bien été attribué au planning",200);
         } else {
-            exit_with_message("le benevole n'a pas peux etre attribuer aux plannings",500);
+            exit_with_message("le bénévole n'a pas pu être attribué au planning");
         }
 
     }
