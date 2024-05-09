@@ -146,6 +146,14 @@ class UserService {
         return $userRepository->updatedispoUser($id_dispo, $id);
     }
 
+    public function updateentrepotUser($apiKey, $id_entrepot)
+    {
+        $id= getIdUserFromApiKey($apiKey);
+
+        $userRepository = new UserRepository();
+        return $userRepository->updateentrepotUser($id_entrepot, $id);
+    }
+
 
 }
 ?>

@@ -271,6 +271,11 @@ class UserRepository {
         return($dispos);
     }
 
+    public function updateentrepotUser($id_entrepot, $id)
+    {
+        updateDB("UTILISATEUR", ["id_entrepot"], [$id_entrepot],"id_user=".$id,"-@");
+    }
+
 
 }
 ?>

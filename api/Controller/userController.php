@@ -137,11 +137,18 @@ function userController($uri, $apiKey) {
             }
             elseif ($uri[3] && $uri[3] == "dispo"){
                 if(!isset($json["id_dispo"]) ) {
-                    exit_with_message("", 403);
+                    exit_with_message("erreur il manque vos jour de dispo", 403);
                 }
 
                 exit_with_content( $userService->updatedispoUser($apiKey, ($json["id_dispo"])));
         }
+            elseif ($uri[3] && $uri[3] == "entrepot"){
+                if(!isset($json["id_entrepot"]) ) {
+                    exit_with_message("erreur il manque votre entrepot attribuer ", 403);
+                }
+
+                exit_with_content( $userService->updateentrepotUser($apiKey, ($json["id_entrepot"])));
+            }
             break;
 
         case 'DELETE':
