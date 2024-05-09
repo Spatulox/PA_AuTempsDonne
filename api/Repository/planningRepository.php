@@ -17,6 +17,7 @@ class PlanningRepository {
 
         $planning = [];
 
+
         for ($i=0; $i < count($planningArray); $i++) {
             $planning[$i] = new PlanningModel(
                 $planningArray[$i]['id_planning'],
@@ -38,6 +39,7 @@ class PlanningRepository {
     public function getPlanningByid($id){
         $planningArray = selectDB("PLANNINGS", "*", "id_planning=".$id);
 
+       
         $planning = [];
 
         for ($i=0; $i < count($planningArray); $i++) {
@@ -143,7 +145,8 @@ class PlanningRepository {
         }
 
         $lastId = selectJoinDB("PLANNINGS", "id_planning", "ORDER BY id_planning DESC LIMIT 1");
-        exit_with_content($this->getPlanningByid($lastId[0]["id_planning"])[0]);
+
+        exit_with_content($this->getPlanningByid($lastId[0]["id_planning"]),200);
     }
 
     //--------------------------------------------------------------------------------------------------------------------------
