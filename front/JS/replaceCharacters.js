@@ -16,7 +16,8 @@ function replaceCharacters() {
             .replace(/Ã´/g, 'ô')
             .replace(/Ã¹/g, 'ù')
             .replace(/Ã»/g, 'û')
-            .replace(/Ã§/g, 'ç');
+            .replace(/Ã§/g, 'ç')
+            .replace(/Ãª/g, 'ê');
 
         if (replacedText !== text) {
             const newNode = document.createTextNode(replacedText);
