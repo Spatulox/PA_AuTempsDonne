@@ -97,7 +97,7 @@ function userController($uri, $apiKey) {
                     exit_with_message("", 403);
                 }
 
-                exit_with_content($userService->dispoUser($json["id_dispo"],$apiKey));
+                exit_with_content($userService->createdispoUser($json["id_dispo"],$apiKey));
             }
 
             break;
@@ -153,6 +153,16 @@ function userController($uri, $apiKey) {
                 }
 
                 exit_with_content( $userService->updateentrepotUser($apiKey, ($json["id_entrepot"])));
+            }
+            elseif ($uri[3] && $uri[3] == "role" && filter_var($uri[4], FILTER_VALIDATE_INT)){
+                if(!isset($json["id_role"]) ) {
+                    exit_with_message("erreur il manque le changement de role ", 403);
+                }
+                if(isset($json["role"]) && filter_var($json["role"], FILTER_VALIDATE_INT) == false){
+                    exit_with_message("The role need to be an integer between 1 and 3", 403);
+                }
+
+                exit_with_content( $userService->updateRoleUser($apiKey, ($json["id_role"]),$uri[4]));
             }
             break;
 

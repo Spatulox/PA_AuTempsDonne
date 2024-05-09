@@ -315,6 +315,12 @@ class UserRepository {
         return $dispos;
     }
 
+    public function updateRoleUser($role, $id)
+    {
+        $res=updateDB("UTILISATEUR", ["id_role"], [$role],"id_user=".$id);
+        return $res;
+    }
+
 
 }
 ?>

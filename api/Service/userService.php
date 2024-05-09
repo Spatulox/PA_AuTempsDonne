@@ -111,7 +111,7 @@ class UserService {
         }
     }
 
-    public function dispoUser($id_dispo ,$apikey)
+    public function createdispoUser($id_dispo ,$apikey)
     {
         $id= getIdUserFromApiKey($apikey);
 
@@ -198,6 +198,23 @@ class UserService {
         }
         $userRepository = new UserRepository();
         return $userRepository->getDispoUserMe($id);
+    }
+
+    //-------------------------------------------------------------------------------------
+
+    public function updateRoleUser($apiKey, $role, $id)
+    {
+        $role_check = getRoleFromApiKey($apiKey);
+        if ($role_check>2){
+            exit_with_message("vous n'avez pas de le droit");
+        }
+        if ($role >5){
+            exit_with_message("mauvais selection", 403);
+        }
+
+        $userRepository = new UserRepository();
+        return $userRepository->updateRoleUser($role,$id);
+
     }
 
 
