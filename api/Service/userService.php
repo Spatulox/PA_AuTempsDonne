@@ -183,6 +183,23 @@ class UserService {
         return $userRepository->getDispoUserMe($id);
     }
 
+    //----------------------------------------------------------------------
+
+    public function getDispoUserById($apiKey,$id)
+    {
+        $role = getRoleFromApiKey($apiKey);
+        if ($role>3){
+            exit_with_message("vous n'avez pas de disposability");
+        }
+
+        $res=selectDB("DISPONIBILITE", "*", "id_user = ".$id,"bool");
+        if (!$res){
+            exit_with_message("error getting dispo user ");
+        }
+        $userRepository = new UserRepository();
+        return $userRepository->getDispoUserMe($id);
+    }
+
 
 }
 ?>

@@ -45,8 +45,10 @@ function userController($uri, $apiKey) {
             }elseif ($uri[3] == "dispome") {
                 $userService = new UserService();
                 exit_with_content($userService->getDispoUserMe($apiKey));
+            }elseif ($uri[3] == "dispo" && filter_var($uri[4], FILTER_VALIDATE_INT)) {
+                $userService = new UserService();
+                exit_with_content($userService->getDispoUserById($apiKey,$uri[4]));
             }
-
             else{
                 exit_with_message("You need to be admin to see all the users", 403);
             }
