@@ -51,11 +51,23 @@
     padding: 15px;
 }
 
+.checkmark{
+    padding: 5px;
+}
+
 .container {
   margin: 20px auto;
   border: 1px solid #ddd;
   border-radius: 10px;
   background-color: #fff;
+}
+
+.element-container{
+    text-decoration: underline;
+}
+
+.element{
+    margin-right: 10px;
 }
 
 .loader {
@@ -86,10 +98,12 @@
 
 .popupGestion-content {
     background-color: #fefefe;
-    margin: 10% auto;
+    margin: auto;
     padding: 20px;
     border: 1px solid #888;
     width: 30%;
+    max-height: 50%;
+    overflow: auto;
 }
 
 .close-button {
