@@ -26,7 +26,7 @@ if($role == 1 || $role == 2){
     echo '<script type="text/javascript" src="../JSManager/Admin.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionUserAdmin.js"></script>';
-    //echo '<script type="text/javascript" src="../JSManager/GestionPlanning.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionPlanning.js"></script>';
 
 }
 
@@ -35,6 +35,7 @@ if($role == 1 || $role == 2){
 <script type="text/javascript" src="../JS/popup.js"></script>
 <script type="text/javascript" src="../JS/tabs.js"></script>
 <script type="text/javascript" src="../JS/ledicodesmotsenjs.js"></script>
+<script type="text/javascript" src="../JS/replaceCharacters.js"></script>
 
 
 <?php
