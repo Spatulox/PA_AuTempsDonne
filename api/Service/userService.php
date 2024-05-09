@@ -91,6 +91,13 @@ class UserService {
 
     }
 
+    public function getUserByEmail($email) {
+
+        $userRepository = new UserRepository();
+        return $userRepository->getUserEmail($email);
+
+    }
+
     public function updateUserValidate($id_user, $id_index){
         $userRepository = new UserRepository();
         $userRepository->updateUserValidate($id_user, $id_index);

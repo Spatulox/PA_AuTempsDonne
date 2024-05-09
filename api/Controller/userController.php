@@ -35,6 +35,12 @@ function userController($uri, $apiKey) {
                 exit_with_content($userService->getAllUsers());
             }
 
+            // Take all the users if it's an admin/modo
+            elseif($uri[3] == "email" && filter_var($uri[4], FILTER_VALIDATE_EMAIL )){
+                $userService = new UserService();
+                exit_with_content($userService->getUserByEmail($uri[4]));
+            }
+
             elseif($uri[3] == "validate" && $role < 3){
                 $userService = new UserService();
                 exit_with_content($userService->getAllWaitingUsers());
