@@ -150,7 +150,7 @@ class PlanningService {
             exit_with_message("You don't have access to this command");
         }
         $planningRepository = new PlanningRepository();
-        return $planningRepository->getAllPlanningeDate($date);
+        return $planningRepository->getPlanningAffecteDate($date);
     }
 
     //----------------------------------------------------------------------------------------
