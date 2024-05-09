@@ -24,6 +24,21 @@ class UserAdmin extends Admin{
 
     }
 
+    async getUserDispoByDay(day){
+
+        const data = {
+            "id_jour":day
+        }
+
+        let response = await this.fetchSync(this.adresse+'/user/date', this.optionPost(data))
+        if(!this.compareAnswer(response)){
+            return false
+        }
+        return response
+
+
+    }
+
     /**
      * Retrieve all the users
      * @returns {Promise<boolean>}
@@ -37,7 +52,7 @@ class UserAdmin extends Admin{
     }
 
     async getUserViaEmail(email){
-        let response = await this.fetchSync(this.adresse+'/user?email='+email, this.optionGet())
+        let response = await this.fetchSync(this.adresse+'/user/email/'+email, this.optionGet())
         if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs")){
             return false
         }

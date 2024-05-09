@@ -31,7 +31,9 @@ const dico = {
         "For":"For ",
         "has been":"has been ",
         "validate":"validate ",
-        "Validate":"Validate "
+        "Validate":"Validate ",
+        "assign": "assign ",
+        "Assign": "Assign "
 
     },
     "FR":{
@@ -66,6 +68,8 @@ const dico = {
         "For":"Pour ",
         "has been":"a été ",
         "validate":"validé ",
-        "Validate":"Validé "
+        "Validate":"Validé ",
+        "assign": "assigner ",
+        "Assign": "Assigner "
     }
 }

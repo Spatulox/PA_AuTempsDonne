@@ -69,9 +69,26 @@
 	},
 	"gestPlanning": {
 		"title": "Planning Menu",
-		"tab1": "Assing a task",
-		"tab2": "Daily Planning",
-		"tab3": "Validate waiting Planning"
+		"tab1": {
+			"title": "Assing a task",
+			"desc": "Description",
+			"date": "Date",
+			"state":"State",
+			"type": "Type",
+			"button": "Validate",
+			"buttonD": "Delete",
+			"email": "Email",
+			"participateUsers": "Participating Users"
+
+		},
+		"tab2": {
+			"title": "Daily Planning"
+		},
+		"tab3": {
+			"title": "Validate waiting Planning"
+		},
+		"addUser": "Add User",
+		"assign": "Assign"
 	},
 	"moncompte":{
 		"title":"Account",
@@ -138,8 +155,8 @@
 			"errorMsg" : "No user selected"
 		},
 		"tab3": {
-			"title" : "User planning",
-			"errorMsg" : "No user selected"
+			"title": "Planning",
+			"errorMsg": "Nothing to show"
 		},
 		"tab4": {
 			"title": "User Waiting to Validate",
