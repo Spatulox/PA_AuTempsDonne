@@ -46,6 +46,20 @@ class PlanningAdmin extends Admin{
         return response
     }
 
+    async userJoinPlanning(id_user, id_planning){
+
+        const data = {
+            "user_id": id_user,
+            "id_planning": id_planning
+        }
+
+        let response = await this.fetchSync(this.adresse+'/planning/join_activity', this.optionPost(data))
+        if(!this.compareAnswer(response)){
+            return false
+        }
+        return response
+    }
+
     /**
      * Tout ceux qui sont validé (AssignTask)
      * Get the plannig of the user with the apikey
