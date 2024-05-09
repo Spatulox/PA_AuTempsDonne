@@ -149,9 +149,8 @@ class PlanningRepository {
     public function updatePlanning(PlanningModel $planning) {
     $updated = updateDB(
         "PLANNINGS",
-        ["id_planning", "description", "date_activite", "id_index_planning", "id_activite"],
+        [ "description", "date_activite", "id_index_planning", "id_activite"],
         [
-            $planning->id_planning,
             $planning->description,
             $planning->date_activite,
             $planning->id_index_planning,
@@ -175,9 +174,10 @@ class PlanningRepository {
 
         if(!$deleted){
             exit_with_message("Error, the planning can't be deleted, plz try again", 500);
+        }else{
+            exit_with_message("Planning deleted",200);
         }
 
-        return true;
     }
 
      //-------------------------------------

@@ -147,7 +147,7 @@
                     if (!isset($json["id_planning"])  || !isset($json["description"]) || !isset($json["date_activite"]) || !isset($json["id_index_planning"]) || !isset($json["id_activite"]) ){
                         exit_with_message("Plz give, at least, the id_planning, id_activite, description,  date_activite and id_index_planning");
                     }
-                    exit_with_content($planningService->updatePlanning($json["id_planning"], $json["description"], $json["lieux"], $json["date_activite"], $json["id_index"], $json["id_activite"]));
+                    exit_with_content($planningService->updatePlanning($json["id_planning"], $json["description"], $json["date_activite"], $json["id_index_planning"], $json["id_activite"]));
                     break;
 
             case 'DELETE':
