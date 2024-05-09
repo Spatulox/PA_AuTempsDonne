@@ -2,7 +2,7 @@ class General {
 
     constructor() {
         this.lang = getCookie("lang")
-        this.msg = dico[lang]
+        this.msg = dico[this.lang]
     }
 
 
@@ -34,7 +34,7 @@ class General {
             const text = await response.json()
             alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
             if (text.hasOwnProperty("message")) {
-                alertDebug(text.message)
+                //alertDebug(text.message)
                 popup(text.message)
             }
             return false
@@ -44,12 +44,8 @@ class General {
 
     compareAnswer(response, msg = null) {
         if (response === false && msg != null) {
-            alertDebug(msg)
+            //alertDebug(msg)
             popup(msg)
-            this.logout()
-            return false
-        } else if (response === false && msg != null) {
-            this.logout()
             return false
         } else if (response === true) {
             return false
