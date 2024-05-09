@@ -82,13 +82,16 @@ function getEmailFromApiKey($apiKey){
     if($id){
         $id = $id[0]["id_user"];
     }
+}
 
-    $id = selectDB("UTILISATEUR", 'email', "apikey='".$apiKey."'", "bool");
+function getIdUSerFromEmail($email){
+
+    $id = selectDB("UTILISATEUR", 'id_user', "email='".$email."'", "bool");
     if($id){
-        $id = $id[0]["email"];
+        $id = $id[0]["id_user"];
     }
     else{
-        exit_with_message("No one with this apikey", 403);
+        exit_with_message("No one with this email", 403);
     }
     return $id;
 }
