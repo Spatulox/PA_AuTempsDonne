@@ -141,11 +141,10 @@ function userController($uri, $apiKey) {
 
                 if (!isset($json["nom"]) || !isset($json["prenom"]) || !isset($json["telephone"]) || !isset($json["email"])) {
                     exit_with_message("Plz give the firstname, lastname, the phone and the email");
-
-
-                    // Valider les données reçues ici
-                    $userService->updateUser($apiKey, ["nom" => $json["nom"], "prenom" => $json["prenom"], "telephone" => $json["telephone"], "email" => $json["email"]]);
                 }
+                
+                // Valider les données reçues ici
+                $userService->updateUser($apiKey, ["nom" => $json["nom"], "prenom" => $json["prenom"], "telephone" => $json["telephone"], "email" => $json["email"]]);
             }
             elseif ($uri[3] && $uri[3] == "dispo"){
                 if(!isset($json["id_dispo"]) ) {
