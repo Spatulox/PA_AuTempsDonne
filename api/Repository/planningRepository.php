@@ -36,9 +36,13 @@ class PlanningRepository {
     //-------------------------------------
 
         public function getPlanningByUser($apiKey)
-    {
+        {
         $id = getIdUserFromApiKey($apiKey);
-        $id_planning = selectDB("PARTICIPE", "id_planning", "id_user='" . $id . "'");
+        $id_planning = selectDB("PARTICIPE", "id_planning", "id_user='" . $id . "'", "bool");
+
+        if($id_planning == false){
+            exit_with_message("No Planning found for you");
+        }
 
         $allPlanning = [];
 
@@ -62,6 +66,37 @@ class PlanningRepository {
         }
 
         return $allPlanning;
+    }
+
+    public function getPlanningByIdUser($id){
+        $id_planning = selectDB("PARTICIPE", "id_planning", "id_user='" . $id . "'", "bool");
+
+        if($id_planning == false){
+            exit_with_message("No Planning found for this user");
+        }
+
+        $allPlanning = [];
+
+        foreach ($id_planning as $planning_id) {
+            $planningArray = selectDB("PLANNINGS", "*", "id_planning='" . $planning_id[0] . "'");
+
+            foreach ($planningArray as $planningData) {
+                $planning = new PlanningModel(
+                    $planningData['id_planning'],
+                    $planningData['description'],
+                    $planningData['date_activite'],
+                    $planningData['id_index_planning'],
+                    $planningData['id_activite']
+                );
+                $planning->setId($planningData['id_planning']);
+                $planning->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=" . $planningData['id_index_planning'])[0]);
+                $planning->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=" . $planningData['id_activite'])[0]);
+
+                $allPlanning[] = $planning;
+            }
+        }
+
+        exit_with_content($allPlanning);
     }
 
 

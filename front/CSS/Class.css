@@ -44,12 +44,126 @@
   margin-top: 30px;
 }
 
+.box{
+    border: 1px solid #30241c;
+    border-radius: 25px;
+    background-color: #dea23c;
+    padding: 15px;
+}
+
 .container {
   margin: 20px auto;
   border: 1px solid #ddd;
   border-radius: 10px;
   background-color: #fff;
 }
+
+.search-box {
+    background-color: lightgrey;
+    width: 400px;
+    height: 40px;
+    padding: 0 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: box-shadow 0.3s ease;
+}
+
+.search-box:focus {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Style des onglets */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style du contenu des onglets */
+.tabcontent {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+/* Styles généraux */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+thead{
+    border-top: 1px solid #ddd;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Styles des en-têtes */
+th {
+    background-color: #f2f2f2;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Styles des cellules */
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Styles des lignes paires */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Styles au survol des lignes */
+tr:hover {
+    background-color: #e6e6e6;
+}
+
+/* Styles des boutons d'action */
+.action-btn {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.action-btn:hover {
+    background-color: #45a049;
+}
+
 
 
 
@@ -180,6 +294,10 @@
     height: 80%;
 }
 
+.height90{
+    height: 90%;
+}
+
 .height100{
     height: 100%;
 }
@@ -301,6 +419,46 @@
 
 .underline{
   text-decoration: underline;
+}
+
+.ul{
+    padding: 0px;
+}
+
+.ul hr{
+    padding: 0px;
+    width: 60%;
+}
+
+.ul li{
+    height: 70px;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--policeColor);
+
+
+    list-style: none;
+
+    border-radius: 40px 5px 40px 5px;
+    transition: ease-in-out 0.5s;
+}
+
+.ul li:hover{
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: ease-in-out 0.3s;
+}
+
+.ul li a{
+    text-decoration: none;
 }
 
 .width20{

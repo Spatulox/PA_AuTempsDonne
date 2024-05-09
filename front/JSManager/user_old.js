@@ -1,4 +1,4 @@
-class User {
+class UserOld {
 
   constructor(email = null, password = null) {
     this.adresse = "http://localhost:8081/index.php";
@@ -15,7 +15,7 @@ class User {
     this.entrepotString = null
     this.index = null
 
-    this.roleArray = ["Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
+    this.roleArray = ["roleBait", "Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
 
     if (password === null || email === null) {
       this.loginApi()

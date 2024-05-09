@@ -9,7 +9,7 @@ class UserRepository {
 
     //-------------------------------------
 
-    public function getUsers($index = 1){
+    public function getUsers($index = 2){
         $usersArray = selectDB("UTILISATEUR", "*", "id_index='".$index."'");
 
         $user = [];

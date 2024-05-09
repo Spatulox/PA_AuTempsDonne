@@ -53,7 +53,7 @@
 }
 
 #titleFooter{
-  position: absolute;
+  position: fixed;
   top: -100vh; /*calc(-100vh);*/
   left: 50%;
   transform: translateX(-50%);

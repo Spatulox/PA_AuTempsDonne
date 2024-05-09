@@ -9,9 +9,9 @@ $currPage = basename($_SERVER["PHP_SELF"]);
 $rightfile = file_get_contents("../includes/rights.json");
 $right = json_decode($rightfile, true);
 
+$role = -1;
 
 if($apikey !== NULL){
-
 
 
 // Prepare address for others page
@@ -33,6 +33,7 @@ if($apikey !== NULL){
     $dbPassword = $dataBDD['DB_PASSWORD'];
 
     try {
+
         $db = new PDO(
             'mysql:host=' . $dbHost . ';
 	        port=' . $dbPort . ';
@@ -49,7 +50,6 @@ if($apikey !== NULL){
         $stmt = $db->prepare($sql);
         $stmt->execute();
 
-
         // Traiter les résultats
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC)[0];
         if (count($results) == 0) {
@@ -57,12 +57,16 @@ if($apikey !== NULL){
         }
 
     } catch (Exception $e) {
+        var_dump($e);
         $returnCode = false;
+        exit();
     }
 
 
     // Check if the user can be here
     if ($returnCode == true) {
+
+        $role = $results["id_role"];
 
         if (in_array($currPage, $right[$results["id_role"]]) || in_array($currPage, $right["all"]) ) {
             $returnCode = true;
@@ -71,7 +75,7 @@ if($apikey !== NULL){
         }
 
     } else {
-
+        return false;
     }
 } else{
 
@@ -81,7 +85,5 @@ if($apikey !== NULL){
         $returnCode = false;
     }
 }
-
-
 
 ?>

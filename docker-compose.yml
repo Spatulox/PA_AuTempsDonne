@@ -1,4 +1,5 @@
 services:
+  # Créer une image et fait des trucs
   #frontend:
     #build:
     #  context: ./front
@@ -7,11 +8,13 @@ services:
     #ports:
     #  - 8083:80
 
-  # DEV
+  # Travail et reload automatique
   frontend:
+    #image: php:7.4-apache
+    #dockerfile: ./front/Dockerfile
     build: .
     volumes:
-      - ./front:/var/www/html
+      - ./front:/var/www/html/
     ports:
       - 8083:80
 

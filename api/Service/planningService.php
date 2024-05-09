@@ -18,10 +18,23 @@ class PlanningService {
         if ($userRole[0]==1 || $userRole[0]==2) {
             $planningRepository = new PlanningRepository();
             return $planningRepository->getAllPlanning();
-    }else{
+        }else{
             exit_with_message("You didn't have access to this command");
         }
 
+    }
+
+    public function getPlanningByIdUser($id, $apiKey) {
+
+        $role = getRoleFromApiKey($apiKey);
+        $idUser = getIdUserFromApiKey($apiKey);
+
+        if($role > 2 && $idUser != $id) {
+            exit_with_message("You don't have access to this command");
+        }
+
+        $planningRepository = new PlanningRepository();
+        $planningRepository->getPlanningByIdUser($id);
     }
 
     /*
@@ -40,8 +53,8 @@ class PlanningService {
     public function createPlanning(PlanningModel $planning,$apiKey) {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==4) {
-        $planningRepository = new PlanningRepository();
-        return $planningRepository->createPlanning($planning);
+            $planningRepository = new PlanningRepository();
+            return $planningRepository->createPlanning($planning);
         }else{
             exit_with_message("You didn't have access to this command");
         }

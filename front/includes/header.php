@@ -41,16 +41,46 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
 	<nav>
 		<ul>
 			<?php
+                // If connected
+                if(isset($_COOKIE['apikey'])){
 
-				foreach ($data["header"]["li"] as $key => $value) {
-					
-					if($key == "./signup_login.php" && isset($_COOKIE['apikey'])){
-						echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
-					}
-					else{
-						echo('<li><a href="' . $key . '">' . $value . '</a></li>');
-					}
-				}
+                    // If admin
+                    if($role == "1" || $role == "2"){
+
+                        foreach ($data["header"]["admin"] as $key => $value) {
+                            if($key == "./signup_login.php"){
+                                echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
+                            }
+                            else{
+                                echo('<li><a href="' . $key . '">' . $value . '</a></li>');
+                            }
+                        }
+
+                    }
+
+                    if($role == "3" || $role == "4" || $role == "5"){
+
+                        foreach ($data["header"]["li"] as $key => $value) {
+                            if($key == "./signup_login.php"){
+                                echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
+                            }
+                            else{
+                                echo('<li><a href="' . $key . '">' . $value . '</a></li>');
+                            }
+                        }
+
+                    }
+
+                    echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
+
+                } else {
+                    // Not connected
+
+                    foreach ($data["header"]["li"] as $key => $value) {
+                        echo('<li><a href="' . $key . '">' . $value . '</a></li>');
+                    }
+                }
+
 			?>
 		</ul>
 

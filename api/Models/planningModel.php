@@ -14,7 +14,9 @@ class PlanningModel {
     public function __construct($id_planning, $description, $date_activite, $id_index_planning, $id_activite) {
         $this->id_planning = $id_planning;
         $this->description = $description;
+
         $this->date_activite = $date_activite;
+
         $this->id_index_planning = $id_index_planning;
         $this->id_activite = $id_activite;
     }

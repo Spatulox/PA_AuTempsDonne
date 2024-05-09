@@ -14,7 +14,37 @@ function redirect(page, message = null) {
  * @returns {string}
  */
 function getParamFromUrl(param){
-    return window.location.href.split("?"+param+"=")[1].split("?")[0]
+    let data = ""
+    try{
+        data = window.location.href.split("?"+param+"=")[1].split("?")[0]
+    } catch {
+        data = false
+    }
+    return data
+}
+
+function idExistInPage(id){
+    const idExist = document.getElementById(id)
+
+    if(idExist){
+        return true
+    } else {
+        return false
+    }
+}
+
+function createButton(value, id = null, name = null){
+    const button = document.createElement("button")
+    button.type = "button"
+    button.innerHTML = value
+
+    if(name != null){
+        button.name = name
+    }
+    if (id != null){
+        button.id = id
+    }
+    return button
 }
 
 /**
