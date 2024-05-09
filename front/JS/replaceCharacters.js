@@ -1,5 +1,8 @@
 function replaceCharacters() {
     const body = document.body;
+    if(body == null){
+        return
+    }
     const textNodes = getTextNodes(body);
 
     textNodes.forEach(node => {
