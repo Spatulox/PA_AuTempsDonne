@@ -58,7 +58,7 @@
 
 
                     if ($uri[3] && $uri[3]=== 'create_planning'){
-                        if (!isset($json['description']) || !isset($json['date_activite']) || !isset($json['id_index_planning']) || !isset($json['id_activite'])) {
+                        if (!isset($json['description']) || !isset($json['date_activite']) || !isset($json['id_activite'])) {
                             exit_with_message("Please provide all required fields to create a new planning", 400);
                         }
 
@@ -66,7 +66,7 @@
                             1,
                             $json['description'],
                             $json['date_activite'],
-                            $json['id_index_planning'],
+                            3,
                             $json['id_activite']
                         );
 

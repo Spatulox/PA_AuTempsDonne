@@ -221,6 +221,13 @@ class UserService {
         if ($role_check>2){
             exit_with_message("vous n'avez pas de le droit");
         }
+        $id_controller=getIdUserFromApiKey($apiKey);
+
+       if ($id_controller==$id){
+            exit_with_message("vous n'aves pas le droit de modier votre role");
+        }
+
+
         if ($role >5){
             exit_with_message("mauvais selection", 403);
         }

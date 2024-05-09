@@ -32,9 +32,9 @@ function checkData($table = -10, $columnArray = -10, $columnData = -10, $conditi
 		exit_with_message($sentence);
 	}
 
-	if (!checkMsg($condition, "=") && $condition != -1 && $condition != -10){
+	/*if (!checkMsg($condition, "=") && $condition != -1 && $condition != -10){
 		exit_with_message('Plz enter a valid condition like : columnName=data'. $addSentence);
-	}
+	}*/
 }
 
 # -------------------------------------------------------------- #
@@ -86,9 +86,9 @@ function selectDB($table, $colums, $condition = -1, $additionnalMessage = NULL){
 		$dbRequest = 'SELECT '. $colums .' FROM '. $table;
 	}
 	else{
-		if(!checkMsg($condition, '=')){
+		/*if(!checkMsg($condition, '=')){
 			exit_with_message('Plz enter a valid condition like : columnName=data', 500);
-		}
+		}*/
 
 		$dbRequest = 'SELECT '. $colums .' FROM '. $table . ' WHERE ' . $condition;
 	}
@@ -122,10 +122,9 @@ function selectDB($table, $colums, $condition = -1, $additionnalMessage = NULL){
 	}
 	catch (PDOException $e)
 	{
-		if($additionnalMessage == "-@"){
-			echo($e->getMessage());
-			exit();
-		}
+        if($additionnalMessage == "-@"){
+            exit_with_message($e->getMessage());
+        }
 
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
@@ -155,9 +154,9 @@ function selectJoinDB($table, $colums, $join, $condition = -1, $additionnalMessa
 		$dbRequest = 'SELECT '. $colums .' FROM '. $table . ' ' . $join;
 	}
 	else{
-		if(!checkMsg($condition, '=')){
+		/*if(!checkMsg($condition, '=')){
 			exit_with_message('Plz enter a valid condition like : columnName=data', 500);
-		}
+		}*/
 
 		$dbRequest = 'SELECT '. $colums .' FROM '. $table . ' ' . $join . ' WHERE ' . $condition;
 	}
@@ -187,10 +186,10 @@ function selectJoinDB($table, $colums, $join, $condition = -1, $additionnalMessa
 	}
 	catch (PDOException $e)
 	{
-		if($additionnalMessage == "-@"){
-			echo($e->getMessage());
-			exit();
-		}
+
+        if($additionnalMessage == "-@"){
+            exit_with_message($e->getMessage());
+        }
 
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{

@@ -52,7 +52,13 @@ class PlanningService {
     */
     public function createPlanning(PlanningModel $planning,$apiKey) {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
-        if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==4) {
+        if ($userRole[0]==1 || $userRole[0]==2) {
+            $planning->id_index_planning = 2;
+            $planningRepository = new PlanningRepository();
+            return $planningRepository->createPlanning($planning);
+
+        }elseif($userRole[0]==4){
+            $planning->id_index_planning = 3;
             $planningRepository = new PlanningRepository();
             return $planningRepository->createPlanning($planning);
         }else{

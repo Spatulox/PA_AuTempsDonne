@@ -223,7 +223,7 @@ class UserRepository {
 
     public function getAllDispoUsers()
     {
-        $conditions = "id_index= 1 AND id_role=3 ";
+        $conditions = "id_index= 2 AND id_role=3 ";
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
         $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
         $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions );
@@ -337,7 +337,7 @@ class UserRepository {
         $conditions = "SEMAINE.id_dispo=".$date;
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
         $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
-        $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions,"-@" );
+        $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions);
 
         $uniqueUsers = [];
 
@@ -348,22 +348,16 @@ class UserRepository {
             }
         }
 
-        for ($i = 0; $i <count($uniqueUsers); $i++) {
-            $res = selectJoinDB("DISPONIBILITE", $columns, $join,"UTILISATEUR.id_user=".$uniqueUsers[$i]["id_user"]);
+        $all=[];
 
-            for ($j = 0; $j <count($res); $j++) {
+        for ($i = 0; $i <count($usersArray) ; $i++) {
 
-                $dispoArray[] = [
-                    "id_dispo" => $res[$j]["id_dispo"],
-                    "dispo" => $res[$j]["dispo"],
-                ];
-            }
+            $all[]=$this->getUser($usersArray[$i]["id_user"]);
 
-            $dispos[] = new DispoModel( $uniqueUsers[$i]["id_user"],$dispoArray);
-            unset($res);
-            unset($dispoArray);
         }
-        return $dispos;
+
+
+        return $all;
     }
 
 
