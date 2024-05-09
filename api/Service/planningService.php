@@ -95,6 +95,8 @@ class PlanningService {
         }
     }
 
+    //----------------------------------------------------------------------------------------
+
     public function linkPlanning(array $planning, $apiKey)
     {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
@@ -103,6 +105,8 @@ class PlanningService {
             return $planningRepository->linkPlanning($planning);
         }
     }
+
+    //----------------------------------------------------------------------------------------
 
     public function getAllPlanningenattente($apiKey) {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
@@ -116,6 +120,7 @@ class PlanningService {
 
     }
 
+    //----------------------------------------------------------------------------------------
 
     public function getAllPlanningvalidate($apiKey) {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
@@ -129,6 +134,8 @@ class PlanningService {
 
     }
 
+    //----------------------------------------------------------------------------------------
+
     public function getPlanningBydate($apiKey, $date)
     {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
@@ -138,6 +145,20 @@ class PlanningService {
         }
         $planningRepository = new PlanningRepository();
         return $planningRepository->getAllPlanningeDate($date);
+    }
+
+    //----------------------------------------------------------------------------------------
+
+    public function getPlanningNoAffecte($apiKey)
+    {
+        $userRole = $this->getUserRoleFromApiKey($apiKey);
+        if ($userRole[0]==1 || $userRole[0]==2) {
+            $planningRepository = new PlanningRepository();
+            return $planningRepository->getPlanningNoAffecte();
+        }else{
+            exit_with_message("You didn't have access to this command");
+        }
+
     }
 
 

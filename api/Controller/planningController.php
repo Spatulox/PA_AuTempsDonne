@@ -32,6 +32,10 @@
 
                     exit_with_content($planningService->getPlanningByUser($apiKey));
                 }
+                elseif($uri[3] && $uri[3]==="affecte"){
+
+                    exit_with_content($planningService->getPlanningNoAffecte($apiKey));
+                }
 
 
                 elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){

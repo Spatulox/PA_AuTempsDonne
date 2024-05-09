@@ -228,8 +228,11 @@ class PlanningRepository {
 
     public function getAllPlanningeDate($date)
     {
-        $condition =" id_index_planning=2 AND date_activite BETWEEN '".$date." 00:00:00' AND '".$date." 23:59:59' ORDER BY date_activite DESC";
-        $planningArray = selectDB("PLANNINGS", "*",$condition ,"-@");
+        $condition =" id_index_planning=2 AND date_activite BETWEEN '".$date." 00:00:00' AND '".$date." 23:59:59' ORDER BY date_activite ASC";
+        $planningArray = selectDB("PLANNINGS", "*",$condition ,"bool");
+        if (!$planningArray){
+            exit_with_message("Erreur, le planning n'existe pas");
+        }
 
         $planning = [];
 
@@ -247,6 +250,31 @@ class PlanningRepository {
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
         }
 
+        return $planning;
+    }
+
+    //-----------------------------------------------------------------------------------------
+
+    public function getPlanningNoAffecte()
+    {
+        $condition=" PLANNINGS.id_index_planning= 2 AND NOT EXISTS (SELECT 1 FROM PARTICIPE pa WHERE pa.id_planning = PLANNINGS.id_planning)";
+        $planningArray = selectDB("PLANNINGS", "*",$condition);
+
+        $planning = [];
+
+        for ($i=0; $i < count($planningArray); $i++) {
+            $planning[$i] = new PlanningModel(
+                $planningArray[$i]['id_planning'],
+                $planningArray[$i]['description'],
+                $planningArray[$i]['date_activite'],
+                $planningArray[$i]['id_index_planning'],
+                $planningArray[$i]['id_activite']
+            );
+            $planning[$i]->setId($planningArray[$i]['id_planning']);
+
+            $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
+            $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
+        }
         return $planning;
     }
 
