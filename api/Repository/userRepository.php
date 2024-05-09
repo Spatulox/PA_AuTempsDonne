@@ -250,5 +250,77 @@ class UserRepository {
         return $dispos;
     }
 
+    //-------------------------------------------------------------------------------------------------------
+
+    public function updatedispoUser($id_dispo, $id)
+    {
+        deleteDB("DISPONIBILITE", "id_user=".$id);
+        $dispos = [];
+
+        for ($i = 0; $i < count($id_dispo); $i++) {
+            insertDB("DISPONIBILITE", ["id_dispo", "id_user"], [$id_dispo[$i], $id]);
+        }
+
+        $res = selectDB("DISPONIBILITE", "*", "id_user=".$id);
+
+        foreach ($res as $dispo) {
+            $dispos[] = new DispoModel($dispo["id_user"], $dispo["id_dispo"]);
+        }
+
+
+        return($dispos);
+    }
+
+    //-----------------------------------------------------------------------------------------------
+
+    public function updateentrepotUser($id_entrepot, $id)
+    {
+        $res=updateDB("UTILISATEUR", ["id_entrepot"], [$id_entrepot],"id_user=".$id);
+        return $res;
+    }
+
+    //-----------------------------------------------------------------------------------
+
+    public function getDispoUserMe($id)
+    {
+        $conditions = "UTILISATEUR.id_user=".$id;
+        $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
+        $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
+        $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions );
+
+        $uniqueUsers = [];
+
+        foreach ($usersArray as $user) {
+            $id_user = $user["id_user"];
+            if (!in_array($id_user, $uniqueUsers)) {
+                $uniqueUsers[] = $id_user;
+            }
+        }
+
+        for ($i = 0; $i <count($uniqueUsers); $i++) {
+            $res = selectJoinDB("DISPONIBILITE", $columns, $join,"UTILISATEUR.id_user=".$uniqueUsers[$i]["id_user"]);
+
+            for ($j = 0; $j <count($res); $j++) {
+
+                $dispoArray[] = [
+                    "id_dispo" => $res[$j]["id_dispo"],
+                    "dispo" => $res[$j]["dispo"],
+                ];
+            }
+
+            $dispos[] = new DispoModel( $uniqueUsers[$i]["id_user"],$dispoArray);
+            unset($res);
+            unset($dispoArray);
+        }
+        return $dispos;
+    }
+
+    public function updateRoleUser($role, $id)
+    {
+        $res=updateDB("UTILISATEUR", ["id_role"], [$role],"id_user=".$id);
+        return $res;
+    }
+
+
 }
 ?>

@@ -6,10 +6,10 @@ class DispoModel
     public $dispos;
 
 
-    public function __construct($id_user, $dispo)
+    public function __construct($id_user, $dispos)
     {
         $this->id_user = $id_user;
-        $this->dispos = $dispo;
+        $this->dispos = $dispos;
     }
 
 

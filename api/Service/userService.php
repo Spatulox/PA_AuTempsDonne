@@ -93,7 +93,7 @@ class UserService {
     public function deleteUserById($id, $apiKey) {
         $userRepository = new UserRepository();
         if ($userRepository->unreferenceUserById($id, $apiKey)){
-            exit_with_message("Unreference Succeed !", 200);
+            exit_with_message("Unreference Succeed !", 403);
         }
         else{
             exit_with_message("Error when unreferencing user ".$id);
@@ -104,20 +104,20 @@ class UserService {
     public function deleteUserByApikey($apiKey) {
         $userRepository = new UserRepository();
         if ($userRepository->unreferenceUserByApikey($apiKey)){
-            exit_with_message("Unreference Succeed !", 200);
+            exit_with_message("Unreference Succeed !", 403);
         }
         else{
             exit_with_message("Error when unreferencing user ".$apiKey);
         }
     }
 
-    public function dispoUser($id_dispo ,$apikey)
+    public function createdispoUser($id_dispo ,$apikey)
     {
         $id= getIdUserFromApiKey($apikey);
 
          for ($i = 0; $i <count($id_dispo) ; $i++) {
             if ($id_dispo[$i] >8) {
-                exit_with_message("mauvais selection", 200);
+                exit_with_message("mauvais selection", 403);
             }
          }
 
@@ -128,9 +128,93 @@ class UserService {
 
     public function getAllDispoUsers($apiKey)
     {
-        $id= getIdUserFromApiKey($apiKey);
+        $role = getRoleFromApiKey($apiKey);
+
+        if ($role>3){
+            exit_with_message("vous n'avez pas le droit update ", 403);
+        }
         $userRepository = new UserRepository();
         return $userRepository->getAllDispoUsers();
+    }
+
+    public function updatedispoUser($apiKey, $id_dispo)
+    {
+        $id= getIdUserFromApiKey($apiKey);
+
+        for ($i = 0; $i <count($id_dispo) ; $i++) {
+            if ($id_dispo[$i] >8) {
+                exit_with_message("mauvais selection", 403);
+            }
+        }
+        $userRepository = new UserRepository();
+        return $userRepository->updatedispoUser($id_dispo, $id);
+    }
+
+    public function updateentrepotUser($apiKey, $id_entrepot)
+    {
+        $role = getRoleFromApiKey($apiKey);
+        if ($role>3){
+            exit_with_message("vous n'avez pas le droit update ", 403);
+        }
+
+        $check=selectDB("ENTREPOTS", "*", "id_entrepot = ".$id_entrepot);
+        if (!$check){
+            exit_with_message("Entrepot not found", 403);
+        }
+
+        $id= getIdUserFromApiKey($apiKey);
+
+        $userRepository = new UserRepository();
+        return $userRepository->updateentrepotUser($id_entrepot, $id);
+    }
+
+    public function getDispoUserMe($apiKey)
+    {
+        $role = getRoleFromApiKey($apiKey);
+        if ($role!=3){
+            exit_with_message("vous n'avez pas de disposability");
+        }
+        $id= getIdUserFromApiKey($apiKey);
+        $res=selectDB("DISPONIBILITE", "*", "id_user = ".$id,"bool");
+        if (!$res){
+            exit_with_message("error getting dispo user ");
+        }
+        $userRepository = new UserRepository();
+        return $userRepository->getDispoUserMe($id);
+    }
+
+    //----------------------------------------------------------------------
+
+    public function getDispoUserById($apiKey,$id)
+    {
+        $role = getRoleFromApiKey($apiKey);
+        if ($role>3){
+            exit_with_message("vous n'avez pas de disposability");
+        }
+
+        $res=selectDB("DISPONIBILITE", "*", "id_user = ".$id,"bool");
+        if (!$res){
+            exit_with_message("error getting dispo user ");
+        }
+        $userRepository = new UserRepository();
+        return $userRepository->getDispoUserMe($id);
+    }
+
+    //-------------------------------------------------------------------------------------
+
+    public function updateRoleUser($apiKey, $role, $id)
+    {
+        $role_check = getRoleFromApiKey($apiKey);
+        if ($role_check>2){
+            exit_with_message("vous n'avez pas de le droit");
+        }
+        if ($role >5){
+            exit_with_message("mauvais selection", 403);
+        }
+
+        $userRepository = new UserRepository();
+        return $userRepository->updateRoleUser($role,$id);
+
     }
 
 
