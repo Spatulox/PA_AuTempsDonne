@@ -29,7 +29,9 @@ const dico = {
         "The":"The ",
         "for":"for ",
         "For":"For ",
-        "has been":"has been "
+        "has been":"has been ",
+        "validate":"validate ",
+        "Validate":"Validate "
 
     },
     "FR":{
@@ -62,6 +64,8 @@ const dico = {
         "The":"The ",
         "for":"pour ",
         "For":"Pour ",
-        "has been":"a été "
+        "has been":"a été ",
+        "validate":"validé ",
+        "Validate":"Validé "
     }
 }
