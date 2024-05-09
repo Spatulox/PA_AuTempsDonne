@@ -18,6 +18,14 @@
                 if(!$uri[3]){
                     exit_with_content($planningService->getAllPlanning($apiKey));
                 }
+                elseif($uri[3] && $uri[3]==="validate"){
+
+                    exit_with_content($planningService->getAllPlanningvalidate($apiKey));
+                }
+                elseif($uri[3] && $uri[3]==="wait"){
+
+                    exit_with_content($planningService->getAllPlanningenattente($apiKey));
+                }
 
 
                 elseif($uri[3] && $uri[3]==="me"){
