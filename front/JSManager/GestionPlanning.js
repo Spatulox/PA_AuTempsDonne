@@ -4,8 +4,34 @@ class PlanningAdmin extends Admin{
      * Get the plannig of the user with the apikey
      * @returns {Promise<any|boolean>}
      */
-    async allPlanning(){
+    async getAllPlanning(){
         let response = await this.fetchSync(this.adresse+'/planning', this.optionGet())
+        if(!this.compareAnswer(response, this.msg["impossible"] + this.msg["to"] + this.msg["retrieved"] + this.msg["all"] + this.msg["planning"])){
+            return false
+        }
+        popup(this.msg["all"] + this.msg["planning"]+this.msg["retrieved"])
+        return response
+    }
+
+    /**
+     * Get the plannig of the user with the apikey
+     * @returns {Promise<any|boolean>}
+     */
+    async getWaitPlanning(){
+        let response = await this.fetchSync(this.adresse+'/planning/wait', this.optionGet())
+        if(!this.compareAnswer(response, this.msg["impossible"] + this.msg["to"] + this.msg["retrieved"] + this.msg["all"] + this.msg["planning"])){
+            return false
+        }
+        popup(this.msg["all"] + this.msg["planning"]+this.msg["retrieved"])
+        return response
+    }
+
+    /**
+     * Get the plannig of the user with the apikey
+     * @returns {Promise<any|boolean>}
+     */
+    async getValidatePlanning(){
+        let response = await this.fetchSync(this.adresse+'/planning/validate', this.optionGet())
         if(!this.compareAnswer(response, this.msg["impossible"] + this.msg["to"] + this.msg["retrieved"] + this.msg["all"] + this.msg["planning"])){
             return false
         }
@@ -30,11 +56,11 @@ class PlanningAdmin extends Admin{
     async getPlanningByIdUSer(id){
 
         if(typeof(id) !== "number"){
-            showPopup("Vous devez spécifier un nombre entier")
+            popup("Vous devez spécifier un nombre entier")
             return false
         }
 
-        let response = await this.fetchSync(this.adresse+'/planning/'+id, this.optionGet())
+        let response = await this.fetchSync(this.adresse+'/planning/'+id, this.optionGet(), false)
 
         if(!this.compareAnswer(response)){
             return false
