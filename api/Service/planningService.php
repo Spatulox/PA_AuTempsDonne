@@ -129,6 +129,17 @@ class PlanningService {
 
     }
 
+    public function getPlanningBydate($apiKey, $date)
+    {
+        $userRole = $this->getUserRoleFromApiKey($apiKey);
+
+        if ($userRole[0]>2) {
+            exit_with_message("You don't have access to this command");
+        }
+        $planningRepository = new PlanningRepository();
+        return $planningRepository->getAllPlanningeDate($date);
+    }
+
 
 }
 ?>

@@ -38,6 +38,7 @@
                     $planningService->getPlanningByIdUser($uri[3], $apiKey);
                 }
 
+
                 else{
                     exit_with_message("You need to be admin to see all the planning", 403);
                 }
@@ -101,7 +102,8 @@
                         } else {
                             exit_with_message("Failed to join activity", 500);
                         }
-                    }elseif ($uri[3] && $uri[3]=== 'link') {
+                    }
+                    elseif ($uri[3] && $uri[3]=== 'link') {
                         if (!isset($json['id_trajet']) || !isset($json['id_planning'])) {
                             exit_with_message("Please provide both user_id and id_planning to join an activity", 400);
                         }
@@ -115,8 +117,16 @@
                         } else {
                             exit_with_message("Error while creating the planning.", 500);
                         }
+                    }
+                    elseif($uri[3] && $uri[3]==="date"){
 
-                    }else {
+                        if (!isset($json['date_activite'])) {
+                            exit_with_message("Please provide date ", 400);
+                        }
+                        exit_with_content($planningService->getPlanningBydate($apiKey,($json['date_activite'])));
+                    }
+
+                    else {
                         exit_with_message("Invalid action specified", 400);
                     }
 
