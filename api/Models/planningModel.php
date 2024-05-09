@@ -10,6 +10,7 @@ class PlanningModel {
     public $nom_index_planning;
     public $id_activite;
     public $activity_desc;
+    public $user;
 
     public function __construct($id_planning, $description, $date_activite, $id_index_planning, $id_activite) {
         $this->id_planning = $id_planning;
@@ -31,6 +32,9 @@ class PlanningModel {
 
     public function setIndexPlanning($id_index_planning){
         $this->nom_index_planning = $id_index_planning[0];
+    }
+    public function setemailuser($user){
+        $this->user = $user;
     }
 
 }?>
