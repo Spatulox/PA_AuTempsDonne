@@ -30,7 +30,7 @@
                     <h1 class="textCenter bold underline"><?php echo($data["user"]["title"]) ?></h1>
                     <ul class="ul">
                         <li><a style="color: #0c2124" href="./user.php" target="_blank"><?php echo($data["user"]["title"]) ?></a></li>
-                        <li><a style="color: #0c2124" href="./user.php" target="_blank"><?php echo($data["user"]["title"]) ?></a></li>
+                        <li><a style="color: #0c2124" href="./user.php" target="_blank"><?php echo($data["user"]["AffectToPlanning"]) ?></a></li>
                         <li><a style="color: #0c2124" href="./user.php" target="_blank"><?php echo($data["user"]["title"]) ?></a></li>
                     </ul>
                 </div>

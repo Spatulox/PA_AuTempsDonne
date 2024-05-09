@@ -120,7 +120,7 @@
 	},
 	"user": {
 		"title": "User Menu",
-		"titleTab1" : "Users list",
+		"AffectToPlanning":"Assign someone to planning",
 		"tab1": {
 			"title" : "Users list",
 			"name": "Name/Lastname",
