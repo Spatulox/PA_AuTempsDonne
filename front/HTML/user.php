@@ -60,7 +60,7 @@
 
         <div id="tab3" class="tabcontent">
             <h3 class="textCenter"><?php echo $data["user"]["tab3"]["title"] ?></h3>
-            <div id="tab3Child" class="widthAuto padding10 marginBottom20 marginAuto border">
+            <div id="tab3Child" class="widthAuto padding10 marginBottom20 marginAuto">
                 <table>
                     <thead>
                     <tr>
@@ -80,7 +80,7 @@
 
         <div id="tab4" class="tabcontent">
             <h3 class="textCenter"><?php echo $data["user"]["tab4"]["title"] ?></h3>
-            <div id="tab4Child" class="widthAuto padding10 marginBottom20 marginAuto border">
+            <div id="tab4Child" class="widthAuto padding10 marginBottom20 marginAuto">
                 <table>
                     <thead>
                     <tr>
@@ -180,14 +180,21 @@
         });
     }
 
-    async function fillPlanningTab3(id) {
-        plannings = await planning.getPlanningByIdUSer(id)
+    async function fillPlanningTab3(id = null) {
+        let container = ""
+        if(id != null){
+            plannings = await planning.getPlanningByIdUSer(id)
 
-        const container = document.getElementById('tab3ChildBody');
-        container.innerHTML = ""
+            container = document.getElementById('tab3ChildBody');
+            container.innerHTML = ""
+        } else {
+            plannings = []
+        }
 
         // Créer les lignes de données
         if (plannings.length > 0) {
+
+
             plannings.forEach(item => {
                 const row = document.createElement('tr');
                 const values = [item.id_planning, item.description, item.date_activite, item.activity_desc, item.nom_index_planning];
@@ -404,7 +411,7 @@
 
         await planning.connect()
         fillTbodyUser()
-        fillPlanningTab3(1)
+        fillPlanningTab3()
         fillTab4()
         replaceCharacters()
         stopLoading()
