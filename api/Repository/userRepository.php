@@ -315,10 +315,50 @@ class UserRepository {
         return $dispos;
     }
 
+    //-----------------------------------------------------------------------------------------
+
     public function updateRoleUser($role, $id)
     {
-        $res=updateDB("UTILISATEUR", ["id_role"], [$role],"id_user=".$id);
-        return $res;
+        updateDB("UTILISATEUR", ["id_role"], [$role],"id_user=".$id);
+        exit_with_content($this->getUser($id));
+       
+    }
+
+    //-----------------------------------------------------------------------------------------
+
+    public function GetAllUserDate($date)
+    {
+
+        $conditions = "SEMAINE.id_dispo=".$date;
+        $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
+        $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
+        $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions,"-@" );
+
+        $uniqueUsers = [];
+
+        foreach ($usersArray as $user) {
+            $id_user = $user["id_user"];
+            if (!in_array($id_user, $uniqueUsers)) {
+                $uniqueUsers[] = $id_user;
+            }
+        }
+
+        for ($i = 0; $i <count($uniqueUsers); $i++) {
+            $res = selectJoinDB("DISPONIBILITE", $columns, $join,"UTILISATEUR.id_user=".$uniqueUsers[$i]["id_user"]);
+
+            for ($j = 0; $j <count($res); $j++) {
+
+                $dispoArray[] = [
+                    "id_dispo" => $res[$j]["id_dispo"],
+                    "dispo" => $res[$j]["dispo"],
+                ];
+            }
+
+            $dispos[] = new DispoModel( $uniqueUsers[$i]["id_user"],$dispoArray);
+            unset($res);
+            unset($dispoArray);
+        }
+        return $dispos;
     }
 
 

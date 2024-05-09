@@ -90,7 +90,6 @@ function userController($uri, $apiKey) {
 
                 exit_with_content($userService->createUser($user, $json["mdp"]));
             }
-
             elseif ($uri[3] == "dispo") {
 
                 if(!isset($json["id_dispo"]) ){
@@ -98,6 +97,14 @@ function userController($uri, $apiKey) {
                 }
 
                 exit_with_content($userService->createdispoUser($json["id_dispo"],$apiKey));
+            }
+            elseif ($uri[3] == "date") {
+
+                if(!isset($json["id_jour"]) ){
+                    exit_with_message("", 403);
+                }
+
+                exit_with_content($userService->GetAllUserDate($apiKey,$json["id_jour"]));
             }
 
             break;
