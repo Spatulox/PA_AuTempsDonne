@@ -39,7 +39,7 @@ class PlanningRepository {
     public function getPlanningByid($id){
         $planningArray = selectDB("PLANNINGS", "*", "id_planning=".$id);
 
-       
+
         $planning = [];
 
         for ($i=0; $i < count($planningArray); $i++) {
@@ -345,7 +345,15 @@ class PlanningRepository {
 
             $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=" . $planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=" . $planningArray[$i]['id_activite'])[0]);
+
+            $res= selectDB("PARTICIPE","*","id_planning=".$planningArray[0]['id_planning']);
+            $tab=[];
+            for ($j=0; $j < count($res); $j++) {
+               array_push($tab, selectDB("UTILISATEUR", "email", "id_user=".$res[$j]['id_user'])[0]["email"]);
+            }
+            $planning[$i]->setemailuser($tab);
         }
+
         return $planning;
     }
 
