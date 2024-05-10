@@ -223,6 +223,12 @@ class EntrepotRepository
                 exit_with_message("etagere is already in use",500);
 
             }
+            $nb=selectDB("ETAGERES", "*", "id_entrepot=" . $resquest[0]["id_entrepot"], "bool");
+
+            if (count($nb) ==1){
+                exit_with_message("Imposible de supprimer la derniére etagere",500);
+            }
+
             deleteDB("ETAGERES", "id_etagere=" . $id);
             exit_with_message("Etagere deleted with success ", 200);
         }else{
