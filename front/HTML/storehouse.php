@@ -71,10 +71,6 @@
         </div>
     </div>
 
-    <?php
-
-    ?>
-
 </main>
 
 <?php include("../includes/footer.php");?>

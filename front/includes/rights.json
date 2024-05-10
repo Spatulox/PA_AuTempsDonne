@@ -1,6 +1,6 @@
 {
-  "1": ["admin.php", "user.php", "storehouse.php", "gestPlanning.php"],
-  "2": ["admin.php", "user.php", "storehouse.php", "gestPlanning.php"],
+  "1": ["admin.php", "user.php", "storehouse.php", "gestPlanning.php", "stock.php"],
+  "2": ["admin.php", "user.php", "storehouse.php", "gestPlanning.php", "stock.php"],
   "3": [],
   "4": [],
   "5": [],
