@@ -19,8 +19,8 @@ function StockController($uri, $apiKey)
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
                 exit_with_content($stockService->getAllStockInEntrepots($uri[3],$apiKey));
             }
-            elseif($uri[3]=="sortie"){
-                exit_with_content($stockService->getAllStockSortie($uri[3],$apiKey));
+            elseif($uri[3]=="sortie" && filter_var($uri[4], FILTER_VALIDATE_INT)){
+                exit_with_content($stockService->getAllStockSortie($uri[4],$apiKey));
             }
 
 

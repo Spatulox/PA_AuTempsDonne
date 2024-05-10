@@ -301,12 +301,12 @@ class StockService {
 
     //--------------------------------------------------------------------------------------
 
-    public function getAllStockSortie($int, $apiKey)
+    public function getAllStockSortie($id, $apiKey)
     {
         $userRole = getRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
             $stockRepository = new StockRepository();
-            return $stockRepository->getAllStockSortie();
+            return $stockRepository->getAllStockSortie($id);
         }else{
             exit_with_message("You didn't have access to this command");
         }

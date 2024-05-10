@@ -239,10 +239,14 @@ class StockRepository
 
     //----------------------------------------------------------------------------------------------------------------------------
 
-    public function getAllStockSortie()
+    public function getAllStockSortie($id)
     {
+        $join="INNER JOIN ETAGERES et on et.id_etagere = s.id_etagere INNER JOIN ENTREPOTS en on en.id_entrepot = et.id_entrepot";
+        $stockArray = selectjoinDB("STOCKS s", "*",$join, "et.id_entrepot=".$id." AND quantite_produit >0 AND date_entree IS NULL","bool");
 
-        $stockArray = selectDB("STOCKS", "*", " quantite_produit >0 AND date_entree IS NULL");
+        if (!$stockArray){
+            exit_with_message("pas de sorti de Stock dans cette entrepot", 500);
+        }
 
         $stock = [];
 
