@@ -89,8 +89,7 @@ class StockRepository
     public function createStock(StockModel $stock)
 
     {
-        var_dump($stock);
-        exit();
+
         $create = insertDB("STOCKS", ["quantite_produit", "date_entree", "date_sortie", "date_peremption", "desc_produit", "id_produit", "id_etagere"], [
             $stock->quantite_produit,
             $stock->date_entree,
@@ -236,6 +235,41 @@ class StockRepository
 
         }
         return $stock;
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------
+
+    public function getAllStockSortie()
+    {
+
+        $stockArray = selectDB("STOCKS", "*", " quantite_produit >0 AND date_entree IS NULL");
+
+        $stock = [];
+
+        for ($i = 0; $i < count($stockArray); $i++) {
+
+            $dateEntre = $stockArray[$i]['date_entree'] ? date('Y-m-d', strtotime($stockArray[$i]['date_entree'])) : 'Non définie';
+            $dateSortie = $stockArray[$i]['date_sortie'] ? date('Y-m-d', strtotime($stockArray[$i]['date_sortie'])) : 'Non définie';
+            $datePeremption = $stockArray[$i]['date_peremption'] ? date('Y-m-d', strtotime($stockArray[$i]['date_peremption'])) : 'Non définie';
+
+            $stock[$i] = new StockModel(
+                $stockArray[$i] ['id_stock'],
+                $stockArray[$i] ['quantite_produit'],
+                $dateEntre,
+                $dateSortie,
+                $datePeremption,
+                $stockArray[$i] ['desc_produit'],
+                $stockArray[$i] ['id_produit'],
+                $stockArray[$i] ['id_etagere']
+            );
+            $stock[$i]->setIndexProduit(selectDB("PRODUIT", "nom_produit", "id_produit=" . $stockArray[$i]['id_produit'])[0]);
+            $string = "INNER JOIN ENTREPOTS ON ENTREPOTS.id_entrepot = ETAGERES.id_entrepot";
+            $stock[$i]->setentrepot(selectJoinDB("ETAGERES", "ETAGERES.id_entrepot ,ENTREPOTS.nom_entrepot", $string, "id_etagere=" . $stockArray[$i]['id_etagere'])[0]);
+
+
+        }
+        return $stock;
+
     }
 
 }

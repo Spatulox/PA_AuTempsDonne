@@ -250,6 +250,7 @@ class StockService {
         }
     }
 
+    //--------------------------------------------------------------------------------------
 
     public function deleteStock($id,$apiKey)
     {
@@ -263,6 +264,7 @@ class StockService {
 
     }
 
+    //--------------------------------------------------------------------------------------
 
     private function getnbplace($id)
     {
@@ -274,6 +276,8 @@ class StockService {
 
         return $sum;
     }
+
+    //--------------------------------------------------------------------------------------
 
     public function updateStock($id_stock, $qteEtagere)
 
@@ -290,6 +294,19 @@ class StockService {
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
             $stockRepository = new StockRepository();
             return $stockRepository->getAllStockdateSortie($date_sortie);
+        }else{
+            exit_with_message("You didn't have access to this command");
+        }
+    }
+
+    //--------------------------------------------------------------------------------------
+
+    public function getAllStockSortie($int, $apiKey)
+    {
+        $userRole = getRoleFromApiKey($apiKey);
+        if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
+            $stockRepository = new StockRepository();
+            return $stockRepository->getAllStockSortie();
         }else{
             exit_with_message("You didn't have access to this command");
         }
