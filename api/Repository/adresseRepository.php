@@ -66,6 +66,19 @@ class adresseRepository {
         }
 
     }
+
+    public function DeleteAdresse($id){
+        $add = selectDB("ADRESSE", "*", "id_adresse=".$id, "bool");
+
+        if(count($add) == 0 || $add === false){
+            exit_with_message("L'adresse ".$id." n'existe pas");
+        }
+        if(deleteDB("ADRESSE", "id_adresse=".$id, "bool")){
+            exit_with_message("Address successfully deleted", 200);
+        }
+        exit_with_message("Erreur: delete addresse");
+
+    }
 }
 
 ?>
