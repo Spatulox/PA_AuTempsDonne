@@ -181,9 +181,9 @@ class EntrepotRepository
         }
         $tmp = deleteDB("ENTREPOTS", "id_entrepot=" . $id);
         if (!$tmp) {
-            exit_with_message("Entrepot unreference no successful", 500);
+            exit_with_message("Entrepot delete no successful", 500);
         }
-        exit_with_message("Entrepot unreference successful", 200);
+        exit_with_message("Entrepot delete successful", 200);
 
     }
 
