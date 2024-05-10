@@ -99,8 +99,10 @@ class EntrepotRepository
 
     public function createEntrepot($entrepot, $etageres)
     {
-
-
+        $check=selectDB("ENTREPOTS", "nom_entrepot" ,"nom_entrepot='".$entrepot["nom_entrepot"]."'","bool");
+        if ($check) {
+            exit_with_message("Entrepot already exists",500);
+        }
 
         $request = insertDB("ENTREPOTS", ["nom_entrepot", "parking", "id_adresse"], [$entrepot["nom_entrepot"], $entrepot["parking"], $entrepot["id_adresse"]]);
 
@@ -190,10 +192,10 @@ class EntrepotRepository
     public function createEtageres($entrepot, $etageres_place)
     {
         for ($i = 0; $i < count($etageres_place); $i++) {
-            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etageres_place[$i], $entrepot] );
+            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etageres_place[$i], $entrepot],"bool" );
 
             if (!$request_collecte) {
-                exit_with_message("Error creating collecte", 500);
+                exit_with_message("Error creating Etagere", 500);
             }
         }
         exit_with_message("Etagere add with success", 200);
