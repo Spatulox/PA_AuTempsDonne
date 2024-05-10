@@ -66,6 +66,12 @@ class EntrepotService {
         $entrepotRepository->DeleteEtagere($id);
     }
 
+    public function getEntrepotPlaceById($id)
+    {
+        $entrepotRepository = new EntrepotRepository();
+        $entrepotRepository->getEntrepotPlaceById($id);
+    }
+
 
 }
 ?>

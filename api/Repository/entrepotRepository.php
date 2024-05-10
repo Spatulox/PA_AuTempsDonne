@@ -230,6 +230,43 @@ class EntrepotRepository
         }
 
     }
+
+    //-----------------------------------------------------------------------------------------------
+
+    public function getEntrepotPlaceById($id)
+    {
+        $check=selectDB("ENTREPOTS", "*", "id_entrepot=" . $id, "bool");
+        if (!$check){
+            exit_with_message("Entrepot not found", 500);
+        }
+        $string = "id_entrepot=" .$id;
+        $etagere= selectDB("ETAGERES", "id_etagere,nombre_de_place",$string);
+        if(!$etagere){
+            exit_with_message("cette etagere n'existe pas ", 500);
+        }
+        $sum=0;
+        $place=0;
+        for ($i = 0; $i < count($etagere); $i++) {
+            $nbProduitsEtagere = $this->getnbplace($etagere[$i]['id_etagere']);
+            $sum=$sum+$nbProduitsEtagere;
+            $place=$place+$etagere[$i]['nombre_de_place'];
+        }
+        $sum=$place-$sum;
+        exit_with_message("il reste ".$sum. " place dans ".$check[0]["nom_entrepot"], 200);
+
+    }
+
+    private function getnbplace($id)
+    {
+        $string = "id_etagere=".$id . " AND ". "date_sortie IS NULL";
+        $number= selectDB("STOCKS","quantite_produit",$string,"bool");
+        for ($i = 0; $i < count($number); $i++) {
+            $sum=$sum+$number[$i]["quantite_produit"];
+        }
+
+        return $sum;
+    }
+
 }
 
 ?>
