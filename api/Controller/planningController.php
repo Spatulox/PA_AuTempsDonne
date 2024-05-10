@@ -150,6 +150,12 @@
                             exit_with_message("Plz give,id_index_planning");
                         }
                         exit_with_content($planningService->updateValidatePlanning($json["id_index_planning"],$uri[4],$apiKey));
+                    } elseif ($uri[3] && $uri[3]=== 'join' ) {
+
+                        if (!isset($json["id_planning"])) {
+                            exit_with_message("Plz give,id_planning");
+                        }
+                        exit_with_content($planningService->updatejoinPlanning($json["id_planning"],$json['confirme'],$apiKey));
                     }
                     break;
 
