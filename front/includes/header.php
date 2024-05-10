@@ -114,7 +114,7 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
 				');
 		}
 		else{
-			echo('	<h2 class="" id="titleFooter" style="position:absolute;"></h2>
+			echo('	<h2 class="" id="titleFooter" style="position:fixed;"></h2>
 				');
 		}
 	?>
