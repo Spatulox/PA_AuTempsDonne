@@ -29,7 +29,7 @@
         </div>
 
         <div id="tab1" class="tabcontent marginBottom20">
-            <h3><?php echo $data["user"]["tab1"]["title"] ?></h3>
+            <h2><?php echo $data["user"]["tab1"]["title"] ?></h2>
 
             <!--<div><input class="marginBottom20 search-box" type="text" id="searchUser" oninput="searchUser()"
                         placeholder="Email..."></div>-->
@@ -52,7 +52,7 @@
         </div>
 
         <div id="tab2" class="tabcontent">
-            <h3 class="textCenter"><?php echo $data["user"]["tab2"]["title"] ?></h3>
+            <h2 class="textCenter"><?php echo $data["user"]["tab2"]["title"] ?></h2>
             <div id="tab2Child" class="width50 padding10 marginBottom20 marginAuto border">
                 <?php echo $data["user"]["tab2"]["errorMsg"] ?>
             </div>
@@ -79,7 +79,7 @@
         </div>
 
         <div id="tab4" class="tabcontent">
-            <h3 class="textCenter"><?php echo $data["user"]["tab4"]["title"] ?></h3>
+            <h2 class="textCenter"><?php echo $data["user"]["tab4"]["title"] ?></h2>
             <div id="tab4Child" class="widthAuto padding10 marginBottom20 marginAuto">
                 <table>
                     <thead>
