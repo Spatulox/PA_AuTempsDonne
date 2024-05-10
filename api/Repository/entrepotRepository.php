@@ -100,18 +100,20 @@ class EntrepotRepository
     public function createEntrepot($entrepot, $etageres)
     {
 
-        $request = insertDB("ENTREPOTS", ["nom_entrepot", "parking", "id_adresse"], [$entrepot["nom_entrepot"], $entrepot["parking"], $entrepot["id_adresse"]], "-@");
+
+
+        $request = insertDB("ENTREPOTS", ["nom_entrepot", "parking", "id_adresse"], [$entrepot["nom_entrepot"], $entrepot["parking"], $entrepot["id_adresse"]]);
 
         if (!$request) {
-            exit_with_message("Error creating demande", 400);
+            exit_with_message("Error creating entrepot", 400);
         }
         $id_entrepot = $this->getLastInsertId("ENTREPOTS", "id_entrepot");
 
         foreach ($etageres as $etagere) {
-            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etagere["nombre_de_place"], $id_entrepot[0]["id_entrepot"]], "-@");
+            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etagere["nombre_de_place"], $id_entrepot[0]["id_entrepot"]]);
 
             if (!$request_collecte) {
-                exit_with_message("Error creating collecte", 400);
+                exit_with_message("Error creating etagere", 400);
             }
 
             exit_with_message("Sucessfully created entrepot", 200);
@@ -167,8 +169,9 @@ class EntrepotRepository
         }
         $tmp = deleteDB("ENTREPOTS", "id_entrepot=" . $id);
         if (!$tmp) {
-            exit_with_message("The demande doesn't exist", 200);
+            exit_with_message("Entrepot unreference no successful", 500);
         }
+        exit_with_message("Entrepot unreference successful", 200);
 
     }
 
