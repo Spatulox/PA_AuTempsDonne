@@ -51,6 +51,9 @@
 			}
 		}
 	},
+	"collect": {
+		"title": "Collect Menu"
+	},
 	"contact":{
 		"title":"Contact us",
 		"sectionTitle":"Contact us",
@@ -111,6 +114,9 @@
 		"title":"Planning",
 		"sectionTitle":"Planning"
 	},
+	"produit": {
+		"title": "Produit Menu"
+	},
 	"signup_login":{
 		"title":"Log In/Sign Up",
 		"formSignUp":{
@@ -143,15 +149,20 @@
 			"Rangement": "Store Place",
 			"See": "See",
 			"shelf": "Shelf places",
-			"shelfId" : "ID Shelf"
+			"shelfId" : "ID Shelf",
+			"postal": "Postal code"
 		},
 		"tab2": {
 			"title": "Details",
 			"errorMsg": "Nothing to show, select a storehouse before",
-			"createShelf": " Create a Shelf"
+			"createShelf": " Create a Shelf",
+			"availablePlace": "Remaining Places inside the Storehouse"
 		},
 		"tab3": {
-			"title": "Create Storehouse / Shelves"
+			"title": "Create Storehouse",
+			"city": "City",
+			"generalInfo" : "General informations",
+			"complementary" : "Complementary informations"
 		}
 	},
 	"ticket": {
@@ -162,6 +173,7 @@
 	},
 	"user": {
 		"title": "User Menu",
+		"title2": "Main Menu",
 		"AffectToPlanning":"Assign someone to planning",
 		"tab1": {
 			"title" : "Users list",
@@ -182,5 +194,8 @@
 			"errorMsg": "Nothing to show",
 			"button": "Validate"
 		}
+	},
+	"vehicle": {
+		"title" : "Vehicle Menu"
 	}
 }
