@@ -62,6 +62,8 @@
                             exit_with_message("Please provide all required fields to create a new planning", 400);
                         }
 
+
+
                         $planning = new PlanningModel(
                             1,
                             $json['description'],
@@ -112,6 +114,7 @@
                             $json['id_trajet'],
                             $json['id_planning']
                         );
+
                         $linkPlanning = $planningService->linkPlanning($planning, $apiKey);
                         if ($linkPlanning) {
                             exit_with_content($linkPlanning);
@@ -151,10 +154,34 @@
                     $body = file_get_contents("php://input");
                     $json = json_decode($body, true);
                     if (!$uri[3]) {
-                        if (!isset($json["id_planning"]) || !isset($json["description"]) || !isset($json["date_activite"]) || !isset($json["id_index_planning"]) || !isset($json["id_activite"])) {
+                        if (!isset($json["id_planning"]) || !isset($json["description"]) || !isset($json["date_activite"])  || !isset($json["id_activite"])) {
                             exit_with_message("Plz give, at least, the id_planning, id_activite, description,  date_activite and id_index_planning");
                         }
-                        exit_with_content($planningService->updatePlanning($json["id_planning"], $json["description"], $json["date_activite"], $json["id_index_planning"], $json["id_activite"]));
+                        $role=getRoleFromApiKey($apiKey);
+                        if ($role ==2 || $role==1) {
+                        $id_index_planning=2;
+                        }elseif ($role==4) {
+                            $id_index_planning=3;
+                        }
+
+                        $dateString = $json['date_activite'];
+
+                        try {
+                            $dateTime = new DateTime($dateString);
+                            $dateTimeString = $dateTime->format("Y-m-d H:i:s");
+                            $hour = $dateTime->format('H');
+                            $min = $dateTime->format('i');
+                            $sec = $dateTime->format('s');
+
+                            if ($hour === '00' && $min === '00' && $sec === '00') {
+                                exit_with_message("Vous devez spécifier le bon format de l'heure ou l'heure ne peut pas être minuit.");
+                            }
+                        } catch (Exception $e) {
+                            exit_with_message("Erreur Controller : " . $e->getMessage());
+                        }
+
+
+                        exit_with_content($planningService->updatePlanning($json["id_planning"], $json["description"], $json["date_activite"],$id_index_planning, $json["id_activite"]));
                     }
                     elseif ($uri[3] && $uri[3]=== 'validate' && filter_var($uri[4], FILTER_VALIDATE_INT)) {
                         if (!isset($json["id_index_planning"])) {
@@ -177,7 +204,7 @@
                         exit_with_message("No planning specified", 400);
                     } else {
 
-                    $planningService->deletePlanning($uri[3]);
+                    $planningService->deletePlanning($uri[3],$apiKey);
                     }
 
                     break;

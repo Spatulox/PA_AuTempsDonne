@@ -168,15 +168,14 @@ class PlanningRepository {
         exit_with_message("Erreur, le planning n'a pas pu être mis à jour. Veuillez réessayer.", 500);
     }
 
-    return $planning;
+    exit_with_content($this->getPlanningByid($planning->id_planning));
 }
 
 
     //------------------------------------------------------------------------------------------------------------------------------
 
     public function deletePlanning($id){
-        $deleted = deleteDB("PLANNINGS", "id_planning=".$id);
-
+        $deleted = deleteDB("PLANNINGS", "id_planning=".$id,"bool");
         if(!$deleted){
             exit_with_message("Error, the planning can't be deleted, plz try again", 500);
         }else{
@@ -384,7 +383,8 @@ class PlanningRepository {
     public function deletejoin($user_id, $id_planning)
     {
         $del=deleteDB("PARTICIPE", "id_planning= ". $id_planning ." AND id_user=".$user_id,"bool");
-        if ($del)
+
+        if ($del !== false)
         {
             exit_with_message("l'utilisateur a etait supprimer de l'activiter ",200);
         }else{
