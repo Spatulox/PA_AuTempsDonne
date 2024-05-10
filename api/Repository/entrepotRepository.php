@@ -166,7 +166,7 @@ class EntrepotRepository
         if ($resquest) {
             for ($i = 0; $i < count($resquest); $i++) {
 
-                $check=selectDB("STOCKS", "*", "id_etagere=" . $id. " AND quantite_produit >0 AND date_sortie IS NULL","bool");
+                $check=selectDB("STOCKS", "*", "id_etagere=" . $resquest[$i]["id_etagere"]. " AND quantite_produit >0 AND date_sortie IS NULL","bool");
                 if ($check){
 
                     exit_with_message("etagere is already in use",500);
