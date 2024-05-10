@@ -192,9 +192,8 @@ class EntrepotRepository
     public function createEtageres($entrepot, $etageres_place)
     {
         for ($i = 0; $i < count($etageres_place); $i++) {
-            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etageres_place[$i], $entrepot],"bool" );
-
-            if (!$request_collecte) {
+            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etageres_place[$i], $entrepot]);
+            if ($request_collecte==false) {
                 exit_with_message("Error creating Etagere", 500);
             }
         }
@@ -223,6 +222,12 @@ class EntrepotRepository
                 exit_with_message("etagere is already in use",500);
 
             }
+            $nb=selectDB("ETAGERES", "*", "id_entrepot=" . $resquest[0]["id_entrepot"], "bool");
+
+            if (count($nb) ==1){
+                exit_with_message("Imposible de supprimer la derniére etagere",500);
+            }
+
             deleteDB("ETAGERES", "id_etagere=" . $id);
             exit_with_message("Etagere deleted with success ", 200);
         }else{
