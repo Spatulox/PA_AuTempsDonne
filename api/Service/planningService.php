@@ -109,7 +109,9 @@ class PlanningService {
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
             $planningRepository = new PlanningRepository();
             return $planningRepository->linkPlanning($planning);
+
         }
+        exit_with_message("You don't have access to this command", 403);
     }
 
     //----------------------------------------------------------------------------------------

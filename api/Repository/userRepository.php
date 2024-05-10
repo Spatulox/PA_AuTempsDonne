@@ -224,12 +224,16 @@ class UserRepository {
 
     public function dispoUser($id_dispo, $id)
     {
+        $check =selectDB("DISPONIBILITE" , "*", "id_user='".$id."'", "bool");
+        if ($check){
+            exit_with_message("User already dispoted",500);
+        }
         for ($i = 0; $i <count($id_dispo) ; $i++) {
 
             $res=insertDB("DISPONIBILITE" ,["id_dispo", "id_user"], [$id_dispo[$i], $id]);
         }
 
-        return $res;
+        return $this->getDispoUserMe($id);
     }
 
     //--------------------------------------------------------------------------------
