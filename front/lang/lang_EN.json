@@ -222,6 +222,21 @@
 		}
 	},
 	"vehicle": {
-		"title" : "Vehicle Menu"
+		"title" : "Vehicle Menu",
+		"tab1": {
+			"title" : "Vehicle list",
+			"id": "ID_Vehicle",
+			"name": "Name/Lastname",
+			"storehouse": "Storehouse",
+			"buttonSee": "See"
+		},
+		"tab2": {
+			"title" : "Vehicle details",
+			"errorMsg" : "No user selected"
+		},
+		"tab3": {
+			"title": "Vehicle truc",
+			"errorMsg": "Nothing to show"
+		}
 	}
 }
