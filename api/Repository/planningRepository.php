@@ -168,7 +168,7 @@ class PlanningRepository {
         exit_with_message("Erreur, le planning n'a pas pu être mis à jour. Veuillez réessayer.", 500);
     }
 
-    return $planning;
+    exit_with_content($this->getPlanningByid($planning->id_planning));
 }
 
 
