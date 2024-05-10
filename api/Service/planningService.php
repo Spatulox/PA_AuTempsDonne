@@ -95,9 +95,15 @@ class PlanningService {
     */
     public function joinActivity($userId, $planningId, $confirme, $apiKey) {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
-        if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
+        if ($userRole[0]==1 || $userRole[0]==2 ) {
+            $confirme="non";
             $planningRepository = new PlanningRepository();
             return $planningRepository->joinActivity($userId, $planningId,$confirme);
+        }elseif ($userRole[0]==3) {
+            $planningRepository = new PlanningRepository();
+            return $planningRepository->joinActivity($userId, $planningId,$confirme);
+        }else{
+            exit_with_message("vous n'avez pas les droits",500);
         }
     }
 
@@ -109,7 +115,9 @@ class PlanningService {
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
             $planningRepository = new PlanningRepository();
             return $planningRepository->linkPlanning($planning);
+
         }
+        exit_with_message("You don't have access to this command", 403);
     }
 
     //----------------------------------------------------------------------------------------
@@ -173,6 +181,18 @@ class PlanningService {
         if ($userRole[0]==1 || $userRole[0]==2) {
             $planningRepository = new PlanningRepository();
             return $planningRepository->updateValidatePlanning($id_index_planning,$id);
+        }else{
+            exit_with_message("You didn't have access to this command");
+        }
+    }
+
+    public function updatejoinPlanning($id_planning,$confirme, $apiKey)
+    {
+        $userRole = $this->getUserRoleFromApiKey($apiKey);
+        if ($userRole[0]==3) {
+            $id=getIdUserFromApiKey($apiKey);
+            $planningRepository = new PlanningRepository();
+            return $planningRepository->updatejoinPlanning($id_planning,$confirme,$id);
         }else{
             exit_with_message("You didn't have access to this command");
         }

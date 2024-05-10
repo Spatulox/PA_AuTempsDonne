@@ -373,6 +373,13 @@ class PlanningRepository {
 
     }
 
+    public function updatejoinPlanning($id_planning, $confirme, $id)
+    {
+        updateDB("PARTICIPE" ,["confirme"], [$confirme] ,"id_planning=".$id_planning." AND id_user=".$id);
+        return $this->getPlanningByid($id_planning);
+    }
+
+
 
 }
 ?>
