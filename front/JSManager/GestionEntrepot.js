@@ -22,22 +22,45 @@ class Entrepot extends Admin {
         return response
     }
 
+    async getPlaceDispoEntrepot(id){
+
+        let response = await this.fetchSync(this.adresse + '/entrepot/place/' + id, this.optionGet(), false)
+        if (!this.compareAnswer(response)) {
+            return false
+        }
+        return response
+
+    }
+
     /**
      * Update an entrepot
      * @param name
      * @param localisation
      * @returns {Promise<*|boolean>}
      */
-    async createEntrepot(nom_entrepot = null, localisation = null) {
-        if (name == null || localisation == null) {
-            popup("Vous devez spécifier un nom et une localisation pour créer un entrepot");
-            return
+    async createEntrepot(data) {
+        let response = await this.fetchSync(this.adresse + '/entrepot/new', this.optionPost(data))
+        if (!this.compareAnswer(response)) {
+            return false
         }
-        const data = {
-            "nom": nom_entrepot,
-            "localisation": localisation,
+        return response
+    }
+
+    async createAddress(string){
+        const data ={
+            "address":string
         }
-        let response = await this.fetchSync(this.adresse + '/entrepot', this.optionPost(data))
+
+        let response = await this.fetchSync(this.adresse + '/adresse/create', this.optionPost(data))
+        if (!this.compareAnswer(response)) {
+            return false
+        }
+        return response
+    }
+
+    async deleteAddress(id){
+
+        let response = await this.fetchSync(this.adresse + '/adresse/delete/'+id, this.optionDelete(), false)
         if (!this.compareAnswer(response)) {
             return false
         }
