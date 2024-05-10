@@ -386,7 +386,7 @@ class PlanningRepository {
         $del=deleteDB("PARTICIPE", "id_planning= ". $id_planning ." AND id_user=".$user_id,"bool");
         if ($del)
         {
-            exit_with_content("l'utilisateur a etait supprimer de l'activiter ",200);
+            exit_with_message("l'utilisateur a etait supprimer de l'activiter ",200);
         }else{
         exit_with_message("erreur lors  de la suppression de utilisateur",500);
         }

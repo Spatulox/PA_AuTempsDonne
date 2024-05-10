@@ -10,6 +10,7 @@ class UserService {
      *  Récupère tous les utilisateurs
     */
     public function getAllUsers() {
+
         $userRepository = new UserRepository();
         return $userRepository->getUsers();
     }

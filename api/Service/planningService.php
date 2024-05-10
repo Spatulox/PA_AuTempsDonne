@@ -94,6 +94,16 @@ class PlanningService {
      *  Rejoindre une activité
     */
     public function joinActivity($userId, $planningId, $confirme, $apiKey) {
+
+        $date =selectDB("PLANNINGS", "DATE(date_activite)" ,"id_planning=".$planningId);
+        $join="INNER JOIN PARTICIPE pa on pa.id_planning= pl.id_planning";
+        $check=selectJoinDB("PLANNINGS pl" ,"*",$join,"id_user=".$userId. " AND DATE(pl.date_activite) ='".$date[0]["DATE(date_activite)"]."'","bool");
+
+        if(count($check)>=1 && $check !== false) {
+            exit_with_message("un utilisateur ne peut pas en faire trop d'activiter en 1 journee",400);
+        }
+
+
         $userRole = $this->getUserRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 ) {
             $confirme="non";

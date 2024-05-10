@@ -15,7 +15,7 @@ class StockRepository
     public function getAllStock()
     {
 
-        $stockArray = selectDB("STOCKS", "*", -1);
+        $stockArray = selectDB("STOCKS", "*", " quantite_produit >0 AND date_sortie IS NULL");
 
         $stock = [];
 
@@ -49,13 +49,13 @@ class StockRepository
     public function getAllStockInEntrepots($id)
     {
         $string = "id_entrepot=" . $id;
-        $entrepots = selectDB("ENTREPOTS", "id_entrepot", $string, "bool");
+        $entrepots = selectDB("ENTREPOTS", "id_entrepot", $string,"bool");
 
         if (!$entrepots) {
             exit_with_message("cette entrepot n'existe pas ", 200);
         }
         $string_join = "INNER JOIN ETAGERES ON STOCKS.id_etagere = ETAGERES.id_etagere INNER JOIN ENTREPOTS ON ETAGERES.id_entrepot = ENTREPOTS.id_entrepot ";;
-        $stockArray = selectJoinDB("STOCKS", "*", $string_join, "ENTREPOTS.$string");
+        $stockArray = selectJoinDB("STOCKS", "*", $string_join, "ENTREPOTS.$string"." AND quantite_produit >0 AND date_sortie IS NULL");
 
 
         $stock = [];
