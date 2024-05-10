@@ -413,6 +413,10 @@ function deleteDB($table, $condition, $debug = null)
             exit_with_message("PDO error :" . $e->getMessage());
         }
 
+        if($debug == "bool"){
+            return false;
+        }
+
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
