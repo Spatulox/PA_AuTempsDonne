@@ -255,7 +255,7 @@ class UserRepository {
         }
 
         for ($i = 0; $i <count($uniqueUsers); $i++) {
-            $res = selectJoinDB("DISPONIBILITE", $columns, $join,"UTILISATEUR.id_user=".$uniqueUsers[$i]["id_user"]);
+            $res = selectJoinDB("DISPONIBILITE", $columns, $join,"UTILISATEUR.id_user=".$uniqueUsers[$i]["id_user"],"bool");
 
             for ($j = 0; $j <count($res); $j++) {
 
@@ -269,6 +269,7 @@ class UserRepository {
             unset($res);
             unset($dispoArray);
         }
+        echo 1;
         return $dispos;
     }
 
