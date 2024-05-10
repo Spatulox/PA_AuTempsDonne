@@ -13,6 +13,12 @@ class adresseService {
         $AdresseRepository = new AdresseRepository();
         return $AdresseRepository->getAdresseById($id);
     }
+
+    public function CreateAdresse($address)
+    {$AdresseRepository = new AdresseRepository();
+        return $AdresseRepository->CreateAdresse($address);
+
+    }
 }
 
 ?>
