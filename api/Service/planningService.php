@@ -85,10 +85,17 @@ class PlanningService {
     /*
      *  Supprimer un planning
     */
-    public function deletePlanning($id) {
-        $planningRepository = new PlanningRepository();
-        return $planningRepository->deletePlanning($id);
+    public function deletePlanning($id,$apiKey) {
+
+        $userRole = $this->getUserRoleFromApiKey($apiKey);
+        if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
+             $planningRepository = new PlanningRepository();
+            return $planningRepository->deletePlanning($id);
+
+        }
+        exit_with_message("You don't have access to this command", 403);
     }
+
 
     /*
      *  Rejoindre une activité

@@ -177,7 +177,7 @@
                         exit_with_message("No planning specified", 400);
                     } else {
 
-                    $planningService->deletePlanning($uri[3]);
+                    $planningService->deletePlanning($uri[3],$apiKey);
                     }
 
                     break;
