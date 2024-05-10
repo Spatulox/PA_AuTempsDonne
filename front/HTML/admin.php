@@ -40,7 +40,7 @@
                     <ul class="ul">
                         <li><a style="color: #0c2124" href="./storehouse.php" target="_blank"><?php echo($data["storehouse"]["title"]) ?></a></li>
                         <li><a style="color: #0c2124" href="./vehicle.php" target="_blank"><?php echo($data["vehicle"]["title"]) ?></a></li>
-                        <li><a style="color: #0c2124" href="./product.php" target="_blank"><?php echo($data["produit"]["title"]) ?></a></li>
+                        <li><a style="color: #0c2124" href="./stock.php" target="_blank"><?php echo($data["stock"]["title"]) ?></a></li>
                     </ul>
                 </div>
             </section>

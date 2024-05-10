@@ -114,8 +114,28 @@
 		"title":"Planning",
 		"sectionTitle":"Planning"
 	},
-	"produit": {
-		"title": "Produit Menu"
+	"stock": {
+		"title": "Stock Menu",
+		"tab1": {
+			"title": "Storehouse List",
+			"ID_Stock": "ID Stock",
+			"QTE": "Quantity (L)",
+			"Date_Entry": "Date Entry",
+			"Date_Exit": "Date Exit",
+			"Date_perem": "Date Peremption",
+			"desc": "Description",
+			"IdEtagere": "ID Shelf",
+			"Storehouse_id": "Storehouse ID",
+			"Storehouse_desc": "Storehouse name",
+			"btn_see": "SEE"
+		},
+		"tab2": {
+			"title": "Stock in Storehouse",
+			"errorMsg": "Nothing to show"
+		},
+		"tab3": {
+			"title": "Add / Remove Stock"
+		}
 	},
 	"signup_login":{
 		"title":"Log In/Sign Up",
