@@ -11,14 +11,18 @@ function entrepotController($uri, $apiKey) {
 
         // Get an entrepot
         case 'GET':
-            
-            if($uri[3]){
+            if (!$uri[3]){
+                $entepotService = new EntrepotService();
+                $entepotService->getAllEntrepot();
+            }
+            elseif(filter_var($uri[3], FILTER_VALIDATE_INT)){
+
                 $entepotService = new EntrepotService();
                 $entepotService->getEntrepotById($uri[3]);
             }
-            else{
+            elseif ($uri[3]=="place" && filter_var($uri[4], FILTER_VALIDATE_INT)) {
                 $entepotService = new EntrepotService();
-                $entepotService->getAllEntrepot();
+                $entepotService->getEntrepotPlaceById($uri[4]);
             }
 
             break;
