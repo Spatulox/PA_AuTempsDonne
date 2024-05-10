@@ -130,7 +130,7 @@
 
 <script type="text/javascript" defer>
     const stock = new StockAdmin()
-    const entrepot = new Entrepot()
+    const entrepot = new EntrepotAdmin()
     let entre = []
     let lesStocks = []
 

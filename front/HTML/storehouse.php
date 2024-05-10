@@ -91,7 +91,7 @@
 
 <script>
 
-    const entrepot = new Entrepot()
+    const entrepot = new EntrepotAdmin()
     let dataEntrepot = []
 
     async function fillListing(){

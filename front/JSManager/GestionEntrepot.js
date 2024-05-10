@@ -1,4 +1,4 @@
-class Entrepot extends Admin {
+class EntrepotAdmin extends Admin {
 
 
     //-----------------------------------ENTREPOTS-----------------------------------
