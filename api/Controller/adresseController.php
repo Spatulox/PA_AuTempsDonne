@@ -52,6 +52,16 @@ function adresseController($uri, $apiKey){
             break;
 
         case 'DELETE':
+
+            $AdresseService = new adresseService();
+
+            if($uri[3]=="delete" && $uri[4]){
+
+                $AdresseService->DeleteAdresse($uri[4]);
+            }
+
+            exit_with_message("You need to specifie the id you want to delete", 403);
+
             break;
 
         default:

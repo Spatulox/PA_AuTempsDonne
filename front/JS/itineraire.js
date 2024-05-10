@@ -193,7 +193,7 @@ function optionPut(data) {
  * Create the header option for a DELETE request
  * @returns {{headers: {apikey: string, "Content-Type": string}, method: string}}
  */
-function optionDelete(data) {
+function optionDelete() {
 
     const apikey = getCookie("apikey")
 

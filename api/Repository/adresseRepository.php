@@ -51,12 +51,32 @@ class adresseRepository {
 
     public function CreateAdresse($address)
     {
+        $add = selectDB("ADRESSE", "*", "adresse='".$address."'", "bool");
+
+        if($add != false){
+            exit_with_message("This address already exist");
+        }
+
         $res=insertDB("ADRESSE", ["adresse"],[$address]);
         if (!$res) {
             exit_with_message("Erreur: creation addresse",500);
         }else{
-            exit_with_message("success",200);
+            $add = selectDB("ADRESSE", "*", "adresse='".$address."'", "bool")[0];
+            exit_with_content(new adresseModel($add["id_adresse"], $add["adresse"]));
         }
+
+    }
+
+    public function DeleteAdresse($id){
+        $add = selectDB("ADRESSE", "*", "id_adresse=".$id, "bool");
+
+        if(count($add) == 0 || $add === false){
+            exit_with_message("L'adresse ".$id." n'existe pas");
+        }
+        if(deleteDB("ADRESSE", "id_adresse=".$id, "bool")){
+            exit_with_message("Address successfully deleted", 200);
+        }
+        exit_with_message("Erreur: delete addresse");
 
     }
 }

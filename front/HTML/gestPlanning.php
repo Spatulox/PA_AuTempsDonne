@@ -42,7 +42,7 @@
         </div>
 
         <div id="tab1" class="tabcontent">
-            <h3><?php echo($data["gestPlanning"]["tab1"]["title"]) ?></h3>
+            <h2><?php echo($data["gestPlanning"]["tab1"]["title"]) ?></h2>
             <table>
                 <thead>
                 <tr>
@@ -62,7 +62,7 @@
         </div>
 
         <div id="tab2" class="tabcontent">
-            <h3><?php echo($data["gestPlanning"]["tab2"]["title"]) ?></h3>
+            <h2><?php echo($data["gestPlanning"]["tab2"]["title"]) ?></h2>
             <input id="inputDate" type="date" class="marginBottom20 search-box" oninput="searchDaily()">
             <table>
                 <thead>
@@ -82,7 +82,7 @@
         </div>
 
         <div id="tab3" class="tabcontent">
-            <h3><?php echo($data["gestPlanning"]["tab3"]["title"]) ?></h3>
+            <h2><?php echo($data["gestPlanning"]["tab3"]["title"]) ?></h2>
             <table>
                 <thead>
                 <tr>

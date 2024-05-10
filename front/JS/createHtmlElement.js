@@ -38,9 +38,27 @@ function createBodyTableau(tbody, dataArray, hiddenKeys = [], buttonText = null,
                     cellContent.classList.add("noPadding");
                     cellContent.classList.add('cell-content');
                     value.forEach(arrayItem => {
-                        const itemElement = document.createElement('li');
-                        itemElement.textContent = arrayItem;
-                        cellContent.appendChild(itemElement);
+
+                        if (typeof arrayItem === 'object' && arrayItem !== null) {
+                            const itemElement = document.createElement('li');
+                            const itemContent = document.createElement('ul');
+                            itemContent.classList.add("border10")
+                            //itemContent.classList.add("noPadding");
+                            itemContent.classList.add('cell-content');
+                            for (const [key, val] of Object.entries(arrayItem)) {
+                                if (!hiddenKeys.includes(key)) {
+                                    const subItemElement = document.createElement('li');
+                                    subItemElement.textContent = `${key}: ${val}`;
+                                    itemContent.appendChild(subItemElement);
+                                }
+                            }
+                            itemElement.appendChild(itemContent);
+                            cellContent.appendChild(itemElement);
+                        } else {
+                            const itemElement = document.createElement('li');
+                            itemElement.textContent = arrayItem;
+                            cellContent.appendChild(itemElement);
+                        }
                     });
                     cell.appendChild(cellContent);
                 } else if (key === 'id_role') {

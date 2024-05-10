@@ -178,7 +178,7 @@ class General {
      * Create the header option for a DELETE request
      * @returns {{headers: {apikey: string, "Content-Type": string}, method: string}}
      */
-    optionDelete(data) {
+    optionDelete() {
         if (this.apikey === "hidden" || this.apikey === null) {
             this.loginApi();
         }
@@ -189,7 +189,7 @@ class General {
                 'Content-Type': 'application/json',
                 'apikey': `${this.apikey}`
             },
-            body: JSON.stringify(data)
+            //body: JSON.stringify(data)
         };
 
         return options;

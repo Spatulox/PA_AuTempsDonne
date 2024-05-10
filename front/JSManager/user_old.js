@@ -331,10 +331,8 @@ class UserOld {
       popup("Il faut un nombre entier pour delete un entrepot")
       return
     }
-    const data = {
-      "id_entrepot": id_entrepot
-    }
-    let response = await this.fetchSync(this.adresse+'/entrepot', this.optionDelete(data))
+
+    let response = await this.fetchSync(this.adresse+'/entrepot/'+id_entrepot, this.optionDelete())
     if(!this.compareAnswer(response)){
       return false
     }
@@ -625,7 +623,7 @@ class UserOld {
    * Create the header option for a DELETE request
    * @returns {{headers: {apikey: string, "Content-Type": string}, method: string}}
    */
-  optionDelete(data) {
+  optionDelete() {
     if (this.apikey === "hidden" || this.apikey === null) {
       this.loginApi();
     }
@@ -636,7 +634,7 @@ class UserOld {
         'Content-Type': 'application/json',
         'apikey': `${this.apikey}`
       },
-      body: JSON.stringify(data)
+      //body: JSON.stringify(data)
     };
 
     return options;

@@ -20,6 +20,11 @@ class adresseService {
         return $AdresseRepository->CreateAdresse($address);
 
     }
+
+    public function DeleteAdresse($id){
+        $AdresseRepository = new AdresseRepository();
+        $AdresseRepository->DeleteAdresse($id);
+    }
 }
 
 ?>

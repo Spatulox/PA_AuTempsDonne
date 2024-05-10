@@ -325,6 +325,15 @@ tr:hover {
   margin: auto 50px;
 }
 
+.border10{
+    border-radius: 5px;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+    padding: 10px 15px;
+    margin: 8px 10px;
+}
+
 .flex{
   display: flex;
 }
