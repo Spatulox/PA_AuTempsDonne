@@ -15,4 +15,20 @@ class StockAdmin extends Admin{
         }
         return response
     }
+
+    async addRetrieveFromEntrepot(data){
+        let response = await this.fetchSync(this.adresse + '/stock', this.optionPost(data))
+        if (!this.compareAnswer(response)) {
+            return false
+        }
+        return response
+    }
+
+    async getExitedStock(id_entrepot){
+        let response = await this.fetchSync(this.adresse + '/stock', this.optionGet())
+        if (!this.compareAnswer(response)) {
+            return false
+        }
+        return response
+    }
 }
