@@ -51,7 +51,7 @@ class adresseRepository {
 
     public function CreateAdresse($address)
     {
-        $res=insertDB("ADRESSE", "adresse",$address);
+        $res=insertDB("ADRESSE", ["adresse"],[$address]);
         if (!$res) {
             exit_with_message("Erreur: creation addresse",500);
         }else{

@@ -59,31 +59,18 @@ function adresseController($uri, $apiKey){
             exit();
     }
 
-    function isValidAddress($address)
-    {
 
-        $pattern = '/^(\d+\s+(?:[A-Za-z\s\-\']+(?:\s+[A-Za-z\s\-\']*)?))\s*,\s*(\d{5})\s+([A-Za-z\s\-\']+)$/';
-
-
-        if (preg_match($pattern, $address, $matches)) {
-
-            $streetAddress = $matches[1];
-            $postalCode = $matches[2];
-            $city = $matches[3];
-
-            if (strlen($postalCode) !== 5 || !ctype_digit($postalCode)) {
-                return false;
-            }
-
-            if (!preg_match('/^[A-Za-z\s\-\']+$/', $city)) {
-                return false;
-            }
-
-            return true;
-        }
-
-        return false;
-    }
 }
+function isValidAddress($address)
+{
 
+    $pattern = '/^\d+ [A-Za-z \x{00A0}-\x{00FF}]{3,100}, \d{5} [A-Za-z \x{00A0}-\x{00FF}]{3,50}$/';
+
+    if (preg_match($pattern, $address, $matches) > 0) {
+        return true;
+    }
+    exit_with_message("Address format incorrect", 400);
+
+    return false;
+}
 ?>
