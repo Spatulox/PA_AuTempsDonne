@@ -131,10 +131,16 @@
 		},
 		"tab2": {
 			"title": "Stock in Storehouse",
-			"errorMsg": "Nothing to show"
+			"errorMsg": "Select a stock before"
 		},
 		"tab3": {
-			"title": "Add / Remove Stock"
+			"title": "Add Product to Stock"
+		},
+		"tab4": {
+			"title": "Retrieve from Stock"
+		},
+		"tab5": {
+			"title": "Exited Stock History"
 		}
 	},
 	"signup_login":{
