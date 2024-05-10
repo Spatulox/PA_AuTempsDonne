@@ -192,9 +192,8 @@ class EntrepotRepository
     public function createEtageres($entrepot, $etageres_place)
     {
         for ($i = 0; $i < count($etageres_place); $i++) {
-            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etageres_place[$i], $entrepot],"bool" );
-
-            if (!$request_collecte) {
+            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etageres_place[$i], $entrepot]);
+            if ($request_collecte==false) {
                 exit_with_message("Error creating Etagere", 500);
             }
         }
