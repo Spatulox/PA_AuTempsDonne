@@ -123,9 +123,18 @@
                             exit_with_message("Please provide date ", 400);
                         }
                         exit_with_content($planningService->getPlanningBydate($apiKey,($json['date_activite'])));
+                    }elseif ($uri[3]=="deletejoin") {
+
+                        if (!isset($json['user_id']) || !isset($json['id_planning'])) {
+                            exit_with_message("Please provide both user_id and id_planning to join an activity", 400);
+                        }
+                        $planningService->deletejoin($json['user_id'], $json['id_planning'], $apiKey);
                     }
 
                     else {
+                        if (!isset($json['user_id']) || !isset($json['id_planning'])) {
+                            exit_with_message("Please provide both user_id and id_planning to join an activity", 400);
+                        }
                         exit_with_message("Invalid action specified", 400);
                     }
 
@@ -164,8 +173,11 @@
 
                     if(!$uri[3]){
                         exit_with_message("No planning specified", 400);
-                    }
+                    } else {
+
                     $planningService->deletePlanning($uri[3]);
+                    }
+
                     break;
 
             

@@ -175,6 +175,8 @@ class PlanningService {
 
     }
 
+    //--------------------------------------------------------------------------------------
+
     public function updateValidatePlanning($id_index_planning, $id, $apiKey)
     {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
@@ -186,6 +188,8 @@ class PlanningService {
         }
     }
 
+    //--------------------------------------------------------------------------------------
+
     public function updatejoinPlanning($id_planning,$confirme, $apiKey)
     {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
@@ -195,6 +199,19 @@ class PlanningService {
             return $planningRepository->updatejoinPlanning($id_planning,$confirme,$id);
         }else{
             exit_with_message("You didn't have access to this command");
+        }
+    }
+
+    //--------------------------------------------------------------------------------------
+
+    public function deletejoin($user_id, $id_planning, $apiKey)
+    {
+        $userRole = $this->getUserRoleFromApiKey($apiKey);
+        if ($userRole[0]==1 || $userRole[0]==2 ) {
+            $planningRepository = new PlanningRepository();
+            return $planningRepository->deletejoin($user_id, $id_planning);
+        }else{
+            exit_with_message("vous n'avez pas les droits",500);
         }
     }
 
