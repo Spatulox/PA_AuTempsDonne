@@ -51,11 +51,18 @@ class adresseRepository {
 
     public function CreateAdresse($address)
     {
+        $add = selectDB("ADRESSE", "*", "adresse='".$address."'", "bool");
+
+        if($add != false){
+            exit_with_message("This address already exist");
+        }
+
         $res=insertDB("ADRESSE", ["adresse"],[$address]);
         if (!$res) {
             exit_with_message("Erreur: creation addresse",500);
         }else{
-            exit_with_message("success",200);
+            $add = selectDB("ADRESSE", "*", "adresse='".$address."'", "bool")[0];
+            exit_with_content(new adresseModel($add["id_adresse"], $add["adresse"]));
         }
 
     }
