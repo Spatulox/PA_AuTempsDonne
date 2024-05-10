@@ -133,7 +133,26 @@
 		}
 	},
 	"storehouse": {
-		"title": "Storehouse Menu"
+		"title": "Storehouse Menu",
+		"tab1": {
+			"title": "Listing",
+			"IDStorehouse": "ID Storehouse",
+			"name": "Name",
+			"ParkingPlace":"Parking Places",
+			"Addresses": "Address",
+			"Rangement": "Store Place",
+			"See": "See",
+			"shelf": "Shelf places",
+			"shelfId" : "ID Shelf"
+		},
+		"tab2": {
+			"title": "Details",
+			"errorMsg": "Nothing to show, select a storehouse before",
+			"createShelf": " Create a Shelf"
+		},
+		"tab3": {
+			"title": "Create Storehouse / Shelves"
+		}
 	},
 	"ticket": {
 		"title": "Ticket Menu",
