@@ -283,5 +283,16 @@ class StockService {
         $act= (int) $act[0]["quantite_produit"]- (int)$qteEtagere;
         updateDB("STOCKS",["quantite_produit"] , [$act] ,"id_stock=".$id_stock);
     }
+
+    public function getAllStockdateSortie($date_sortie, $apiKey)
+    {
+        $userRole = getRoleFromApiKey($apiKey);
+        if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
+            $stockRepository = new StockRepository();
+            return $stockRepository->getAllStockdateSortie($date_sortie);
+        }else{
+            exit_with_message("You didn't have access to this command");
+        }
+    }
 }
 ?>
