@@ -105,7 +105,7 @@ class EntrepotRepository
         $request = insertDB("ENTREPOTS", ["nom_entrepot", "parking", "id_adresse"], [$entrepot["nom_entrepot"], $entrepot["parking"], $entrepot["id_adresse"]]);
 
         if (!$request) {
-            exit_with_message("Error creating entrepot", 400);
+            exit_with_message("Error creating entrepot", 500);
         }
         $id_entrepot = $this->getLastInsertId("ENTREPOTS", "id_entrepot");
 
@@ -113,7 +113,7 @@ class EntrepotRepository
             $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etagere["nombre_de_place"], $id_entrepot[0]["id_entrepot"]]);
 
             if (!$request_collecte) {
-                exit_with_message("Error creating etagere", 400);
+                exit_with_message("Error creating etagere", 500);
             }
 
             exit_with_message("Sucessfully created entrepot", 200);
@@ -162,9 +162,19 @@ class EntrepotRepository
         $resquest = selectDB("ETAGERES", "*", "id_entrepot=" . $id, "bool");
 
         if ($resquest) {
+            for ($i = 0; $i < count($resquest); $i++) {
+
+                $check=selectDB("STOCKS", "*", "id_etagere=" . $id. " AND quantite_produit >0 AND date_sortie IS NULL","bool");
+                if ($check){
+
+                    exit_with_message("etagere is already in use",500);
+
+                }
+            }
+
             $tmp = deleteDB("ETAGERES", "id_entrepot=" . $id);
             if (!$tmp) {
-                exit_with_message("The demande doesn't exist", 200);
+                exit_with_message("The demande doesn't exist", 500);
             }
         }
         $tmp = deleteDB("ENTREPOTS", "id_entrepot=" . $id);
@@ -183,7 +193,7 @@ class EntrepotRepository
             $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etageres_place[$i], $entrepot] );
 
             if (!$request_collecte) {
-                exit_with_message("Error creating collecte", 400);
+                exit_with_message("Error creating collecte", 500);
             }
         }
         exit_with_message("Etagere add with success", 200);
@@ -205,10 +215,16 @@ class EntrepotRepository
         $resquest = selectDB("ETAGERES", "*", "id_etagere=" . $id, "bool");
 
         if ($resquest) {
+            $check=selectDB("STOCKS", "*", "id_etagere=" . $id. " AND quantite_produit >0 AND date_sortie IS NULL","bool");
+            if ($check){
+
+                exit_with_message("etagere is already in use",500);
+
+            }
             deleteDB("ETAGERES", "id_etagere=" . $id);
             exit_with_message("Etagere deleted with success ", 200);
         }else{
-            exit_with_message("The Etagere doesn't exist", 200);
+            exit_with_message("The Etagere doesn't exist", 500);
         }
 
     }
