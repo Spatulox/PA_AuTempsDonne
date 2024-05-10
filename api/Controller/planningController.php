@@ -94,6 +94,7 @@
                             exit_with_message("Error while creating the planning.", 500);
                         }
                     }
+
                     elseif ($uri[3] && $uri[3]=== 'join_activity') {
                         if (!isset($json['user_id']) || !isset($json['id_planning'])) {
                             exit_with_message("Please provide both user_id and id_planning to join an activity", 400);
@@ -102,6 +103,7 @@
                         $planningService->joinActivity($json['user_id'], $json['id_planning'], $json['confirme'], $apiKey);
 
                     }
+
                     elseif ($uri[3] && $uri[3]=== 'link') {
                         if (!isset($json['id_trajet']) || !isset($json['id_planning'])) {
                             exit_with_message("Please provide both user_id and id_planning to join an activity", 400);
