@@ -16,8 +16,8 @@ class VehicleAdmin extends Admin{
         return response
     }
 
-    async createVehicle(id){
-        let response = await this.fetchSync(this.adresse+'/vehicule/'+id, this.optionPost())
+    async createVehicle(data){
+        let response = await this.fetchSync(this.adresse+'/vehicule/', this.optionPost(data))
         if(!this.compareAnswer(response)){
             return false
         }

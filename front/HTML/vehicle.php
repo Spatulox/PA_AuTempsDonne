@@ -53,24 +53,18 @@
 
         <div id="tab3" class="tabcontent">
             <h2 class="textCenter"><?php echo($data["vehicle"]["tab3"]["title"]) ?></h2>
-            <table>
-                <thead>
-                <tr>
-                    <td><?php echo $data["vehicle"]["tab1"]["id"] ?></td>
-                    <td><?php echo $data["vehicle"]["tab1"]["desc"] ?></td>
-                    <td><?php echo $data["vehicle"]["tab1"]["date"] ?></td>
-                    <td><?php echo $data["vehicle"]["tab1"]["state"] ?></td>
-                    <td><?php echo $data["vehicle"]["tab1"]["type"] ?></td>
-                    <td><?php echo $data["vehicle"]["tab1"]["participateUsers"] ?></td>
-                    <td><?php echo $data["vehicle"]["tab1"]["button"] ?></td>
-                    <td><?php echo $data["vehicle"]["tab1"]["buttonD"] ?></td>
-                </tr>
-                </thead>
-                <tbody id="">
-                <?php echo($data["vehicle"]["tab3"]["errorMsg"]) ?>
-                <!-- Les lignes de données seront insérées ici par JavaScript -->
-                </tbody>
-            </table>
+            <hr>
+            <div class="textCenter">
+                <input id="nameV" class="marginTop10 search-box" type="text"
+                       placeholder="<?php echo($data["vehicle"]["tab1"]["name"]) ?>"><br>
+                <input id="capacityV" class="marginTop10 search-box" type="number"
+                       placeholder="<?php echo($data["vehicle"]["tab1"]["capacity"]) ?>"><br>
+                <input id="placeV" class="marginTop10 search-box" type="number"
+                       placeholder="<?php echo($data["vehicle"]["tab1"]["place"]) ?>"><br>
+                <div id="leSelectAremplir" class="marginTop10 marginAuto search-box"><?php echo($data["vehicle"]["tab2"]["errorMsg"]) ?>, Impossible to select storehouse</div><br>
+                <input class="marginTop30" type="button" onclick="addVehicle()"
+                       value="<?php echo($data["vehicle"]["tab3"]["title"]) ?>">
+            </div>
         </div>
     </div>
 
@@ -89,12 +83,46 @@
         const bodyList = document.getElementById('bodyList')
         bodyList.innerHTML = ""
         dataVehicle = await vehicle.getAllVehicle()
-        console.log(dataVehicle)
         createBodyTableau(bodyList, dataVehicle, [], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
 
     }
 
-    async function seeDetail(id_vehicle) {
+    async function fillEnterpotList() {
+        const entrepot = new EntrepotAdmin()
+        await entrepot.connect()
+        let dataEtr = await entrepot.getEntrepot()
+
+        let select = document.getElementById("leSelectAremplir")
+        select.innerHTML = ""
+
+        let option = []
+        const debut = "Choose"
+
+        for (const key in dataEtr) {
+
+            option[key] = {
+                "value": dataEtr[key].id_entrepot,
+                "text": dataEtr[key].nom
+            }
+
+        }
+        const newSelect = createSelect(option, debut)
+        newSelect.classList.add("marginTop10")
+        newSelect.classList.add("search-box")
+        newSelect.id ="entrepotV"
+
+
+        select.parentNode.replaceChild(newSelect, select)
+    }
+
+    async function seeDetail(id_vehicle = null) {
+
+        if (id_vehicle == null) {
+            const bodyDetail = document.getElementById("bodyDetail")
+            bodyDetail.innerHTML = ""
+            return
+        }
+
         startLoading()
         let data = await vehicle.getVehicleById(id_vehicle)
         if (data.length === 0) {
@@ -113,6 +141,54 @@
         bodyDetail.appendChild(html)
         openTab('tab2')
         stopLoading()
+    }
+
+    async function deleteVehicle(id_vehicle) {
+        startLoading()
+        await vehicle.deleteVehicle(id_vehicle)
+        fillList()
+        seeDetail()
+        openTab("tab1")
+        stopLoading()
+    }
+
+    async function addVehicle() {
+        startLoading()
+        let namev = document.getElementById("nameV")
+        let placev = document.getElementById("placeV")
+        let capacityv = document.getElementById("capacityV")
+        let entrepotv = document.getElementById("entrepotV")
+
+        if (namev == null || placev == null || capacityv == null) {
+            stopLoading()
+            popup("Error")
+            return
+        }
+
+        namev = namev.value
+        placev = placev.value
+        capacityv = capacityv.value
+        entrepotv = entrepotv.value
+
+        if(entrepotv === "Choose"){
+            popup("Vous devez choisir un entrepot")
+            stopLoading()
+            return
+        }
+
+        const data = {
+            "capacite": capacityv,
+            "nom_du_vehicules": namev,
+            "nombre_de_place": placev,
+            "id_entrepot": entrepotv
+        }
+
+        console.log(data)
+
+        await vehicle.createVehicle(data)
+        await fillList()
+        stopLoading()
+
     }
 
     function formatVehicleToHTML(vehicleObject) {
@@ -145,7 +221,10 @@
         seats.innerHTML = '<strong>Nombre de places:</strong> <span class="nombre-places"></span>';
         seats.querySelector('.nombre-places').textContent = vehicleObject.nombre_de_place;
 
-        vehicleInfo.append(idVehicle, nameVehicle, capacity, idWarehouse, seats);
+        const button = createButton(vehicle.msg["Delete"])
+        button.setAttribute("onclick", "deleteVehicle(" + vehicleObject.id_vehicule + ")")
+
+        vehicleInfo.append(idVehicle, nameVehicle, capacity, idWarehouse, seats, button);
         vehicleCard.append(vehicleInfo);
 
         return vehicleCard;
@@ -156,6 +235,7 @@
         startLoading()
         openTab('tab1')
 
+        await fillEnterpotList()
         await vehicle.connect()
         fillList()
 

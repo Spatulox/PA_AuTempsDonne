@@ -237,7 +237,7 @@
 			"errorMsg" : "No vehicle selected"
 		},
 		"tab3": {
-			"title": "Vehicle truc",
+			"title": "Add Vehicle",
 			"errorMsg": "Nothing to show"
 		}
 	}
