@@ -74,6 +74,11 @@
 		"button":"Buy us a coffe",
 		"buttonLink":"./donateur.php"
 	},
+	"don": {
+		"title": "Donation Menu",
+		"montant": "Amount",
+		"give": "Give"
+	},
 	"etagere": {
 		"title": "Shelf Menu",
 		"tab1": {
