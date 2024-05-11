@@ -1,4 +1,7 @@
 <?php
+
+use App\Models\User;
+
 include_once './Repository/BDD.php';
 include_once './Models/userModel.php';
 include_once './Models/DispoModel.php';
@@ -71,8 +74,22 @@ class UserRepository {
 
     //-------------------------------------
     
-    public function createUser(UserModel $user, $password){
-        
+    public function createUser(UserModel $user, $password, $addressToInsert){
+
+        $tmp = selectDB('UTILISATEUR', '*', 'email="'.$user->email.'"', "bool");
+        if($tmp){
+            exit_with_message("Error, email already exist, plz chose another one", 403);
+        }
+
+        $add = new adresseRepository();
+        $resp = $add->CreateAdresse($addressToInsert);
+
+        if($resp instanceof adresseModel){
+            $user->address = $resp->id_adresse;
+        } else {
+            exit_with_message($resp["message"]);
+        }
+
         $index_user = 1;
         if($user->role == 3){
             $index_user = 2;
@@ -80,15 +97,10 @@ class UserRepository {
 
         $user->email = strtolower($user->email);
 
-        $tmp = selectDB('UTILISATEUR', '*', 'email="'.$user->email.'"', "bool");
-        if($tmp){
-            exit_with_message("Error, email already exist, plz chose another one", 403);
-        }
-
         $address = insertDB("ADRESSE", ["adresse"], [$user->address]);
 
         if(!$address){
-            exit_with_message("Error when insert adresse");
+            exit_with_message("Error when insert id_adresse");
         }
 
         $address = selectDB('ADRESSE', '*', "adresse='".$user->address."'", "bool");
