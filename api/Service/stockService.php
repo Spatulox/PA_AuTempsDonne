@@ -36,13 +36,10 @@ class StockService {
 
     public function getAllStockInEntrepots($id, $apiKey)
     {
-        $userRole = getRoleFromApiKey($apiKey);
-        if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
+
         $stockRepository = new StockRepository();
         return $stockRepository->getAllStockInEntrepots($id);
-        }else{
-            exit_with_message("You didn't have access to this command");
-        }
+
     }
 
 //--------------------------------------------------------------------------------------------

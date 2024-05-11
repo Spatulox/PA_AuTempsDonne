@@ -14,6 +14,7 @@ include_once './Controller/demandeController.php';
 include_once './Controller/stockController.php';
 include_once './Controller/vehiculeController.php';
 include_once './Controller/donController.php';
+include_once './Controller/etagereController.php';
 
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
@@ -123,7 +124,7 @@ function controller($uri) {
 
     // Check if the apikey exist
     // To create a user, the apikey always null
-    if($uri[2] != "login" && $uri[2] != "user"){
+    if($uri[2] != "login" && $uri[2] != "user" && $uri[2] != "etagere"){
         if($apiKey == null){
             exit_with_message("Unauthorized, need the apikey", 403);
         }
@@ -173,6 +174,9 @@ function controller($uri) {
             break;
         case 'don':
             donController($uri, $apiKey);
+            break;
+        case 'etagere':
+            etagereController($uri);
             break;
 
 
