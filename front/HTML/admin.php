@@ -53,3 +53,22 @@
 </html>
 
 
+<script type="text/javascript" defer>
+    function makeListItemsClickable() {
+        const listItems = document.querySelectorAll('.ul > li');
+
+        listItems.forEach((item) => {
+            item.addEventListener('click', () => {
+                const link = item.querySelector('a');
+                if (link) {
+                    window.open(link.href, link.target);
+                }
+            });
+
+            item.style.cursor = 'pointer';
+        });
+    }
+
+    makeListItemsClickable()
+</script>
+
