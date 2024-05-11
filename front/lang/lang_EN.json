@@ -51,9 +51,6 @@
 			}
 		}
 	},
-	"collect": {
-		"title": "Collect Menu"
-	},
 	"contact":{
 		"title":"Contact us",
 		"sectionTitle":"Contact us",
@@ -113,6 +110,23 @@
 	"planning":{
 		"title":"Planning",
 		"sectionTitle":"Planning"
+	},
+	"product": {
+		"title": "Product Menu",
+		"tab1": {
+			"title": "List Product",
+			"id": "Id_Product",
+			"name": "Name",
+			"type": "Type",
+			"button": "See"
+		},
+		"tab2": {
+			"title": "Detail Product",
+			"errorMsg": "Select a Product to see it"
+		},
+		"tab3": {
+			"title": "Add Product"
+		}
 	},
 	"stock": {
 		"title": "Stock Menu",
