@@ -45,14 +45,16 @@
     async function fillArray(){
         const tbodyUser = document.getElementById("tbodyUser")
         tbodyUser.innerHTML = ""
-        planningData = await user.myplanning()
+        planningData = await user.myPlanning()
         console.log(planningData)
 
         createBodyTableau(tbodyUser, planningData, ["id_activite", "id_index_planning", "id_planning", "nom_index_planning", "user"])
+        replaceCharacters()
 
     }
 
     async function onload(){
+        await user.connect()
         startLoading()
         fillArray()
         stopLoading()
