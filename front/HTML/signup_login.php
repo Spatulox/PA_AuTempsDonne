@@ -270,3 +270,96 @@
     }
 
 </script>
+
+<script>
+
+    async function signup() {
+
+        startLoading()
+
+        let getSelectedValue = (() => {
+            const radios = document.getElementsByName('statut');
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].checked) {
+                    return radios[i].value
+                }
+            }
+            return false
+        })
+
+
+        const nom = document.getElementById("nomInsc").value
+        const prenom = document.getElementById("prenomInsc").value
+        const telephone = document.getElementById("phoneInsc").value
+
+        const email = document.getElementById("emailInsc").value
+        const password = document.getElementById("motdepasseInsc").value
+
+        const street = document.getElementById("address").value
+        const postal = document.getElementById("postal").value
+        const city = document.getElementById("city").value
+
+        if (!nom || !prenom || !email || !password || !street || !postal || !city) {
+            popup("Veuillez remplir le formulaire...")
+            stopLoading()
+            return
+        }
+
+        const role = getSelectedValue()
+        if (role === false) {
+            popup("Vous devez spécifier un rôle :/")
+            stopLoading()
+            return
+        }
+
+        let string = street + " " + postal + ", " + city
+
+        const data = {
+            "nom": nom,
+            "prenom": prenom,
+            "telephone": telephone,
+            "email": email,
+            "mdp": password,
+            "role": role,
+            "address": string
+        }
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+
+
+        // Fetch the api
+        const response = await fetch("http://localhost:8081/index.php/user", options)
+
+        if (!response.ok) {
+            const text = await response.json()
+            alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
+            if (text.hasOwnProperty("message")) {
+                alertDebug(text.message)
+                popup(text.message)
+            }
+            stopLoading()
+            return false
+        }
+
+        const message = await response.json()
+        if (message.hasOwnProperty("message")) {
+            popup(message.message)
+            stopLoading()
+            return true
+        }
+
+        const user = new User(email, password)
+        await user.connect()
+        user.printUser()
+        stopLoading()
+        redirect("./moncompte.php?message=Votre compte est en attente de validation auprès de la modération")
+
+    }
+
+</script>
