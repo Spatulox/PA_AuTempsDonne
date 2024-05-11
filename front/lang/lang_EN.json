@@ -77,7 +77,11 @@
 	"don": {
 		"title": "Donation Menu",
 		"montant": "Amount",
-		"give": "Give"
+		"give": "Give",
+		"id":"Id_DON",
+		"date":"Date",
+		"prix":"Prix",
+		"idUser":"Id_User"
 	},
 	"etagere": {
 		"title": "Shelf Menu",

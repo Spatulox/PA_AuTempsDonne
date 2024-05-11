@@ -28,6 +28,7 @@ if($role == 1 || $role == 2){
     echo '<script type="text/javascript" src="../JSManager/GestionStock.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionVehicle.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionProduct.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionDon.js"></script>';
 
     echo '<script type="text/javascript" src="../JS/qrcode.js"></script>';
     echo '<script type="text/javascript" src="../JS/pdfmake.js"></script>';

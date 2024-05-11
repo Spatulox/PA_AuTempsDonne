@@ -51,7 +51,7 @@ function donController($uri, $apiKey)
                 }
 
                 $donService = new DonService();
-                exit_with_content($donService->CreateDonMensuel($json['prix'],$json['date'], $apiKey));
+                $donService->CreateDonMensuel($json['prix'],$json['date'], $apiKey);
 
             }
 
