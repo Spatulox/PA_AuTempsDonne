@@ -6,7 +6,7 @@
 
     <?php include("../includes/head.php"); ?>
 
-    <title><?php echo($data["don"]["title"]) ?></title>
+    <title><?php echo($data["gestDemande"]["title"]) ?></title>
 </head>
 <body>
 
@@ -15,7 +15,7 @@
 <main>
 
     <div class="width90 marginAuto marginBottom30">
-        <h1 class="textCenter"><?php echo($data["don"]["title"]) ?></h1>
+        <h1 class="textCenter"><?php echo($data["gestDemande"]["title"]) ?></h1>
 
         <div class="tab flex flexAround nowrap">
             <button class="tablinks width100" onclick="openTab('tab1')"><?php echo($data["gestDemande"]["tab1"]["title"]) ?></button>
@@ -48,16 +48,8 @@
 
         <div id="tab2" class="tabcontent">
             <h2><?php echo($data["gestDemande"]["tab2"]["title"]) ?></h2>
-            <table>
-                <thead>
-                <tr>
-                    <td><?php echo $data["gestDemande"]["tab2"]["title"] ?></td>
-                </tr>
-                </thead>
-                <tbody id="bodyMeh">
-                <!-- Les lignes de données seront insérées ici par JavaScript -->
-                </tbody>
-            </table>
+                <p id="bodyMeh">
+                </p>
         </div>
 
         <div id="tab3" class="tabcontent">
@@ -98,7 +90,6 @@
     const activity = new ActiviteAdmin()
     let email = []
     let demande = []
-    let demandeFormated = []
     let acti_desc = []
 
     async function fillListDemande(){
@@ -136,7 +127,6 @@
     }
 
     async function formateMainData(){
-        demandeFormated =1
 
         const etat = {
             "1":"En Attente",
@@ -153,8 +143,82 @@
         
     }
 
+    async function formateOneData(data){
+
+        const output = document.getElementById('bodyMeh');
+
+        output.innerHTML = ""
+
+        const card = document.createElement('div');
+        card.classList.add('card');
+
+        const title = document.createElement('h2');
+        title.textContent = `Demande #${data.id_demande}`;
+        card.appendChild(title);
+
+        const description = document.createElement('p');
+        description.textContent = `Description: ${data.desc_demande}`;
+        card.appendChild(description);
+
+        const activity = document.createElement('p');
+        activity.textContent = `Activité: ${data.activite}`;
+        card.appendChild(activity);
+
+        const activityId = document.createElement('p');
+        activityId.textContent = `ID Activité: ${data.id_activite}`;
+        card.appendChild(activityId);
+
+        const status = document.createElement('p');
+        status.textContent = `État: ${data.etat}`;
+        card.appendChild(status);
+
+        const user2 = document.createElement('p');
+        user2.textContent = `Utilisateur: ${data.id_user}`;
+        card.appendChild(user2);
+
+        let button = createButton(request.msg["Validate"])
+        button.setAttribute("onclick", "validateRequest("+data.id_demande+")")
+        button.classList.add("marginTop20")
+        button.classList.add("marginRight20")
+        card.appendChild(button)
+
+
+        button = createButton(request.msg["Delete"])
+        button.setAttribute("onclick", "deleteRequest("+data.id_demande+")")
+        button.classList.add("marginTop20")
+        card.appendChild(button)
+
+        output.appendChild(card);
+        output.classList.add("width50")
+        output.classList.add("marginAuto")
+
+    }
+
+    async function validateRequest(id_demande){
+
+    }
+
+    async function deleteRequest(id_demande){
+        startLoading()
+        await request.deleteDemande(id_demande)
+        stopLoading()
+        reload()
+    }
+
     async function seeDetails(id){
+        startLoading()
+        const objectWithId = demande.find(obj => obj.id_demande == id);
+        console.log(objectWithId)
+        await formateOneData(objectWithId)
         openTab('tab2')
+        stopLoading()
+    }
+
+    async function reload(){
+        startLoading()
+        await formateMainData()
+        openTab('tab1')
+        stopLoading()
     }
 
     async function onload(){
@@ -173,3 +237,17 @@
     onload()
 
 </script>
+
+<style>
+    .card {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    .card h2 {
+        margin-top: 0;
+    }
+    .card p {
+        margin: 5px 0;
+    }
+</style>
