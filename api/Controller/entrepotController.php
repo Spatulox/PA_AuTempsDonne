@@ -23,6 +23,9 @@ function entrepotController($uri, $apiKey) {
             elseif ($uri[3]=="place" && filter_var($uri[4], FILTER_VALIDATE_INT)) {
                 $entepotService = new EntrepotService();
                 $entepotService->getEntrepotPlaceById($uri[4]);
+            } elseif ($uri[3]=="qr" && filter_var($uri[4], FILTER_VALIDATE_INT)) {
+                $entepotService = new EntrepotService();
+                $entepotService->getEtagereQR($uri[4]);
             }
 
             break;

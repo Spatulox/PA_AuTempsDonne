@@ -178,8 +178,10 @@ CREATE TABLE DEMANDE(
 CREATE TABLE ETAGERES(
    id_etagere INT AUTO_INCREMENT,
    nombre_de_place INT NOT NULL,
+   code VARCHAR(255) NOT NULL,
    id_entrepot INT NOT NULL,
    PRIMARY KEY(id_etagere),
+   UNIQUE(code),
    FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot)
 );
 
@@ -332,22 +334,18 @@ INSERT INTO ENTREPOTS (nom_entrepot, parking, id_adresse) VALUES
 ('Entrepot Laon', 4, 2),
 ('Entrepot Marseille', 8, 3);
 
-INSERT INTO ETAGERES (nombre_de_place , id_entrepot) VALUES
-(50,1),
-(100,1),
-(600,1),
-(250,1),
-(70,1),
-(50,2),
-(100,2),
-(600,2),
-(250,2),
-(70,2),
-(50,3),
-(100,3),
-(600,3),
-(250,3),
-(70,3);
+INSERT INTO ETAGERES (nombre_de_place ,code, id_entrepot) VALUES
+(50,"8b05c08360b2114f7a3f7c4ecd5635d84e4679cd25da2a08af2818ad430bd117",1),
+(100,"f6a3be9bef791f65904250d4af06a232b82724e8caacf01d424307c70dc358eb",1),
+(600,"27ff1072f2b58000fca866cddbced14c24a6d6a69f370a72be6c1f467904577c",1),
+(250,"19dab5212dba6c1a2103055b3e4e53c9a31ede04dcc786a4560bcc855824a01a",1),
+(70,"d5b6e9421f169bce38c0ea9fef35560160ae52d6d4f323fae7dcea96d9dd4aaa",1),
+(50,"fc3467f651e46aa05ede4c69e9a2936f4db71b809386deea1c50826654a6d8f7",2),
+(100,"a1acc7945f468e8c78265483cba013147269f5b7c795e51d2059b2a7c67cc3a1",2),
+(70,"e4138554307b501e9101dd6253a576bfb4f10d6a7c9eafb89226bcd2ace32195",2),
+(50,"680c4e9e15bfce9edf6a6ff6b304adb4f1553d37907906c71ee0fab88ef49d83",3),
+(250,"fd4a7c4b22b0b6a3c6aa5ce21f3a7468bf7ab38b918da7270f9c46e07ae41a4b",3),
+(70,"b471d8dd31bcaf74e41b4ac51d3584fcebf41698cb7638d422b99cead2cd7a44",3);
 
 INSERT INTO STOCKS (quantite_produit, date_entree, date_sortie, date_peremption, desc_produit, id_produit, id_etagere) VALUES
 (500, '2024-04-01', NULL, '2025-04-01', 'Riz basmati', 1, 1),
