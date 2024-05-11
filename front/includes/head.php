@@ -25,6 +25,13 @@ if($role == 1 || $role == 2){
     echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionUserAdmin.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionPlanning.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionStock.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionVehicle.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionProduct.js"></script>';
+
+    echo '<script type="text/javascript" src="../JS/qrcode.js"></script>';
+    echo '<script type="text/javascript" src="../JS/pdfmake.js"></script>';
+    echo '<script type="text/javascript" src="../JS/fonts.js"></script>';
 
 }
 

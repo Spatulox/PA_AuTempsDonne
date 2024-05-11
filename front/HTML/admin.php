@@ -27,11 +27,11 @@
                 </div>
 
                 <div id="users" class="box width20">
-                    <h1 class="textCenter bold underline"><?php echo($data["user"]["title"]) ?></h1>
+                    <h1 class="textCenter bold underline"><?php echo($data["user"]["title2"]) ?></h1>
                     <ul class="ul">
                         <li><a style="color: #0c2124" href="./user.php" target="_blank"><?php echo($data["user"]["title"]) ?></a></li>
                         <li><a style="color: #0c2124" href="./gestPlanning.php" target="_blank"><?php echo($data["gestPlanning"]["title"]) ?></a></li>
-                        <li><a style="color: #0c2124" href="./gestPlanning.php?tab=1" target="_blank"><?php echo($data["user"]["AffectToPlanning"]) ?></a></li>
+                        <li><a style="color: #0c2124" href="./vehicle.php" target="_blank"><?php echo($data["vehicle"]["title"]) ?></a></li>
                     </ul>
                 </div>
 
@@ -39,8 +39,8 @@
                     <h1 class="textCenter bold underline"><?php echo($data["storehouse"]["title"]) ?></h1>
                     <ul class="ul">
                         <li><a style="color: #0c2124" href="./storehouse.php" target="_blank"><?php echo($data["storehouse"]["title"]) ?></a></li>
-                        <li><a style="color: #0c2124" href="./storehouse.php" target="_blank"><?php echo($data["storehouse"]["title"]) ?></a></li>
-                        <li><a style="color: #0c2124" href="./storehouse.php" target="_blank"><?php echo($data["storehouse"]["title"]) ?></a></li>
+                        <li><a style="color: #0c2124" href="./product.php" target="_blank"><?php echo($data["product"]["title"]) ?></a></li>
+                        <li><a style="color: #0c2124" href="./stock.php" target="_blank"><?php echo($data["stock"]["title"]) ?></a></li>
                     </ul>
                 </div>
             </section>

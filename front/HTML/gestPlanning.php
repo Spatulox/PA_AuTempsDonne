@@ -329,7 +329,14 @@
 
         let formattedDate = ""
         if(dateStr == null){
+
+            let dateInput = document.getElementById("inputDate")
+
             const today = new Date();
+            const formattedDate22 = today.toISOString().slice(0, 10);
+            dateInput.value = formattedDate22;
+
+
             const year = today.getFullYear();
             let month = today.getMonth() + 1; // Les mois sont indexés à partir de 0
             let day = today.getDate();

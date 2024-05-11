@@ -8,7 +8,7 @@ class VehiculeRepository
 
     public function getAllVehicule()
     {
-        $vehicule = selectDB("VEHICULES", "*", "-1");
+        $vehicule = selectDB("VEHICULES", "*");
         if(!$vehicule){
             exit_with_message("Impossible to select data for entrepot in the DB");
         }
@@ -51,7 +51,7 @@ class VehiculeRepository
         }
 
         $create = insertDB("VEHICULES", ["capacite","nom_du_vehicules","nombre_de_place","id_entrepot"]
-            ,[$vehicule->capacite ,$vehicule->nom_du_vehicules,$vehicule->nombre_de_place,$vehicule->id_entrepot],"-@");
+            ,[$vehicule->capacite ,$vehicule->nom_du_vehicules,$vehicule->nombre_de_place,$vehicule->id_entrepot]);
 
         if(!$create){
             exit_with_message("Error, the vehicule can't be created, plz try again", 500);

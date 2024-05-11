@@ -111,6 +111,52 @@
 		"title":"Planning",
 		"sectionTitle":"Planning"
 	},
+	"product": {
+		"title": "Product Menu",
+		"tab1": {
+			"title": "List Product",
+			"id": "Id_Product",
+			"name": "Name",
+			"type": "Type",
+			"button": "See"
+		},
+		"tab2": {
+			"title": "Detail Product",
+			"errorMsg": "Select a Product to see it"
+		},
+		"tab3": {
+			"title": "Add Product"
+		}
+	},
+	"stock": {
+		"title": "Stock Menu",
+		"tab1": {
+			"title": "Storehouse List",
+			"ID_Stock": "ID Stock",
+			"QTE": "Quantity (L)",
+			"Date_Entry": "Date Entry",
+			"Date_Exit": "Date Exit",
+			"Date_perem": "Date Peremption",
+			"desc": "Description",
+			"IdEtagere": "ID Shelf",
+			"Storehouse_id": "Storehouse ID",
+			"Storehouse_desc": "Storehouse name",
+			"btn_see": "SEE"
+		},
+		"tab2": {
+			"title": "Stock in Storehouse",
+			"errorMsg": "Select a stock before"
+		},
+		"tab3": {
+			"title": "Add Product to Stock"
+		},
+		"tab4": {
+			"title": "Retrieve from Stock"
+		},
+		"tab5": {
+			"title": "Exited Stock History"
+		}
+	},
 	"signup_login":{
 		"title":"Log In/Sign Up",
 		"formSignUp":{
@@ -143,15 +189,20 @@
 			"Rangement": "Store Place",
 			"See": "See",
 			"shelf": "Shelf places",
-			"shelfId" : "ID Shelf"
+			"shelfId" : "ID Shelf",
+			"postal": "Postal code"
 		},
 		"tab2": {
 			"title": "Details",
 			"errorMsg": "Nothing to show, select a storehouse before",
-			"createShelf": " Create a Shelf"
+			"createShelf": " Create a Shelf",
+			"availablePlace": "Remaining Places inside the Storehouse"
 		},
 		"tab3": {
-			"title": "Create Storehouse / Shelves"
+			"title": "Create Storehouse",
+			"city": "City",
+			"generalInfo" : "General informations",
+			"complementary" : "Complementary informations"
 		}
 	},
 	"ticket": {
@@ -162,6 +213,7 @@
 	},
 	"user": {
 		"title": "User Menu",
+		"title2": "Main Menu",
 		"AffectToPlanning":"Assign someone to planning",
 		"tab1": {
 			"title" : "Users list",
@@ -181,6 +233,26 @@
 			"title": "User Waiting to Validate",
 			"errorMsg": "Nothing to show",
 			"button": "Validate"
+		}
+	},
+	"vehicle": {
+		"title" : "Vehicle Menu",
+		"tab1": {
+			"title" : "Vehicle list",
+			"id": "ID_Vehicle",
+			"capacity": "Capacity",
+			"name": "Name",
+			"place": "Places",
+			"entrepot": "Id_Entrepot",
+			"button": "Detail"
+		},
+		"tab2": {
+			"title" : "Vehicle details",
+			"errorMsg" : "No vehicle selected"
+		},
+		"tab3": {
+			"title": "Add Vehicle",
+			"errorMsg": "Nothing to show"
 		}
 	}
 }

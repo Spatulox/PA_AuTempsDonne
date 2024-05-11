@@ -1,6 +1,12 @@
 services:
   frontend:
     image: php:7.4-apache
+
+    #build: 
+    #  context: ./front/
+    #  dockerfile: Dockerfile
+    #image: spatulox/pa-front:latest
+
     ports:
       - 8083:80
     volumes:

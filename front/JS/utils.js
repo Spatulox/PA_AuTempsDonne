@@ -47,6 +47,15 @@ function createButton(value, id = null, name = null){
     return button
 }
 
+function createInput(placeholder_Name, id) {
+    const inputElement = document.createElement("input");
+    inputElement.classList.add("marginTop10")
+    inputElement.name = placeholder_Name;
+    inputElement.id = id;
+    inputElement.placeholder = `${placeholder_Name}`;
+    return inputElement;
+}
+
 /**
  * Set a cookie
  * @param name name of the cookie
