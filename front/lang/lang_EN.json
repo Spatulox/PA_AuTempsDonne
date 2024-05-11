@@ -115,6 +115,9 @@
 		"addUser": "Add User",
 		"assign": "Assign"
 	},
+	"gestDemande": {
+		"title": "Request Menu"
+	},
 	"moncompte":{
 		"title":"Account",
 		"sectionTitle":"Account",
