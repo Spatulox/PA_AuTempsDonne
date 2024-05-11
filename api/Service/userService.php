@@ -114,7 +114,7 @@ class UserService {
     public function deleteUserById($id, $apiKey) {
         $userRepository = new UserRepository();
         if ($userRepository->unreferenceUserById($id, $apiKey)){
-            exit_with_message("Unreference Succeed !", 403);
+            exit_with_message("Unreference Succeed !", 200);
         }
         else{
             exit_with_message("Error when unreferencing user ".$id);
@@ -125,7 +125,7 @@ class UserService {
     public function deleteUserByApikey($apiKey) {
         $userRepository = new UserRepository();
         if ($userRepository->unreferenceUserByApikey($apiKey)){
-            exit_with_message("Unreference Succeed !", 403);
+            exit_with_message("Unreference Succeed !", 200);
         }
         else{
             exit_with_message("Error when unreferencing user ".$apiKey);

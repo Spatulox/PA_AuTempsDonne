@@ -86,7 +86,7 @@ function userController($uri, $apiKey) {
                 }
 
                 $pattern = '/^\+?[0-9]{5,15}$/';
-                if (isset($json['telephone']) && !preg_match($pattern, $json['telephone'])){
+                if (isset($json['telephone']) && $json['telephone'] != "" && !preg_match($pattern, $json['telephone'])){
                     exit_with_message("Le numéro de téléphone" . $json['telephone'] ." n'est pas valide.", 403);
                 }
 
