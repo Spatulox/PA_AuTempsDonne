@@ -200,7 +200,7 @@ class EntrepotRepository
             $last_id=$this->getLastInsertId("ETAGERES","id_etagere");
 
             $code = hash('sha256', $last_id[0]['id_etagere'] ."_". $etageres_place[$i] ."_". $entrepot);
-            
+
 
             $request_collecte = insertDB("ETAGERES", ["nombre_de_place","code", "id_entrepot"], [$etageres_place[$i],$code, $entrepot]);
             if ($request_collecte==false) {
@@ -280,6 +280,12 @@ class EntrepotRepository
         }
 
         return $sum;
+    }
+
+    public function getEtagereQR($id)
+    {
+        $code=selectDB("ETAGERES", "*", "id_etagere=" . $id, "bool");
+        exit_with_content($code[0]["code"], 200);
     }
 
 
