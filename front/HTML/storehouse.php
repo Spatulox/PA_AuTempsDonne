@@ -243,11 +243,13 @@
 
         const key = await entrepot.getKeyShelfId(idShelf.split("_")[0].trim())
 
+        const add = entrepot.frontaddresse+"etagere.php?key="+key.key
+
 
         document.getElementById(idShelf).innerHTML = ""
 
         const qrcode = await new QRCode(document.getElementById(idShelf), {
-            text: key,
+            text: add,
             width: 256,
             height: 256,
             colorDark: '#000000',
