@@ -46,6 +46,9 @@ function trajetController($uri, $apiKey){
                 $TrajetService->createTrajet($json["address"]);
             }
 
+            elseif($uri[3] && $uri[3] == "create"){
+                $TrajetService->createTrajetInDB($json["address"]);
+            }
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
                 exit_with_content($TrajetService->getTrajetById($uri[3]));
