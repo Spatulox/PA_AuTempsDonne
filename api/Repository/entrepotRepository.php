@@ -285,7 +285,8 @@ class EntrepotRepository
     public function getEtagereQR($id)
     {
         $code=selectDB("ETAGERES", "*", "id_etagere=" . $id, "bool");
-        exit_with_content($code[0]["code"], 200);
+        $tmpModel = ["key" => $code[0]["code"]];
+        exit_with_content($tmpModel, 200);
     }
 
 
