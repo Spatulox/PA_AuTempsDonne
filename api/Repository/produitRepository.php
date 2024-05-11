@@ -54,7 +54,7 @@ class ProduitRepository
         if($res==true) {
             exit_with_message("Produit has been created", 200);
         }else{
-            exit_with_message("Produit not created", 5000);
+            exit_with_message("Produit not created", 500);
 
         }
 
