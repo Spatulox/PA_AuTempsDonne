@@ -58,9 +58,9 @@
         const listItems = document.querySelectorAll('.ul > li');
 
         listItems.forEach((item) => {
-            item.addEventListener('click', () => {
+            item.addEventListener('click', (event) => {
                 const link = item.querySelector('a');
-                if (link) {
+                if (link && event.target !== link) {
                     window.open(link.href, link.target);
                 }
             });
@@ -69,6 +69,7 @@
         });
     }
 
-    makeListItemsClickable()
+    makeListItemsClickable();
 </script>
+
 
