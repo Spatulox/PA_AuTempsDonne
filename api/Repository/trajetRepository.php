@@ -9,6 +9,13 @@ class TrajetRepository {
 
     }
 
+    private function getLastInsertId($table, $columnToSelect)
+    {
+        $string = "ORDER BY " . $columnToSelect . " DESC LIMIT 1";
+        $envoie = selectDB($table, $columnToSelect, -1, $string);
+        return $envoie;
+    }
+
 
     private function affiche($request){
 
@@ -103,6 +110,46 @@ class TrajetRepository {
             "addresse" => $addresses
         ];
         exit_with_content($data);
+    }
+
+    public function createTrajetInDB($tab){
+        $lastID = $this->getLastInsertId("TRAJETS", "id_trajets");
+
+        if(count($lastID) > 0){
+            $lastID = $lastID[0]["id_trajets"];
+        } else {
+            exit_with_message("huh1");
+        }
+
+        $lastID = $lastID + 1;
+
+        $test = insertDB("TRAJETS",["id_trajets"],[$lastID]);
+
+        if($test === false){
+            exit_with_message("Erreur lors de la création du trajet");
+        }
+
+        $tab1 = $tab[0];
+        $count = 0;
+        foreach ($tab as $trajet) {
+
+            if($trajet == $tab1 && $count > 0){
+                $trajet = 1;
+            }
+
+            $count++;
+
+            $res = insertDB("UTILISER", ["id_trajets", "id_adresse"], [$lastID, $trajet]);
+
+            if( $res === false){
+                $msg = "Erreur lors de l'enregistement du trajet, veuillez réessayer";
+                deleteDB("UTILISER", "id_trajets=".$lastID);
+                exit_with_message($msg);
+            }
+        }
+
+        exit_with_message("Success", 200);
+
     }
 
 }

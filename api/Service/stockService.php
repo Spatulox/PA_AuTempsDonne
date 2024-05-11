@@ -159,7 +159,7 @@ class StockService {
                 $msg = "";
 
                 if($toutranger != $bkpProduit){
-                    $msg = "Il reste ". ($bkpProduit - $toutranger) . " produit(s) à ranger car plus de place dans cet entrepot";
+                    $msg = "Il reste ". ($bkpProduit - $toutranger) . "L produit(s) à ranger car plus de place dans cet entrepot";
                     return $stockRepository->addStock($tabb, $stock, $msg, $tabRenvoyer);
                 }
 

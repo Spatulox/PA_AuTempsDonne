@@ -86,15 +86,15 @@ function userController($uri, $apiKey) {
                 }
 
                 $pattern = '/^\+?[0-9]{5,15}$/';
-                if (isset($json['telephone']) && !preg_match($pattern, $json['telephone'])){
+                if (isset($json['telephone']) && $json['telephone'] != "" && !preg_match($pattern, $json['telephone'])){
                     exit_with_message("Le numéro de téléphone" . $json['telephone'] ." n'est pas valide.", 403);
                 }
 
 
 
-                $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], $json["address"] ,isset($json['telephone']) ? $json['telephone'] : "no_phone", $json['role'], null, 3, 1);
+                $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], -1 ,isset($json['telephone']) ? $json['telephone'] : "no_phone", $json['role'], null, 3, 1);
 
-                exit_with_content($userService->createUser($user, $json["mdp"]));
+                exit_with_content($userService->createUser($user, $json["mdp"], $json["address"]));
             }
             elseif ($uri[3] == "dispo") {
 

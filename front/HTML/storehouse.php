@@ -234,26 +234,28 @@
     }
 
     async function generateQRCode(idShelf) {
+        startLoading()
         if (idShelf.trim() === '') {
             popup('Erreur lors de la création');
+            stopLoading()
             return;
         }
+
+        const key = await entrepot.getKeyShelfId(idShelf.split("_")[0].trim())
+
+        const add = entrepot.frontaddresse+"etagere.php?key="+key.key
+
 
         document.getElementById(idShelf).innerHTML = ""
 
         const qrcode = await new QRCode(document.getElementById(idShelf), {
-            text: idShelf,
+            text: add,
             width: 256,
             height: 256,
             colorDark: '#000000',
             colorLight: '#ffffff',
             correctLevel: QRCode.CorrectLevel.H
         });
-
-/*        const doc = new jsPDF();
-        const imgData = document.getElementById(idShelf).toDataURL();
-        doc.addImage(imgData, 'JPEG', 20, 20);
-        doc.save(`QRCode_${idShelf}.pdf`);*/
 
         const canvas = document.getElementById(idShelf).getElementsByTagName('canvas')[0];
         const imgData = canvas.toDataURL('image/jpeg', 1.0);
@@ -279,6 +281,7 @@
         };
 
         pdfMake.createPdf(docDefinition).download(`QRCode_${idShelf}.pdf`);
+        stopLoading()
 
     }
 

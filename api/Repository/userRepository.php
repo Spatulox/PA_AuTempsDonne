@@ -1,4 +1,7 @@
 <?php
+
+use App\Models\User;
+
 include_once './Repository/BDD.php';
 include_once './Models/userModel.php';
 include_once './Models/DispoModel.php';
@@ -71,8 +74,22 @@ class UserRepository {
 
     //-------------------------------------
     
-    public function createUser(UserModel $user, $password){
-        
+    public function createUser(UserModel $user, $password, $addressToInsert){
+
+        $tmp = selectDB('UTILISATEUR', '*', 'email="'.$user->email.'"', "bool");
+        if($tmp){
+            exit_with_message("Error, email already exist, plz chose another one", 403);
+        }
+
+        $add = new adresseRepository();
+        $resp = $add->CreateAdresse($addressToInsert);
+
+        if($resp instanceof adresseModel){
+            $user->address = $resp->id_adresse;
+        } else {
+            exit_with_message($resp["message"]);
+        }
+
         $index_user = 1;
         if($user->role == 3){
             $index_user = 2;
@@ -80,15 +97,10 @@ class UserRepository {
 
         $user->email = strtolower($user->email);
 
-        $tmp = selectDB('UTILISATEUR', '*', 'email="'.$user->email.'"', "bool");
-        if($tmp){
-            exit_with_message("Error, email already exist, plz chose another one", 403);
-        }
-
         $address = insertDB("ADRESSE", ["adresse"], [$user->address]);
 
         if(!$address){
-            exit_with_message("Error when insert adresse");
+            exit_with_message("Error when insert id_adresse");
         }
 
         $address = selectDB('ADRESSE', '*', "adresse='".$user->address."'", "bool");
@@ -349,17 +361,13 @@ class UserRepository {
 
     //-----------------------------------------------------------------------------------------
 
-    public function GetAllUserDate($id_jour,$date)
+    public function GetAllUserDate($date)
     {
-        $conditions = "SEMAINE.id_dispo=" . $id_jour . " AND NOT EXISTS (
-        SELECT 1 
-        FROM PARTICIPE p
-        INNER JOIN PLANNINGS pl ON p.id_planning = pl.id_planning
-        WHERE p.id_user = UTILISATEUR.id_user AND pl.date_activite BETWEEN '".$date." 00:00:00' AND '".$date." 23:59:59'
-    )";
+
+        $conditions = "SEMAINE.id_dispo=".$date;
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
         $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
-        $usersArray = selectJoinDB("DISPONIBILITE", $columns, $join, $conditions);
+        $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions);
 
         $uniqueUsers = [];
 

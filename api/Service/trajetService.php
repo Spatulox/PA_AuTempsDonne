@@ -18,6 +18,11 @@ class TrajetService {
         $TrajetRepository = new TrajetRepository();
         $TrajetRepository->createTrajet($tab);
     }
+
+    public function createTrajetInDB($tab){
+        $TrajetRepository = new TrajetRepository();
+        $TrajetRepository->createTrajetInDB($tab);
+    }
 }
 
 ?>

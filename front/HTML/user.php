@@ -91,6 +91,7 @@
                         <td>Role</td>
                         <td><?php echo $data["user"]["tab1"]["storehouse"] ?></td>
                         <td><?php echo $data["user"]["tab4"]["button"] ?></td>
+                        <td><?php echo $data["user"]["tab1"]["buttonDelete"] ?></td>
                     </tr>
                     </thead>
                     <tbody id="tab4ChildBody">
@@ -262,6 +263,13 @@
             buttonCell.appendChild(button)
             row.appendChild(buttonCell);
 
+
+            const buttonCell2 = document.createElement('td');
+            const button2 = createButton(dico[lang]["Delete"])
+            button2.setAttribute("onclick", "invalidateUSer(" + item.id_user + ")")
+            buttonCell2.appendChild(button2)
+            row.appendChild(buttonCell2);
+
             tab4ChildBody.appendChild(row);
         });
 
@@ -354,11 +362,19 @@
         replaceCharacters()
     }
 
-    async function validateUSer(id) {
+    async function invalidateUSer(id){
+        startLoading()
+        const resp = await user.deleteUser(id)
+        await fillTab4()
+        stopLoading()
+    }
 
+    async function validateUSer(id) {
+        startLoading()
         const resp = await user.updateUserValidate(id)
-        fillTab4()
-        fillTbodyUser()
+        await fillTab4()
+        await fillTbodyUser()
+        stopLoading()
     }
 
     async function searchUser() {

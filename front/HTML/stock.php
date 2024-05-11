@@ -73,6 +73,8 @@
         <div id="tab3" class="tabcontent marginBottom20">
             <h2 class="flex flexCenter"><?php echo($data["stock"]["tab3"]["title"]) ?></h2>
 
+            <p id="messageAddProduct" class="textCenter marginBottom10"></p>
+
             <p id="bodyAddStock" class="border"><?php echo($data["stock"]["tab2"]["errorMsg"]) ?></p>
 
         </div>
@@ -143,7 +145,7 @@
         replaceCharacters()
     }
 
-    async function fillExitedStocks(id_entrepot){
+    async function fillExitedStocks(id_entrepot) {
         const bodyExited = document.getElementById("bodyExited")
         bodyExited.innerHTML = ""
 
@@ -164,6 +166,7 @@
         createBodyTableau(bodyDetail, lesStocks, ["id_entrepot", 'id_produit', "desc_produit"], [entrepot.msg["See"]], ["addRemoveStockDetail"], "id_produit")
 
         fillExitedStocks(id)
+        fillAddStockTab(id)
         replaceCharacters()
         openTab('tab2')
         stopLoading()
@@ -173,7 +176,6 @@
 
         const htmlelement = document.getElementById("bodyAddRemove")
         htmlelement.innerHTML = ""
-        console.log(htmlelement)
 
         const tab4 = document.getElementById("tab4")
 
@@ -226,8 +228,119 @@
 
     }
 
-    async function addStock(id_stock) {
-        CreateLesInputs("bodyAddStock")
+    async function addStock() {
+        const selectbodyAddStock = document.getElementById("selectbodyAddStock")
+        const qte_produitbodyAddStock = document.getElementById("qte_produitbodyAddStock")
+        const date_perem = document.getElementById("date_perem")
+        const selectProductTypeNameYeet = document.getElementById("selectProductTypeNameYeet")
+
+        const messageAddProduct = document.getElementById("messageAddProduct")
+        messageAddProduct.innerHTML = ""
+        messageAddProduct.classList.add("border")
+        messageAddProduct.classList.add("underline")
+
+        const date = today()
+
+        const data = {
+            "quantite_produit": qte_produitbodyAddStock.value,
+            "date_entree": date,
+            "date_sortie": "NULL",
+            "date_peremption": date_perem.value ? date_perem.value : "NULL",
+            "desc_produit": selectProductTypeNameYeet[selectProductTypeNameYeet.value].text,
+            "id_produit": selectProductTypeNameYeet.value,
+            "id_entrepot": selectbodyAddStock.value
+        }
+
+        const response = await stock.createStock(data)
+
+        let yaunelmessage = false
+        let message = ""
+
+        console.log(response)
+
+        if(response.create == null){
+            messageAddProduct.style.color="red"
+        } else {
+            messageAddProduct.style.color="green"
+        }
+
+        if (response.msg != "") {
+            yaunelmessage = true
+            message += response.msg + "<br>"
+        }
+
+        if (response.msg_tab != null) {
+            yaunelmessage = true
+            for (const key in response.msg_tab) {
+                message += "- " + response.msg_tab[key] + "<br>"
+
+            }
+
+        }
+
+        if (yaunelmessage === true) {
+            popup(message)
+            messageAddProduct.innerHTML = message
+        }
+    }
+
+    function createLabelValueElement(label, value) {
+        const container = document.createElement("div");
+        const labelElement = document.createElement("span");
+
+        labelElement.textContent = `${label} :`;
+        labelElement.classList.add("underline")
+        labelElement.classList.add("bold")
+        const valueElement = document.createElement("span");
+        if (label === "id_role") {
+            valueElement.textContent = " " + user.roleArray[value] + " (" + value + ")" || " N/A";
+        } else {
+            valueElement.textContent = " " + value || " N/A"
+        }
+        valueElement.id = "va_" + label
+        container.appendChild(labelElement);
+        container.appendChild(valueElement);
+        return container;
+    }
+
+    async function fillAddStockTab() {
+        const bodyAddStock = document.getElementById("bodyAddStock")
+        bodyAddStock.innerHTML = ""
+        CreateLesInputs("bodyAddStock", true, false)
+
+        const div = document.createElement("div")
+        div.innerHTML = "Date Peremption (if needed) : "
+
+        const input = createInput("Date peremption", "date_perem")
+        input.type = "date"
+
+        div.appendChild(input)
+
+        bodyAddStock.appendChild(div)
+
+        const product = new ProductAdmin()
+
+        let productData = await product.getAllProduct()
+        let option = []
+        const debut = "Choose Product type"
+
+        for (const key in productData) {
+
+            option[key] = {
+                "value": productData[key].id_produit,
+                "text": productData[key].nom_produit
+            }
+
+        }
+
+        // ID Produit a retirer
+        let yeet = createSelect(option, debut)
+        yeet.id = "selectProductTypeNameYeet"
+        bodyAddStock.appendChild(yeet)
+
+        const button = createButton(stock.msg["Add"])
+        button.setAttribute("onclick", "addStock()")
+        bodyAddStock.appendChild(button)
     }
 
     async function retrieveFromStock(id) {
@@ -250,8 +363,8 @@
             count += (+leDataDeMerde[key].quantite_produit)
         }
 
-        if(qte_produitbodyAddRemove2 > count){
-            popup("Vous ne pouvez pas retirer plus de "+count+ " produits dans cet entrepot")
+        if (qte_produitbodyAddRemove2 > count) {
+            popup("Vous ne pouvez pas retirer plus de " + count + " produits dans cet entrepot")
             return
         }
         startLoading()
@@ -279,7 +392,7 @@
         stopLoading()
     }
 
-    function CreateLesInputs(idToTake, doSelect = true) {
+    function CreateLesInputs(idToTake, doSelect = true, doDate = true) {
 
         const bodyAddStock = document.getElementById(idToTake)
         bodyAddStock.innerHTML = ""
@@ -288,7 +401,7 @@
 
         if (doSelect == true) {
             let option = []
-            const debut = "Choose"
+            const debut = "Choose Stockhouse"
 
             for (const key in entre) {
 
@@ -300,7 +413,9 @@
             }
 
             // ID Produit a retirer
-            div.appendChild(createSelect(option, debut))
+            const leSeect = createSelect(option, debut)
+            leSeect.id = "select" + idToTake
+            div.appendChild(leSeect)
         }
 
         // Qte à retirer
@@ -308,15 +423,17 @@
         inputQte.type = "number"
         div.appendChild(inputQte)
 
-        // Date du retirage
-        const inputDate = createInput("DateInput", "date_input" + idToTake)
-        inputDate.type = "date"
+        if (doDate === true) {
+            // Date du retirage
+            const inputDate = createInput("DateInput", "date_input" + idToTake)
+            inputDate.type = "date"
 
-        const today = new Date();
-        const formattedDate = today.toISOString().slice(0, 10);
-        inputDate.value = formattedDate;
+            const today = new Date();
+            const formattedDate = today.toISOString().slice(0, 10);
+            inputDate.value = formattedDate;
 
-        div.appendChild(inputDate)
+            div.appendChild(inputDate)
+        }
 
         bodyAddStock.appendChild(div)
 
@@ -383,15 +500,17 @@
         htmlelement.innerHTML = html;
     }
 
-    async function refreshData(){
+    async function refreshData() {
         entre = await entrepot.getEntrepot()
     }
 
-    function onload() {
+    async function onload() {
         startLoading()
 
         openTab("tab1")
-        fillList()
+        await fillList()
+        await fillAddStockTab()
+        replaceCharacters()
 
         stopLoading()
     }

@@ -17,7 +17,7 @@ class adresseService {
     public function CreateAdresse($address)
     {
         $AdresseRepository = new AdresseRepository();
-        return $AdresseRepository->CreateAdresse($address);
+        exit_with_content($AdresseRepository->CreateAdresse($address));
 
     }
 

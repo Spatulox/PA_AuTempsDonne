@@ -83,7 +83,7 @@ class DonRepository
        $create= insertDB("DON",["prix","date_don","id_user"],
            [$prix, $date_don, $id]);
        if ($create){
-           exit_with_message("success create don");
+           exit_with_message("success create don", 200);
        }
     }
 }

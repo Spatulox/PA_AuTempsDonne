@@ -48,19 +48,16 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
                     if($role == "1" || $role == "2"){
 
                         foreach ($data["header"]["admin"] as $key => $value) {
-                            if($key == "./signup_login.php"){
-                                echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
-                            }
-                            else{
                                 echo('<li><a href="' . $key . '">' . $value . '</a></li>');
-                            }
                         }
+
+                        echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
 
                     }
 
                     if($role == "3" || $role == "4" || $role == "5"){
 
-                        foreach ($data["header"]["li"] as $key => $value) {
+                        foreach ($data["header"]["connected"] as $key => $value) {
                             if($key == "./signup_login.php"){
                                 echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
                             }
@@ -70,8 +67,6 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
                         }
 
                     }
-
-                    echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
 
                 } else {
                     // Not connected

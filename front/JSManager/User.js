@@ -249,6 +249,16 @@ class User extends General{
         return true
     }
 
+    async myPlanning(){
+        let response = await this.fetchSync(this.adresse+'/planning/me', this.optionGet())
+
+        if(!this.compareAnswer(response)){
+            return false
+        }
+        //popup(this.msg["Planning"]+this.msg["retrieved"])
+        return response
+    }
+
     /**
      *
      * @param id of an entrepot | can be null

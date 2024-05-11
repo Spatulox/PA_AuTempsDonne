@@ -11,9 +11,6 @@ class UserAdmin extends Admin{
             "nom" : nom
         }
 
-        console.log(data)
-
-
         const response = await this.fetchSync(this.adresse+"/user/", this.optionPut(data))
         if(!this.compareAnswer(response, this.msg["Update"] + this.msg["failed"])){
             popup(this.msg["Update"] + this.msg["failed"])
@@ -24,10 +21,11 @@ class UserAdmin extends Admin{
 
     }
 
-    async getUserDispoByDay(day){
+    async getUserDispoByDay(day, date){
 
         const data = {
-            "id_jour":day
+            "id_jour":day,
+            "date":date
         }
 
         let response = await this.fetchSync(this.adresse+'/user/date', this.optionPost(data))
@@ -35,7 +33,6 @@ class UserAdmin extends Admin{
             return false
         }
         return response
-
 
     }
 
@@ -94,7 +91,6 @@ class UserAdmin extends Admin{
     async updateUserRole(id_role, id_user){
 
         id_role = id_role.trim()
-        console.log("idRole"+id_role)
 
         const data = {
             "id_role": id_role
@@ -121,10 +117,12 @@ class UserAdmin extends Admin{
         let complementPath = ""
         if(id != null){
             complementPath = `/${id}`
+        } else {
+            return
         }
 
         let response = await this.fetchSync(this.adresse+'/user'+complementPath, this.optionDelete())
-        if(!this.compareAnswer(response, "Impossible de supprimer l'utilisateur")){
+        if(!this.compareAnswer(response)){
             return false
         }
         popup("Votre compte à bien été désactivé")

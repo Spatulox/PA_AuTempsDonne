@@ -355,8 +355,6 @@
         const tbody = document.getElementById("bodyDaily")
         tbody.innerHTML = ""
         const dailyPlanning = await planning.getAffectByDatePlanning(formattedDate)
-        console.log(formattedDate)
-        console.log(dailyPlanning)
 
         if(dailyPlanning.length > 0){
             createBodyTableau(tbody, dailyPlanning, ["id_index_planning", "id_activite"])
@@ -367,14 +365,21 @@
     async function validatePlanning(id){
         startLoading()
         await planning.validatePlanning(id)
-        fillWaitingPlanning()
+        await fillWaitingPlanning()
+        await fillAssignPlanning()
         stopLoading()
     }
 
     async function updateListUser(dateStr){
         const date = new Date(dateStr);
-        const jourSemaine = date.getDay();
-        users = await user.getUserDispoByDay(jourSemaine+1)
+        let jourSemaine = date.getDay();
+
+        if(jourSemaine === 0){
+            jourSemaine = 7
+        }
+
+
+        users = await user.getUserDispoByDay(jourSemaine, dateStr.split(" ")[0].trim())
 
         const selectBody = document.getElementById("select")
         selectBody.innerHTML = ""

@@ -195,7 +195,6 @@ class UserOld {
     }
 
     let response = await this.fetchSync(this.adresse+'/user'+complementPath, this.optionDelete())
-    console.log(response)
     if(!this.compareAnswer(response, "Impossible de supprimer l'utilisateur")){
       return false
     }
@@ -215,7 +214,6 @@ class UserOld {
       return false
     }
     let response = await this.fetchSync(this.adresse+'/user/'+id, this.optionGet())
-    console.log(response)
     if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs en attente")){
       return false
     }
@@ -228,7 +226,6 @@ class UserOld {
    */
   async getAllUser(){
     let response = await this.fetchSync(this.adresse+'/user/all', this.optionGet())
-    console.log(response)
     if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs")){
       return false
     }
@@ -406,7 +403,6 @@ class UserOld {
 
     if(response.ok){
       const message = await response.json()
-      //console.log(message)
       if(message.hasOwnProperty("message")){
         popup(message.message)
         return true

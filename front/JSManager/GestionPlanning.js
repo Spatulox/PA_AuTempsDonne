@@ -17,8 +17,8 @@ class PlanningAdmin extends Admin{
      * @returns {Promise<any|boolean>}
      */
     async getWaitPlanning(){
-        let response = await this.fetchSync(this.adresse+'/planning/wait', this.optionGet())
-        if(!this.compareAnswer(response, this.msg["impossible"] + this.msg["to"] + this.msg["retrieved"] + this.msg["all"] + this.msg["planning"])){
+        let response = await this.fetchSync(this.adresse+'/planning/wait', this.optionGet(), false)
+        if(!this.compareAnswer(response)){
             return false
         }
         return response
@@ -67,7 +67,7 @@ class PlanningAdmin extends Admin{
      */
     async getValidatePlanning(){
         let response = await this.fetchSync(this.adresse+'/planning/validate', this.optionGet())
-        if(!this.compareAnswer(response, this.msg["Impossible"] + this.msg["to"] + this.msg["retrieved"] + this.msg["all"] + this.msg["planning"])){
+        if(!this.compareAnswer(response)){
             return false
         }
         //popup(this.msg["All"] + this.msg["planning"]+this.msg["retrieved"])
@@ -111,7 +111,7 @@ class PlanningAdmin extends Admin{
         }
 
         const data = {
-            "id_planning": +id
+            "id_index_planning": 2
         }
 
         let response = await this.fetchSync(this.adresse+'/planning/validate/'+id, this.optionPut(data), false)

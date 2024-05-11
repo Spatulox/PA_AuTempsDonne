@@ -80,7 +80,6 @@
 
     async function fillList() {
         data = await product.getAllProduct()
-        console.log(data)
 
         const bodyFill = document.getElementById("bodyList")
         bodyFill.innerHTML = ""
@@ -112,7 +111,8 @@
         const nameProd = document.getElementById("nameProd")
         const typeProd = document.getElementById("typeProd")
 
-        if(nameProd == null || typeProd == null){
+
+        if(nameProd == null || typeProd == null || typeProd.value == "Choose"){
             popup("Vous devez choisir un nom et un type de produit")
             stopLoading()
             return
@@ -150,8 +150,8 @@
         for (const key in type) {
 
             option[key] = {
-                "value": type[key].id_produit,
-                "text": type[key].nom_produit
+                "value": type[key].id_type,
+                "text": type[key].type
             }
 
         }
@@ -201,7 +201,7 @@
 
         await product.connect()
         await fillList()
-        //await fillProductSelect()
+        await fillProductSelect()
 
 
         stopLoading()
