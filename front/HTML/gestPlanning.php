@@ -365,7 +365,8 @@
     async function validatePlanning(id){
         startLoading()
         await planning.validatePlanning(id)
-        fillWaitingPlanning()
+        await fillWaitingPlanning()
+        await fillAssignPlanning()
         stopLoading()
     }
 
@@ -377,7 +378,8 @@
             jourSemaine = 7
         }
 
-        users = await user.getUserDispoByDay(jourSemaine)
+
+        users = await user.getUserDispoByDay(jourSemaine, dateStr.split(" ")[0].trim())
 
         const selectBody = document.getElementById("select")
         selectBody.innerHTML = ""
