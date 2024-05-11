@@ -56,6 +56,17 @@ function createInput(placeholder_Name, id) {
     return inputElement;
 }
 
+function today(){
+
+    const date = new Date()
+    var formattedDate = date.getFullYear() + "-" +
+        ("0" + (date.getMonth() + 1)).slice(-2) + "-" +
+        ("0" + date.getDate()).slice(-2);
+
+    return formattedDate
+
+}
+
 /**
  * Set a cookie
  * @param name name of the cookie
