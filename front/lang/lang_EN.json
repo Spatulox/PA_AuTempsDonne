@@ -8,6 +8,13 @@
 			"./moncompte.php":"Account",
 			"./signup_login.php":"Login/Sign up"
 		},
+		"connected":{
+			"./actualites.php":"Actualities",
+			"./don.php":"Give us",
+			"./planning.php":"Planning",
+			"./moncompte.php":"Account",
+			"./signup_login.php":"Login/Sign up"
+		},
 		"admin":{
 			"./admin.php":"Admin Panel",
 			"./moncompte.php":"Account"
@@ -68,7 +75,13 @@
 		"buttonLink":"./donateur.php"
 	},
 	"etagere": {
-		"title": "Shelf Menu"
+		"title": "Shelf Menu",
+		"tab1": {
+			"title": "List product inside Shelf",
+			"id": "ID",
+			"desc": "Description",
+			"qte": "Quantity"
+		}
 	},
 	"gestPlanning": {
 		"title": "Planning Menu",
@@ -171,7 +184,10 @@
 			"password":"Password",
 			"confirmPassword":"Confirm password",
 			"input":"Sign up",
-			"switch":"Log In"
+			"switch":"Log In",
+			"address": "Street",
+			"city": "City",
+			"postal": "Postal Code"
 		},
 		"formLogin":{
 			"title":"Log in",
