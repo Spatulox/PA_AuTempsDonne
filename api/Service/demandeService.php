@@ -95,4 +95,10 @@ class DemandeService
         $service = new DemandeRepository();
         $service->createValidationDemande($id);
     }
+
+    public function createValidationDemandeGroupe($apikey, $id, $id_depart, $id_arriver,$date)
+    {
+        $service = new DemandeRepository();
+        $service->createValidationDemandeGroupe($id,$id_depart,$id_arriver,$date);
+    }
 }

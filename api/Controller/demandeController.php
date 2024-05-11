@@ -61,6 +61,14 @@ function demandeController($uri, $apikey){
             }elseif ($uri[3]==="validate" and  filter_var($uri[4], FILTER_VALIDATE_INT)){
 
                 $service->createValidationDemande($apikey,$uri[4]);
+            }elseif ($uri[3]==="groupe"){
+
+                if(!isset($json["id_demande"]) || !isset($json["id_depart"]) ||!isset($json["id_arriver"]) || !isset($json["date"])){
+                    exit_with_message("vous n'avez pas mis les id");
+                }
+
+
+                $service->createValidationDemandeGroupe($apikey,$json["id_demande"],$json["id_depart"],$json["id_arriver"],$json["date"]);
             }
             break;
 
