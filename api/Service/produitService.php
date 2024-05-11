@@ -9,6 +9,8 @@ class ProduitService
     }
 
     function getProduitByID($id){
+
+
         $produitRepository = new ProduitRepository();
         $produitRepository->getProduitId($id);
     }
@@ -19,6 +21,12 @@ class ProduitService
     }
 
     function createProduit($nom_produit, $type){
+        $check=selectDB("TYPE","*","id_type=".$type);
+        if (!$check)
+        {
+            exit_with_message("ce type nexiste pas",400);
+        }
+
         $produitRepository = new ProduitRepository();
         $produitRepository->createProduit($nom_produit, $type);
     }

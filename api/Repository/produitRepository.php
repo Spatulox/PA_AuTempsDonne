@@ -46,14 +46,18 @@ class ProduitRepository
         $request = selectDB("PRODUIT", "*", "nom_produit='".$nom_produit."'", "bool");
 
         if($request){
-            exit_with_message("Produit already exists", 200);
+            exit_with_message("Produit already exists", 500);
         }
 
-        if(insertDB("PRODUIT", ["nom_produit", "id_type"], [$nom_produit, $id_type], "bool")){
+         $res= insertDB("PRODUIT", ["nom_produit", "id_type"], [$nom_produit, $id_type]);
+
+        if($res==true) {
             exit_with_message("Produit has been created", 200);
+        }else{
+            exit_with_message("Produit not created", 5000);
+
         }
 
-        exit_with_message("Produit not created", 200);
 
     }
 
