@@ -21,18 +21,18 @@ class UserAdmin extends Admin{
 
     }
 
-    async getUserDispoByDay(day){
+    async getUserDispoByDay(day, date){
 
         const data = {
-            "id_jour":day
+            "id_jour":day,
+            "date":date
         }
 
-        let response = await this.fetchSync(this.adresse+'/user/date', this.optionPost(data), false)
+        let response = await this.fetchSync(this.adresse+'/user/date', this.optionPost(data))
         if(!this.compareAnswer(response)){
             return false
         }
         return response
-
 
     }
 
@@ -117,10 +117,12 @@ class UserAdmin extends Admin{
         let complementPath = ""
         if(id != null){
             complementPath = `/${id}`
+        } else {
+            return
         }
 
         let response = await this.fetchSync(this.adresse+'/user'+complementPath, this.optionDelete())
-        if(!this.compareAnswer(response, "Impossible de supprimer l'utilisateur")){
+        if(!this.compareAnswer(response)){
             return false
         }
         popup("Votre compte à bien été désactivé")
