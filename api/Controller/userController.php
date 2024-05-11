@@ -106,11 +106,11 @@ function userController($uri, $apiKey) {
             }
             elseif ($uri[3] == "date") {
 
-                if(!isset($json["id_jour"]) ){
+                if(!isset($json["id_jour"]) || !isset($json["date"])){
                     exit_with_message("", 403);
                 }
 
-                exit_with_content($userService->GetAllUserDate($apiKey,$json["id_jour"]));
+                exit_with_content($userService->GetAllUserDate($apiKey,$json["id_jour"], $json["date"]));
             }
 
             break;
