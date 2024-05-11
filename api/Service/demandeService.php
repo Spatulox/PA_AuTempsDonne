@@ -89,4 +89,10 @@ class DemandeService
         $service = new DemandeRepository();
         $service->deleteDemande($id);
     }
+
+    public function createValidationDemande($apikey, $id)
+    {
+        $service = new DemandeRepository();
+        $service->createValidationDemande($id);
+    }
 }

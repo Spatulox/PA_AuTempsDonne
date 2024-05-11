@@ -24,7 +24,7 @@ CREATE TABLE CATEGORIES(
 );
 
 CREATE TABLE TRAJETS(
-   id_trajets INT AUTO_INCREMENT,
+   id_trajets INT ,
    PRIMARY KEY(id_trajets)
 );
 
@@ -167,9 +167,14 @@ CREATE TABLE DISCUSSION(
 CREATE TABLE DEMANDE(
    id_demande INT AUTO_INCREMENT,
    desc_demande VARCHAR(255),
+   activite VARCHAR(50) NOT NULL,
+   etat INT NOT NULL,
+   date_act DATETIME,
+   id_activite INT NOT NULL,
    id_planning INT,
    id_user INT NOT NULL,
    PRIMARY KEY(id_demande),
+   FOREIGN KEY(id_activite) REFERENCES ACTIVITES(id_activite),
    FOREIGN KEY(id_planning) REFERENCES PLANNINGS(id_planning),
    FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
 );

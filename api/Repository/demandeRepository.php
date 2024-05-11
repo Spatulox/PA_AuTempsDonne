@@ -15,6 +15,10 @@ class DemandeRepository
                 $demandes[$id_demande] = [
                     "id_demande" => $id_demande,
                     "desc_demande" => $item["desc_demande"],
+                    "activite" => $item["activite"],
+                    "etat" => $item["etat"],
+                    "date_act" => $item["date_act"],
+                    "id_activite" => $item["id_activite"],
                     "id_planning" => $item["id_planning"],
                     "id_user" => $item["id_user"],
                     "collecte" => []
@@ -39,6 +43,10 @@ class DemandeRepository
                 $array[] = new DemandeModel(
                     $demande["id_demande"],
                     $demande["desc_demande"],
+                    $demande["activite"],
+                    $demande["etat"],
+                    $demande["date_act"],
+                    $demande["id_activite"],
                     $demande["id_planning"],
                     $demande["id_user"],
                     NULL);
@@ -46,6 +54,10 @@ class DemandeRepository
                 $array[] = new DemandeModel(
                     $demande["id_demande"],
                     $demande["desc_demande"],
+                    $demande["activite"],
+                    $demande["etat"],
+                    $demande["date_act"],
+                    $demande["id_activite"],
                     $demande["id_planning"],
                     $demande["id_user"],
                     $demande["collecte"]
@@ -66,9 +78,9 @@ class DemandeRepository
 
         $request = 0;
         if($apikey == null){
-            $colums="DEMANDE.id_demande, DEMANDE.desc_demande, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
+            $colums="DEMANDE.id_demande, DEMANDE.desc_demande,DEMANDE.activite,DEMANDE.etat, DEMANDE.date_act, DEMANDE.id_activite, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
             $string="LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte;";
-            $request = selectJoinDB("DEMANDE", $colums ,$string);
+            $request = selectJoinDB("DEMANDE", $colums ,$string,-1,"bool");
 
             if(!$request){
                 exit_with_message("No demande saved", 200);
@@ -78,7 +90,7 @@ class DemandeRepository
         }
         else{
             $idUser = getIdUserFromApiKey($apikey);
-            $colums="DEMANDE.id_demande, DEMANDE.desc_demande, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
+            $colums="DEMANDE.id_demande, DEMANDE.desc_demande,DEMANDE.activite,DEMANDE.etat, DEMANDE.date_act,DEMANDE.id_activite, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
             $string="INNER JOIN RECU R ON R.id_demande = DEMANDE.id_demande INNER JOIN COLLECTE C ON C.id_collecte = R.id_collecte;";
             $request = selectJoinDB("DEMANDE", $colums ,$string ,"id_user=".$idUser, "bool");
 
@@ -97,7 +109,7 @@ class DemandeRepository
     //------------------------------------------------------------------------------------------------------------
 
     function getByUser($id_user){
-        $colums="DEMANDE.id_demande, DEMANDE.desc_demande, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
+        $colums="DEMANDE.id_demande, DEMANDE.desc_demande,DEMANDE.activite,DEMANDE.etat, DEMANDE.date_act,DEMANDE.id_activite, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
         $string="LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte;";
         $request = selectJoinDB("DEMANDE", $colums ,$string ,"id_user=".$id_user, "bool");
 
@@ -109,12 +121,18 @@ class DemandeRepository
 
     function createDemande($data, $idUser, $produits){
 
-        $request = insertDB("DEMANDE", ["desc_demande", "id_user"], [$data["desc_demande"], $idUser]);
+        if($data["date_act"]){
+            $request = insertDB("DEMANDE", ["desc_demande","activite","etat", "date_act","id_activite","id_user"], [$data["desc_demande"],$data["activite"],$data["etat"],$data["date_act"],$data["id_activite"], $idUser]);
+        }else {
+            $request = insertDB("DEMANDE", ["desc_demande", "activite", "etat", "id_activite","id_user"], [$data["desc_demande"], $data["activite"], $data["etat"],$data["id_activite"], $idUser]);
+        }
+
+
 
         if (!$request) {
             exit_with_message("Error creating demande", 400);
         }
-        $id_demande = $this->getLastInsertId("DEMANDE","id_demande");// Récupère l'ID de la dernière demande créée
+        $id_demande = $this->getLastInsertId("DEMANDE","id_demande");
         //souvenir
         //echo $id_demande[ 0]["id_demande"];
         if ($produits == null) {
@@ -146,7 +164,7 @@ class DemandeRepository
 //------------------------------------------------------------------------------------------------------------
 
     function updateDemande($id_demande, $id_planning){
-        $request = updateDB("DEMANDE", ["id_planning"], [$id_planning], "id_demande=".$id_demande, bool);
+        $request = updateDB("DEMANDE", ["id_planning"], [$id_planning], "id_demande=".$id_demande, "bool");
 
         if($request){
             exit_with_message("Sucessfully updated demande", 200);
@@ -192,5 +210,30 @@ class DemandeRepository
         $string = "ORDER BY ".$id." DESC LIMIT 1";
        $envoie= selectDB($table,$id,-1, $string);
         return $envoie;
+    }
+
+    //------------------------------------------------------------------------------------------------------
+
+    public function createValidationDemande($id)
+    {
+        $res = selectDB("DEMANDE","*","id_demande=".$id);
+        if(!$res){
+            exit_with_message("existe pas demande",500);
+        }
+
+        $addresse=selectDB("UTILISATEUR","id_adresse","id_user=".$res[0]["id_user"],"-@");
+        $id_trajets=$this->getLastInsertId("TRAJETS","id_trajets");
+        $trajets=(int)$id_trajets[0]["id_trajets"]+1;
+
+        $test= insertDB("TRAJETS",["id_trajets"],[$trajets]);
+        $id_trajets=$this->getLastInsertId("TRAJETS","id_trajets");
+        insertDB("UTILISER",["id_trajets","id_adresse"],[$id_trajets[0]["id_trajets"],$addresse[0]["id_adresse"]]);
+
+
+        $id_index_planning=3;
+        $trajet=0;
+        $test=insertDB("PLANNINGS",["description","date_activite","id_index_planning","id_trajets","id_activite"],[$res[0]["desc_demande"],$res[0]["date_act"],$id_index_planning,$id_trajets[0]["id_trajets"],$res[0]["id_activite"]]);
+        $etat=0;
+        updateDB("DEMANDE",["etat"],[$etat],"id_demande=".$id);
     }
 }
