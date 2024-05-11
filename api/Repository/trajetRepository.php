@@ -123,15 +123,23 @@ class TrajetRepository {
 
         $lastID = $lastID + 1;
 
-        $test = insertDB("TRAJETS",["id_trajets"],[$lastID], "-@");
+        $test = insertDB("TRAJETS",["id_trajets"],[$lastID]);
 
         if($test === false){
             exit_with_message("Erreur lors de la création du trajet");
         }
 
+        $tab1 = $tab[0];
+        $count = 0;
         foreach ($tab as $trajet) {
 
-            $res = insertDB("UTILISER", ["id_trajets", "id_adresse"], [$lastID, $trajet], "-@");
+            if($trajet == $tab1 && $count > 0){
+                $trajet = 1;
+            }
+
+            $count++;
+
+            $res = insertDB("UTILISER", ["id_trajets", "id_adresse"], [$lastID, $trajet]);
 
             if( $res === false){
                 $msg = "Erreur lors de l'enregistement du trajet, veuillez réessayer";
@@ -140,7 +148,7 @@ class TrajetRepository {
             }
         }
 
-        exit_with_message("Success");
+        exit_with_message("Success", 200);
 
     }
 
