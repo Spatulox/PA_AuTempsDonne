@@ -9,6 +9,27 @@ class PlanningRepository {
     function __construct() {
        
     }
+
+    private function getTrajetFromId($id) {
+
+        $tabAddresse = [];
+
+        if($id != ""){
+            $condition = "t.id_trajets =".$id;
+            $join = "JOIN UTILISER u ON t.id_trajets = u.id_trajets JOIN ADRESSE a ON u.id_adresse = a.id_adresse";
+            $addresse = selectjoinDB("TRAJETS t", "a.ADRESSE", $join, $condition, "bool");
+
+            if($addresse === false){
+                return $tabAddresse;
+            }
+
+            for ($i = 0; $i < count($addresse); $i++) {
+                $tabAddresse[] = $addresse[$i]["ADRESSE"];
+            }
+        }
+        return $tabAddresse;
+
+    }
     
     //-------------------------------------
 
@@ -17,8 +38,8 @@ class PlanningRepository {
 
         $planning = [];
 
-
         for ($i=0; $i < count($planningArray); $i++) {
+
             $planning[$i] = new PlanningModel(
                 $planningArray[$i]['id_planning'],
                 $planningArray[$i]['description'],
@@ -27,6 +48,8 @@ class PlanningRepository {
                 $planningArray[$i]['id_activite']
             );
             $planning[$i]->setId($planningArray[$i]['id_planning']);
+
+            $planning[$i]->setAddress($this->getTrajetFromId($planningArray[$i]["id_trajets"]));
 
             $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
@@ -51,6 +74,8 @@ class PlanningRepository {
                 $planningArray[$i]['id_activite']
             );
             $planning[$i]->setId($planningArray[$i]['id_planning']);
+
+            $planning[$i]->setAddress($this->getTrajetFromId($planningArray[$i]["id_trajets"]));
 
             $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
@@ -85,6 +110,9 @@ class PlanningRepository {
                     $planningData['id_activite']
                 );
                 $planning->setId($planningData['id_planning']);
+
+                $planning->setAddress($this->getTrajetFromId($planningData["id_trajets"]));
+
                 $planning->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=" . $planningData['id_index_planning'])[0]);
                 $planning->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=" . $planningData['id_activite'])[0]);
 
@@ -118,6 +146,7 @@ class PlanningRepository {
                     $planningData['id_activite']
                 );
                 $planning->setId($planningData['id_planning']);
+                $planning->setAddress($this->getTrajetFromId($planningData["id_trajets"]));
                 $planning->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=" . $planningData['id_index_planning'])[0]);
                 $planning->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=" . $planningData['id_activite'])[0]);
 
@@ -266,6 +295,8 @@ class PlanningRepository {
             );
             $planning[$i]->setId($planningArray[$i]['id_planning']);
 
+            $planning[$i]->setAddress($this->getTrajetFromId($planningArray[$i]["id_trajets"]));
+
             $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
         }
@@ -293,6 +324,8 @@ class PlanningRepository {
                 $planningArray[$i]['id_activite']
             );
             $planning[$i]->setId($planningArray[$i]['id_planning']);
+
+            $planning[$i]->setAddress($this->getTrajetFromId($planningArray[$i]["id_trajets"]));
 
             $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
@@ -325,6 +358,8 @@ class PlanningRepository {
             );
             $planning[$i]->setId($planningArray[$i]['id_planning']);
 
+            $planning[$i]->setAddress($this->getTrajetFromId($planningArray[$i]["id_trajets"]));
+
             $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
         }
@@ -354,6 +389,8 @@ class PlanningRepository {
                 $planningArray[$i]['id_activite']
             );
             $planning[$i]->setId($planningArray[$i]['id_planning']);
+
+            $planning[$i]->setAddress($this->getTrajetFromId($planningArray[$i]["id_trajets"]));
 
             $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=" . $planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=" . $planningArray[$i]['id_activite'])[0]);
