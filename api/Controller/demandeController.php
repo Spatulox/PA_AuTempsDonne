@@ -27,24 +27,41 @@ function demandeController($uri, $apikey){
             $json = json_decode($body, true);
 
             $service = new DemandeService();
+            if (!$uri[3]){
 
-            if(!isset($json["desc_demande"])){
-                exit_with_message("vous n'avez pas mis de description");
+                if(!isset($json["desc_demande"]) || !isset($json["activite"]) || !isset($json["id_activite"])){
+                    exit_with_message("vous n'avez pas mis de description");
+                }
+
+                if($json["activite"]=="seul"){
+                    if(!isset($json["date_act"])){
+                        exit_with_message("vous n'avez pas mis de date");
+                    }
+                }
+
+                $etat=1;
+
+                $demande = array(
+                    'desc_demande' => $json['desc_demande'],
+                    'activite' => $json["activite"],
+                    'date_act'=>$json["date_act"],
+                    'id_activite'=>$json["id_activite"],
+                    'etat' => $etat,
+                );
+
+
+                $produits = $json['produits'];
+
+                foreach ($produits as $produit) {
+                    $quantite = $produit['quantite'];
+                    $id_produit = $produit['id_produit'];
+                }
+
+                $service->createDemande($apikey,$demande,$produits);
+            }elseif ($uri[3]==="validate" and  filter_var($uri[4], FILTER_VALIDATE_INT)){
+
+                $service->createValidationDemande($apikey,$uri[4]);
             }
-
-            $demande = array(
-                'desc_demande' => $json['desc_demande'],
-            );
-
-            $produits = $json['produits'];
-
-            foreach ($produits as $produit) {
-                $quantite = $produit['quantite'];
-                $id_produit = $produit['id_produit'];
-            }
-
-            $service->createDemande($apikey,$demande,$produits);
-
             break;
 
         case 'PUT':
