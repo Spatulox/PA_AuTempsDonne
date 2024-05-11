@@ -150,4 +150,12 @@ class EntrepotAdmin extends Admin {
         return response
     }
 
+    async getStockInShelfWithKey(key){
+        let response = await this.fetchSync(this.adresse + '/etagere/'+key, this.optionGet())
+        if (!this.compareAnswer(response)) {
+            return false
+        }
+        return response
+    }
+
 }

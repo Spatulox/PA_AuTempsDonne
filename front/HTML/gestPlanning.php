@@ -373,8 +373,13 @@
 
     async function updateListUser(dateStr){
         const date = new Date(dateStr);
-        const jourSemaine = date.getDay();
-        users = await user.getUserDispoByDay(jourSemaine+1)
+        let jourSemaine = date.getDay();
+
+        if(jourSemaine === 0){
+            jourSemaine = 7
+        }
+
+        users = await user.getUserDispoByDay(jourSemaine)
 
         const selectBody = document.getElementById("select")
         selectBody.innerHTML = ""

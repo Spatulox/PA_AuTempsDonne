@@ -111,7 +111,7 @@ class PlanningAdmin extends Admin{
         }
 
         const data = {
-            "id_planning": +id
+            "id_index_planning": 2
         }
 
         let response = await this.fetchSync(this.adresse+'/planning/validate/'+id, this.optionPut(data), false)
