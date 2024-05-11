@@ -226,13 +226,15 @@
 		"tab1": {
 			"title" : "Vehicle list",
 			"id": "ID_Vehicle",
-			"name": "Name/Lastname",
-			"storehouse": "Storehouse",
-			"buttonSee": "See"
+			"capacity": "Capacity",
+			"name": "Name",
+			"place": "Places",
+			"entrepot": "Id_Entrepot",
+			"button": "Detail"
 		},
 		"tab2": {
 			"title" : "Vehicle details",
-			"errorMsg" : "No user selected"
+			"errorMsg" : "No vehicle selected"
 		},
 		"tab3": {
 			"title": "Vehicle truc",
