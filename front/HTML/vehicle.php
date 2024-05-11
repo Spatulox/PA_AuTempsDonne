@@ -183,8 +183,6 @@
             "id_entrepot": entrepotv
         }
 
-        console.log(data)
-
         await vehicle.createVehicle(data)
         await fillList()
         stopLoading()

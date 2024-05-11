@@ -173,7 +173,6 @@
 
         const htmlelement = document.getElementById("bodyAddRemove")
         htmlelement.innerHTML = ""
-        console.log(htmlelement)
 
         const tab4 = document.getElementById("tab4")
 

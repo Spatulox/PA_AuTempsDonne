@@ -15,9 +15,6 @@ btn.addEventListener("click", async () => {
 
     const data = await response.json();
 
-    console.log("DATA :")
-    console.log(data)
-
     // Save id of the address as values. The key of the object if the name of the address
     const interData = {}
     for (const dataKey in data.addresse) {
@@ -39,33 +36,28 @@ btn.addEventListener("click", async () => {
 
         let shortestDistance = Infinity;
         let closestAddress = null;
-        //console.log("-------------------------------");
-        //console.log(`Origin: ${origin}`);
 
         for (let i = 0; i < intermediateAddresses.length; i++) {
             const destination = intermediateAddresses[i];
             const distance = await getDistance(origin, destination);
-            //console.log(destination, distance);
 
             if (distance < shortestDistance) {
                 shortestDistance = distance;
                 closestAddress = destination;
-                //console.log(`Nouvelle adresse la plus proche: ${closestAddress} (distance: ${shortestDistance})`);
             }
         }
 
         if (closestAddress !== null) {
             sortedAddresses.push(closestAddress);
-            //console.log(`Ajout ${closestAddress} dans sortedAddresses`);
+            console.log(`Ajout ${closestAddress} dans sortedAddresses`);
         } else {
-            //console.log('Aucune adresse proche');
+            console.log('Aucune adresse proche');
         }
 
         const indexToRemove = intermediateAddresses.indexOf(closestAddress);
         if (indexToRemove !== -1) {
             intermediateAddresses.splice(indexToRemove, 1);
         }
-        //console.log(`Adresses restantes: ${intermediateAddresses}`);
     }
 
     sortedAddresses.push(endAddress); // Ajouter l'adresse de l'entrepôt d'arrivée à la fin

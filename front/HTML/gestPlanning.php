@@ -355,8 +355,6 @@
         const tbody = document.getElementById("bodyDaily")
         tbody.innerHTML = ""
         const dailyPlanning = await planning.getAffectByDatePlanning(formattedDate)
-        console.log(formattedDate)
-        console.log(dailyPlanning)
 
         if(dailyPlanning.length > 0){
             createBodyTableau(tbody, dailyPlanning, ["id_index_planning", "id_activite"])

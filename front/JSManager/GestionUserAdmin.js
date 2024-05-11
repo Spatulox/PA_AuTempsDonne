@@ -11,9 +11,6 @@ class UserAdmin extends Admin{
             "nom" : nom
         }
 
-        console.log(data)
-
-
         const response = await this.fetchSync(this.adresse+"/user/", this.optionPut(data))
         if(!this.compareAnswer(response, this.msg["Update"] + this.msg["failed"])){
             popup(this.msg["Update"] + this.msg["failed"])
@@ -30,7 +27,7 @@ class UserAdmin extends Admin{
             "id_jour":day
         }
 
-        let response = await this.fetchSync(this.adresse+'/user/date', this.optionPost(data))
+        let response = await this.fetchSync(this.adresse+'/user/date', this.optionPost(data), false)
         if(!this.compareAnswer(response)){
             return false
         }
@@ -94,7 +91,6 @@ class UserAdmin extends Admin{
     async updateUserRole(id_role, id_user){
 
         id_role = id_role.trim()
-        console.log("idRole"+id_role)
 
         const data = {
             "id_role": id_role

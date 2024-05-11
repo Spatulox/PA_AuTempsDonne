@@ -51,7 +51,6 @@ async function redirectToCloseList(id){
 function redirectToMainMenu(){
     let url1 = window.location.href
 
-    console.log(url1)
     let url = ""
 
     url = url1.split("?")
@@ -142,8 +141,6 @@ async function UpdateStateCatDescTicket(){
 
     const response = await fecthSynch("/fetch/update", optionPost(data))
 
-    console.log(response)
-
     if (response === "Updated"){
         window.location.reload()
     }
@@ -159,7 +156,6 @@ async function refreshMessages(){
     const id = document.getElementById("id_ticket").innerHTML
 
     const response = await fecthSynch(`/fetch/message?idTicket=${id}`, optionGet())
-    console.log(response)
 
     const message = document.getElementsByClassName("message")
 
@@ -216,10 +212,8 @@ async function refreshMessages(){
 async function redirectAddMessage(){
 
     const messageToSend = document.getElementById("messageToSend").value
-    console.log(messageToSend)
 
     const id_ticket = document.getElementById("id_ticket").innerHTML
-    console.log(id_ticket)
 
     const data = {
         "id_ticket":id_ticket,
@@ -232,7 +226,6 @@ async function redirectAddMessage(){
     scrollToBottomOfMessages();
 
     const textarea = document.getElementsByTagName("textarea")[0]
-    console.log(textarea)
     textarea.value = ""
 }
 
@@ -279,7 +272,6 @@ async function fecthSynch(url, data){
         if (response.ok) {
 
             try{
-                console.log(response)
                 if (response.headers.get('Content-Type') === 'application/json') {
                     return response.json();
                 }
