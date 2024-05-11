@@ -62,12 +62,14 @@ class PlanningRepository {
 
         public function getPlanningByUser($apiKey)
         {
-        $id = getIdUserFromApiKey($apiKey);
-        $id_planning = selectDB("PARTICIPE", "id_planning", "id_user='" . $id . "'", "bool");
 
-        if($id_planning == false){
-            exit_with_message("No Planning found for you");
-        }
+                $id = getIdUserFromApiKey($apiKey);
+                $id_planning = selectDB("PARTICIPE", "id_planning", "id_user='" . $id . "'", "bool");
+
+                if ($id_planning == false) {
+                    exit_with_message("No Planning found for you");
+
+            }
 
         $allPlanning = [];
 
@@ -129,7 +131,7 @@ class PlanningRepository {
 
     //-------------------------------------
     
-    public function createPlanning(PlanningModel $planning){
+    public function createPlanning(PlanningModel $planning,$apiKey){
 
 
         $create = insertDB("PLANNINGS", [ "description", "date_activite", "id_index_planning", "id_activite"], [
@@ -143,8 +145,14 @@ class PlanningRepository {
         if(!$create){
             exit_with_message("Error, the planning can't be created, plz try again", 500);
         }
-
+        $userRole=getRoleFromApiKey($apiKey);
+        $id_user=getIdUserFromApiKey($apiKey);
         $lastId = selectJoinDB("PLANNINGS", "id_planning", "ORDER BY id_planning DESC LIMIT 1");
+
+        if ($userRole==4){
+            insertDB("PARTICIPE",["id_user","id_planning"],[$id_user,$lastId[0]["id_planning"]]);
+        }
+
 
         exit_with_content($this->getPlanningByid($lastId[0]["id_planning"]),200);
     }
@@ -297,7 +305,12 @@ class PlanningRepository {
 
     public function getPlanningNoAffecte()
     {
-        $condition=" PLANNINGS.id_index_planning= 2 AND NOT EXISTS (SELECT 1 FROM PARTICIPE pa WHERE pa.id_planning = PLANNINGS.id_planning)";
+        $condition = " PLANNINGS.id_index_planning = 2 
+                   AND NOT EXISTS (
+                       SELECT 1 
+                       FROM PARTICIPE pa 
+                       INNER JOIN UTILISATEUR u ON pa.id_user = u.id_user
+                       WHERE pa.id_planning = PLANNINGS.id_planning AND u.id_role = 3)";
         $planningArray = selectDB("PLANNINGS", "*",$condition);
 
         $planning = [];
@@ -323,7 +336,7 @@ class PlanningRepository {
     public function getPlanningAffecteDate($date)
     {
         $condition = " PLANNINGS.id_index_planning = 2 AND EXISTS (SELECT 1 FROM PARTICIPE pa WHERE pa.id_planning = PLANNINGS.id_planning) AND date_activite BETWEEN '".$date." 00:00:00' AND '".$date." 23:59:59' ORDER BY date_activite ASC";
-        $planningArray = selectDB("PLANNINGS", "*", $condition,"bool");
+        $planningArray = selectDB("PLANNINGS", "*", $condition);
 
         if (!$planningArray)
         {
@@ -345,11 +358,11 @@ class PlanningRepository {
             $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=" . $planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=" . $planningArray[$i]['id_activite'])[0]);
 
-            $res= selectDB("PARTICIPE","*","id_planning=".$planningArray[$i]['id_planning']);
+            $res = selectDB("PARTICIPE pa INNER JOIN UTILISATEUR u ON pa.id_user = u.id_user", "u.email", "pa.id_planning=" . $planningArray[$i]['id_planning'] . " AND u.id_role = 3" );
 
             $tab=[];
-            for ($j=0; $j < count($res); $j++) {
-               array_push($tab, selectDB("UTILISATEUR", "email", "id_user=".$res[$j]['id_user'])[0]["email"]);
+            foreach ($res as $row) {
+                $tab[] = $row["email"];
             }
             $planning[$i]->setemailuser($tab);
 

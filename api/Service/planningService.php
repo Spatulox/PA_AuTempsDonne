@@ -62,12 +62,12 @@ class PlanningService {
         if ($userRole[0]==1 || $userRole[0]==2) {
             $planning->id_index_planning = 2;
             $planningRepository = new PlanningRepository();
-            return $planningRepository->createPlanning($planning);
+            return $planningRepository->createPlanning($planning,$apiKey);
 
         }elseif($userRole[0]==4){
             $planning->id_index_planning = 3;
             $planningRepository = new PlanningRepository();
-            return $planningRepository->createPlanning($planning);
+            return $planningRepository->createPlanning($planning,$apiKey);
         }else{
             exit_with_message("You didn't have access to this command");
         }
