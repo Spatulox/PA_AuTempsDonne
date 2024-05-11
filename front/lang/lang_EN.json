@@ -238,7 +238,8 @@
 			"title" : "Users list",
 			"name": "Name/Lastname",
 			"storehouse": "Storehouse",
-			"buttonSee": "See"
+			"buttonSee": "See",
+			"buttonDelete": "Delete"
 		},
 		"tab2": {
 			"title" : "User details",
