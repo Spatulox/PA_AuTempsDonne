@@ -62,12 +62,12 @@ class PlanningService {
         if ($userRole[0]==1 || $userRole[0]==2) {
             $planning->id_index_planning = 2;
             $planningRepository = new PlanningRepository();
-            return $planningRepository->createPlanning($planning);
+            return $planningRepository->createPlanning($planning,$apiKey);
 
         }elseif($userRole[0]==4){
             $planning->id_index_planning = 3;
             $planningRepository = new PlanningRepository();
-            return $planningRepository->createPlanning($planning);
+            return $planningRepository->createPlanning($planning,$apiKey);
         }else{
             exit_with_message("You didn't have access to this command");
         }
@@ -244,7 +244,7 @@ class PlanningService {
         if (!$plannings){
             exit_with_message("Ce planning n'existe pas",400);
         }
-        
+
         if($id_index_planning < 1 || $id_index_planning > 3) {
             exit_with_message("Mauvais index, merci de rentrer une valeur entre 1 et 3");
         }

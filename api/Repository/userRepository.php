@@ -361,13 +361,17 @@ class UserRepository {
 
     //-----------------------------------------------------------------------------------------
 
-    public function GetAllUserDate($date)
+    public function GetAllUserDate($id_jour,$date)
     {
-
-        $conditions = "SEMAINE.id_dispo=".$date;
+        $conditions = "SEMAINE.id_dispo=" . $id_jour . " AND NOT EXISTS (
+        SELECT 1 
+        FROM PARTICIPE p
+        INNER JOIN PLANNINGS pl ON p.id_planning = pl.id_planning
+        WHERE p.id_user = UTILISATEUR.id_user AND pl.date_activite BETWEEN '".$date." 00:00:00' AND '".$date." 23:59:59'
+    )";
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
         $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
-        $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions);
+        $usersArray = selectJoinDB("DISPONIBILITE", $columns, $join, $conditions);
 
         $uniqueUsers = [];
 
