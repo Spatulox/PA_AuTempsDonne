@@ -27,4 +27,10 @@ class ProduitService
         $produitRepository = new ProduitRepository();
         $produitRepository->deleteProduitId($id);
     }
+
+    public function getType()
+    {
+        $produitRepository = new ProduitRepository();
+        $produitRepository->getType();
+    }
 }

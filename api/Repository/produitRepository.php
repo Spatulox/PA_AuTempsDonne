@@ -67,4 +67,18 @@ class ProduitRepository
         exit_with_message("Produit not deleted", 200);
 
     }
+
+    public function getType()
+    {
+        $res = selectDB("TYPE", "*");
+        $tab = [];
+        foreach ($res as $row) {
+            $tab[] = [
+                "id_type" => $row["id_type"],
+                "type" => $row["type"],
+                "unit_mesure" => $row["unit_mesure"]
+            ];
+        }
+        exit_with_content($tab);
+    }
 }
