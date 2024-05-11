@@ -19,51 +19,23 @@
 
         <div class="tab flex flexAround nowrap">
             <button class="tablinks width100"
-                    onclick="openTab('tab1')"><?php echo($data["product"]["tab1"]["title"]) ?></button>
-            <button class="tablinks width100"
-                    onclick="openTab('tab2')"><?php echo($data["product"]["tab2"]["title"]) ?></button>
-            <button class="tablinks width100"
-                    onclick="openTab('tab3')"><?php echo($data["product"]["tab3"]["title"]) ?></button>
+                    onclick="openTab('tab1')"><?php echo($data["etagere"]["tab1"]["title"]) ?></button>
         </div>
 
         <div id="tab1" class="tabcontent">
-            <h2 class="textCenter"><?php echo($data["product"]["tab1"]["title"]) ?></h2>
+            <h2 class="textCenter"><?php echo($data["etagere"]["tab1"]["title"]) ?></h2>
             <table>
                 <thead>
                 <tr>
-                    <td><?php echo $data["product"]["tab1"]["id"] ?></td>
-                    <td><?php echo $data["product"]["tab1"]["name"] ?></td>
-                    <td><?php echo $data["product"]["tab1"]["type"] ?></td>
-                    <td><?php echo $data["product"]["tab1"]["button"] ?></td>
+                    <td><?php echo $data["etagere"]["tab1"]["id"] ?></td>
+                    <td><?php echo $data["etagere"]["tab1"]["qte"] ?> (L)</td>
+                    <td><?php echo $data["etagere"]["tab1"]["desc"] ?></td>
                 </tr>
                 </thead>
                 <tbody id="bodyList">
                 <!-- Les lignes de données seront insérées ici par JavaScript -->
                 </tbody>
             </table>
-        </div>
-
-        <div id="tab2" class="tabcontent">
-            <h2 class="textCenter"><?php echo($data["product"]["tab2"]["title"]) ?></h2>
-            <!--<input type="number" class="search-box marginBottom10" placeholder="Search by id">-->
-            <p id="product-container"
-               class="border width60 textCenter"><?php echo($data["product"]["tab2"]["errorMsg"]) ?></p>
-        </div>
-
-        <div id="tab3" class="tabcontent">
-            <h2 class="textCenter"><?php echo($data["product"]["tab3"]["title"]) ?></h2>
-            <hr>
-            <div class="textCenter">
-                <input id="nameProd" class="marginTop10 search-box" type="text"
-                       placeholder="<?php echo($data["product"]["tab1"]["name"]) ?>"><br>
-                <div id="leSelectAremplir"
-                     class="marginTop10 marginAuto search-box"><?php echo($data["vehicle"]["tab2"]["errorMsg"]) ?>,
-                    Impossible to select product type
-                </div>
-                <br>
-                <input class="marginTop30" type="button" onclick="addProduct()"
-                       value="<?php echo($data["product"]["tab3"]["title"]) ?>">
-            </div>
         </div>
     </div>
 
@@ -75,8 +47,33 @@
 
 <script type="text/javascript" defer>
 
+    const etagere = new EntrepotAdmin()
+    let stock = []
+
+    async function fillEtagere(){
+        const key = getParamFromUrl("key")
+
+        if(key === false){
+            popup("Erreur lors de la récupération, need the key")
+            return
+        }
+
+        stock = await etagere.getStockInShelfWithKey(key)
+
+        if(stock === false){
+            stopLoading()
+            return
+        }
+
+        const body = document.getElementById("bodyList")
+        createBodyTableau(body, stock, ["id_entrepot", "id_produit", "desc_produit", "date_sortie", "date_entree", "date_peremption", "id_etagere", "entrepot_desc"])
+        replaceCharacters()
+
+    }
+
     async function onload(){
         startLoading()
+        await fillEtagere()
         openTab("tab1")
         stopLoading()
     }
