@@ -67,6 +67,9 @@
 		"button":"Buy us a coffe",
 		"buttonLink":"./donateur.php"
 	},
+	"etagere": {
+		"title": "Shelf Menu"
+	},
 	"gestPlanning": {
 		"title": "Planning Menu",
 		"tab1": {
