@@ -5,6 +5,11 @@
 <head>
 
     <?php include("../includes/head.php"); ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
 
     <title><?php echo($data["storehouse"]["title"]) ?></title>
 </head>
@@ -120,10 +125,8 @@
 
         let remaining = document.getElementById("placeDispo").innerHTML
         remaining = remaining.split(" :")
-        console.log(remaining)
 
         const place = await entrepot.getPlaceDispoEntrepot(id)
-        console.log()
 
         remaining[1] = place.message
         remaining = remaining.join(" : ")
@@ -234,6 +237,55 @@
         stopLoading()
     }
 
+    async function generateQRCode(idShelf) {
+        if (idShelf.trim() === '') {
+            popup('Erreur lors de la création');
+            return;
+        }
+
+        document.getElementById(idShelf).innerHTML = ""
+
+        const qrcode = await new QRCode(document.getElementById(idShelf), {
+            text: idShelf,
+            width: 256,
+            height: 256,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+/*        const doc = new jsPDF();
+        const imgData = document.getElementById(idShelf).toDataURL();
+        doc.addImage(imgData, 'JPEG', 20, 20);
+        doc.save(`QRCode_${idShelf}.pdf`);*/
+
+        const canvas = document.getElementById(idShelf).getElementsByTagName('canvas')[0];
+        const imgData = canvas.toDataURL('image/jpeg', 1.0);
+
+        const docDefinition = {
+            header: {
+                text: 'QR Code étagère : '+idShelf.split("_")[0],
+                style: 'header'
+            },
+            content: [
+                {
+                    image: imgData,
+                    width: 200
+                }
+            ],
+            styles: {
+                header: {
+                    fontSize: 18,
+                    bold: true,
+                    margin: [0, 0, 0, 10]
+                }
+            }
+        };
+
+        pdfMake.createPdf(docDefinition).download(`QRCode_${idShelf}.pdf`);
+
+    }
+
     function formatEntrepot(entrepotV) {
         let formattedEntrepot = `<div class="entrepot">
             <h2>${entrepotV.nom}</h2>
@@ -246,13 +298,15 @@
         entrepotV.rangement.forEach(rangements => {
                 formattedEntrepot += `<li class="marginBottom10">
                   <div class="rangement-item">
-                    <span>
+                    <span id="${rangements.id_etagere}_shelf11">
                       <?php echo($data["storehouse"]["tab1"]["shelfId"]) ?> : ${rangements.id_etagere}<br>
                       <?php echo($data["storehouse"]["tab1"]["shelf"]) ?> : ${rangements.nombre_de_place}
                     </span>
                     <button type="button" class="btn-action" onclick="deleteShelf(${rangements.id_etagere})">${entrepot.msg["Delete"]}</button>
+                    <button type="button" class="btn-action" onclick="generateQRCode('${rangements.id_etagere}_shelf')">QR_Code</button>
                   </div>
-                </li>`;
+                </li>
+                <div class="marginBottom30" id="${rangements.id_etagere}_shelf"></div>`;
             });
 
                 formattedEntrepot += `</ul>
