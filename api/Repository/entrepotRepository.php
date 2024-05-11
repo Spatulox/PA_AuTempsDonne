@@ -112,7 +112,12 @@ class EntrepotRepository
         $id_entrepot = $this->getLastInsertId("ENTREPOTS", "id_entrepot");
 
         foreach ($etageres as $etagere) {
-            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etagere["nombre_de_place"], $id_entrepot[0]["id_entrepot"]]);
+
+            $last_id=$this->getLastInsertId("ETAGERES","id_etagere");
+
+            $code = hash('sha256', $last_id[0]['id_etagere'] ."_". $etagere['nombre_de_place'] ."_". $id_entrepot[0]['id_entrepot']);
+
+            $request_collecte = insertDB("ETAGERES", ["nombre_de_place","code", "id_entrepot"], [$etagere["nombre_de_place"],$code, $id_entrepot[0]["id_entrepot"]]);
 
             if (!$request_collecte) {
                 exit_with_message("Error creating etagere", 500);
@@ -192,7 +197,12 @@ class EntrepotRepository
     public function createEtageres($entrepot, $etageres_place)
     {
         for ($i = 0; $i < count($etageres_place); $i++) {
-            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etageres_place[$i], $entrepot]);
+            $last_id=$this->getLastInsertId("ETAGERES","id_etagere");
+
+            $code = hash('sha256', $last_id[0]['id_etagere'] ."_". $etageres_place[$i] ."_". $entrepot);
+            
+
+            $request_collecte = insertDB("ETAGERES", ["nombre_de_place","code", "id_entrepot"], [$etageres_place[$i],$code, $entrepot]);
             if ($request_collecte==false) {
                 exit_with_message("Error creating Etagere", 500);
             }
@@ -271,6 +281,7 @@ class EntrepotRepository
 
         return $sum;
     }
+
 
 }
 
