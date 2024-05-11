@@ -63,14 +63,10 @@
         };
 
         const response = await fetch("http://localhost:8081/index.php/don/create", options)
-        console.log(await response.text())
-        return
 
         if (!response.ok) {
             const text = await response.json()
-            alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
             if (text.hasOwnProperty("message")) {
-                alertDebug(text.message)
                 popup(text.message)
             }
             stopLoading()
