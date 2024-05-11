@@ -22,6 +22,15 @@
 #actualite section:not(:first-child) div{
 
 }
+
+#language-select{
+  border-radius: 5px 5px 0px 0px;
+}
+
+#language-select, #language-select option{
+  background-color: #dea23c;
+}
+
 #overlay {
   position: fixed;
   display: none;
@@ -57,11 +66,11 @@
 }
 
 #inscriptionBox{
-  height: 777px;
+  height: 908px;
 }
 
 #inscriptionBox, #connectionBox{
-  max-height: 777px;
+  max-height: 910px;
   overflow: hidden;
   margin: 10px 0px;
 }
