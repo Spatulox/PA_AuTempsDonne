@@ -25,7 +25,7 @@ class StockAdmin extends Admin{
     }
 
     async getExitedStock(id_entrepot){
-        let response = await this.fetchSync(this.adresse + '/stock', this.optionGet())
+        let response = await this.fetchSync(this.adresse + '/stock/'+id_entrepot, this.optionGet())
         if (!this.compareAnswer(response)) {
             return false
         }
