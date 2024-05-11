@@ -20,7 +20,8 @@ class DemandeService
 
     function getViaApikey($apikey){
         $repo = new DemandeRepository();
-        $repo->get($apikey);
+        $id=getIdUserFromApiKey($apikey);
+        $repo->getByUser($id);
     }
 
     function getViaUser($id, $apikey){

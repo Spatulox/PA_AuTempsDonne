@@ -3,13 +3,12 @@
 class DemandeRepository
 {
 
-    private function affiche($request){
-
+    private function affiche($request) {
         $array = [];
-
         $demandes = [];
 
-        foreach ($request as $item) {
+        for ($i = 0; $i < count($request); $i++) {
+            $item = $request[$i];
             $id_demande = $item["id_demande"];
 
             if (!isset($demandes[$id_demande])) {
@@ -29,20 +28,35 @@ class DemandeRepository
             ];
 
             $demandes[$id_demande]["collecte"][] = $collecte;
+
         }
 
-        foreach ($demandes as $demande) {
-            $array[] = new DemandeModel(
-                $demande["id_demande"],
-                $demande["desc_demande"],
-                $demande["id_planning"],
-                $demande["id_user"],
-                $demande["collecte"]
-            );
+
+        for ($j = 1; $j < count($demandes)+1; $j++) {
+            $demande = $demandes[$j];
+
+            if (!$demandes[$j]["collecte"][0]["id_collecte"]) {
+                $array[] = new DemandeModel(
+                    $demande["id_demande"],
+                    $demande["desc_demande"],
+                    $demande["id_planning"],
+                    $demande["id_user"],
+                    NULL);
+            }else{
+                $array[] = new DemandeModel(
+                    $demande["id_demande"],
+                    $demande["desc_demande"],
+                    $demande["id_planning"],
+                    $demande["id_user"],
+                    $demande["collecte"]
+                );
+            }
         }
+
 
         return $array;
     }
+
 
 //------------------------------------------------------------------------------------------------------------
 
@@ -53,7 +67,7 @@ class DemandeRepository
         $request = 0;
         if($apikey == null){
             $colums="DEMANDE.id_demande, DEMANDE.desc_demande, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
-            $string="INNER JOIN RECU R ON R.id_demande = DEMANDE.id_demande INNER JOIN COLLECTE C ON C.id_collecte = R.id_collecte;";
+            $string="LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte;";
             $request = selectJoinDB("DEMANDE", $colums ,$string);
 
             if(!$request){
@@ -84,7 +98,7 @@ class DemandeRepository
 
     function getByUser($id_user){
         $colums="DEMANDE.id_demande, DEMANDE.desc_demande, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
-        $string="INNER JOIN RECU R ON R.id_demande = DEMANDE.id_demande INNER JOIN COLLECTE C ON C.id_collecte = R.id_collecte;";
+        $string="LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte;";
         $request = selectJoinDB("DEMANDE", $colums ,$string ,"id_user=".$id_user, "bool");
 
 
@@ -103,6 +117,10 @@ class DemandeRepository
         $id_demande = $this->getLastInsertId("DEMANDE","id_demande");// Récupère l'ID de la dernière demande créée
         //souvenir
         //echo $id_demande[ 0]["id_demande"];
+        if ($produits == null) {
+            exit_with_message("Sucessfully created demande", 200);
+        }
+
 
         foreach ($produits as $produit) {
             $request_collecte = insertDB("COLLECTE", ["quantite", "id_produit"], [$produit["quantite"], $produit["id_produit"]]);
@@ -140,7 +158,7 @@ class DemandeRepository
 
     function deleteDemande($id){
         $colums="DEMANDE.id_demande, DEMANDE.desc_demande, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
-        $string="INNER JOIN RECU R ON R.id_demande = DEMANDE.id_demande INNER JOIN COLLECTE C ON C.id_collecte = R.id_collecte";
+        $string="LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte";
         $resquest = selectJoinDB("DEMANDE", $colums ,$string,"DEMANDE.id_demande=".$id,"bool");
 
         for ($i=0; $i < count($resquest); $i++) {

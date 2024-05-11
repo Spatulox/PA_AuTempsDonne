@@ -244,7 +244,7 @@ class PlanningService {
         if (!$plannings){
             exit_with_message("Ce planning n'existe pas",400);
         }
-        
+
         if($id_index_planning < 1 || $id_index_planning > 3) {
             exit_with_message("Mauvais index, merci de rentrer une valeur entre 1 et 3");
         }
