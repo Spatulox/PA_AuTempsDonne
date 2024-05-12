@@ -54,16 +54,36 @@ class EntrepotService {
         $entrepotRepository->unreferenceEntrepotById($id);
     }
 
+    //-------------------------------------------------------------------------------------------------------
+
     public function createEtageres($apiKey, $entrepot, $etageres_place)
     {
         $entrepotRepository = new EntrepotRepository();
         $entrepotRepository->createEtageres($entrepot,$etageres_place);
     }
 
+    //-------------------------------------------------------------------------------------------------------
+
     public function deleteEtageretById($id)
     {
         $entrepotRepository = new EntrepotRepository();
         $entrepotRepository->DeleteEtagere($id);
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+
+    public function getEntrepotPlaceById($id)
+    {
+        $entrepotRepository = new EntrepotRepository();
+        $entrepotRepository->getEntrepotPlaceById($id);
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+
+    public function getEtagereQR($id)
+    {
+        $entrepotRepository = new EntrepotRepository();
+        $entrepotRepository->getEtagereQR($id);
     }
 
 

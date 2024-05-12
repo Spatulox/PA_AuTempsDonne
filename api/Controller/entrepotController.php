@@ -11,14 +11,21 @@ function entrepotController($uri, $apiKey) {
 
         // Get an entrepot
         case 'GET':
-            
-            if($uri[3]){
+            if (!$uri[3]){
+                $entepotService = new EntrepotService();
+                $entepotService->getAllEntrepot();
+            }
+            elseif(filter_var($uri[3], FILTER_VALIDATE_INT)){
+
                 $entepotService = new EntrepotService();
                 $entepotService->getEntrepotById($uri[3]);
             }
-            else{
+            elseif ($uri[3]=="place" && filter_var($uri[4], FILTER_VALIDATE_INT)) {
                 $entepotService = new EntrepotService();
-                $entepotService->getAllEntrepot();
+                $entepotService->getEntrepotPlaceById($uri[4]);
+            } elseif ($uri[3]=="qr" && filter_var($uri[4], FILTER_VALIDATE_INT)) {
+                $entepotService = new EntrepotService();
+                $entepotService->getEtagereQR($uri[4]);
             }
 
             break;
@@ -39,8 +46,18 @@ function entrepotController($uri, $apiKey) {
             $entepotService = new EntrepotService();
 
             if ($uri[3]==="new"){
-                if(!isset($json["nom_entrepot"]) || !isset($json["parking"])){
-                    exit_with_message("vous n'avez pas mis le nom_entrepot,parking ");
+                if (!isset($json["nom_entrepot"]) || !isset($json["parking"]) || !isset($json['etagere'])) {
+                    exit_with_message("vous n'avez pas mis le nom_entrepot, parking, etagere",500);
+                }
+
+                if (empty($json['etagere'])) {
+                    exit_with_message("La liste des étagères ne peut pas être vide",500);
+                }
+
+                foreach ($json['etagere'] as $etagere) {
+                    if (!isset($etagere['nombre_de_place'])) {
+                        exit_with_message("Le champ 'nombre_de_place' est manquant pour une des étagères",500);
+                    }
                 }
 
                 $entrepot = array(

@@ -1,9 +1,9 @@
 services:
+  # Travail et reload automatique
   frontend:
-    build:
-      context: ./front
-      dockerfile: Dockerfile
-    #image: php:7.4-apache
+    build: .
+    volumes:
+      - ./front:/var/www/html/
     ports:
       - 8083:80
 

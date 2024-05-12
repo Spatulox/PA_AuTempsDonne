@@ -1,10 +1,14 @@
 services:
   frontend:
-    image: php:7.4-apache
+    build: 
+      context: ./front/
+      dockerfile: Dockerfile
+    image: spatulox/pa-front:latest
+
     ports:
       - 8083:80
-    volumes:
-      - ./front:/var/www/html/
+    #volumes:
+    #  - ./front:/var/www/html/
     depends_on:
       - api
 
@@ -15,8 +19,8 @@ services:
     image: spatulox/pa-api:latest
     ports:
       - 8081:80
-    volumes:
-      - ./api:/var/www/html/
+    #volumes:
+    #  - ./api:/var/www/html/
     depends_on:
       - database
 
@@ -27,8 +31,8 @@ services:
     image: spatulox/pa-ticket:latest
     ports:
       - 8085:8085
-    volumes:
-      - ./tickets:/var/www/html/
+    #volumes:
+    #  - ./tickets:/var/www/html/
     environment:
       - DB_CONTAINER_NAME=database
     depends_on:

@@ -1,73 +1,115 @@
-
-
-
-
 const btn = document.getElementById("btnItineraire")
 
-btn.addEventListener("click", async ()=>{
+//let googleApiKey = 'AIzaSyC9WzDphICufUy1vaD1xjwhK3cI7pWJi9c';
 
-    const response = await fetch("http://localhost:8081/index.php/trajet", optionGet())
-
-    const data = await response.json()
-    console.log(data)
-
-})
-
-
-
-
-
-async function  fetchSync(url, options){
-
-    if(options === false){
-        popup("Impossible de se connecter, veuillez entrer vos identifiant sur la page de connexion")
-        return false
-    }
-
-    const response = await fetch(url, options)
-
-    if(response.ok){
-        const message = await response.json()
-        if(message.hasOwnProperty("message")){
-            popup(message.message)
-            return true
-        }
-        return message
-    }
-    else{
-        const text = await response.json()
-        alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
-        if(text.hasOwnProperty("message")) {
-            alertDebug(text.message)
-            popup(text.message)
-        }
-        return false
-    }
+function initMap() {
 
 }
 
-function compareAnswer(response, msg = null){
-    if(response === false && msg != null){
-        alertDebug(msg)
-        popup(msg)
-        return false
+//btn.addEventListener("click", async () => {
+async function calcSpeedAddress(addressData) {
+    const address = {
+        "address": addressData
+    };
+
+    const response = await fetch("http://localhost:8081/index.php/trajet", optionPost(address));
+
+    const data = await response.json();
+
+    // Save id of the address as values. The key of the object if the name of the address
+    const interData = {}
+    for (const dataKey in data.addresse) {
+
+        interData[data.addresse[dataKey]] = address.address[dataKey]
+
     }
-    else if(response === false && msg != null){
-        return false
+
+    const sortedAddresses = [];
+    const startAddress = data.addresse[0]; // Adresse de l'entrepôt de départ
+    sortedAddresses.push(startAddress);
+
+    const endAddress = data.addresse[data.addresse.length - 1]; // Adresse de l'entrepôt d'arrivée
+
+    const intermediateAddresses = data.addresse.slice(1, data.addresse.length - 1); // Adresses de passage intermédiaires
+
+    while (intermediateAddresses.length > 0) {
+        let origin = sortedAddresses[sortedAddresses.length - 1];
+
+        let shortestDistance = Infinity;
+        let closestAddress = null;
+
+        for (let i = 0; i < intermediateAddresses.length; i++) {
+            const destination = intermediateAddresses[i];
+            const distance = await getDistance(origin, destination);
+
+            if (distance < shortestDistance) {
+                shortestDistance = distance;
+                closestAddress = destination;
+            }
+        }
+
+        if (closestAddress !== null) {
+            sortedAddresses.push(closestAddress);
+            //console.log(`Ajout ${closestAddress} dans sortedAddresses`);
+        } else {
+            console.log('Aucune adresse proche');
+        }
+
+        const indexToRemove = intermediateAddresses.indexOf(closestAddress);
+        if (indexToRemove !== -1) {
+            intermediateAddresses.splice(indexToRemove, 1);
+        }
     }
-    else if (response === true){
-        return false
+
+    sortedAddresses.push(endAddress); // Ajouter l'adresse de l'entrepôt d'arrivée à la fin
+
+    // Create the data to send it to the api
+    const dataToSend = {}
+    let array = []
+
+    // Get the id (values) for the address (key)
+    for (const addressKey in sortedAddresses) {
+        array.push(interData[sortedAddresses[addressKey]])
     }
-    return response
+
+    dataToSend["address"] = array
+
+    let trajet = new TrajetAdmin()
+
+    await trajet.connect()
+    await trajet.createTrajet(dataToSend)
+
+    return sortedAddresses
 }
 
-function optionGet(){
+function getCookie(cookieName) {
+    const cookies = document.cookie.split(';');
+
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.startsWith(cookieName + '=')) {
+            return cookie.substring(cookieName.length + 1);
+        }
+    }
+
+    return null;
+}
+
+
+function optionGet() {
+
+    const apikey = getCookie("apikey")
+
+    if (apikey == null) {
+        alert('Pas d\'apikey dans les cookies :/')
+        return false
+    }
 
     const options = {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': `8f96e6e91f136ea4ee7150d8a656cc57ab1de2021dac5e78e3a79242cf88c055`
+            'apikey': apikey
         }
     };
     return options
@@ -79,11 +121,19 @@ function optionGet(){
  * @returns {{headers: {apikey: string, "Content-Type": string}, method: string, body: string}}
  */
 function optionPost(data) {
-   const options = {
+
+    const apikey = getCookie("apikey")
+
+    if (apikey == null) {
+        alert('Pas d\'apikey dans les cookies :/')
+        return false
+    }
+
+    const options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': `8f96e6e91f136ea4ee7150d8a656cc57ab1de2021dac5e78e3a79242cf88c055`
+            'apikey': apikey
         },
         body: JSON.stringify(data)
     };
@@ -96,11 +146,19 @@ function optionPost(data) {
  * @returns {{headers: {apikey: string, "Content-Type": string}, method: string}}
  */
 function optionPut(data) {
-  const options = {
+
+    const apikey = getCookie("apikey")
+
+    if (apikey == null) {
+        alert('Pas d\'apikey dans les cookies :/')
+        return false
+    }
+
+    const options = {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': `8f96e6e91f136ea4ee7150d8a656cc57ab1de2021dac5e78e3a79242cf88c055`
+            'apikey': apikey
         },
         body: JSON.stringify(data)
     };
@@ -112,15 +170,21 @@ function optionPut(data) {
  * Create the header option for a DELETE request
  * @returns {{headers: {apikey: string, "Content-Type": string}, method: string}}
  */
-function optionDelete(data) {
+function optionDelete() {
+
+    const apikey = getCookie("apikey")
+
+    if (apikey == null) {
+        alert('Pas d\'apikey dans les cookies :/')
+        return false
+    }
 
     const options = {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': `8f96e6e91f136ea4ee7150d8a656cc57ab1de2021dac5e78e3a79242cf88c055`
-        },
-        body: JSON.stringify(data)
+            'apikey': apikey
+        }
     };
 
     return options;

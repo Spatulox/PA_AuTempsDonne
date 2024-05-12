@@ -32,9 +32,9 @@ function checkData($table = -10, $columnArray = -10, $columnData = -10, $conditi
 		exit_with_message($sentence);
 	}
 
-	if (!checkMsg($condition, "=") && $condition != -1 && $condition != -10){
+	/*if (!checkMsg($condition, "=") && $condition != -1 && $condition != -10){
 		exit_with_message('Plz enter a valid condition like : columnName=data'. $addSentence);
-	}
+	}*/
 }
 
 # -------------------------------------------------------------- #
@@ -86,9 +86,9 @@ function selectDB($table, $colums, $condition = -1, $additionnalMessage = NULL){
 		$dbRequest = 'SELECT '. $colums .' FROM '. $table;
 	}
 	else{
-		if(!checkMsg($condition, '=')){
+		/*if(!checkMsg($condition, '=')){
 			exit_with_message('Plz enter a valid condition like : columnName=data', 500);
-		}
+		}*/
 
 		$dbRequest = 'SELECT '. $colums .' FROM '. $table . ' WHERE ' . $condition;
 	}
@@ -122,10 +122,9 @@ function selectDB($table, $colums, $condition = -1, $additionnalMessage = NULL){
 	}
 	catch (PDOException $e)
 	{
-		if($additionnalMessage == "-@"){
-			echo($e->getMessage());
-			exit();
-		}
+        if($additionnalMessage == "-@"){
+            exit_with_message($e->getMessage());
+        }
 
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
@@ -155,9 +154,9 @@ function selectJoinDB($table, $colums, $join, $condition = -1, $additionnalMessa
 		$dbRequest = 'SELECT '. $colums .' FROM '. $table . ' ' . $join;
 	}
 	else{
-		if(!checkMsg($condition, '=')){
+		/*if(!checkMsg($condition, '=')){
 			exit_with_message('Plz enter a valid condition like : columnName=data', 500);
-		}
+		}*/
 
 		$dbRequest = 'SELECT '. $colums .' FROM '. $table . ' ' . $join . ' WHERE ' . $condition;
 	}
@@ -187,10 +186,10 @@ function selectJoinDB($table, $colums, $join, $condition = -1, $additionnalMessa
 	}
 	catch (PDOException $e)
 	{
-		if($additionnalMessage == "-@"){
-			echo($e->getMessage());
-			exit();
-		}
+
+        if($additionnalMessage == "-@"){
+            exit_with_message($e->getMessage());
+        }
 
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
@@ -266,24 +265,28 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 		$result = $db->prepare($dbRequest);
 		$result->execute();
 
-		if ($returningData == null || $returningData == "-@"){
+		if ($returningData == null || $returningData == "-@" ||  $returningData == "bool"){
 			return true;
 		}
 		return selectDB($table, '*', $returningData);
 	}
 	catch (PDOException $e)
-	{	
+	{
+        if($returningData == "-@"){
+            exit_with_message("PDO error :" . $e->getMessage());
+        }
+
+        if($returningData == "bool"){
+            return false;
+        }
 
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
-			//exit_with_message("caca");
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
 			exit_with_message("Error : ".str_replace('"', "'", $tmp));
 		}
 
-		if($returningData == "-@"){
-			exit_with_message("PDO error :" . $e->getMessage());
-		}
+
 
 	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
 	}
@@ -388,7 +391,10 @@ function deleteDB($table, $condition, $debug = null)
 
 	if(!selectDB($table, "*", $condition, "bool"))
 	{
-		exit_with_message("ERROR : The apartment doesn't exist");
+        if( $debug == "bool"){
+            return false;
+        }
+		exit_with_message("ERROR : The thing reqested doesn't exist");
 	}
 
 	if($condition == -1){
@@ -413,6 +419,10 @@ function deleteDB($table, $condition, $debug = null)
 
         if($debug == "-@"){
             exit_with_message("PDO error :" . $e->getMessage());
+        }
+
+        if($debug == "bool"){
+            return false;
         }
 
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))

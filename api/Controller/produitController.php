@@ -11,12 +11,14 @@ function collectController($uri, $apikey) {
         case 'GET':
 
             $role = getRoleFromApiKey($apikey);
-            if($role == 3 || $role == 4) {
+            if($role > 3) {
                 exit_with_message("You can't do that", 403);
             }
 
-            if($uri[3]){
+            if($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)) {
                 $produitService->getProduitByID($uri[3]);
+            }elseif ($uri[3]=="type"){
+                $produitService->getType();
             }
             else{
                 $produitService->getProduitAll();

@@ -14,7 +14,57 @@ function redirect(page, message = null) {
  * @returns {string}
  */
 function getParamFromUrl(param){
-    return window.location.href.split("?"+param+"=")[1].split("?")[0]
+    let data = ""
+    try{
+        data = window.location.href.split("?"+param+"=")[1].split("?")[0]
+    } catch {
+        data = false
+    }
+    return data
+}
+
+function idExistInPage(id){
+    const idExist = document.getElementById(id)
+
+    if(idExist){
+        return true
+    } else {
+        return false
+    }
+}
+
+function createButton(value, id = null, name = null){
+    const button = document.createElement("button")
+    button.type = "button"
+    button.innerHTML = value
+
+    if(name != null){
+        button.name = name
+    }
+    if (id != null){
+        button.id = id
+    }
+    return button
+}
+
+function createInput(placeholder_Name, id) {
+    const inputElement = document.createElement("input");
+    inputElement.classList.add("marginTop10")
+    inputElement.name = placeholder_Name;
+    inputElement.id = id;
+    inputElement.placeholder = `${placeholder_Name}`;
+    return inputElement;
+}
+
+function today(){
+
+    const date = new Date()
+    var formattedDate = date.getFullYear() + "-" +
+        ("0" + (date.getMonth() + 1)).slice(-2) + "-" +
+        ("0" + date.getDate()).slice(-2);
+
+    return formattedDate
+
 }
 
 /**

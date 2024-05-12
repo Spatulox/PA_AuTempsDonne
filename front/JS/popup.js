@@ -9,8 +9,6 @@ function decodeURIComponentSafe(str) {
 function popup(message){
 
 	const la_popup = document.getElementById('titleFooter')
-	//console.log(la_popup)
-	//console.log(message)
 	la_popup.innerHTML = decodeURIComponentSafe(message)
 
 	setTimeout(()=>{

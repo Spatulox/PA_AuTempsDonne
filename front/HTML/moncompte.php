@@ -57,15 +57,21 @@
 				<div class="form-group">
 					<h2 class="bold underline"> <?php echo($data["moncompte"]["form"]["titleF2"]) ?> </h2>
 					<ul class="noDecoration noPadding">
-						<li id="u_email"><input class="noMarginImportant" type="text" id="u_nom" name="u_nom" placeholder="<?php echo($data["moncompte"]["form"]["placeholderEmail"]) ?>"></li>
-						<li id="u_telephone" class="marginTop10"><input class="noMarginImportant" type="text" id="u_nom" name="u_nom" placeholder="<?php echo($data["moncompte"]["form"]["placeholderPhone"]) ?>"></li>
-					</ul>
+                        <li id=""><input class="noMarginImportant" type="text" id="u_email" name="u_email" placeholder="<?php echo($data["moncompte"]["form"]["placeholderEmail"]) ?>"></li>
+                        <li id="" class="marginTop10"><input class="noMarginImportant" type="text" id="u_telephone" name="u_telephone" placeholder="<?php echo($data["moncompte"]["form"]["placeholderPhone"]) ?>"></li>
+                        <li id="" class="marginTop10"><input class="noMarginImportant" type="text" id="u_name" name="u_name" placeholder="<?php echo($data["moncompte"]["form"]["placeholderName"]) ?>"></li>
+                        <li id="" class="marginTop10"><input class="noMarginImportant" type="text" id="u_lastname" name="u_lastname" placeholder="<?php echo($data["moncompte"]["form"]["placeholderLastname"]) ?>"></li>					</ul>
 					<input class="noMarginImportant" type="button" name="updateAccount" value="<?php echo($data["moncompte"]["form"]["inputUpdate"]) ?>" id="updateAccount">
 				</div>
 			</section>
-			<?php
 
-			?>
+
+            <section class="textCenter marginTop30">
+                <script type="text/javascript" defer>
+
+                </script>
+                <button type="button" id="buttonTicket"><?php echo $data["moncompte"]["Ticket"] ?></button>
+            </section>
 
 		</main>
 
@@ -76,4 +82,10 @@
 
 <script type="text/javascript" defer>
 	myAccount()
+
+    const button = document.getElementById("buttonTicket")
+    button.addEventListener("click", ()=>{
+        window.location.href = "<?php echo $data["moncompte"]["Ticketlink"] ?>"
+    })
+
 </script>

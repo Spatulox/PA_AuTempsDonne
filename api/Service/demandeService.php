@@ -20,7 +20,8 @@ class DemandeService
 
     function getViaApikey($apikey){
         $repo = new DemandeRepository();
-        $repo->get($apikey);
+        $id=getIdUserFromApiKey($apikey);
+        $repo->getByUser($id);
     }
 
     function getViaUser($id, $apikey){
@@ -40,7 +41,7 @@ class DemandeService
 
         $role = getRoleFromApiKey($apikey);
 
-        if($role != 5){
+        if($role <3){
             exit_with_message("You can't create a demande, unless you're a Partenaire");
         }
 
@@ -87,5 +88,23 @@ class DemandeService
 
         $service = new DemandeRepository();
         $service->deleteDemande($id);
+    }
+
+    public function createValidationDemande($apikey, $id)
+    {
+        $service = new DemandeRepository();
+        $service->createValidationDemande($id);
+    }
+
+    public function createValidationDemandeGroupe($apikey, $id, $id_depart, $id_arriver,$date)
+    {
+        $service = new DemandeRepository();
+        $service->createValidationDemandeGroupe($id,$id_depart,$id_arriver,$date);
+    }
+
+    public function getAttente( $apikey)
+    {
+        $repo = new DemandeRepository();
+        $repo->getAttente();
     }
 }

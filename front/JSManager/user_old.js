@@ -1,4 +1,4 @@
-class User {
+class UserOld {
 
   constructor(email = null, password = null) {
     this.adresse = "http://localhost:8081/index.php";
@@ -15,7 +15,7 @@ class User {
     this.entrepotString = null
     this.index = null
 
-    this.roleArray = ["Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
+    this.roleArray = ["roleBait", "Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
 
     if (password === null || email === null) {
       this.loginApi()
@@ -195,7 +195,6 @@ class User {
     }
 
     let response = await this.fetchSync(this.adresse+'/user'+complementPath, this.optionDelete())
-    console.log(response)
     if(!this.compareAnswer(response, "Impossible de supprimer l'utilisateur")){
       return false
     }
@@ -215,7 +214,6 @@ class User {
       return false
     }
     let response = await this.fetchSync(this.adresse+'/user/'+id, this.optionGet())
-    console.log(response)
     if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs en attente")){
       return false
     }
@@ -228,7 +226,6 @@ class User {
    */
   async getAllUser(){
     let response = await this.fetchSync(this.adresse+'/user/all', this.optionGet())
-    console.log(response)
     if(!this.compareAnswer(response, "Impossible de récupérer les utilisateurs")){
       return false
     }
@@ -331,10 +328,8 @@ class User {
       popup("Il faut un nombre entier pour delete un entrepot")
       return
     }
-    const data = {
-      "id_entrepot": id_entrepot
-    }
-    let response = await this.fetchSync(this.adresse+'/entrepot', this.optionDelete(data))
+
+    let response = await this.fetchSync(this.adresse+'/entrepot/'+id_entrepot, this.optionDelete())
     if(!this.compareAnswer(response)){
       return false
     }
@@ -408,7 +403,6 @@ class User {
 
     if(response.ok){
       const message = await response.json()
-      //console.log(message)
       if(message.hasOwnProperty("message")){
         popup(message.message)
         return true
@@ -625,7 +619,7 @@ class User {
    * Create the header option for a DELETE request
    * @returns {{headers: {apikey: string, "Content-Type": string}, method: string}}
    */
-  optionDelete(data) {
+  optionDelete() {
     if (this.apikey === "hidden" || this.apikey === null) {
       this.loginApi();
     }
@@ -636,7 +630,7 @@ class User {
         'Content-Type': 'application/json',
         'apikey': `${this.apikey}`
       },
-      body: JSON.stringify(data)
+      //body: JSON.stringify(data)
     };
 
     return options;

@@ -99,19 +99,28 @@ class EntrepotRepository
 
     public function createEntrepot($entrepot, $etageres)
     {
+        $check=selectDB("ENTREPOTS", "nom_entrepot" ,"nom_entrepot='".$entrepot["nom_entrepot"]."'","bool");
+        if ($check) {
+            exit_with_message("Entrepot already exists",500);
+        }
 
-        $request = insertDB("ENTREPOTS", ["nom_entrepot", "parking", "id_adresse"], [$entrepot["nom_entrepot"], $entrepot["parking"], $entrepot["id_adresse"]], "-@");
+        $request = insertDB("ENTREPOTS", ["nom_entrepot", "parking", "id_adresse"], [$entrepot["nom_entrepot"], $entrepot["parking"], $entrepot["id_adresse"]]);
 
         if (!$request) {
-            exit_with_message("Error creating demande", 400);
+            exit_with_message("Error creating entrepot", 500);
         }
         $id_entrepot = $this->getLastInsertId("ENTREPOTS", "id_entrepot");
 
         foreach ($etageres as $etagere) {
-            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etagere["nombre_de_place"], $id_entrepot[0]["id_entrepot"]], "-@");
+
+            $last_id=$this->getLastInsertId("ETAGERES","id_etagere");
+
+            $code = hash('sha256', $last_id[0]['id_etagere'] ."_". $etagere['nombre_de_place'] ."_". $id_entrepot[0]['id_entrepot']);
+
+            $request_collecte = insertDB("ETAGERES", ["nombre_de_place","code", "id_entrepot"], [$etagere["nombre_de_place"],$code, $id_entrepot[0]["id_entrepot"]]);
 
             if (!$request_collecte) {
-                exit_with_message("Error creating collecte", 400);
+                exit_with_message("Error creating etagere", 500);
             }
 
             exit_with_message("Sucessfully created entrepot", 200);
@@ -160,15 +169,26 @@ class EntrepotRepository
         $resquest = selectDB("ETAGERES", "*", "id_entrepot=" . $id, "bool");
 
         if ($resquest) {
+            for ($i = 0; $i < count($resquest); $i++) {
+
+                $check=selectDB("STOCKS", "*", "id_etagere=" . $resquest[$i]["id_etagere"]. " AND quantite_produit >0 AND date_sortie IS NULL","bool");
+                if ($check){
+
+                    exit_with_message("etagere is already in use",500);
+
+                }
+            }
+
             $tmp = deleteDB("ETAGERES", "id_entrepot=" . $id);
             if (!$tmp) {
-                exit_with_message("The demande doesn't exist", 200);
+                exit_with_message("The demande doesn't exist", 500);
             }
         }
         $tmp = deleteDB("ENTREPOTS", "id_entrepot=" . $id);
         if (!$tmp) {
-            exit_with_message("The demande doesn't exist", 200);
+            exit_with_message("Entrepot delete no successful", 500);
         }
+        exit_with_message("Entrepot delete successful", 200);
 
     }
 
@@ -177,10 +197,14 @@ class EntrepotRepository
     public function createEtageres($entrepot, $etageres_place)
     {
         for ($i = 0; $i < count($etageres_place); $i++) {
-            $request_collecte = insertDB("ETAGERES", ["nombre_de_place", "id_entrepot"], [$etageres_place[$i], $entrepot] );
+            $last_id=$this->getLastInsertId("ETAGERES","id_etagere");
 
-            if (!$request_collecte) {
-                exit_with_message("Error creating collecte", 400);
+            $code = hash('sha256', $last_id[0]['id_etagere'] ."_". $etageres_place[$i] ."_". $entrepot);
+
+
+            $request_collecte = insertDB("ETAGERES", ["nombre_de_place","code", "id_entrepot"], [$etageres_place[$i],$code, $entrepot]);
+            if ($request_collecte==false) {
+                exit_with_message("Error creating Etagere", 500);
             }
         }
         exit_with_message("Etagere add with success", 200);
@@ -202,13 +226,70 @@ class EntrepotRepository
         $resquest = selectDB("ETAGERES", "*", "id_etagere=" . $id, "bool");
 
         if ($resquest) {
+            $check=selectDB("STOCKS", "*", "id_etagere=" . $id. " AND quantite_produit >0 AND date_sortie IS NULL","bool");
+            if ($check){
+
+                exit_with_message("etagere is already in use",500);
+
+            }
+            $nb=selectDB("ETAGERES", "*", "id_entrepot=" . $resquest[0]["id_entrepot"], "bool");
+
+            if (count($nb) ==1){
+                exit_with_message("Imposible de supprimer la derniére etagere",500);
+            }
+
             deleteDB("ETAGERES", "id_etagere=" . $id);
             exit_with_message("Etagere deleted with success ", 200);
         }else{
-            exit_with_message("The Etagere doesn't exist", 200);
+            exit_with_message("The Etagere doesn't exist", 500);
         }
 
     }
+
+    //-----------------------------------------------------------------------------------------------
+
+    public function getEntrepotPlaceById($id)
+    {
+        $check=selectDB("ENTREPOTS", "*", "id_entrepot=" . $id, "bool");
+        if (!$check){
+            exit_with_message("Entrepot not found", 500);
+        }
+        $string = "id_entrepot=" .$id;
+        $etagere= selectDB("ETAGERES", "id_etagere,nombre_de_place",$string);
+        if(!$etagere){
+            exit_with_message("cette etagere n'existe pas ", 500);
+        }
+        $sum=0;
+        $place=0;
+        for ($i = 0; $i < count($etagere); $i++) {
+            $nbProduitsEtagere = $this->getnbplace($etagere[$i]['id_etagere']);
+            $sum=$sum+$nbProduitsEtagere;
+            $place=$place+$etagere[$i]['nombre_de_place'];
+        }
+        $sum=$place-$sum;
+        exit_with_message("il reste ".$sum. " place dans ".$check[0]["nom_entrepot"], 200);
+
+    }
+
+    private function getnbplace($id)
+    {
+        $string = "id_etagere=".$id . " AND ". "date_sortie IS NULL";
+        $number= selectDB("STOCKS","quantite_produit",$string,"bool");
+        for ($i = 0; $i < count($number); $i++) {
+            $sum=$sum+$number[$i]["quantite_produit"];
+        }
+
+        return $sum;
+    }
+
+    public function getEtagereQR($id)
+    {
+        $code=selectDB("ETAGERES", "*", "id_etagere=" . $id, "bool");
+        $tmpModel = ["key" => $code[0]["code"]];
+        exit_with_content($tmpModel, 200);
+    }
+
+
 }
 
 ?>

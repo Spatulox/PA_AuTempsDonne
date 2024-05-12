@@ -14,6 +14,7 @@ include_once './Controller/demandeController.php';
 include_once './Controller/stockController.php';
 include_once './Controller/vehiculeController.php';
 include_once './Controller/donController.php';
+include_once './Controller/etagereController.php';
 
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
@@ -73,6 +74,42 @@ function getRoleFromApiKey($apiKey){
     return $role;
 }
 
+function getEmailFromApiKey($apiKey){
+    if($apiKey == null){
+        exit_with_message("The apikey is empty", 403);
+    }
+
+    $id = selectDB("UTILISATEUR", 'email', "apikey='".$apiKey."'", "bool");
+    if($id){
+        $id = $id[0]["id_user"];
+    }
+}
+
+function getIdUSerFromEmail($email){
+
+    $id = selectDB("UTILISATEUR", 'id_user', "email='".$email."'", "bool");
+    if($id){
+        $id = $id[0]["id_user"];
+    }
+    else{
+        exit_with_message("No one with this email", 403);
+    }
+    return $id;
+}
+
+function getEmailFromIdUser($id){
+
+    $email = selectDB("UTILISATEUR", 'email', "id_user='".$id."'", "bool");
+    if($email){
+        $email = $email[0]["email"];
+    }
+    else{
+        exit_with_message("No one with this id", 404);
+    }
+    return $email;
+
+}
+
 function getIdUserFromApiKey($apiKey){
     if($apiKey == null){
         exit_with_message("The apikey is empty", 403);
@@ -83,15 +120,15 @@ function getIdUserFromApiKey($apiKey){
         $id = $id[0]["id_user"];
     }
 
-    $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool"); 
-    if($id){ 
-        $id = $id[0]["id_user"]; 
-    } 
-    else{ 
-        exit_with_message("No one with this apikey", 403); 
-    } 
-    return $id; 
-} 
+    $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool");
+    if($id){
+        $id = $id[0]["id_user"];
+    }
+    else{
+        exit_with_message("No one with this apikey", 403);
+    }
+    return $id;
+}
 
 // Composant principal du controlleur: cette fonction agit comme un routeur en redirigeant les requêtes vers le bon controlleur
 function controller($uri) {
@@ -100,7 +137,7 @@ function controller($uri) {
 
     // Check if the apikey exist
     // To create a user, the apikey always null
-    if($uri[2] != "login" && $uri[2] != "user"){
+    if($uri[2] != "login" && $uri[2] != "user" && $uri[2] != "etagere" && $uri[2] != "don"){
         if($apiKey == null){
             exit_with_message("Unauthorized, need the apikey", 403);
         }
@@ -129,7 +166,7 @@ function controller($uri) {
             activiteController($uri, $apiKey);
             break;
         case 'trajet':
-            TrajetController($uri, $apiKey);
+            trajetController($uri, $apiKey);
             break;
         case 'adresse':
             adresseController($uri, $apiKey);
@@ -150,6 +187,9 @@ function controller($uri) {
             break;
         case 'don':
             donController($uri, $apiKey);
+            break;
+        case 'etagere':
+            etagereController($uri);
             break;
 
 

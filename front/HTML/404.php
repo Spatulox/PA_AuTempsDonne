@@ -67,8 +67,8 @@
 
     /* Vidéo en arrière-plan */
     iframe {
-        width: 200px;
-        height: 120px;
+        width: 400px;
+        height: 230px;
         background-color: blue;
         position: absolute;
         animation: move-around 10s infinite linear;
@@ -81,14 +81,14 @@
         }
         25% {
             top: 0;
-            left: calc(100% - 200px);
+            left: calc(100% - 400px);
         }
         50% {
-            top: calc(100% - 120px);
-            left: calc(100% - 200px);
+            top: calc(100% - 230px);
+            left: calc(100% - 400px);
         }
         75% {
-            top: calc(100% - 120px);
+            top: calc(100% - 230px);
             left: 0;
         }
         100% {

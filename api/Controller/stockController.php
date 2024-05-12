@@ -19,6 +19,10 @@ function StockController($uri, $apiKey)
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
                 exit_with_content($stockService->getAllStockInEntrepots($uri[3],$apiKey));
             }
+            elseif($uri[3]=="sortie" && filter_var($uri[4], FILTER_VALIDATE_INT)){
+                exit_with_content($stockService->getAllStockSortie($uri[4],$apiKey));
+            }
+
 
             break;
 
@@ -31,16 +35,23 @@ function StockController($uri, $apiKey)
 
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
+            if (!$uri[3]) {
+                if (!isset($json['quantite_produit']) || !isset($json['desc_produit']) || !isset($json['id_produit']) || !isset($json['id_entrepot'])) {
+                    exit_with_message("Erreur : Les informations du produit sont incomplètes. Veuillez vérifier que tous les champs sont remplis.", 403);
+                }
 
-            if ( !isset($json['quantite_produit']) || !isset($json['desc_produit'])  || !isset($json['id_produit']) || !isset($json['id_entrepot']))
-            {
-                exit_with_message("Erreur : Les informations du produit sont incomplètes. Veuillez vérifier que tous les champs sont remplis.", 403);
+
+                $stock = new StockModel(1, $json['quantite_produit'], $json['date_entree'], ($json['date_sortie']), ($json['date_peremption']), ($json['desc_produit']), ($json['id_produit']), (null));
+
+                exit_with_content($stockService->createStock($stock, $json['id_entrepot'], $apiKey));
             }
+        elseif($uri[3]=="date"){
+            if (!isset($json['date_sortie'])) {
+                exit_with_message("Erreur : Les informations de la date sont incomplètes. Veuillez vérifier que tous les champs sont remplis.", 403);
+            }
+        exit_with_content($stockService->getAllStockdateSortie($json['date_sortie'], $apiKey));
+    }
 
-
-            $stock = new StockModel(1, $json['quantite_produit'], $json['date_entree'], ($json['date_sortie']) , ($json['date_peremption']) , ($json['desc_produit']) , ($json['id_produit']) , (null));
-
-            exit_with_content($stockService->createStock($stock,$json['id_entrepot'],$apiKey));
             break;
 
         case 'DELETE':

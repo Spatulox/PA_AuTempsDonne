@@ -11,12 +11,17 @@ class TrajetService {
 
     public function getTrajetById($id) {
         $TrajetRepository = new TrajetRepository();
-        return $TrajetRepository->getTrajetById($id);
+        $TrajetRepository->getTrajetById($id);
     }
 
-    public function createTrajet() {
+    public function createTrajet($tab) {
         $TrajetRepository = new TrajetRepository();
-        return $TrajetRepository->createTrajet();
+        $TrajetRepository->createTrajet($tab);
+    }
+
+    public function createTrajetInDB($tab){
+        $TrajetRepository = new TrajetRepository();
+        $TrajetRepository->createTrajetInDB($tab);
     }
 }
 
