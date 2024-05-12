@@ -236,7 +236,7 @@ class UserRepository {
 
     public function dispoUser($id_dispo, $id)
     {
-        $check =selectDB("DISPONIBILITE" , "*", "id_user='".$id."'", "bool");
+        $check =selectDB("DISPONIBILITE" , "*", "id_user=".$id, "bool");
         if ($check){
             exit_with_message("User already dispoted",500);
         }
@@ -267,7 +267,7 @@ class UserRepository {
         }
 
         for ($i = 0; $i <count($uniqueUsers); $i++) {
-            $res = selectJoinDB("DISPONIBILITE", $columns, $join,"UTILISATEUR.id_user=".$uniqueUsers[$i]["id_user"],"bool");
+            $res = selectJoinDB("DISPONIBILITE", $columns, $join,"UTILISATEUR.id_user=".$uniqueUsers[$i],"bool");
 
             for ($j = 0; $j <count($res); $j++) {
 
@@ -277,11 +277,11 @@ class UserRepository {
                 ];
             }
 
-            $dispos[] = new DispoModel( $uniqueUsers[$i]["id_user"],$dispoArray);
+            $dispos[] = new DispoModel( $uniqueUsers[$i],$dispoArray);
             unset($res);
             unset($dispoArray);
         }
-        echo 1;
+
         return $dispos;
     }
 
@@ -333,7 +333,7 @@ class UserRepository {
         }
 
         for ($i = 0; $i <count($uniqueUsers); $i++) {
-            $res = selectJoinDB("DISPONIBILITE", $columns, $join,"UTILISATEUR.id_user=".$uniqueUsers[$i]["id_user"]);
+            $res = selectJoinDB("DISPONIBILITE", $columns, $join,"UTILISATEUR.id_user=".$uniqueUsers[$i]);
 
             for ($j = 0; $j <count($res); $j++) {
 
@@ -343,7 +343,7 @@ class UserRepository {
                 ];
             }
 
-            $dispos[] = new DispoModel( $uniqueUsers[$i]["id_user"],$dispoArray);
+            $dispos[] = new DispoModel( $uniqueUsers[$i],$dispoArray);
             unset($res);
             unset($dispoArray);
         }
