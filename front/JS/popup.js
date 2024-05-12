@@ -24,6 +24,6 @@ function popup(message){
 
 function alertDebug(message){
 	console.log(message)
-	alert(message)
+	//alert(message)
 }
 

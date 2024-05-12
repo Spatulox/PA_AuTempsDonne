@@ -411,7 +411,6 @@
         const selectElement = document.querySelector("#select2 > select"); // Sélectionne l'élément <select>
         const selectedOption = selectElement.options[selectElement.selectedIndex]; // Récupère l'option sélectionnée
         const selectedInnerHTML = selectedOption.innerHTML;
-        console.log(selectedInnerHTML)
 
         if (popupGestionBody.innerHTML.includes(selectedInnerHTML)) {
             popup("Vous ne pouvez pas associer plusieurs fois la même demande dans un trajet")
@@ -453,12 +452,10 @@
             stopLoading()
             return
         }
-        console.log(lesDataToSendGroup)
         const returnData = await request.validateGroupDemande(lesDataToSendGroup)
 
 
         const duh = await calcSpeedAddress(returnData)
-        console.log(duh)
 
         const docDefinition = {
             header: {

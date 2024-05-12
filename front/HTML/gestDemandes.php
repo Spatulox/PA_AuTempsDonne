@@ -415,7 +415,6 @@
         const selectElement = document.querySelector("#select2 > select"); // Sélectionne l'élément <select>
         const selectedOption = selectElement.options[selectElement.selectedIndex]; // Récupère l'option sélectionnée
         const selectedInnerHTML = selectedOption.innerHTML;
-        console.log(selectedInnerHTML)
 
         if(popupGestionBody.innerHTML.includes(selectedInnerHTML)){
             popup("Vous ne pouvez pas associer plusieurs fois la même demande dans un trajet")

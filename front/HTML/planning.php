@@ -73,10 +73,7 @@
             if (onePlann.date_activite >= day) {
                 newData.push(onePlann)
             }
-
-            console.log(onePlann)
         })
-        console.log(newData)
         planningData = newData
     }
 
