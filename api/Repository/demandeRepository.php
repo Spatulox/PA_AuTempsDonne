@@ -8,8 +8,7 @@ class DemandeRepository
         $array = [];
         $demandes = [];
 
-        for ($i = 0; $i < count($request); $i++) {
-            $item = $request[$i];
+        foreach ($request as $item) {
             $id_demande = $item["id_demande"];
 
             if (!isset($demandes[$id_demande])) {
@@ -32,15 +31,13 @@ class DemandeRepository
                 "id_produit" => $item["id_produit"]
             ];
 
-            $demandes[$id_demande]["collecte"][] = $collecte;
-
+            if (!empty($collecte["id_collecte"])) {
+                $demandes[$id_demande]["collecte"][] = $collecte;
+            }
         }
 
-
-        for ($j = 1; $j < count($demandes) + 1; $j++) {
-            $demande = $demandes[$j];
-
-            if (!$demandes[$j]["collecte"][0]["id_collecte"]) {
+        foreach ($demandes as $demande) {
+            if (empty($demande["collecte"])) {
                 $array[] = new DemandeModel(
                     $demande["id_demande"],
                     $demande["desc_demande"],
@@ -50,7 +47,8 @@ class DemandeRepository
                     $demande["id_activite"],
                     $demande["id_planning"],
                     $demande["id_user"],
-                    NULL);
+                    NULL
+                );
             } else {
                 $array[] = new DemandeModel(
                     $demande["id_demande"],
@@ -66,9 +64,9 @@ class DemandeRepository
             }
         }
 
-
         return $array;
     }
+
 
 
 //------------------------------------------------------------------------------------------------------------
@@ -179,21 +177,25 @@ class DemandeRepository
 
     function deleteDemande($id)
     {
-        $colums = "DEMANDE.id_demande, DEMANDE.desc_demande, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
+        $colums = "DEMANDE.id_demande, DEMANDE.desc_demande,DEMANDE.activite,DEMANDE.etat, DEMANDE.date_act,DEMANDE.id_activite, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
         $string = "LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte";
         $resquest = selectJoinDB("DEMANDE", $colums, $string, "DEMANDE.id_demande=" . $id, "bool");
 
+        var_dump($resquest);
         for ($i = 0; $i < count($resquest); $i++) {
 
-            if ($resquest) {
+            if ($resquest){
+                 if ($resquest[0]["id_collecte"]) {
 
-                $tmp = deleteDB("RECU", "id_collecte=" . $resquest[$i]['id_collecte'], "bool");
-                if (!$tmp) {
-                    exit_with_message("The demande doesn't exist", 200);
-                }
-                $tmp = deleteDB("COLLECTE", "id_collecte=" . $resquest[$i]['id_collecte'], "bool");
-                if (!$tmp) {
-                    exit_with_message("The demande doesn't exist", 200);
+                        $tmp = deleteDB("RECU", "id_collecte=" . $resquest[$i]['id_collecte'], "bool");
+                        if (!$tmp) {
+                            exit_with_message("The demande doesn't exist", 200);
+                        }
+                        $tmp = deleteDB("COLLECTE", "id_collecte=" . $resquest[$i]['id_collecte'], "bool");
+                        if (!$tmp) {
+                            exit_with_message("The demande doesn't exist", 200);
+
+                    }
                 }
             }
         }
@@ -273,5 +275,19 @@ class DemandeRepository
 
         exit_with_content($array);
 
+    }
+
+    public function getAttente()
+    {
+
+            $colums = "DEMANDE.id_demande, DEMANDE.desc_demande,DEMANDE.activite,DEMANDE.etat, DEMANDE.date_act, DEMANDE.id_activite, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
+            $string = "LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte";
+            $request = selectJoinDB("DEMANDE", $colums, $string, "DEMANDE.etat=0");
+
+            if (!$request) {
+                exit_with_message("No demande saved", 200);
+            }
+
+            exit_with_content($this->affiche($request));
     }
 }

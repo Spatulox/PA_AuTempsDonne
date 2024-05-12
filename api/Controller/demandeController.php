@@ -12,8 +12,11 @@ function demandeController($uri, $apikey){
             if($uri[3] == "all"){
                 $service->getAll($apikey);
             }
-            elseif ($uri[3]){
-                $service->getViaUser($uri[3], $apikey);
+            elseif ($uri[3]=="user" && filter_var($uri[4], FILTER_VALIDATE_INT) ){
+                $service->getViaUser($uri[4], $apikey);
+            }
+            elseif ($uri[3]=="attente"){
+                $service->getAttente( $apikey);
             }
             else{
                 $service->getViaApikey($apikey);

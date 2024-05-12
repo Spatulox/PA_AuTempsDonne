@@ -101,4 +101,10 @@ class DemandeService
         $service = new DemandeRepository();
         $service->createValidationDemandeGroupe($id,$id_depart,$id_arriver,$date);
     }
+
+    public function getAttente( $apikey)
+    {
+        $repo = new DemandeRepository();
+        $repo->getAttente();
+    }
 }
