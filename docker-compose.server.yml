@@ -1,11 +1,11 @@
 services:
   frontend:
-    image: spatulox/pa-front:test-server
+    image: spatulox/pa-front:latest
     ports:
       - 8083:80
 
   api:
-    image: spatulox/pa-api:test-server
+    image: spatulox/pa-api:latest
     ports:
       - 8081:80
     depends_on:
