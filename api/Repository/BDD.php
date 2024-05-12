@@ -265,13 +265,20 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 		$result = $db->prepare($dbRequest);
 		$result->execute();
 
-		if ($returningData == null || $returningData == "-@"){
+		if ($returningData == null || $returningData == "-@" ||  $returningData == "bool"){
 			return true;
 		}
 		return selectDB($table, '*', $returningData);
 	}
 	catch (PDOException $e)
-	{	
+	{
+        if($returningData == "-@"){
+            exit_with_message("PDO error :" . $e->getMessage());
+        }
+
+        if($returningData == "bool"){
+            return false;
+        }
 
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
@@ -279,9 +286,7 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 			exit_with_message("Error : ".str_replace('"', "'", $tmp));
 		}
 
-		if($returningData == "-@"){
-			exit_with_message("PDO error :" . $e->getMessage());
-		}
+
 
 	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]));
 	}
