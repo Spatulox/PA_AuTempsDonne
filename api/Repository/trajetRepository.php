@@ -38,10 +38,19 @@ class TrajetRepository {
             $res= selectDB("ADRESSE","adresse","id_adresse=".$request["id_adresse"].$request[$num]["id_adresse"]);
 
 
-            $addresses = [
-                "id_adresse" => $item["id_adresse"],
-                "addresse" => $res[0]["adresse"]
-            ];
+
+
+            if($item["id_adresse"] == "1"){
+                $addresses = [
+                    "id_adresse" => $request[(count($item) + 1)]["id_adresse"]."",
+                    "addresse" => selectDB("ADRESSE","adresse","id_adresse=".$request[(count($item) + 1)]["id_adresse"])[0]['adresse']
+                ];
+            } else {
+                $addresses = [
+                    "id_adresse" => $item["id_adresse"],
+                    "addresse" => $res[0]["adresse"]
+                ];
+            }
 
 
             $trajets[$id_trajets]["addresses"][] = $addresses;
