@@ -92,7 +92,7 @@ class PlanningRepository {
                 $id_planning = selectDB("PARTICIPE", "id_planning", "id_user='" . $id . "'", "bool");
 
                 if ($id_planning == false) {
-                    exit_with_message("No Planning found for you");
+                    exit_with_message("No Planning found for you", 200);
 
             }
 

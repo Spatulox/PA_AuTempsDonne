@@ -48,15 +48,34 @@
         planningData = await user.myPlanning()
         console.log(planningData)
 
+        await deleteOldPlanning(planningData)
+
         createBodyTableau(tbodyUser, planningData, ["id_activite", "id_index_planning", "id_planning", "nom_index_planning", "user"])
         replaceCharacters()
 
     }
 
+    async function deleteOldPlanning(data){
+        let newData = []
+
+        const day = today()
+
+        data.forEach((onePlann)=>{
+
+            if(onePlann.date_activite >= day){
+                newData.push(onePlann)
+            }
+
+            console.log(onePlann)
+        })
+        console.log(newData)
+        planningData = newData
+    }
+
     async function onload(){
         await user.connect()
         startLoading()
-        fillArray()
+        await fillArray()
         stopLoading()
     }
 
