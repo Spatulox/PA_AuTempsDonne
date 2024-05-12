@@ -1,6 +1,6 @@
 class Request extends User{
 
-    async createRequest(desc, id_activite, date_activite){
+    async createRequest(desc, id_activite, date_activite, produit = null){
 
         const data = {
             "desc_demande": desc,
@@ -9,7 +9,7 @@ class Request extends User{
             "date_act": date_activite
         }
 
-        let response = await this.fetchSync(this.adresse+'/planning/me', this.optionPost(data))
+        let response = await this.fetchSync(this.adresse+'/demande', this.optionPost(data))
 
         if(!this.compareAnswer(response)){
             return false

@@ -1,11 +1,18 @@
 class Request extends User{
 
-    async createRequest(desc, id_activite = null, date_activite = null){
+    async createRequest(desc, id_activite = null, date_activite = null, produit = null){
+
+
+        if(produit == null){
+            popup("Il faut des produits")
+            return false
+        }
 
         const data = {
             "desc_demande": desc,
             "activite": "groupe",
-            "id_activite": 6
+            "id_activite": 6,
+            "produit":produit
         }
 
 

@@ -42,6 +42,7 @@
 <script type="text/javascript" defer>
     const user = new User()
     let planningData = []
+    let lesData = []
 
     async function fillArray() {
         const tbodyUser = document.getElementById("tbodyUser")
@@ -84,9 +85,7 @@
         await user.connect()
 
         const goToEntrepot = document.getElementById("goToEntrepot")
-        const lesData = await user.me()
-
-        console.log(lesData)
+        lesData = await user.me()
 
         if (lesData.entrepot != null) {
             goToEntrepot.innerHTML = "Go to Storehouse menu"
