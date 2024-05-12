@@ -196,7 +196,7 @@ CREATE TABLE DON(
    id_don INT AUTO_INCREMENT,
    prix INT NOT NULL,
    date_don DATE NOT NULL,
-   id_user INT NOT NULL,
+   id_user INT,
    PRIMARY KEY(id_don),
    FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
 );

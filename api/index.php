@@ -97,6 +97,19 @@ function getIdUSerFromEmail($email){
     return $id;
 }
 
+function getEmailFromIdUser($id){
+
+    $email = selectDB("UTILISATEUR", 'email', "id_user='".$id."'", "bool");
+    if($email){
+        $email = $email[0]["email"];
+    }
+    else{
+        exit_with_message("No one with this id", 404);
+    }
+    return $email;
+
+}
+
 function getIdUserFromApiKey($apiKey){
     if($apiKey == null){
         exit_with_message("The apikey is empty", 403);
@@ -124,7 +137,7 @@ function controller($uri) {
 
     // Check if the apikey exist
     // To create a user, the apikey always null
-    if($uri[2] != "login" && $uri[2] != "user" && $uri[2] != "etagere"){
+    if($uri[2] != "login" && $uri[2] != "user" && $uri[2] != "etagere" && $uri[2] != "don"){
         if($apiKey == null){
             exit_with_message("Unauthorized, need the apikey", 403);
         }

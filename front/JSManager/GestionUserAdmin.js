@@ -56,6 +56,14 @@ class UserAdmin extends Admin{
         return response
     }
 
+    async getEmailUserViaId(id){
+        let response = await this.fetchSync(this.adresse+'/user/id/'+id, this.optionGet())
+        if(!this.compareAnswer(response, "Impossible de récupérer l'utilisateur")){
+            return false
+        }
+        return response
+    }
+
     /**
      * Only retrieve the waiting for validation users
      * @param id

@@ -32,6 +32,8 @@
                         <li><a style="color: #0c2124" href="./user.php" target="_blank"><?php echo($data["user"]["title"]) ?></a></li>
                         <li><a style="color: #0c2124" href="./gestPlanning.php" target="_blank"><?php echo($data["gestPlanning"]["title"]) ?></a></li>
                         <li><a style="color: #0c2124" href="./vehicle.php" target="_blank"><?php echo($data["vehicle"]["title"]) ?></a></li>
+                        <li><a style="color: #0c2124" href="./gestDon.php" target="_blank"><?php echo($data["don"]["title"]) ?></a></li>
+                        <li><a style="color: #0c2124" href="./gestDemandes.php" target="_blank"><?php echo($data["gestDemande"]["title"]) ?></a></li>
                     </ul>
                 </div>
 
