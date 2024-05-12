@@ -457,12 +457,16 @@
             stopLoading()
             return
         }
-        console.log(lesDataToSendGroup)
+
         const returnData = await request.validateGroupDemande(lesDataToSendGroup)
 
-
         const duh = await calcSpeedAddress(returnData)
-        console.log(duh)
+
+        if(duh === false){
+            popup("Error lors du calcul du chemin le plus rapide")
+            stopLoading()
+            return
+        }
 
         const docDefinition = {
             header: {
