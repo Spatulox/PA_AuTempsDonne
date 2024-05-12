@@ -1,38 +1,20 @@
 services:
   frontend:
-    build: 
-      context: ./front/
-      dockerfile: Dockerfile
-    image: spatulox/pa-front:latest
-
+    image: spatulox/pa-front:test-server
     ports:
       - 8083:80
-    #volumes:
-    #  - ./front:/var/www/html/
-    depends_on:
-      - api
 
   api:
-    build: 
-      context: ./api/
-      dockerfile: Dockerfile
-    image: spatulox/pa-api:latest
+    image: spatulox/pa-api:test-server
     ports:
       - 8081:80
-    #volumes:
-    #  - ./api:/var/www/html/
     depends_on:
       - database
 
   ticket:
-    build: 
-      context: ./tickets/
-      dockerfile: Dockerfile
     image: spatulox/pa-ticket:latest
     ports:
       - 8085:8085
-    #volumes:
-    #  - ./tickets:/var/www/html/
     environment:
       - DB_CONTAINER_NAME=database
     depends_on:
