@@ -2,13 +2,14 @@ const btn = document.getElementById("btnItineraire")
 
 //let googleApiKey = 'AIzaSyC9WzDphICufUy1vaD1xjwhK3cI7pWJi9c';
 
-function initMap(){
+function initMap() {
 
 }
 
-btn.addEventListener("click", async () => {
+//btn.addEventListener("click", async () => {
+async function calcSpeedAddress(addressData) {
     const address = {
-        "address": [3, 4, 5, 6, 7, 3]
+        "address": addressData
     };
 
     const response = await fetch("http://localhost:8081/index.php/trajet", optionPost(address));
@@ -22,6 +23,8 @@ btn.addEventListener("click", async () => {
         interData[data.addresse[dataKey]] = address.address[dataKey]
 
     }
+
+    console.log("interData : " + interData)
 
     const sortedAddresses = [];
     const startAddress = data.addresse[0]; // Adresse de l'entrepôt de départ
@@ -49,7 +52,7 @@ btn.addEventListener("click", async () => {
 
         if (closestAddress !== null) {
             sortedAddresses.push(closestAddress);
-            console.log(`Ajout ${closestAddress} dans sortedAddresses`);
+            //console.log(`Ajout ${closestAddress} dans sortedAddresses`);
         } else {
             console.log('Aucune adresse proche');
         }
@@ -61,18 +64,24 @@ btn.addEventListener("click", async () => {
     }
 
     sortedAddresses.push(endAddress); // Ajouter l'adresse de l'entrepôt d'arrivée à la fin
-    console.log("Sorted addresses:", sortedAddresses);
+    //console.log("Sorted addresses:", sortedAddresses);
 
 
     // Create the data to send it to the api
     const dataToSend = {}
     let array = []
 
+    const adr = new AddressAdmin()
+    await adr.connect()
+    let addd = await adr.getAllAddress()
+
+    console.log(addd)
+
     // Get the id (values) for the address (key)
     for (const addressKey in sortedAddresses) {
         array.push(interData[sortedAddresses[addressKey]])
 
-        console.log(sortedAddresses[addressKey])
+        //console.log(sortedAddresses[addressKey])
 
     }
 
@@ -80,22 +89,11 @@ btn.addEventListener("click", async () => {
 
     console.log(dataToSend)
 
-    // API AUTEMPDONNEE
-    const response2 = await fetch(endpointDuTrajet, optionPost(dataToSend))
+    let trajet = new TrajetAdmin()
 
-    if(response2.ok){
-        showPopup("Le trajet a été crée")
-    } else {
-        const data = await response2.json();
-
-        if (data.hasOwnProperty("message")){
-            showPopup(data.message)
-        }
-    }
-
-
-
-});
+    await trajet.connect()
+    console.log(await trajet.createTrajet(dataToSend))
+}
 
 function getCookie(cookieName) {
     const cookies = document.cookie.split(';');
@@ -111,11 +109,11 @@ function getCookie(cookieName) {
 }
 
 
-function optionGet(){
+function optionGet() {
 
     const apikey = getCookie("apikey")
 
-    if(apikey == null){
+    if (apikey == null) {
         alert('Pas d\'apikey dans les cookies :/')
         return false
     }
@@ -139,12 +137,12 @@ function optionPost(data) {
 
     const apikey = getCookie("apikey")
 
-    if(apikey == null){
+    if (apikey == null) {
         alert('Pas d\'apikey dans les cookies :/')
         return false
     }
 
-   const options = {
+    const options = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -164,7 +162,7 @@ function optionPut(data) {
 
     const apikey = getCookie("apikey")
 
-    if(apikey == null){
+    if (apikey == null) {
         alert('Pas d\'apikey dans les cookies :/')
         return false
     }
@@ -189,7 +187,7 @@ function optionDelete() {
 
     const apikey = getCookie("apikey")
 
-    if(apikey == null){
+    if (apikey == null) {
         alert('Pas d\'apikey dans les cookies :/')
         return false
     }

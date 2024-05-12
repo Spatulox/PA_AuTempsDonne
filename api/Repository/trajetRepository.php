@@ -148,10 +148,10 @@ class TrajetRepository {
 
             $count++;
 
-            $res = insertDB("UTILISER", ["id_trajets", "id_adresse"], [$lastID, $trajet]);
+            $res = insertDB("UTILISER", ["id_trajets", "id_adresse"], [$lastID, $trajet], "bool");
 
             if( $res === false){
-                $msg = "Erreur lors de l'enregistement du trajet, veuillez réessayer";
+                $msg = "Erreur lors de l'enregistement du trajet, veuillez réessayer; si vous passez deux fois au même endroit (autre que les entrepots, c'est impossible)";
                 deleteDB("UTILISER", "id_trajets=".$lastID);
                 exit_with_message($msg);
             }

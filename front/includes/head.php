@@ -51,6 +51,11 @@ if($role == 1 || $role == 2){
 <script type="text/javascript" src="../JS/loader.js"></script>
 <script type="text/javascript" src="../JS/createHtmlElement.js"></script>
 
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRgUYpS2R7KL3eZeSGVQYj8Gs9_lVy0x0&libraries=places"></script>
+<script type="text/javascript" src="../JS/itineraire.js"></script>
+<script type="text/javascript" src="../JS/getDistance.js"></script>
+
 <?php
 if($returnCode === false){
 echo '<script type="text/javascript" defer>redirect("./index.php?message=Vous n\'avez pas accès à cette page")</script>';

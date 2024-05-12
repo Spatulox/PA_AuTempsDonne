@@ -26,7 +26,7 @@
             <p id="select2"></p>
             <p id="select3"></p>
             <input type="datetime-local" id="dateSelect">
-            <div class="flex flexAround nowrap">
+            <div class="flex flexAround nowrap marginTop20">
                 <button type="button" onclick="addAddressPopup()"><?php echo($data["gestDemande"]["addRequest"]) ?></button>
                 <button type="button" onclick="valideData()"><?php echo($data["gestDemande"]["create"]) ?></button>
             </div>
@@ -352,10 +352,10 @@
 
 
         let lesData = []
-
+        console.log(demande)
         for (const key in demande) {
 
-            if (demande[key].etat === "En Attente") {
+            if (demande[key].etat === "En Attente" && demande[key].activite === "groupe") {
                 lesData[key] = demande[key]
             }
 
@@ -453,13 +453,25 @@
             return
         }
 
-        if(lesDataToSendGroup.date === "1970-01-01 00:00:00"){
+        if(lesDataToSendGroup.date === "1970-01-01 00:00:00" || lesDataToSendGroup.date === ""){
             popup("Error, wrong date")
             stopLoading()
             return
         }
         console.log(lesDataToSendGroup)
-        await request.validateGroupDemande(lesDataToSendGroup)
+        const returnData = await request.validateGroupDemande(lesDataToSendGroup)
+
+        console.log("validateGroupDemande : "+returnData)
+
+        const duh = await calcSpeedAddress(returnData)
+
+        console.log("calcSpeedAddress : "+duh)
+
+
+
+
+
+
         lesDataToSendGroup = {
             "id_demande":[],
             "id_depart":-1,
@@ -467,8 +479,8 @@
             "date": "1970-01-01 00:00:00"
         }
 
-        const popup = document.getElementById("popupGestion");
-        popup.style.display = "none";
+        const popupG = document.getElementById("popupGestion");
+        popupG.style.display = "none";
 
         await reload()
 
