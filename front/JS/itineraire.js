@@ -50,9 +50,8 @@ async function calcSpeedAddress(addressData) {
 
         if (closestAddress !== null) {
             sortedAddresses.push(closestAddress);
-            //console.log(`Ajout ${closestAddress} dans sortedAddresses`);
         } else {
-            console.log('Aucune adresse proche');
+            alert('Aucune adresse proche');
         }
 
         const indexToRemove = intermediateAddresses.indexOf(closestAddress);

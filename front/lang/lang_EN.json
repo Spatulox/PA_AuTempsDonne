@@ -190,6 +190,18 @@
       "title": "Add Product"
     }
   },
+  "request": {
+    "title": "Request",
+    "tab1": {
+      "title": "List"
+    },
+    "tab2": {
+      "title": "Create Request"
+    },
+    "tab3": {
+      "title": "tab3"
+    }
+  },
   "stock": {
     "title": "Stock Menu",
     "tab1": {

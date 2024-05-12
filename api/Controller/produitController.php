@@ -11,7 +11,7 @@ function collectController($uri, $apikey) {
         case 'GET':
 
             $role = getRoleFromApiKey($apikey);
-            if($role > 3) {
+            if($role > 3 && $role != 5) {
                 exit_with_message("You can't do that", 403);
             }
 

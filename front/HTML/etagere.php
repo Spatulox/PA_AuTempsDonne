@@ -54,7 +54,7 @@
         const key = getParamFromUrl("key")
 
         if(key === false){
-            popup("Erreur lors de la récupération, need the key")
+            popup("Erreur lors de la récupération, need the key of the etagere")
             return
         }
 

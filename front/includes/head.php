@@ -19,6 +19,13 @@
 
 <?php
 
+if (basename($_SERVER['REQUEST_URI']) == "etagere.php"){
+
+    echo '<script type="text/javascript" src="../JSManager/Admin.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
+
+}
+
 if($role == 1 || $role == 2){
 
     echo '<script type="text/javascript" src="../JSManager/Admin.js"></script>';
@@ -44,10 +51,24 @@ if($role == 1 || $role == 2){
 if($role == 3){
 
     echo '<script type="text/javascript" src="../JSManager/Admin.js"></script>';
-    echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionStock.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionProduct.js"></script>';
 
+}
+
+if($role == 4){
+
+    echo '<script type="text/javascript" src="../JSManager/BeneficiaireRequest.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionActivite.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionProduct.js"></script>';
+}
+
+if($role == 5){
+
+    echo '<script type="text/javascript" src="../JSManager/Admin.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/PrestataireRequest.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionActivite.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionProduct.js"></script>';
 }
 
 ?>

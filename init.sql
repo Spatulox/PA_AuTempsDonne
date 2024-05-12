@@ -562,6 +562,30 @@ VALUES
   ('patoche help', 'seul', 0, '2024-05-20 08:00:00', 4, 1, 16),
   ('patoche cour du soir help', 'seul', 1, '2024-05-25 18:00:00', 4, NULL, 16);
 
+INSERT INTO COLLECTE (quantite, id_produit)
+VALUES
+  ('60', 1),
+  ('50', 5),
+  ('200', 4),
+  ('98', 5),
+  ('47', 2),
+  ('12', 5),
+  ('150', 7),
+  ('50', 9);
+
+INSERT INTO RECU (id_collecte, id_demande, recu)
+VALUES
+  (1, 1, 1),
+  (2, 1, 1),
+  (3, 2, 1),
+  (4, 2, 1),
+  (5, 2, 1),
+  (6, 3, 1),
+  (7, 3, 1),
+  (8, 3, 1);
+
+
+
   INSERT INTO STOCKS (quantite_produit, date_entree, date_sortie, date_peremption, desc_produit, id_produit, id_etagere)
 VALUES
   (75, '2024-05-06', NULL, '2025-04-20', 'clair', 1, 8),

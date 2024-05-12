@@ -69,7 +69,6 @@
         bodyAssign.innerHTML = ""
         let addressData = await address.getAllAddress()
         addressData.shift()
-        console.log(addressData)
         createBodyTableau(bodyAssign, addressData)
         replaceCharacters()
     }

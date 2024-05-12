@@ -2,7 +2,7 @@
   "1": ["admin.php", "user.php", "storehouse.php", "gestPlanning.php", "stock.php", "vehicle.php", "product.php", "gestDon.php", "gestDemandes.php", "gestAddress.php"],
   "2": ["admin.php", "user.php", "storehouse.php", "gestPlanning.php", "stock.php", "vehicle.php", "product.php", "gestDon.php", "gestDemandes.php", "gestAddress.php"],
   "3": ["entrepots.php"],
-  "4": [],
-  "5": [],
+  "4": ["requests.php"],
+  "5": ["requests.php"],
   "all": ["404.php", "actualites.php", "aide.php", "contact.php", "decouvrir.php", "don.php", "entrepots.php", "index.php", "moncompte.php", "planning.php", "signup_login.php", "etagere.php"]
 }

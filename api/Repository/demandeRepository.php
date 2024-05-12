@@ -110,9 +110,11 @@ class DemandeRepository
     function getByUser($id_user)
     {
         $colums = "DEMANDE.id_demande, DEMANDE.desc_demande,DEMANDE.activite,DEMANDE.etat, DEMANDE.date_act,DEMANDE.id_activite, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
-        $string = "LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte;";
-        $request = selectJoinDB("DEMANDE", $colums, $string, "id_user=" . $id_user, "bool");
-
+        $string = "LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte";
+        $request = selectJoinDB("DEMANDE", $colums, $string, "id_user=" . $id_user,"bool");
+        if(!$request){
+         exit_with_message("pas de Demande",500);
+        }
 
         exit_with_content($this->affiche($request));
     }
@@ -181,7 +183,6 @@ class DemandeRepository
         $string = "LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte";
         $resquest = selectJoinDB("DEMANDE", $colums, $string, "DEMANDE.id_demande=" . $id, "bool");
 
-        var_dump($resquest);
         for ($i = 0; $i < count($resquest); $i++) {
 
             if ($resquest){

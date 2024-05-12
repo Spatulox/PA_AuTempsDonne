@@ -256,8 +256,6 @@
         let yaunelmessage = false
         let message = ""
 
-        console.log(response)
-
         if(response.create == null){
             messageAddProduct.style.color="red"
         } else {
@@ -359,7 +357,6 @@
 
         let count = 0
         for (const key in leDataDeMerde) {
-            //console.log(key)
             count += (+leDataDeMerde[key].quantite_produit)
         }
 

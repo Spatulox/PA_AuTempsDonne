@@ -10,11 +10,11 @@ class activiteService {
     */
     public function getAllActivite($apikey) {
         $userRole = getRoleFromApiKey($apikey);
-        if ($userRole==1 || $userRole==2 || $userRole==4) {
+        if ($userRole==1 || $userRole==2 || $userRole==4 || $userRole==5) {
             $ActiviteRepository = new ActiviteRepository();
             return $ActiviteRepository->getAllActivite();
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("Vous n'avez pas accès a cette commande");
         }
     }
 
@@ -36,7 +36,7 @@ class activiteService {
             $ActiviteRepository = new ActiviteRepository();
             return $ActiviteRepository->createActivite($Activite);
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("Vous n'avez pas accès a cette commande");
         }
     }
 
@@ -62,7 +62,7 @@ class activiteService {
             $ActiviteRepository = new ActiviteRepository();
             return $ActiviteRepository->deleteActivite($id);
         }else{
-            exit_with_message("Vous n'avais pas accès a cette commande");
+            exit_with_message("Vous n'avez pas accès a cette commande");
         }
     }
 }

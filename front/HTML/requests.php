@@ -27,7 +27,8 @@
             <p id="select3"></p>
             <input type="datetime-local" id="dateSelect">
             <div class="flex flexAround nowrap marginTop20">
-                <button type="button" onclick="addAddressPopup()"><?php echo($data["gestDemande"]["addRequest"]) ?></button>
+                <button type="button"
+                        onclick="addAddressPopup()"><?php echo($data["gestDemande"]["addRequest"]) ?></button>
                 <button type="button" onclick="valideData()"><?php echo($data["gestDemande"]["create"]) ?></button>
             </div>
         </div>
@@ -40,7 +41,7 @@
             <button class="tablinks width100"
                     onclick="openTab('tab1')"><?php echo($data["gestDemande"]["tab1"]["title"]) ?></button>
             <button class="tablinks width100"
-                    onclick="openTab('tab2')"><?php echo($data["gestDemande"]["tab2"]["title"]) ?></button>
+                    onclick="openTab('tab2')"><?php echo($data["request"]["tab2"]["title"]) ?></button>
             <button class="tablinks width100"
                     onclick="openTab('tab3')"><?php echo($data["gestDemande"]["tab3"]["title"]) ?></button>
         </div>
@@ -57,9 +58,7 @@
                     <td><?php echo $data["gestDemande"]["tab1"]["date"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["activite"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["id_planning"] ?></td>
-                    <td><?php echo $data["gestDemande"]["tab1"]["user"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["?"] ?></td>
-                    <td><?php echo $data["gestDemande"]["tab1"]["button"] ?></td>
                 </tr>
                 </thead>
                 <tbody id="bodyList">
@@ -69,9 +68,22 @@
         </div>
 
         <div id="tab2" class="tabcontent">
-            <h2><?php echo($data["gestDemande"]["tab2"]["title"]) ?></h2>
-            <p id="bodyMeh">
-            </p>
+            <h2><?php echo($data["request"]["tab2"]["title"]) ?></h2>
+            <div class="border">
+                <input id="descriptionRequest" type="text" placeholder="Description Request">
+                <div id="Prestataire">
+                    <div id="selectProduit"></div>
+                </div>
+
+                <div id="Beneficiaire">
+                    <div id="selectActivite">
+                    </div>
+                    <input type="date" id="datetime-local-presta">
+                </div>
+
+                <input type="button" class="marginTop30" value="Add Product to Request" onclick="addProductRequest()"><br>
+                <input type="button" class="marginTop30" value="Create Request" onclick="createRequestFront()">
+            </div>
         </div>
 
         <div id="tab3" class="tabcontent">
@@ -85,10 +97,7 @@
                     <td><?php echo $data["gestDemande"]["tab1"]["state"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["date"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["activite"] ?></td>
-                    <td><?php echo $data["gestDemande"]["tab1"]["id_planning"] ?></td>
-                    <td><?php echo $data["gestDemande"]["tab1"]["user"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["?"] ?></td>
-                    <td><?php echo $data["gestDemande"]["tab1"]["button"] ?></td>
                 </tr>
                 </thead>
                 <tbody id="bodyListWait">
@@ -118,17 +127,16 @@
 
 <script type="text/javascript" defer>
 
-    const request = new DemandeAdmin()
-    const user = new UserAdmin()
+    const request = new Request()
+    const user = new User()
     const activity = new Activite()
-    let email = []
     let demande = []
     let acti_desc = []
 
     let lesDataToSendGroup = {
-        "id_demande":[],
-        "id_depart":-1,
-        "id_arriver":-1,
+        "id_demande": [],
+        "id_depart": -1,
+        "id_arriver": -1,
         "date": "1970-01-01 00:00:00"
     }
 
@@ -136,7 +144,7 @@
         const bodyList = document.getElementById("bodyList")
         bodyList.innerHTML = ""
 
-        demande = await request.getAllDemande()
+        demande = await request.getRequest()
         await formateMainData()
 
         let lesData = []
@@ -149,7 +157,7 @@
 
         }
 
-        createBodyTableau(bodyList, lesData, [], [user.msg["Details"]], ["seeDetails"], "id_demande")
+        createBodyTableau(bodyList, lesData, ["id_user"])
         await fillListDemandeWait()
         replaceCharacters()
     }
@@ -157,7 +165,7 @@
     async function fillListDemandeWait(popup = false) {
         let bodyList
 
-        if(popup === false){
+        if (popup === false) {
             bodyList = document.getElementById("bodyListWait")
         } else {
             bodyList = document.getElementById("popupAsk")
@@ -175,22 +183,11 @@
 
         }
 
-        //createBodyTableau(bodyList, lesData, [], [user.msg["Validate"]], ["validate"], "id_demande")
-        createBodyTableau(bodyList, lesData, [], [user.msg["Details"]], ["seeDetails"], "id_demande")
+        createBodyTableau(bodyList, lesData, ["id_user", "id_planning"])
         replaceCharacters()
     }
 
     async function formateData() {
-
-        // Get all the user to associate the email to the id user
-        email = await user.getAllUser()
-        let tmp = {}
-        for (const key in email) {
-            tmp[email[key].id_user] = email[key].email
-        }
-        email = []
-        email = tmp
-
         // Get all the activite to associate the desc activite to the id activite
 
         acti_desc = await activity.getAllActivite()
@@ -213,7 +210,6 @@
         for (const key in demande) {
 
             demande[key].etat = etat[demande[key].etat]
-            demande[key].id_user = email[demande[key].id_user]
             demande[key].id_activite = acti_desc[demande[key].id_activite]
         }
 
@@ -283,24 +279,24 @@
 
         const detailActivite = document.getElementById("detailActivite").innerHTML
 
-        if(detailActivite.split(": ")[1].trim() === "groupe"){
+        if (detailActivite.split(": ")[1].trim() === "groupe") {
 
             await requestData()
             stopLoading()
 
-        } else if (detailActivite.split(": ")[1].trim() === "seul"){
+        } else if (detailActivite.split(": ")[1].trim() === "seul") {
             await request.validateSoloDemande(id_demande)
             await reload()
             stopLoading()
         }
     }
 
-    function emptyDetail(){
+    function emptyDetail() {
         const bodyMeh = document.getElementById("bodyMeh")
         bodyMeh.innerHTML = ""
     }
 
-    async function requestData(){
+    async function requestData() {
 
         const lapopup = document.getElementById("popupGestion")
         const popupGestionBody = document.getElementById("popupGestionBody")
@@ -391,7 +387,7 @@
 
     }
 
-    async function addAddressPopup(){
+    async function addAddressPopup() {
 
         const popupGestionBody = document.getElementById("popupGestionBody")
 
@@ -401,12 +397,12 @@
 
         const end = document.querySelector("#select3 > select")
 
-        if(start.value.trim() === "Choose Storehouse" || end.value.trim() === "Choose Storehouse"){
+        if (start.value.trim() === "Choose Storehouse" || end.value.trim() === "Choose Storehouse") {
             popup("Vous devez sélectionner un entrepot de départ et de fin avant")
             return
         }
 
-        if(selectValue.value.trim() === "Choose Request to link"){
+        if (selectValue.value.trim() === "Choose Request to link") {
             popup("Vous devez sélectionner une demande au minimum pour la lier")
             return
         }
@@ -416,7 +412,7 @@
         const selectedOption = selectElement.options[selectElement.selectedIndex]; // Récupère l'option sélectionnée
         const selectedInnerHTML = selectedOption.innerHTML;
 
-        if(popupGestionBody.innerHTML.includes(selectedInnerHTML)){
+        if (popupGestionBody.innerHTML.includes(selectedInnerHTML)) {
             popup("Vous ne pouvez pas associer plusieurs fois la même demande dans un trajet")
             return
         }
@@ -424,48 +420,42 @@
         lesDataToSendGroup.id_depart = start.value
         lesDataToSendGroup.id_arriver = end.value
         lesDataToSendGroup.id_demande.push(selectValue.value)
-        popupGestionBody.innerHTML += selectedInnerHTML +"<br>"
+        popupGestionBody.innerHTML += selectedInnerHTML + "<br>"
     }
 
-    async function valideData(){
+    async function valideData() {
         startLoading()
 
         const dateSelect = document.getElementById("dateSelect")
         lesDataToSendGroup.date = dateSelect.value
 
-        if( lesDataToSendGroup["id_demande"].length === 0){
+        if (lesDataToSendGroup["id_demande"].length === 0) {
             popup('Vous devez mettre des données avant de valider')
             stopLoading()
             return
         }
 
-        if(lesDataToSendGroup.id_demande.length === 0){
+        if (lesDataToSendGroup.id_demande.length === 0) {
             popup("Error, wrong request length")
             stopLoading()
             return
         }
 
-        if(lesDataToSendGroup.id_depart === -1 || lesDataToSendGroup.id_arriver === -1){
+        if (lesDataToSendGroup.id_depart === -1 || lesDataToSendGroup.id_arriver === -1) {
             popup("Error, wrong start or end")
             stopLoading()
             return
         }
 
-        if(lesDataToSendGroup.date === "1970-01-01 00:00:00" || lesDataToSendGroup.date === ""){
+        if (lesDataToSendGroup.date === "1970-01-01 00:00:00" || lesDataToSendGroup.date === "") {
             popup("Error, wrong date")
             stopLoading()
             return
         }
-
         const returnData = await request.validateGroupDemande(lesDataToSendGroup)
 
-        const duh = await calcSpeedAddress(returnData)
 
-        if(duh === false){
-            popup("Error lors du calcul du chemin le plus rapide")
-            stopLoading()
-            return
-        }
+        const duh = await calcSpeedAddress(returnData)
 
         const docDefinition = {
             header: {
@@ -490,9 +480,9 @@
         pdfMake.createPdf(docDefinition).download(`Trajet.pdf`);
 
         lesDataToSendGroup = {
-            "id_demande":[],
-            "id_depart":-1,
-            "id_arriver":-1,
+            "id_demande": [],
+            "id_depart": -1,
+            "id_arriver": -1,
             "date": "1970-01-01 00:00:00"
         }
 
@@ -522,12 +512,176 @@
 
     async function reload() {
         startLoading()
-        demande = await request.getAllDemande()
+        demande = await request.getRequest()
         await formateMainData()
         await fillListDemande()
         emptyDetail()
         openTab('tab1')
         stopLoading()
+    }
+
+    async function createCreateRequestMenu() {
+        if (user.role === "4") {
+
+            const Prestataire = document.getElementById("Prestataire")
+            Prestataire.remove()
+
+            const selectActivite = document.getElementById("selectActivite")
+
+
+            let option = []
+
+            let activity = new Activite()
+            await activity.connect()
+            let data = await activity.getAllActivite()
+
+            for (const key in data) {
+
+                option[key] = {
+                    "value": data[key].id_activite,
+                    "text": data[key].nom_activite
+                }
+
+            }
+
+            const select = createSelect(option, "Choose an Activity")
+
+            selectActivite.appendChild(select)
+
+
+        } else if (user.role === "5") {
+            const Beneficiaire = document.getElementById("Beneficiaire")
+            Beneficiaire.remove()
+
+            let option = []
+
+            let product = new ProductAdmin()
+            await product.connect()
+            let data = await product.getAllProduct()
+
+            for (const key in data) {
+
+                option[key] = {
+                    "value": data[key].id_produit,
+                    "text": data[key].nom_produit
+                }
+
+            }
+
+            createProductFront(option)
+
+        }
+
+        replaceCharacters()
+    }
+
+    async function addProductRequest(){
+
+        startLoading()
+        let option = []
+
+        let product = new ProductAdmin()
+        await product.connect()
+        let data = await product.getAllProduct()
+
+        for (const key in data) {
+
+            option[key] = {
+                "value": data[key].id_produit,
+                "text": data[key].nom_produit
+            }
+
+        }
+
+        createProductFront(option)
+        stopLoading()
+
+    }
+
+    function createProductFront(option){
+
+        const div = document.createElement("div")
+        div.classList.add("border")
+        div.classList.add("marginTop30")
+        const input = createInput("Quantity")
+        const br = document.createElement("br")
+        const select = createSelect(option, "Choose a product")
+        select.classList.add("marginTop10")
+
+        const selectProduit = document.getElementById("selectProduit")
+        div.appendChild(input)
+        div.appendChild(br)
+        div.appendChild(select)
+        selectProduit.appendChild(div)
+
+    }
+
+    async function createRequestFront(){
+        startLoading()
+        const descriptionRequest = document.getElementById("descriptionRequest")
+
+        if(user.role === "4"){
+
+            const selectElement = document.querySelector("#selectActivite > select"); // Sélectionne l'élément <select>
+            const selectedOption = selectElement.options[selectElement.selectedIndex]; // Récupère l'option sélectionnée
+            const selectedInnerHTML = selectedOption.innerHTML;
+
+            const date = document.getElementById("datetime-local-presta")
+
+            if(descriptionRequest.value === "" || selectElement.value === "Choose an Activity" || date.value === ""){
+                popup("Vous devez remplir tous les champs");
+                stopLoading()
+                return
+            }
+            await request.createRequest(descriptionRequest.value, selectElement.value, date.value)
+            await reload()
+
+        } else if (user.role === "5") {
+
+            if(descriptionRequest.value === ""){
+                popup("Vous devez remplir la description")
+                stopLoading()
+                return
+            }
+            const inputs = document.querySelectorAll('#selectProduit > div > input')
+            const selects = document.querySelectorAll("#selectProduit > div > select")
+
+            let data = []
+
+            for (let i = 0; i < inputs.length; i++) {
+
+                if(selects[i].value === "Choose a product"){
+                    popup("Il vous manque un produit à sélectionner")
+                    stopLoading()
+                    return
+                }
+
+                if(inputs[i].value == ""){
+                    popup("Il vous manque une quantitée à sélectionner")
+                    stopLoading()
+                    return
+                }
+
+                const dataObj = {
+                    "quantite":inputs[i].value,
+                    "id_produit":selects[i].value,
+                }
+                data.push(dataObj)
+
+            }
+
+            await request.createRequest(descriptionRequest.value, null, null, data)
+            await reload()
+
+        }
+
+        stopLoading()
+
+    }
+
+    async function reload(){
+        await formateData()
+        await fillListDemande()
     }
 
     async function onload() {
@@ -540,12 +694,14 @@
         await formateData()
 
         await fillListDemande()
+        await createCreateRequestMenu()
         stopLoading()
     }
 
     onload()
 
 </script>
+
 
 <style>
     .card {

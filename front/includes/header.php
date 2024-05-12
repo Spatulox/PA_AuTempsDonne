@@ -58,7 +58,15 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
                     if($role == "3" || $role == "4" || $role == "5"){
 
                         foreach ($data["header"]["connected"] as $key => $value) {
+
+                            if($key == "./moncompte.php"){
+                                if($role == "4" || $role == "5"){
+                                    echo('<li><a href="./requests.php">'. $data["request"]["title"] . '</a></li>');
+                                }
+                            }
+
                             if($key == "./signup_login.php"){
+
                                 echo('<li><a href="./index.php" onclick="deconnection()">'. $data["header"]["disconnect"] . '</a></li>');
                             }
                             else{

@@ -136,14 +136,7 @@
     const user = new User()
 
     async function fillList() {
-
-        /*const bodyList = document.getElementById("bodyList")
-        bodyList.innerHTML = ""*/
         entre = await user.myEntrepot()
-        /*console.log(entre)
-        createBodyTableau(bodyList, entre, ["id_addresse"], [entrepot.msg["See"]], ["seeStock"], "id_entrepot")
-        replaceCharacters()*/
-
         await seeStock(user.entrepot)
     }
 
@@ -258,8 +251,6 @@
         let yaunelmessage = false
         let message = ""
 
-        console.log(response)
-
         if(response.create == null){
             messageAddProduct.style.color="red"
         } else {
@@ -361,7 +352,6 @@
 
         let count = 0
         for (const key in leDataDeMerde) {
-            //console.log(key)
             count += (+leDataDeMerde[key].quantite_produit)
         }
 
