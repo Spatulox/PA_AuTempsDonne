@@ -1,3 +1,127 @@
+<?php //include("../includes/loadLang.php");?>
+<!---->
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!---->
+<!--    --><?php //include("../includes/head.php"); ?>
+<!---->
+<!--    <title>--><?php //echo($data["request"]["title"]) ?><!--</title>-->
+<!--</head>-->
+<!--<body>-->
+<!---->
+<?php //include("../includes/header.php");?>
+<!---->
+<!--<main>-->
+<!---->
+<!--    <div class="width90 marginAuto marginBottom30">-->
+<!--        <h1 class="textCenter">--><?php //echo($data["request"]["title"]) ?><!--</h1>-->
+<!---->
+<!--        <div class="tab flex flexAround nowrap">-->
+<!--            <button class="tablinks width100"-->
+<!--                    onclick="openTab('tab1')">--><?php //echo($data["request"]["tab1"]["title"]) ?><!--</button>-->
+<!--            <button class="tablinks width100"-->
+<!--                    onclick="openTab('tab2')">--><?php //echo($data["request"]["tab2"]["title"]) ?><!--</button>-->
+<!--            <button class="tablinks width100"-->
+<!--                    onclick="openTab('tab3')">--><?php //echo($data["request"]["tab3"]["title"]) ?><!--</button>-->
+<!--        </div>-->
+<!---->
+<!--        <div id="tab1" class="tabcontent">-->
+<!--            <h2>--><?php //echo($data["gestDemande"]["tab1"]["title"]) ?><!--</h2>-->
+<!--            <table>-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["id"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["desc"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["type"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["state"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["date"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["activite"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["id_planning"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["user"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["?"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["button"] ?><!--</td>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody id="bodyList">-->
+<!---->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+<!---->
+<!--        <div id="tab2" class="tabcontent">-->
+<!--            <h2>--><?php //echo($data["gestDemande"]["tab2"]["title"]) ?><!--</h2>-->
+<!--            <p id="bodyMeh">-->
+<!--            </p>-->
+<!--        </div>-->
+<!---->
+<!--        <div id="tab3" class="tabcontent">-->
+<!--            <h2>--><?php //echo($data["gestDemande"]["tab3"]["title"]) ?><!--</h2>-->
+<!--            <table>-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["id"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["desc"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["type"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["state"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["date"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["activite"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["id_planning"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["user"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["?"] ?><!--</td>-->
+<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["button"] ?><!--</td>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody id="bodyListWait">-->
+<!---->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+<!---->
+<!--    </div>-->
+<!---->
+<!--</main>-->
+<!---->
+<?php //include("../includes/footer.php");?>
+<!---->
+<!--</body>-->
+<!--</html>-->
+<!---->
+<!---->
+<!--<script type="text/javascript" defer>-->
+<!---->
+<!--    const request = new Request()-->
+<!---->
+<!--    async function createRequest(){-->
+<!--        request.createRequest()-->
+<!--    }-->
+<!---->
+<!--    async function fillRequest(){-->
+<!--        const bodyList = document.getElementById("bodyList")-->
+<!--        bodyList.innerHTML = ""-->
+<!---->
+<!--        const data = await request.getRequest()-->
+<!--        console.log(data)-->
+<!--        createBodyTableau(bodyList, data)-->
+<!---->
+<!--    }-->
+<!---->
+<!---->
+<!--    async function onload(){-->
+<!--        startLoading()-->
+<!--        openTab('tab1')-->
+<!--        await request.connect()-->
+<!--        await fillRequest()-->
+<!---->
+<!--        stopLoading()-->
+<!--    }-->
+<!---->
+<!--    onload()-->
+<!---->
+<!--</script>-->
+
+
+
 <?php include("../includes/loadLang.php"); ?>
 
 <!DOCTYPE html>
@@ -40,7 +164,7 @@
             <button class="tablinks width100"
                     onclick="openTab('tab1')"><?php echo($data["gestDemande"]["tab1"]["title"]) ?></button>
             <button class="tablinks width100"
-                    onclick="openTab('tab2')"><?php echo($data["gestDemande"]["tab2"]["title"]) ?></button>
+                    onclick="openTab('tab2')"><?php echo($data["request"]["tab2"]["title"]) ?></button>
             <button class="tablinks width100"
                     onclick="openTab('tab3')"><?php echo($data["gestDemande"]["tab3"]["title"]) ?></button>
         </div>
@@ -57,9 +181,7 @@
                     <td><?php echo $data["gestDemande"]["tab1"]["date"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["activite"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["id_planning"] ?></td>
-                    <td><?php echo $data["gestDemande"]["tab1"]["user"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["?"] ?></td>
-                    <td><?php echo $data["gestDemande"]["tab1"]["button"] ?></td>
                 </tr>
                 </thead>
                 <tbody id="bodyList">
@@ -69,7 +191,7 @@
         </div>
 
         <div id="tab2" class="tabcontent">
-            <h2><?php echo($data["gestDemande"]["tab2"]["title"]) ?></h2>
+            <h2><?php echo($data["request"]["tab2"]["title"]) ?></h2>
             <p id="bodyMeh">
             </p>
         </div>
@@ -86,9 +208,7 @@
                     <td><?php echo $data["gestDemande"]["tab1"]["date"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["activite"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["id_planning"] ?></td>
-                    <td><?php echo $data["gestDemande"]["tab1"]["user"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["?"] ?></td>
-                    <td><?php echo $data["gestDemande"]["tab1"]["button"] ?></td>
                 </tr>
                 </thead>
                 <tbody id="bodyListWait">
@@ -118,10 +238,9 @@
 
 <script type="text/javascript" defer>
 
-    const request = new DemandeAdmin()
-    const user = new UserAdmin()
+    const request = new Request()
+    const user = new User()
     const activity = new Activite()
-    let email = []
     let demande = []
     let acti_desc = []
 
@@ -136,7 +255,7 @@
         const bodyList = document.getElementById("bodyList")
         bodyList.innerHTML = ""
 
-        demande = await request.getAllDemande()
+        demande = await request.getRequest()
         await formateMainData()
 
         let lesData = []
@@ -149,7 +268,7 @@
 
         }
 
-        createBodyTableau(bodyList, lesData, [], [user.msg["Details"]], ["seeDetails"], "id_demande")
+        createBodyTableau(bodyList, lesData, ["id_user"])
         await fillListDemandeWait()
         replaceCharacters()
     }
@@ -175,22 +294,11 @@
 
         }
 
-        //createBodyTableau(bodyList, lesData, [], [user.msg["Validate"]], ["validate"], "id_demande")
-        createBodyTableau(bodyList, lesData, [], [user.msg["Details"]], ["seeDetails"], "id_demande")
+        createBodyTableau(bodyList, lesData, ["id_user"])
         replaceCharacters()
     }
 
     async function formateData() {
-
-        // Get all the user to associate the email to the id user
-        email = await user.getAllUser()
-        let tmp = {}
-        for (const key in email) {
-            tmp[email[key].id_user] = email[key].email
-        }
-        email = []
-        email = tmp
-
         // Get all the activite to associate the desc activite to the id activite
 
         acti_desc = await activity.getAllActivite()
@@ -213,7 +321,6 @@
         for (const key in demande) {
 
             demande[key].etat = etat[demande[key].etat]
-            demande[key].id_user = email[demande[key].id_user]
             demande[key].id_activite = acti_desc[demande[key].id_activite]
         }
 
@@ -520,7 +627,7 @@
 
     async function reload() {
         startLoading()
-        demande = await request.getAllDemande()
+        demande = await request.getRequest()
         await formateMainData()
         await fillListDemande()
         emptyDetail()

@@ -1,53 +1,59 @@
-<?php include("../includes/loadLang.php");?>
+<?php include("../includes/loadLang.php"); ?>
 
 <!DOCTYPE html>
 <html>
-	<head>
+<head>
 
-		<?php include("../includes/head.php"); ?>
+    <?php include("../includes/head.php"); ?>
 
-		<title><?php echo($data["planning"]["title"]) ?></title>
-	</head>
-	<body>
+    <title><?php echo($data["planning"]["title"]) ?></title>
+</head>
+<body>
 
-		<?php include("../includes/header.php");?>
+<?php include("../includes/header.php"); ?>
 
-		<main>
+<main>
 
-			<section class="flex flexCenter wrap">
-				<h1 class="width100 textCenter noMarginBottom"><?php echo($data["planning"]["sectionTitle"]) ?></h1>
-                <a href="./entrepots.php" id="goToEntrepot">Go to Storehouse menu</a>
-			</section>
+    <section class="flex flexCenter wrap">
+        <h1 class="width100 textCenter noMarginBottom"><?php echo($data["planning"]["sectionTitle"]) ?></h1>
+        <a href="" id="goToEntrepot"></a>
+    </section>
 
-            <table class="width80 marginAuto marginTop40 border">
-                <thead>
-                <tr>
-                    <td>Description activité</td>
-                    <td>Date</td>
-                    <td>Type / Desc</td>
-                    <td>Localisation</td>
-                </tr>
-                </thead>
-                <tbody id="tbodyUser">
-                </tbody>
-            </table>
+    <table class="width80 marginAuto marginTop40 border">
+        <thead>
+        <tr>
+            <td>Description activité</td>
+            <td>Date</td>
+            <td>Type / Desc</td>
+            <td>Localisation</td>
+        </tr>
+        </thead>
+        <tbody id="tbodyUser">
+        </tbody>
+    </table>
 
-		</main>
+</main>
 
-		<?php include("../includes/footer.php");?>
+<?php include("../includes/footer.php"); ?>
 
-	</body>
+</body>
 </html>
 
 <script type="text/javascript" defer>
     const user = new User()
     let planningData = []
 
-    async function fillArray(){
+    async function fillArray() {
         const tbodyUser = document.getElementById("tbodyUser")
         tbodyUser.innerHTML = ""
         planningData = await user.myPlanning()
-        console.log(planningData)
+
+        user.printUser()
+
+        if (planningData === false) {
+            stopLoading()
+            return
+        }
 
         await deleteOldPlanning(planningData)
 
@@ -56,14 +62,14 @@
 
     }
 
-    async function deleteOldPlanning(data){
+    async function deleteOldPlanning(data) {
         let newData = []
 
         const day = today()
 
-        data.forEach((onePlann)=>{
+        data.forEach((onePlann) => {
 
-            if(onePlann.date_activite >= day){
+            if (onePlann.date_activite >= day) {
                 newData.push(onePlann)
             }
 
@@ -73,15 +79,23 @@
         planningData = newData
     }
 
-    async function onload(){
+    async function onload() {
         startLoading()
         await user.connect()
 
-        if((await user.me()).entrepot == null){
+        const goToEntrepot = document.getElementById("goToEntrepot")
+        const lesData = await user.me()
 
-            const goToEntrepot = document.getElementById("goToEntrepot")
+        console.log(lesData)
+
+        if (lesData.entrepot != null) {
+            goToEntrepot.innerHTML = "Go to Storehouse menu"
+            goToEntrepot.href = "./entrepots.php"
+        } else if (lesData.role === "4") {
+            goToEntrepot.innerHTML = "Go to Request"
+            goToEntrepot.href = "./requests.php"
+        } else {
             goToEntrepot.remove()
-
         }
 
         await fillArray()

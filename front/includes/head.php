@@ -50,6 +50,16 @@ if($role == 3){
 
 }
 
+if($role == 4){
+    echo '<script type="text/javascript" src="../JSManager/BeneficiaireRequest.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionActivite.js"></script>';
+}
+
+if($role == 5){
+    echo '<script type="text/javascript" src="../JSManager/PrestataireRequest.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionActivite.js"></script>';
+}
+
 ?>
 
 <script type="text/javascript" src="../JS/popup.js"></script>

@@ -1,4 +1,4 @@
-class ActiviteAdmin extends Admin{
+class Activite extends User{
 
     async getAllActivite(){
         let response = await this.fetchSync(this.adresse + '/activite', this.optionGet())

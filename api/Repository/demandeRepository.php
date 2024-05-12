@@ -181,7 +181,6 @@ class DemandeRepository
         $string = "LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte";
         $resquest = selectJoinDB("DEMANDE", $colums, $string, "DEMANDE.id_demande=" . $id, "bool");
 
-        var_dump($resquest);
         for ($i = 0; $i < count($resquest); $i++) {
 
             if ($resquest){
