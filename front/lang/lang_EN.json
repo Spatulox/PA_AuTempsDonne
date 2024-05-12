@@ -153,6 +153,8 @@
   "moncompte": {
     "title": "Account",
     "sectionTitle": "Account",
+    "Ticketlink": "http://localhost:8085",
+    "Ticket": "Créer un ticket",
     "form": {
       "titleF1": "My Informations",
       "inputPlanning": "Planning",

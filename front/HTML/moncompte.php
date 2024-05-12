@@ -64,9 +64,14 @@
 					<input class="noMarginImportant" type="button" name="updateAccount" value="<?php echo($data["moncompte"]["form"]["inputUpdate"]) ?>" id="updateAccount">
 				</div>
 			</section>
-			<?php
 
-			?>
+
+            <section class="textCenter marginTop30">
+                <script type="text/javascript" defer>
+
+                </script>
+                <button type="button" id="buttonTicket"><?php echo $data["moncompte"]["Ticket"] ?></button>
+            </section>
 
 		</main>
 
@@ -77,4 +82,10 @@
 
 <script type="text/javascript" defer>
 	myAccount()
+
+    const button = document.getElementById("buttonTicket")
+    button.addEventListener("click", ()=>{
+        window.location.href = "<?php echo $data["moncompte"]["Ticketlink"] ?>"
+    })
+
 </script>
