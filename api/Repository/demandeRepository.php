@@ -239,7 +239,7 @@ class DemandeRepository
         $test = insertDB("PLANNINGS", ["description", "date_activite", "id_index_planning", "id_trajets", "id_activite"], [$res[0]["desc_demande"], $res[0]["date_act"], $id_index_planning, $id_trajets[0]["id_trajets"], $res[0]["id_activite"]]);
         $etat = 0;
         $last_planning = $this->getLastInsertId("PLANNINGS", "id_planning");
-        updateDB("DEMANDE", ["etat", "id_planning"], [$etat, $last_planning[0]["id_planning"]], "id_demande=" . $id, "-@");
+        updateDB("DEMANDE", ["etat", "id_planning"], [$etat, $last_planning[0]["id_planning"]], "id_demande=" . $id);
     }
 
     public function createValidationDemandeGroupe($id, $id_depart, $id_arriver, $date)
@@ -261,7 +261,7 @@ class DemandeRepository
 
         $id_index_planning = 3;
 
-        insertDB("PLANNINGS", ["description", "date_activite", "id_index_planning", "id_activite"], [$res[0][0]["desc_demande"], $date, $id_index_planning, $res[0][0]["id_activite"]], "-@");
+        insertDB("PLANNINGS", ["description", "date_activite", "id_index_planning", "id_activite"], [$res[0][0]["desc_demande"], $date, $id_index_planning, $res[0][0]["id_activite"]]);
         $etat = 0;
         $last_planning = $this->getLastInsertId("PLANNINGS", "id_planning");
         for ($j = 0; $j < count($id); $j++) {
