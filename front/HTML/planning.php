@@ -16,6 +16,7 @@
 
 			<section class="flex flexCenter wrap">
 				<h1 class="width100 textCenter noMarginBottom"><?php echo($data["planning"]["sectionTitle"]) ?></h1>
+                <a href="./entrepots.php" id="goToEntrepot">Go to Storehouse menu</a>
 			</section>
 
             <table class="width80 marginAuto marginTop40 border">
@@ -73,11 +74,20 @@
     }
 
     async function onload(){
-        await user.connect()
         startLoading()
+        await user.connect()
+
+        if((await user.me()).entrepot == null){
+
+            const goToEntrepot = document.getElementById("goToEntrepot")
+            goToEntrepot.remove()
+
+        }
+
         await fillArray()
         stopLoading()
     }
+
 
     onload()
 </script>
