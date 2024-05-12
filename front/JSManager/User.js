@@ -37,7 +37,9 @@ class User extends General{
     loginApi() {
         let cookie = this.getCookie("apikey")
 
-        if(cookie == null){
+        let etagere = window.location.href.split("/")
+        etagere = etagere[etagere.length -1]
+        if(cookie == null && etagere !== "etagere.php"){
             // The message is only for debug, it gonna be deleted anyway
             alertDebug("Vous ne pouvez pas vous connecter (const user = new User() ) sans avoir un cookie, vous devez mettre l'email et le mot de passe")
             redirect("./signup_login.php")
