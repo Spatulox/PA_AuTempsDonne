@@ -91,7 +91,7 @@
                     <td><?php echo $data["gestPlanning"]["tab1"]["date"] ?></td>
                     <td><?php echo $data["gestPlanning"]["tab1"]["state"] ?></td>
                     <td><?php echo $data["gestPlanning"]["tab1"]["type"] ?></td>
-                    <td><?php echo $data["gestPlanning"]["tab1"]["participateUsers"] ?></td>
+                    <td><?php echo $data["gestPlanning"]["tab1"]["Addresse"] ?></td>
                     <td><?php echo $data["gestPlanning"]["tab1"]["button"] ?></td>
                     <td><?php echo $data["gestPlanning"]["tab1"]["buttonD"] ?></td>
                 </tr>
@@ -328,6 +328,7 @@
     async function fillDailyPlanning(dateStr = null){
 
         let formattedDate = ""
+
         if(dateStr == null){
 
             let dateInput = document.getElementById("inputDate")
