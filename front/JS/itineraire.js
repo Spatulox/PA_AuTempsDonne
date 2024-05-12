@@ -24,8 +24,6 @@ async function calcSpeedAddress(addressData) {
 
     }
 
-    console.log("interData : " + interData)
-
     const sortedAddresses = [];
     const startAddress = data.addresse[0]; // Adresse de l'entrepôt de départ
     sortedAddresses.push(startAddress);
@@ -64,35 +62,24 @@ async function calcSpeedAddress(addressData) {
     }
 
     sortedAddresses.push(endAddress); // Ajouter l'adresse de l'entrepôt d'arrivée à la fin
-    //console.log("Sorted addresses:", sortedAddresses);
-
 
     // Create the data to send it to the api
     const dataToSend = {}
     let array = []
 
-    const adr = new AddressAdmin()
-    await adr.connect()
-    let addd = await adr.getAllAddress()
-
-    console.log(addd)
-
     // Get the id (values) for the address (key)
     for (const addressKey in sortedAddresses) {
         array.push(interData[sortedAddresses[addressKey]])
-
-        //console.log(sortedAddresses[addressKey])
-
     }
 
     dataToSend["address"] = array
 
-    console.log(dataToSend)
-
     let trajet = new TrajetAdmin()
 
     await trajet.connect()
-    console.log(await trajet.createTrajet(dataToSend))
+    await trajet.createTrajet(dataToSend)
+
+    return sortedAddresses
 }
 
 function getCookie(cookieName) {

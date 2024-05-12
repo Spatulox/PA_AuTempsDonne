@@ -461,16 +461,31 @@
         console.log(lesDataToSendGroup)
         const returnData = await request.validateGroupDemande(lesDataToSendGroup)
 
-        console.log("validateGroupDemande : "+returnData)
 
         const duh = await calcSpeedAddress(returnData)
+        console.log(duh)
 
-        console.log("calcSpeedAddress : "+duh)
+        const docDefinition = {
+            header: {
+                text: 'Trajet optimisé',
+                style: 'header'
+            },
+            content: [
+                ...duh.map(adresse => ({
+                    text: adresse,
+                    style: 'adresse'
+                }))
+            ],
+            styles: {
+                header: {
+                    fontSize: 18,
+                    bold: true,
+                    margin: [0, 0, 0, 10]
+                }
+            }
+        };
 
-
-
-
-
+        pdfMake.createPdf(docDefinition).download(`Trajet.pdf`);
 
         lesDataToSendGroup = {
             "id_demande":[],
