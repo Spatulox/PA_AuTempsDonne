@@ -285,89 +285,104 @@ CREATE TABLE RECU(
 
 INSERT INTO ADRESSE (adresse) VALUES
 ('SAME ADDRESS AS FIRST'),
-('10 Avenue des Champs-Élysées, 75008 Paris'),
-('15 Boulevard Saint-Michel, 75005 Paris'),
-('48 Rue de Rivoli, 75004 Paris'),
-('7 Rue de la Paix, 75002 Paris'),
-('20 Rue de la Convention, 75015 Paris'),
-("3 Place de l'Opéra, 75009 Paris"),
-('9 Rue du Faubourg Saint-Honoré, 75008 Paris'),
-('2 Boulevard de la Madeleine, 75008 Paris'),
-('33 Rue du Bac, 75007 Paris'),
-('12 Rue de la République, 69002 Lyon');
+('33 Rue Marcelin Berthelot, 02001 Laon'),
+('1 Rue Devisme, 02000 Laon'),
+('10 Rue des Vignes, 02000 Laon'),
+('5 Place Aubry, 02000 Laon'),
+('8 Rue du Bourg, 02000 Laon'),
+('14 Rue Maubant, 02000 Laon'),
+('3 Rue des Tournelles, 02000 Laon'),
+('14 Rue du Bourg, 02000 Laon'),
+('22 Avenue Carnot, 02000 Laon'),
+('8 Rue Maubant, 02000 Laon'),
+('31 Rue Geruzez, 02000 Laon'),
+('6 Rue edouard Branly, 02000 Laon'),
+('18 Rue du Beau-Regard, 02000 Laon'),
+('25 Rue de Semilly, 02000 Laon'),
+('4 Rue des Anglais, 02000 Laon'),
+('16 Rue du Bourg, 02000 Laon'),
+('9 Rue des Chesneaux, 02000 Laon'),
+('12 Rue de la Tannerie, 02000 Laon'),
+('3 Rue des Accacias, 02000 Laon'),
+('15 Rue des Vignes, 02000 Laon'),
+('33 Rue Marcelin Berthelot, 02000 Laon'),
+('10 Rue des Vignes, 02000 Laon'),
+('7 Rue du Cloitre, 02000 Laon'),
+('29 Rue edouard Gand, 02000 Laon'),
+('23 Rue Marcelin Berthelot, 02000 Laon'),
+('35 Rue du Bois de Buires, 02000 Laon'),
+('20 Rue du Cloitre, 02000 Laon'),
+('28 Rue edouard Gand, 02000 Laon'),
+('24 Avenue Carnot, 02000 Laon'),
+('5 Rue des Potiers, 02000 Laon'),
+('11 Rue des Anglais, 02000 Laon'),
+('17 Rue du Bourg, 02000 Laon'),
+('2 Rue Geruzez, 02000 Laon'),
+('26 Rue de Semilly, 02000 Laon'),
+('8 Rue des Chesneaux, 02000 Laon'),
+('13 Rue Maubant, 02000 Laon'),
+('30 Rue du Beau-Regard, 02000 Laon');
 
 
 INSERT INTO TYPE (type, unit_mesure) VALUES
 ('Alimentaire', 'kg'),
-('Vestimentaire', 'unité'),
-('Scolaire', 'unité'),
-('Médical', 'unité'),
-('Loisirs', 'unité');
+('Vestimentaire', 'unite'),
+('Scolaire', 'unite'),
+('Medical', 'unite'),
+('Loisirs', 'unite');
 
 INSERT INTO PRODUIT (nom_produit, id_type) VALUES
 ('Riz', 1),
-('Pâtes', 1),
-('Conserves de légumes', 1),
+('Pates', 1),
+('Conserves de legumes', 1),
 ('Manteau d''hiver', 2),
 ('Chaussures', 2),
 ('Cahiers', 3),
 ('Stylos', 3),
-('Médicaments', 4),
+('Medicaments', 4),
 ('Jouets', 5);
 
 INSERT INTO INDEXPLANNING (index_nom_planning) VALUES
-('terminé'), 
+('termine'), 
 ('organiser'),
 ('en attente');
 
 
 INSERT INTO ACTIVITES (nom_activite) VALUES
-('Collecte de vêtements'),
+('Collecte de vetements'),
 ('Distribution de repas chauds'),
 ('Atelier d''informatique'),
 ('Soutien scolaire'),
-('Visite de personnes âgées');
-
-INSERT INTO PLANNINGS (description, date_activite,id_trajets, id_index_planning, id_activite) VALUES
-('Collecte de vêtements d''hiver', '2024-05-01 10:00:00',NULL, 2, 1),
-('Distribution de repas chauds aux SDF', '2024-05-15 10:00:00',NULL, 2, 2),
-('Atelier d''initiation à l''informatique', '2024-06-01 10:00:00',NULL, 2, 3),
-('Soutien scolaire pour les élèves en difficulté', '2024-06-15 10:00:00',NULL, 2, 4),
-('Visite et animation pour les personnes âgées', '2024-07-01 10:00:00',NULL, 2, 5);
+('Visite de personnes agees'),
+('Collecte'),
+('Maraude');
 
 INSERT INTO ENTREPOTS (nom_entrepot, parking, id_adresse) VALUES
-('Entrepot Paris', 6, 1),
-('Entrepot Laon', 4, 2),
-('Entrepot Marseille', 8, 3);
+('Entrepot Laon', 6, 2),
+('Entrepot Saint_Martin', 4, 3);
+
 
 INSERT INTO ETAGERES (nombre_de_place ,code, id_entrepot) VALUES
-(50,"8b05c08360b2114f7a3f7c4ecd5635d84e4679cd25da2a08af2818ad430bd117",1),
-(100,"f6a3be9bef791f65904250d4af06a232b82724e8caacf01d424307c70dc358eb",1),
-(600,"27ff1072f2b58000fca866cddbced14c24a6d6a69f370a72be6c1f467904577c",1),
+(500,"255ba2e00eee912a0e83d46f5b6c90f0816ec9b3ab1c51850ed43b4ad50f8f63",1),
+(1000,"2c2c414882fd59e38e878abc6a96d2a86013b85951d2ec6eed9e8c22b5e6027d",1),
+(1000,"958666110ec960ed062a5371bf71ae9bc95d8008d1e6ec340ee0709cf316a94e",1),
 (250,"19dab5212dba6c1a2103055b3e4e53c9a31ede04dcc786a4560bcc855824a01a",1),
-(70,"d5b6e9421f169bce38c0ea9fef35560160ae52d6d4f323fae7dcea96d9dd4aaa",1),
-(50,"fc3467f651e46aa05ede4c69e9a2936f4db71b809386deea1c50826654a6d8f7",2),
-(100,"a1acc7945f468e8c78265483cba013147269f5b7c795e51d2059b2a7c67cc3a1",2),
-(70,"e4138554307b501e9101dd6253a576bfb4f10d6a7c9eafb89226bcd2ace32195",2),
-(50,"680c4e9e15bfce9edf6a6ff6b304adb4f1553d37907906c71ee0fab88ef49d83",3),
-(250,"fd4a7c4b22b0b6a3c6aa5ce21f3a7468bf7ab38b918da7270f9c46e07ae41a4b",3),
-(70,"b471d8dd31bcaf74e41b4ac51d3584fcebf41698cb7638d422b99cead2cd7a44",3);
+(250,"017aa1c54869634a7cfd97bd809d7f98698eac20681e90dd24cd7c326024ac20",1),
+(250,"aa2e10b383dbbc3f04988611a9a2335f323c7ecc28022a45f06273076d0faa4f",1),
+(250,"55cd77a79bd0b0f2f7ebe59c02d7debe9b3dda04f173011b84e3cfe4b4cc974f",1),
+(500,"62c95e03036f7855b4cb919cb36a8a09e3a46e7b83af5bda9569466b96fd09d6",2),
+(1000,"a7d5f3e90df49695dd56c4452d17989b3b7a7c8117012367041c52a6c4e31a67",2),
+(1000,"a9f65c3f1b74cb6115184185bdc5866725eda42518aef6454e43cda4c3e0f0fd",2),
+(250,"46a2f57345c7a5d3f470a1367ffa10b76fb29c77b66a37a1387900064802a762",2),
+(250,"f5692dd51ffa5e11a9312ffad663367f3ecda15286e630cd81835977636ddee9",2),
+(250,"2389bdffe5dfdeac05c5f44265408b1f838753ff75b85e173e7dc3652408f04d",2),
+(250,"390e1680f9b5d41547db78396651189add88e346851b61d1b3956498bd9a4fca",2);
 
-INSERT INTO STOCKS (quantite_produit, date_entree, date_sortie, date_peremption, desc_produit, id_produit, id_etagere) VALUES
-(500, '2024-04-01', NULL, '2025-04-01', 'Riz basmati', 1, 1),
-(300, '2024-04-05', NULL, '2025-06-01', 'Pâtes de blé', 2, 1),
-(200, '2024-04-10', NULL, '2025-08-01', 'Conserves de tomates', 3, 1),
-(100, '2024-04-15', NULL, '2025-10-01', 'Manteaux d''hiver taille M', 4, 2),
-(50, '2024-04-20', NULL, '2025-12-01', 'Chaussures de sport taille 42', 5, 2),
-(75, '2024-04-25', NULL, '2025-02-01', 'Cahiers à spirales', 6, 1),
-(125, '2024-04-30', NULL, '2025-04-01', 'Stylos à bille noirs', 7, 1),
-(30, '2024-05-01', NULL, '2026-01-01', 'Paracétamol 500mg', 8, 2),
-(80, '2024-05-05', NULL, '2025-06-01', 'Jouets en bois', 9, 2);
 
 INSERT INTO FORMATIONS (nom_formation) VALUES
 ('Formation en gestion de projet'),
 ('Formation en communication'),
-('Formation en comptabilité'),
+('Formation en comptabilite'),
 ('Formation en informatique'),
 ('Formation en animation');
 
@@ -384,14 +399,14 @@ INSERT INTO SEMAINE (dispo) VALUES
 INSERT INTO ETAPES (nom_etape) VALUES
 ('En attente'),
 ('En cours'),
-('Terminé'),
-('Annulé');
+('Termine'),
+('Annule');
 
 INSERT INTO ROLES (role) VALUES
 ('Dirigeant'),
 ('Administration'), 
-('Bénévole'),
-('Bénéficiaire'),
+('Benevole'),
+('Beneficiaire'),
 ('Prestataires');
 
 INSERT INTO CATEGORIES (categorie) VALUES
@@ -402,126 +417,181 @@ INSERT INTO CATEGORIES (categorie) VALUES
 ('je sais pas');
 
 INSERT INTO TABINDEX (index_nom) VALUES
-('inactif / déréférencé'),
+('inactif / dereference'),
 ('actif'),
 ('attente de validation');
 
-INSERT INTO TRAJETS VALUES
-(1),
-(2),
-(3),
-(4),
-(5);
 
-INSERT INTO UTILISER (id_trajets, id_adresse) VALUES 
-(1,2), 
-(1,3), 
-(1,4), 
-(2,5), 
-(2,6), 
-(2,7), 
-(2,8), 
-(3,9), 
-(3,10);
 
 INSERT INTO UTILISATEUR (nom, prenom, email, telephone, date_inscription, apikey, mdp, id_adresse, id_entrepot, id_index, id_role) VALUES
 (
-'Doe', 'John', 'john.doe@gmail.com', '0635742201', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 2, 1
+'Doe', 'John', 'john.doe@gmail.com', '0635742201', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, NULL, 2, 1
 ),
 (
-'Smith', 'Alice', 'alice.smith@gmail.com', '0635752202', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, NULL, 2, 2
+'Smith', 'Alice', 'alice.smith@gmail.com', '0635752202', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 4, NULL, 2, 2
 ),
 (
-'Johnson', 'Michael', 'michael.johnson@gmail.com', '0635752203', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 4, NULL, 2, 3
+'Johnson', 'Michael', 'michael.johnson@gmail.com', '0635752203', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 5, 1, 2, 3
 ),
 (
-'Brown', 'Emma', 'emma.brown@gmail.com', '0635752204', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 2, 4
+'Brown', 'Emma', 'emma.brown@gmail.com', '0635752204', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 6, NULL, 2, 4
 ),
 (
-'Miller', 'Sophia', 'sophia.miller@gmail.com', '0635752205', '2022-04-01', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, NULL, 2, 5
+'Miller', 'Sophia', 'sophia.miller@gmail.com', '0635752205', '2022-04-01', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 7, NULL, 2, 5
 ),
 (
-'Davis', 'William', 'william.davis@gmail.com', '0635752206', '2021-01-02', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 4, NULL, 2, 3
+'Davis', 'William', 'william.davis@gmail.com', '0635752206', '2021-01-02', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 8, 1, 2, 3
 ),
 (
-'Wilson', 'Olivia', 'olivia.wilson@gmail.com', '0635752207', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 2, 1
+'Wilson', 'Olivia', 'olivia.wilson@gmail.com', '0635752207', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 9, NULL, 2, 1
 ),
 (
-'Moore', 'Daniel', 'daniel.moore@gmail.com', '0635752208', '2024-01-18', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, NULL, 2, 2
+'Moore', 'Daniel', 'daniel.moore@gmail.com', '0635752208', '2024-01-18', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 10, NULL, 2, 2
 ),
 (
-'Taylor', 'Isabella', 'isabella.taylor@gmail.com', '0637752209', '2024-01-13', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 2, 3
+'Taylor', 'Isabella', 'isabella.taylor@gmail.com', '0637752209', '2024-01-13', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 11, 1, 2, 3
 ),
 (
-'Anderson', 'Mason', 'mason.anderson@gmail.com', '0635752210', '2024-01-12', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, NULL, 2, 4
+'Anderson', 'Mason', 'mason.anderson@gmail.com', '0635752210', '2024-01-12', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 12, NULL, 2, 4
 ),
 (
-'White', 'Emily', 'emily.white@gmail.com', '0635752211', '2021-02-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 4, NULL, 2, 5
+'White', 'Emily', 'emily.white@gmail.com', '0635752211', '2021-02-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 13, NULL, 2, 5
 ),
 (
-'Martin', 'James', 'james.martin@gmail.com', '0635252212', '2021-02-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 2, 3
+'Martin', 'James', 'james.martin@gmail.com', '0635252212', '2021-02-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 13, 2, 2, 3
 ),
 (
-'Johnson', 'Ella', 'ella.johnson@gmail.com', '0635752213', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, NULL, 2, 1
+'Johnson', 'Ella', 'ella.johnson@gmail.com', '0635752213', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 14, NULL, 2, 1
 ),
 (
-'Brown', 'Benjamin', 'benjamin.brown@gmail.com', '0638652214', '2021-04-24', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 4, NULL, 2, 2
+'Brown', 'Benjamin', 'benjamin.brown@gmail.com', '0638652214', '2021-04-24', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 15, NULL, 2, 2
 ),
 (
-'Miller', 'Ava', 'ava.miller@gmail.com', '0635752215', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 2, 3
+'Miller', 'Ava', 'ava.miller@gmail.com', '0635752215', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 16, 2, 2, 3
 ),
 (
-'Davis', 'William', 'william.davis@gmail.com', '0632332216', '2021-04-14', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, NULL, 2, 4
+'Davis', 'William', 'william.davis@gmail.com', '0632332216', '2021-04-14', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 17, NULL, 2, 4
 ),
 (
-'Wilson', 'Charlotte', 'charlotte.wilson@gmail.com', '0635752217', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 4, NULL, 2, 5
+'Wilson', 'Charlotte', 'charlotte.wilson@gmail.com', '0635752217', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 18, NULL, 2, 5
 ),
 (
-'Moore', 'Jack', 'jack.moore@gmail.com', '0635752218', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 2, 3
+'Moore', 'Jack', 'jack.moore@gmail.com', '0635752218', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 19, 2, 2, 3
 ),
 (
-'Taylor', 'Harper', 'harper.taylor@gmail.com', '0635752219', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, NULL, 1, 1
+'Taylor', 'Harper', 'harper.taylor@gmail.com', '0635752219', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 20, NULL, 2, 1
 ),
 (
-'Anderson', 'Evelyn', 'evelyn.anderson@gmail.com', '0635752220', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 4, NULL, 2, 2
+'Anderson', 'Evelyn', 'evelyn.anderson@gmail.com', '0635752220', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 21, NULL, 2, 2
 ),
 (
-'White', 'Andrew', 'andrew.white@gmail.com', '0635752221', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 1, 3
+'White', 'Andrew', 'andrew.white@gmail.com', '0635752221', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 22, 1, 2, 3
 ),
 (
-'Martin', 'Grace', 'grace.martin@gmail.com', '0635841222', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, NULL, 2, 4
+'Martin', 'Grace', 'grace.martin@gmail.com', '0635841222', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 23, NULL, 2, 4
 ),
 (
-'Johnson', 'Joseph', 'joseph.johnson@gmail.com', '063575186', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 4, NULL, 1, 5
+'Johnson', 'Joseph', 'joseph.johnson@gmail.com', '063575186', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 24, NULL, 2, 5
 ),
 (
-'Brown', 'Scarlett', 'scarlett.brown@gmail.com', '0635752224', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 2, 3
+'Brown', 'Scarlett', 'scarlett.brown@gmail.com', '0635752224', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 25, 2, 2, 3
 ),
 (
-'Miller', 'Logan', 'logan.miller@gmail.com', '0635752225', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 3, NULL, 1, 1
+'Miller', 'Logan', 'logan.miller@gmail.com', '0635752225', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 26, NULL, 2, 3
 ),
 (
-'Davis', 'Elizabeth', 'elizabeth.davis@gmail.com', '0635752226', '2023-09-14', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 4, NULL, 3, 2
+'Davis', 'Elizabeth', 'elizabeth.davis@gmail.com', '0635752226', '2023-09-14', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 27, NULL, 2, 2
 ),
 (
-'Wilson', 'Aiden', 'aiden.wilson@gmail.com', '0635752227', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 3, 3
+'Wilson', 'Aiden', 'aiden.wilson@gmail.com', '0635752227', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 28, 1, 3, 3
 ),
 (
-'Moore', 'Grace', 'grace.moore@gmail.com', '0635752228', '2024-04-12', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 3, 4
+'Moore', 'Grace', 'grace.moore@gmail.com', '0635752228', '2024-04-12', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 29, NULL, 2, 4
 ),
 (
-'Taylor', 'Elijah', 'elijah.taylor@gmail.com', '0635752229', '2023-12-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 3, 5
+'Taylor', 'Elijah', 'elijah.taylor@gmail.com', '0635752229', '2023-12-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 30, NULL, 1, 5
 ),
 (
-'Anderson', 'Aria', 'aria.anderson@gmail.com', '0635752230', '2024-01-01', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 2, NULL, 3, 3
+'Anderson', 'Aria', 'aria.anderson@gmail.com', '0635752230', '2024-01-01', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 31, 2, 1, 3
 );
 
 UPDATE UTILISATEUR SET apikey = SHA2(CONCAT(id_user, nom, prenom, mdp, email), 256) WHERE id_user IS NOT NULL;
 
-INSERT INTO TICKETS (description, date_creation, date_cloture, id_user_admin, id_etape, id_categorie, id_user_owner) VALUES
-('Besoin de vêtements d''hiver pour les sans-abri', '2024-04-01 10:00:00', '2024-04-15 18:00:00', 1, 1, 2, 3),
-('Manque de bénévoles pour la distribution de repas', '2024-04-05 14:30:00', '2024-04-20 20:00:00', 2, 2, 1, 7),
-('Problème avec l''équipement informatique de l''atelier', '2024-04-10 09:00:00', '2024-04-25 17:00:00', 2, 3, 3, 13),
-('Difficulté à trouver des tuteurs pour le soutien scolaire', '2024-04-15 11:00:00', '2024-04-30 19:00:00', 2, 4, 4, 19),
-('Besoin de bénévoles pour animer les visites aux personnes âgées', '2024-04-20 15:00:00', '2024-05-05 21:00:00', 1, 4, 5, 25);
 
+INSERT INTO DISPONIBILITE (id_user, id_dispo)
+VALUES
+  (3, 1), (3, 5), (3, 6), (3, 7),
+  (6, 1), (6, 2), (6, 6), (6, 7),
+  (15, 1), (15, 2), (15, 3),
+  (18, 1), (18, 2), (18, 3), (18, 4), (18, 5),
+  (9, 1), (9, 2), (9, 6), (9, 7),
+  (24, 1), (24, 2), (24, 3), (24, 7),
+  (12, 4), (12, 5), (12, 6), (12, 7);
+
+  INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_entrepot)
+VALUES
+  (3, 'lexus lfa', 2, 1),
+  (100, 'Mercedes Sprinter', 2, 1),
+  (250, 'Peugeot Boxer', 2, 2),
+  (400, 'Iveco Daily', 2, 2),
+  (400, 'Nissan NV400', 2, 1);
+
+INSERT INTO PLANNINGS (description, date_activite, id_index_planning, id_activite)
+VALUES (
+  'patoche help',
+  '2024-05-20 08:00:00',
+  3,
+  4
+);
+
+INSERT INTO TRAJETS (id_trajets)
+VALUES 
+(1),
+(2);
+
+INSERT INTO UTILISER (id_trajets, id_adresse)
+VALUES (2, 17);
+
+  INSERT INTO DEMANDE (desc_demande, activite, etat, date_act, id_activite, id_planning, id_user)
+VALUES
+  ('collecte intermarcher', 'groupe', 1, NULL, 6, NULL, 17),
+  ('collecte divers', 'groupe', 1, NULL, 6, NULL, 17),
+  ('collecte divers', 'groupe', 1, NULL, 6, NULL, 23),
+  ('ecole a besoin daide', 'seul', 1, '2024-05-15 09:00:00', 3, NULL, 4),
+  ('Mamie gertrude doit aller faire cest course', 'seul', 1, '2024-05-18 14:00:00', 5, NULL, 10),
+  ('patoche help', 'seul', 0, '2024-05-20 08:00:00', 4, 1, 16),
+  ('patoche cour du soir help', 'seul', 1, '2024-05-25 18:00:00', 4, NULL, 16);
+
+INSERT INTO COLLECTE (quantite, id_produit)
+VALUES
+  ('60', 1),
+  ('50', 5),
+  ('200', 4),
+  ('98', 5),
+  ('47', 2),
+  ('12', 5),
+  ('150', 7),
+  ('50', 9);
+
+INSERT INTO RECU (id_collecte, id_demande, recu)
+VALUES
+  (1, 1, 1),
+  (2, 1, 1),
+  (3, 2, 1),
+  (4, 2, 1),
+  (5, 2, 1),
+  (6, 3, 1),
+  (7, 3, 1),
+  (8, 3, 1);
+
+
+
+  INSERT INTO STOCKS (quantite_produit, date_entree, date_sortie, date_peremption, desc_produit, id_produit, id_etagere)
+VALUES
+  (75, '2024-05-06', NULL, '2025-04-20', 'clair', 1, 8),
+  (12, '2024-05-06', NULL, '2025-04-20', 'pansement', 8, 8),
+  (30, '2024-05-06', NULL, NULL, 'pansement', 9, 8),
+  (30, '2024-05-06', NULL, NULL, 'pansement', 9, 1),
+  (400, '2024-05-06', NULL, '2024-05-06', 'brun', 1, 1),
+  (70, '2024-05-06', NULL, '2024-05-06', '', 2, 1),
+  (130, '2024-05-06', NULL, '2024-05-06', '', 2, 2);
