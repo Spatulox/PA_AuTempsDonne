@@ -70,7 +70,7 @@ class StockService {
 
             // Vérifications
 
-            if ($stock->date_peremption == "NUlL"){
+            if ($stock->date_peremption == "NULL"){
                 if (!$this->isValidDate($stock->date_peremption)) {
                     exit_with_message("Erreur : La date de péremption est invalide. Le format attendu est AAAA-MM-JJ.", 403);
                 }
