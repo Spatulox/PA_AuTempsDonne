@@ -284,7 +284,7 @@ CREATE TABLE RECU(
 );
 
 INSERT INTO ADRESSE (adresse) VALUES
-('SAME ADDRESS AS FIRST')
+('SAME ADDRESS AS FIRST'),
 ('10 Avenue des Champs-Élysées, 75008 Paris'),
 ('15 Boulevard Saint-Michel, 75005 Paris'),
 ('48 Rue de Rivoli, 75004 Paris'),
