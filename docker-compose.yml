@@ -1,7 +1,8 @@
 services:
   # Travail et reload automatique
   frontend:
-    build: .
+    #build: .
+    image: spatulox/pa-front:latest
     volumes:
       - ./front:/var/www/html/
     ports:
