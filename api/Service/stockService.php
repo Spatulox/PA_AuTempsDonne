@@ -64,11 +64,13 @@ class StockService {
         $userRole = getRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
 
+            $id=getIdUserFromApiKey($apiKey);
+          //  selectDB("UTILISATEUR","id_")
 
 
             // Vérifications
 
-            if ($stock->date_peremption != "NUlL"){
+            if ($stock->date_peremption == "NUlL"){
                 if (!$this->isValidDate($stock->date_peremption)) {
                     exit_with_message("Erreur : La date de péremption est invalide. Le format attendu est AAAA-MM-JJ.", 403);
                 }

@@ -41,7 +41,7 @@ class DemandeService
 
         $role = getRoleFromApiKey($apikey);
 
-        if($role != 5){
+        if($role <3){
             exit_with_message("You can't create a demande, unless you're a Partenaire");
         }
 
