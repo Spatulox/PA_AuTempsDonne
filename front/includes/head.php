@@ -40,6 +40,16 @@ if($role == 1 || $role == 2){
 
 }
 
+
+if($role == 3){
+
+    echo '<script type="text/javascript" src="../JSManager/Admin.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionStock.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionProduct.js"></script>';
+
+}
+
 ?>
 
 <script type="text/javascript" src="../JS/popup.js"></script>

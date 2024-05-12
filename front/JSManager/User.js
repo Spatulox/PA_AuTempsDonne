@@ -246,7 +246,7 @@ class User extends General{
 
         this.entrepotString = this.entrepotString.replace("Ã´", "ô")
 
-        return true
+        return await this.getEntrepot(this.entrepot)
     }
 
     async myPlanning(){
