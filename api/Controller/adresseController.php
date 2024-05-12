@@ -76,7 +76,7 @@ function isValidAddress($address)
 
     $pattern = '/^\d+ [A-Za-z \x{00A0}-\x{00FF}]{3,100}, \d{5} [A-Za-z \x{00A0}-\x{00FF}]{3,50}$/';
 
-    if (preg_match($pattern, $address, $matches) > 0) {
+    if (preg_match($pattern, $address) > 0) {
         return true;
     }
     exit_with_message("Address format incorrect", 400);

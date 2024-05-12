@@ -92,6 +92,15 @@
       "qte": "Quantity"
     }
   },
+  "gestAddress": {
+    "title": "Address Menu",
+    "tab1": {
+      "title": "Listing"
+    },
+    "tab2": {
+      "title": "Add"
+    }
+  },
   "gestPlanning": {
     "title": "Planning Menu",
     "tab1": {

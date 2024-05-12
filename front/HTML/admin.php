@@ -16,7 +16,7 @@
 
             <h1 class="width100 textCenter noMarginBottom"><?php echo($data["admin"]["title"]) ?></h1>
 
-            <section class="flex flexAround alignCenter height90">
+            <section class="flex flexAround alignCenter height90 marginBottom30">
                 <div id="ticket" class="box width20">
                     <h1 class="textCenter bold underline"><?php echo($data["ticket"]["title"]) ?></h1>
                     <ul class="ul">
@@ -34,6 +34,7 @@
                         <li><a style="color: #0c2124" href="./vehicle.php" target="_blank"><?php echo($data["vehicle"]["title"]) ?></a></li>
                         <li><a style="color: #0c2124" href="./gestDon.php" target="_blank"><?php echo($data["don"]["title"]) ?></a></li>
                         <li><a style="color: #0c2124" href="./gestDemandes.php" target="_blank"><?php echo($data["gestDemande"]["title"]) ?></a></li>
+                        <li><a style="color: #0c2124" href="./gestAddress.php" target="_blank"><?php echo($data["gestAddress"]["title"]) ?></a></li>
                     </ul>
                 </div>
 
