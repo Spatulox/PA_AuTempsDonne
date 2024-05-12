@@ -14,7 +14,6 @@ class Request extends User{
         if(!this.compareAnswer(response)){
             return false
         }
-        //popup(this.msg["Planning"]+this.msg["retrieved"])
         return response
     }
 

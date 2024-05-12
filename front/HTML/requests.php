@@ -1,126 +1,3 @@
-<?php //include("../includes/loadLang.php");?>
-<!---->
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--<head>-->
-<!---->
-<!--    --><?php //include("../includes/head.php"); ?>
-<!---->
-<!--    <title>--><?php //echo($data["request"]["title"]) ?><!--</title>-->
-<!--</head>-->
-<!--<body>-->
-<!---->
-<?php //include("../includes/header.php");?>
-<!---->
-<!--<main>-->
-<!---->
-<!--    <div class="width90 marginAuto marginBottom30">-->
-<!--        <h1 class="textCenter">--><?php //echo($data["request"]["title"]) ?><!--</h1>-->
-<!---->
-<!--        <div class="tab flex flexAround nowrap">-->
-<!--            <button class="tablinks width100"-->
-<!--                    onclick="openTab('tab1')">--><?php //echo($data["request"]["tab1"]["title"]) ?><!--</button>-->
-<!--            <button class="tablinks width100"-->
-<!--                    onclick="openTab('tab2')">--><?php //echo($data["request"]["tab2"]["title"]) ?><!--</button>-->
-<!--            <button class="tablinks width100"-->
-<!--                    onclick="openTab('tab3')">--><?php //echo($data["request"]["tab3"]["title"]) ?><!--</button>-->
-<!--        </div>-->
-<!---->
-<!--        <div id="tab1" class="tabcontent">-->
-<!--            <h2>--><?php //echo($data["gestDemande"]["tab1"]["title"]) ?><!--</h2>-->
-<!--            <table>-->
-<!--                <thead>-->
-<!--                <tr>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["id"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["desc"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["type"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["state"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["date"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["activite"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["id_planning"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["user"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["?"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["button"] ?><!--</td>-->
-<!--                </tr>-->
-<!--                </thead>-->
-<!--                <tbody id="bodyList">-->
-<!---->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--        </div>-->
-<!---->
-<!--        <div id="tab2" class="tabcontent">-->
-<!--            <h2>--><?php //echo($data["gestDemande"]["tab2"]["title"]) ?><!--</h2>-->
-<!--            <p id="bodyMeh">-->
-<!--            </p>-->
-<!--        </div>-->
-<!---->
-<!--        <div id="tab3" class="tabcontent">-->
-<!--            <h2>--><?php //echo($data["gestDemande"]["tab3"]["title"]) ?><!--</h2>-->
-<!--            <table>-->
-<!--                <thead>-->
-<!--                <tr>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["id"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["desc"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["type"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["state"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["date"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["activite"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["id_planning"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["user"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["?"] ?><!--</td>-->
-<!--                    <td>--><?php //echo $data["gestDemande"]["tab1"]["button"] ?><!--</td>-->
-<!--                </tr>-->
-<!--                </thead>-->
-<!--                <tbody id="bodyListWait">-->
-<!---->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--        </div>-->
-<!---->
-<!--    </div>-->
-<!---->
-<!--</main>-->
-<!---->
-<?php //include("../includes/footer.php");?>
-<!---->
-<!--</body>-->
-<!--</html>-->
-<!---->
-<!---->
-<!--<script type="text/javascript" defer>-->
-<!---->
-<!--    const request = new Request()-->
-<!---->
-<!--    async function createRequest(){-->
-<!--        request.createRequest()-->
-<!--    }-->
-<!---->
-<!--    async function fillRequest(){-->
-<!--        const bodyList = document.getElementById("bodyList")-->
-<!--        bodyList.innerHTML = ""-->
-<!---->
-<!--        const data = await request.getRequest()-->
-<!--        console.log(data)-->
-<!--        createBodyTableau(bodyList, data)-->
-<!---->
-<!--    }-->
-<!---->
-<!---->
-<!--    async function onload(){-->
-<!--        startLoading()-->
-<!--        openTab('tab1')-->
-<!--        await request.connect()-->
-<!--        await fillRequest()-->
-<!---->
-<!--        stopLoading()-->
-<!--    }-->
-<!---->
-<!--    onload()-->
-<!---->
-<!--</script>-->
-
-
 <?php include("../includes/loadLang.php"); ?>
 
 <!DOCTYPE html>
@@ -204,6 +81,7 @@
                     <input type="date" id="datetime-local-presta">
                 </div>
 
+                <input type="button" class="marginTop30" value="Add Product to Request" onclick="addProductRequest()"><br>
                 <input type="button" class="marginTop30" value="Create Request" onclick="createRequestFront()">
             </div>
         </div>
@@ -219,7 +97,6 @@
                     <td><?php echo $data["gestDemande"]["tab1"]["state"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["date"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["activite"] ?></td>
-                    <td><?php echo $data["gestDemande"]["tab1"]["id_planning"] ?></td>
                     <td><?php echo $data["gestDemande"]["tab1"]["?"] ?></td>
                 </tr>
                 </thead>
@@ -298,8 +175,6 @@
 
         let lesData = []
 
-        console.log(demande)
-
         for (const key in demande) {
 
             if (demande[key].etat === "En Attente") {
@@ -308,7 +183,7 @@
 
         }
 
-        createBodyTableau(bodyList, lesData, ["id_user"])
+        createBodyTableau(bodyList, lesData, ["id_user", "id_planning"])
         replaceCharacters()
     }
 
@@ -473,7 +348,6 @@
 
 
         let lesData = []
-        console.log(demande)
         for (const key in demande) {
 
             if (demande[key].etat === "En Attente" && demande[key].activite === "groupe") {
@@ -697,14 +571,52 @@
 
             }
 
-            const select = createSelect(option, "Choose a product")
-
-            const selectProduit = document.getElementById("selectProduit")
-            selectProduit.appendChild(select)
+            createProductFront(option)
 
         }
 
         replaceCharacters()
+    }
+
+    async function addProductRequest(){
+
+        startLoading()
+        let option = []
+
+        let product = new ProductAdmin()
+        await product.connect()
+        let data = await product.getAllProduct()
+
+        for (const key in data) {
+
+            option[key] = {
+                "value": data[key].id_produit,
+                "text": data[key].nom_produit
+            }
+
+        }
+
+        createProductFront(option)
+        stopLoading()
+
+    }
+
+    function createProductFront(option){
+
+        const div = document.createElement("div")
+        div.classList.add("border")
+        div.classList.add("marginTop30")
+        const input = createInput("Quantity")
+        const br = document.createElement("br")
+        const select = createSelect(option, "Choose a product")
+        select.classList.add("marginTop10")
+
+        const selectProduit = document.getElementById("selectProduit")
+        div.appendChild(input)
+        div.appendChild(br)
+        div.appendChild(select)
+        selectProduit.appendChild(div)
+
     }
 
     async function createRequestFront(){
@@ -726,6 +638,44 @@
             }
             await request.createRequest(descriptionRequest.value, selectElement.value, date.value)
             await reload()
+
+        } else if (user.role === "5") {
+
+            if(descriptionRequest.value === ""){
+                popup("Vous devez remplir la description")
+                stopLoading()
+                return
+            }
+            const inputs = document.querySelectorAll('#selectProduit > div > input')
+            const selects = document.querySelectorAll("#selectProduit > div > select")
+
+            let data = []
+
+            for (let i = 0; i < inputs.length; i++) {
+
+                if(selects[i].value === "Choose a product"){
+                    popup("Il vous manque un produit à sélectionner")
+                    stopLoading()
+                    return
+                }
+
+                if(inputs[i].value == ""){
+                    popup("Il vous manque une quantitée à sélectionner")
+                    stopLoading()
+                    return
+                }
+
+                const dataObj = {
+                    "quantite":inputs[i].value,
+                    "id_produit":selects[i].value,
+                }
+                data.push(dataObj)
+
+            }
+
+            await request.createRequest(descriptionRequest.value, null, null, data)
+            await reload()
+
         }
 
         stopLoading()
@@ -755,17 +705,6 @@
 
 </script>
 
-
-<!--<input id="descriptionRequest" type="text" placeholder="Description Request">
-<div id="Prestataire">
-    <div id="selectProduit"></div>
-</div>
-
-<div id="Beneficiaire">
-    <div id="selectActivite">
-    </div>
-    <input type="datetime-local">
-</div>-->
 
 <style>
     .card {

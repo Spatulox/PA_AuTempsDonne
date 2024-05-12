@@ -352,7 +352,6 @@
 
 
         let lesData = []
-        console.log(demande)
         for (const key in demande) {
 
             if (demande[key].etat === "En Attente" && demande[key].activite === "groupe") {

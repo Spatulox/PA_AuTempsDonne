@@ -15,6 +15,8 @@ class Request extends User{
             "produit":produit
         }
 
+        console.log(data)
+
 
         let response = await this.fetchSync(this.adresse+'/demande', this.optionPost(data))
 
