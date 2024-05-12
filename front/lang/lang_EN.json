@@ -103,7 +103,8 @@
       "button": "Validate",
       "buttonD": "Delete",
       "email": "Email",
-      "participateUsers": "Participating Users"
+      "participateUsers": "Participating Users",
+      "Addresse": "Addresses"
     },
     "tab2": {
       "title": "Daily Planning"
@@ -116,6 +117,10 @@
   },
   "gestDemande": {
     "title": "Request Menu",
+    "Create Trajet": "Create Trajet",
+    "Location to pass": "Location to pass",
+    "create": "Create",
+    "addRequest": "Add Request",
     "tab1": {
       "title": "Request List",
       "id": "Id Request",
@@ -124,7 +129,8 @@
       "state": "State",
       "date": "Date",
       "activite": "Activite",
-      "?": "idPlanning or collect ?",
+      "id_planning": "Id_planning",
+      "?": "Collect",
       "user": "User",
       "button": "Manage"
     },
@@ -132,7 +138,7 @@
       "title": "Request Detail"
     },
     "tab3": {
-      "title": "Tab3"
+      "title": "Waiting Request"
     }
   },
   "moncompte": {

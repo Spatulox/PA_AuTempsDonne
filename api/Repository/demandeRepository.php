@@ -240,6 +240,7 @@ class DemandeRepository
         $etat = 0;
         $last_planning = $this->getLastInsertId("PLANNINGS", "id_planning");
         updateDB("DEMANDE", ["etat", "id_planning"], [$etat, $last_planning[0]["id_planning"]], "id_demande=" . $id);
+        exit_with_message("Validate success", 200);
     }
 
     public function createValidationDemandeGroupe($id, $id_depart, $id_arriver, $date)
