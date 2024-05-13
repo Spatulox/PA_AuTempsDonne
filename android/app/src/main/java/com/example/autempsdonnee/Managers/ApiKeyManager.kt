@@ -1,6 +1,7 @@
 package com.example.autempsdonnee.Managers
 
 import android.content.Context
+import com.example.autempsdonnee.utils.Popup
 
 class ApiKeyManager {
     companion object {
@@ -22,6 +23,18 @@ class ApiKeyManager {
         fun clearApiKey(context: Context){
             val sharedPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             sharedPrefs.edit().remove("apikey").apply()
+        }
+
+        fun seeApikey(context: Context){
+            val sharedPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+            val apikey = sharedPrefs.getString("apikey", null)
+
+            if (apikey != null) {
+                Popup().showInformationDialog(context, apikey)
+                println(" ------------------- Apikey: $apikey")
+            } else {
+                println("Aucune apikey trouvée dans les SharedPreferences")
+            }
         }
 
         /*

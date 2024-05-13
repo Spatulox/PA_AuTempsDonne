@@ -83,14 +83,14 @@ class LocalUserManager {
         }
 
         fun refreshData(context: Context) {
-            var popup = Popup()
+            //var popup = Popup()
             val user = User(context)
 
             GlobalScope.launch {
                 val data = user.refreshUser()
 
                 if (data == null) {
-                    popup.makeToast(context, "Erreur : Données nulles")
+                    println("-------------------- Erreur : Données nulles")
                     return@launch
                 }
 
@@ -98,7 +98,7 @@ class LocalUserManager {
                     val jsonData = data as JSONObject
                     setDataAll(context, jsonData)
                 } catch (e: ClassCastException) {
-                    popup.makeToast(context, "Erreur : Impossible to cast data to a json object")
+                    println("-------------------- Erreur : Impossible to cast data to a json object")
                     return@launch
                 }
             }

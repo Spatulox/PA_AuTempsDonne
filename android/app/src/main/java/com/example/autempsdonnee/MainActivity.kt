@@ -22,16 +22,33 @@ class MainActivity : AppCompatActivity() {
 
         // If something went went wrong, there is still a posibiliti to connect
         var btn_connect = findViewById<Button>(R.id.connectingMain)
-        var btn_register = findViewById<Button>(R.id.registerMain)
+        //var btn_register = findViewById<Button>(R.id.registerMain)
+        var btn_planning = findViewById<Button>(R.id.planning)
+        var btn_deconnecter = findViewById<Button>(R.id.deconnecter)
+        var btn_apikey = findViewById<Button>(R.id.apikey)
 
         btn_connect.setOnClickListener(){
             val intent = Intent(this, Login::class.java)
             ResultLauncher.launch(intent)
         }
 
-        btn_register.setOnClickListener(){
+        /*btn_register.setOnClickListener(){
             val intent = Intent(this, Register::class.java)
             ResultLauncher.launch(intent)
+        }*/
+
+        btn_deconnecter.setOnClickListener (){
+            ApiKeyManager.clearApiKey(this)
+            finish()
+        }
+
+        btn_planning.setOnClickListener(){
+            val intent = Intent(this, Planning::class.java)
+            ResultLauncher.launch(intent)
+        }
+
+        btn_apikey.setOnClickListener(){
+            ApiKeyManager.seeApikey(this)
         }
 
 
