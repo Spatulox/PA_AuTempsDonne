@@ -81,7 +81,9 @@
                     <input type="date" id="datetime-local-presta">
                 </div>
 
-                <input type="button" class="marginTop30" value="Add Product to Request" onclick="addProductRequest()"><br>
+                <?php if($role == 5){
+                    echo '<input type="button" class="marginTop30" value="Add Product to Request" onclick="addProductRequest()"><br>';
+                }  ?>
                 <input type="button" class="marginTop30" value="Create Request" onclick="createRequestFront()">
             </div>
         </div>
@@ -608,11 +610,21 @@
         const select = createSelect(option, "Choose a product")
         select.classList.add("marginTop10")
 
-        const selectProduit = document.getElementById("selectProduit")
-        div.appendChild(input)
-        div.appendChild(br)
-        div.appendChild(select)
-        selectProduit.appendChild(div)
+        if (user.role != 4){
+
+            const selectProduit = document.getElementById("selectProduit")
+            div.appendChild(input)
+            div.appendChild(br)
+            div.appendChild(select)
+            selectProduit.appendChild(div)
+
+        } else {
+            const selectProduit = document.getElementById("selectActivite")
+            div.appendChild(input)
+            div.appendChild(br)
+            div.appendChild(select)
+            selectProduit.appendChild(div)
+        }
 
     }
 
