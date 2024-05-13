@@ -1,8 +1,11 @@
+# Pour déployer les conteneurs
 services:
   frontend:
     image: spatulox/pa-front:latest
     ports:
       - 8083:80
+    depends_on:
+      - api
 
   api:
     image: spatulox/pa-api:latest

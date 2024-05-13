@@ -1,12 +1,16 @@
+# Pour le dev
 services:
-  # Travail et reload automatique
   frontend:
-    #build: .
+    build: 
+      context: ./front/
+      dockerfile: Dockerfile
     image: spatulox/pa-front:latest
-    volumes:
-      - ./front:/var/www/html/
+    #volumes:
+    #  - ./front:/var/www/html/
     ports:
       - 8083:80
+    depends_on:
+      - api
 
   api:
     build: 
@@ -15,8 +19,8 @@ services:
     image: spatulox/pa-api:latest
     ports:
       - 8081:80
-    volumes:
-      - ./api:/var/www/html/
+    #volumes:
+    #  - ./api:/var/www/html/
     depends_on:
       - database
 
