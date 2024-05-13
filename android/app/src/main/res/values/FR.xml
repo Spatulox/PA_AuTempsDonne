@@ -4,4 +4,7 @@
     <string name="login">Addresse mail</string>
     <string name="connecting">Se connecter</string>
     <string name="signup">S\'inscrire</string>
+    <string name="planning">Voir mon planning</string>
+    <string name="deconnecter">Se déconnecter</string>
+    <string name="apikey">Voir l\'apikey</string>
 </resources>

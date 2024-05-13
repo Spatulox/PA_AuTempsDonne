@@ -22,11 +22,26 @@
         tools:ignore="MissingConstraints"
         android:text="@string/connecting"
         android:id="@+id/connectingMain"/>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
-        android:text="@string/signup"
-        android:id="@+id/registerMain"/>
+        android:text="@string/planning"
+        android:id="@+id/planning"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
+        android:text="@string/deconnecter"
+        android:id="@+id/deconnecter"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
+        android:text="@string/apikey"
+        android:id="@+id/apikey"/>
 
 </LinearLayout>
