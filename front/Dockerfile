@@ -6,11 +6,11 @@ RUN apt-get update && apt-get install -y \
     zip \
     && docker-php-ext-install zip
 
-# Copier le code source de votre application PHP
-COPY . /var/www/html/
-
 # Définir le répertoire de travail
 WORKDIR /var/www/html
+
+# Copier le code source de votre application PHP
+COPY . .
 
 # Définir les permissions et le propriétaire/groupe des fichiers
 RUN chown -R www-data:www-data /var/www/html
