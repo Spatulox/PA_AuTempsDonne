@@ -1,6 +1,6 @@
 <?php
-include_once './Service/ActiviteService.php';
-include_once './Models/ActiviteModel.php';
+include_once './Service/activiteService.php';
+include_once './Models/activiteModel.php';
 include_once './exceptions.php';
 
 function activiteController($uri, $apiKey) {
