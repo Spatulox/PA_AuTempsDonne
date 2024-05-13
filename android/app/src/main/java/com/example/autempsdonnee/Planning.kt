@@ -39,7 +39,7 @@ class Planning : AppCompatActivity() {
                 return@getPlanning
             }
             val jsonString = result.toString()
-            Popup().showInformationDialog(this, jsonString)
+            //Popup().showInformationDialog(this, jsonString)
 
             val jsonArray = JSONArray(jsonString)
             for (i in 0 until jsonArray.length()) {
