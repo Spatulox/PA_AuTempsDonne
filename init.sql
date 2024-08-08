@@ -48,12 +48,6 @@ CREATE TABLE PLANNINGS(
 );
 
 
-CREATE TABLE FORMATIONS(
-   id_formation INT AUTO_INCREMENT,
-   nom_formation VARCHAR(50) NOT NULL,
-   PRIMARY KEY(id_formation)
-);
-
 CREATE TABLE SEMAINE(
    id_dispo INT AUTO_INCREMENT,
    dispo VARCHAR(50),
@@ -258,13 +252,23 @@ CREATE TABLE PARTICIPE(
    FOREIGN KEY(id_planning) REFERENCES PLANNINGS(id_planning)
 );
 
-CREATE TABLE FORMER(
-   id_user INT,
-   id_formation INT,
-   PRIMARY KEY(id_user, id_formation),
-   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user),
-   FOREIGN KEY(id_formation) REFERENCES FORMATIONS(id_formation)
+CREATE TABLE FORUM(
+   id_forum INT AUTO_INCREMENT,
+   forum_text VARCHAR(255),
+   id_user INT NOT NULL,
+   PRIMARY KEY(id_forum),
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
 );
+
+CREATE TABLE FICHIER(
+   id_fichier INT AUTO_INCREMENT,
+   nom_fichier VARCHAR(50) NOT NULL,
+   chemin_fichier VARCHAR(255) NOT NULL,
+   id_user INT NOT NULL,
+   PRIMARY KEY(id_fichier),
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
+);
+
 
 CREATE TABLE DISPONIBILITE(
    id_user INT,
@@ -379,12 +383,6 @@ INSERT INTO ETAGERES (nombre_de_place ,code, id_entrepot) VALUES
 (250,"390e1680f9b5d41547db78396651189add88e346851b61d1b3956498bd9a4fca",2);
 
 
-INSERT INTO FORMATIONS (nom_formation) VALUES
-('Formation en gestion de projet'),
-('Formation en communication'),
-('Formation en comptabilite'),
-('Formation en informatique'),
-('Formation en animation');
 
 INSERT INTO SEMAINE (dispo) VALUES
 ('Lundi'),
