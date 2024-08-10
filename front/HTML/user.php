@@ -230,48 +230,64 @@
             return
         }
 
-        userWait.forEach(item => {
-            const row = document.createElement('tr');
+        if(userWait.length == 0){
+            popup("No waiting users")
+            return
+        }
 
-            const idCell = document.createElement('td');
-            idCell.textContent = item.id_user;
-            row.appendChild(idCell);
+        console.log(userWait)
 
-            const nomPrenomCell = document.createElement('td');
-            nomPrenomCell.textContent = `${item.nom} ${item.prenom}`;
-            row.appendChild(nomPrenomCell);
+        try {
 
-            const emailCell = document.createElement('td');
-            emailCell.textContent = item.email;
-            row.appendChild(emailCell);
+            userWait.forEach(item => {
+                const row = document.createElement('tr');
 
-            const telephoneCell = document.createElement('td');
-            telephoneCell.textContent = item.telephone;
-            row.appendChild(telephoneCell);
+                const idCell = document.createElement('td');
+                idCell.textContent = item.id_user;
+                row.appendChild(idCell);
 
-            const roleCell = document.createElement('td');
-            roleCell.textContent = item.id_role;
-            row.appendChild(roleCell);
+                const nomPrenomCell = document.createElement('td');
+                nomPrenomCell.textContent = `${item.nom} ${item.prenom}`;
+                row.appendChild(nomPrenomCell);
 
-            const entrepotCell = document.createElement('td');
-            entrepotCell.textContent = item.id_entrepot || 'N/A';
-            row.appendChild(entrepotCell);
+                const emailCell = document.createElement('td');
+                emailCell.textContent = item.email;
+                row.appendChild(emailCell);
 
-            const buttonCell = document.createElement('td');
-            const button = createButton(dico[lang]["Validate"])
-            button.setAttribute("onclick", "validateUSer(" + item.id_user + ")")
-            buttonCell.appendChild(button)
-            row.appendChild(buttonCell);
+                const telephoneCell = document.createElement('td');
+                telephoneCell.textContent = item.telephone;
+                row.appendChild(telephoneCell);
+
+                const roleCell = document.createElement('td');
+                roleCell.textContent = item.id_role;
+                row.appendChild(roleCell);
+
+                const entrepotCell = document.createElement('td');
+                entrepotCell.textContent = item.id_entrepot || 'N/A';
+                row.appendChild(entrepotCell);
+
+                const buttonCell = document.createElement('td');
+                //const button = createButton(dico[lang]["Validate"])
+                const button = createButton(user.msg["Validate"])
+                button.setAttribute("onclick", "validateUSer(" + item.id_user + ")")
+                buttonCell.appendChild(button)
+                row.appendChild(buttonCell);
 
 
-            const buttonCell2 = document.createElement('td');
-            const button2 = createButton(dico[lang]["Delete"])
-            button2.setAttribute("onclick", "invalidateUSer(" + item.id_user + ")")
-            buttonCell2.appendChild(button2)
-            row.appendChild(buttonCell2);
+                const buttonCell2 = document.createElement('td');
+                //const button2 = createButton(dico[lang]["Delete"])
+                const button2 = createButton(user.msg["Delete"])
+                button2.setAttribute("onclick", "invalidateUSer(" + item.id_user + ")")
+                buttonCell2.appendChild(button2)
+                row.appendChild(buttonCell2);
 
-            tab4ChildBody.appendChild(row);
-        });
+                tab4ChildBody.appendChild(row);
+            });
+        }
+        catch{
+            popup("No waiting users")
+            return
+        }
 
     }
 
