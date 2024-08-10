@@ -18,6 +18,10 @@ class User extends General{
 
         this.roleArray = ["roleBait", "Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
 
+        if(this.msg === undefined){
+            this.msg = "EN"
+        }
+
         if (password === null || email === null) {
             this.loginApi()
         } else {
