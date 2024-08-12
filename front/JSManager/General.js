@@ -2,12 +2,7 @@ class General {
 
     constructor() {
         this.lang = getCookie("lang")
-        
-        if(this.lang){
-            this.msg = dico[this.lang]
-        } else {
-            this.msg = dico["EN"]
-        }
+        this.msg = dico[this.lang]
         this.frontaddresse = "http://localhost:8083/HTML/";
     }
 
