@@ -192,6 +192,10 @@ function controller($uri) {
             etagereController($uri);
             break;
 
+        case 'stripe':
+            stripeController($uri, $apiKey);
+            break;
+
 
         default:
             // Si la ressource demandée n'existe pas, alors on renvoie une erreur 404
