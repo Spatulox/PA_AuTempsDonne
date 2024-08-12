@@ -15,6 +15,7 @@ include_once './Controller/stockController.php';
 include_once './Controller/vehiculeController.php';
 include_once './Controller/donController.php';
 include_once './Controller/etagereController.php';
+include_once './Controller/historiqueController.php';
 
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
@@ -190,6 +191,9 @@ function controller($uri) {
             break;
         case 'etagere':
             etagereController($uri);
+            break;
+        case 'historique':
+            historiqueController($uri);
             break;
 
 
