@@ -85,24 +85,6 @@ CREATE TABLE ENTREPOTS(
 );
 
 
-CREATE TABLE VEHICULES(
-   id_vehicule INT AUTO_INCREMENT,
-   capacite INT,
-   nom_du_vehicules VARCHAR(255),
-   nombre_de_place INT,
-   id_entrepot INT,
-   PRIMARY KEY(id_vehicule),
-   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot)
-);
-
-CREATE TABLE CONDUIT(
-   id_trajets INT,
-   id_vehicule INT,
-   PRIMARY KEY(id_trajets, id_vehicule),
-   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets),
-   FOREIGN KEY(id_vehicule) REFERENCES VEHICULES(id_vehicule)
-);
-
 CREATE TABLE UTILISATEUR(
    id_user INT AUTO_INCREMENT,
    nom VARCHAR(50) NOT NULL,
@@ -122,6 +104,50 @@ CREATE TABLE UTILISATEUR(
    FOREIGN KEY(id_index) REFERENCES TABINDEX(id_index),
    FOREIGN KEY(id_role) REFERENCES ROLES(id_role)
 );
+
+CREATE TABLE SERVICE(
+   id_service INT AUTO_INCREMENT,
+   description_service VARCHAR(255),
+   type_service INT,
+   servive_date_debut DATETIME,
+   servive_date_fin DATETIME,
+   id_user INT NOT NULL,
+   PRIMARY KEY(id_service),
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
+);
+
+
+CREATE TABLE VEHICULES(
+   id_vehicule INT AUTO_INCREMENT,
+   capacite INT,
+   nom_du_vehicules VARCHAR(255),
+   nombre_de_place INT,
+   id_entrepot INT,
+   appartenance INT,
+   id_service INT,
+   PRIMARY KEY(id_vehicule),
+   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
+   FOREIGN KEY(id_service) REFERENCES SERVICE(id_service)
+);
+
+CREATE TABLE CONDUIT(
+   id_trajets INT,
+   id_vehicule INT,
+   PRIMARY KEY(id_trajets, id_vehicule),
+   FOREIGN KEY(id_trajets) REFERENCES TRAJETS(id_trajets),
+   FOREIGN KEY(id_vehicule) REFERENCES VEHICULES(id_vehicule)
+);
+
+CREATE TABLE HISTORIQUE(
+   id_historique INT AUTO_INCREMENT,
+   description VARCHAR(250),
+   etat INT,
+   heure_historisation DATETIME,
+   id_user INT NOT NULL,
+   PRIMARY KEY(id_historique),
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
+);
+
 
 CREATE TABLE TICKETS(
    id_ticket INT AUTO_INCREMENT,
@@ -526,13 +552,13 @@ VALUES
   (24, 1), (24, 2), (24, 3), (24, 7),
   (12, 4), (12, 5), (12, 6), (12, 7);
 
-  INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_entrepot)
+  INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_entrepot, appartenance, id_service)
 VALUES
-  (3, 'lexus lfa', 2, 1),
-  (100, 'Mercedes Sprinter', 2, 1),
-  (250, 'Peugeot Boxer', 2, 2),
-  (400, 'Iveco Daily', 2, 2),
-  (400, 'Nissan NV400', 2, 1);
+  (3, 'lexus lfa', 2, 1,1,NULL),
+  (100, 'Mercedes Sprinter', 2, 1,1,NULL),
+  (250, 'Peugeot Boxer', 2, 2,1,NULL),
+  (400, 'Iveco Daily', 2, 2,1,NULL),
+  (400, 'Nissan NV400', 2, 1,1,NULL);
 
 INSERT INTO PLANNINGS (description, date_activite, id_index_planning, id_activite)
 VALUES (
