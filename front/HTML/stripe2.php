@@ -1,25 +1,40 @@
-<?php
+<?php include("../includes/loadLang.php");?>
 
-require_once('../stripe/stripe-php-15.6.0/init.php');
-require_once('../stripe/StripePayement.php');
+<!DOCTYPE html>
+<html>
+<head>
 
-//require_once('../vendor/autoload.php');
+    <?php include("../includes/head.php"); ?>
 
-// Public :
-// pk_test_51PmzntFP4zc2O5WMI4vIV6PJuCwgI98zC5bvSjUoBFkBjQ32vONiDvEw4wWezAbeNYiIVI4MuF52OiI5v7xzmTBf00KmHRrRPt
+    <title><?php echo($data["template"]["title"]) ?></title>
+</head>
+<body>
 
-// Private :
-// sk_test_51PmzntFP4zc2O5WMKGFGEQ4tO5uzrr8BYgGUDHMUZnzdSOpO0Cpc4PJ3F0hQXJ8ORnY2i1VZSEGmvdnqTtexxLSa005Qm34kR7
+<?php include("../includes/header.php");?>
 
-$payement = new StripePayementFront("sk_test_51PmzntFP4zc2O5WMKGFGEQ4tO5uzrr8BYgGUDHMUZnzdSOpO0Cpc4PJ3F0hQXJ8ORnY2i1VZSEGmvdnqTtexxLSa005Qm34kR7");
+<main>
+
+    <section class="flex flexCenter wrap">
+        <h1 class="width100 textCenter noMarginBottom"><?php echo($data["template"]["sectionTitle"]) ?></h1>
+    </section>
 
 
-/*if(!isset($_POST['amount']) || empty($_POST['amount']) || !isset($_POST['name']) || empty($_POST['name'])) {
+    <input type="button" value="Payer sur Stripe" onclick="payer()">
+    <?php
 
-    $message = "?message=Error, le montant et le nom sont obligatoire";
-    header('Location: actualites.php' . $message);
-    exit();
-}*/
+    ?>
+    <script src="https://js.stripe.com/v3/" data-js-isolation="on"></script>
+    <script type="text/javascript">
+        async function payer() {
+            const stripe = new GestionStripe()
+            stripe.startStripe([12, 24], ["test", "porc-epic"])
+        }
+    </script>
 
-$payement->startPayementFront(12000, "Trucs");
-?>
+
+</main>
+
+<?php include("../includes/footer.php");?>
+
+</body>
+</html>

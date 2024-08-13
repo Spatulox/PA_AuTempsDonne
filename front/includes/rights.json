@@ -4,5 +4,5 @@
   "3": ["entrepots.php"],
   "4": ["requests.php"],
   "5": ["requests.php"],
-  "all": ["404.php", "actualites.php", "aide.php", "contact.php", "decouvrir.php", "don.php", "entrepots.php", "index.php", "moncompte.php", "planning.php", "signup_login.php", "etagere.php"]
+  "all": ["404.php", "actualites.php", "aide.php", "contact.php", "decouvrir.php", "don.php", "entrepots.php", "index.php", "moncompte.php", "planning.php", "signup_login.php", "etagere.php", "stripe2.php"]
 }
