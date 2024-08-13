@@ -1,13 +1,8 @@
 <?php
-
+include_once "./Service/stripeService.php";
 
 function stripeController($uri, $apiKey)
 {
-
-    if(!isset($_POST['amount']) || empty($_POST['amount']) || !isset($_POST['name']) || empty($_POST['name'])) {
-        exit_with_message("Error, le montant et le nom sont obligatoire");
-        exit();
-    }
 
     switch ($_SERVER['REQUEST_METHOD']) {
 
@@ -17,6 +12,18 @@ function stripeController($uri, $apiKey)
 
 
         case 'POST':
+            //if(!isset($_POST['amount']) || empty($_POST['amount']) || !isset($_POST['name']) || empty($_POST['name'])) {
+            //    exit_with_message("Error, amount and name are mandatory to pay");
+            //}
+            $tmp_array = ["payment", "subscription"];
+
+            if(!in_array($uri[3], $tmp_array)) {
+                exit_with_content(["message" => "Wrong type" ,"correct_values" => $tmp_array]);
+            }
+
+            $stripeService = new StripeService();
+            //$stripeService->startPayment($_POST['amount'], $_POST['name'], $_POST['type']);
+            $stripeService->startPayment(12, "test", "payment");
             break;
 
         case 'PUT':
