@@ -15,6 +15,7 @@
 <script type="text/javascript" src="../JSManager/General.js"></script>
 <script type="text/javascript" src="../JSManager/User.js"></script>
 <script type="text/javascript" src="../JSManager/Planning.js"></script>
+<script type="text/javascript" src="../JSManager/GestionStripe.js"></script>
 
 
 <?php
