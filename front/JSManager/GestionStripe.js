@@ -5,7 +5,7 @@ class GestionStripe extends User {
 
     stripe = null
 
-    async startStripe(amount, name) {
+    async startStripeUseThisOne(amount, name) {
         startLoading()
 
         try{
@@ -19,7 +19,7 @@ class GestionStripe extends User {
         }
 
         try {
-            await this.startPayment(amount, name);
+            await this.startPaymentDoNotUse(amount, name);
         } catch (error) {
             console.log('Erreur lors du démarrage du paiement:', error);
         } finally {
@@ -34,7 +34,7 @@ class GestionStripe extends User {
      * @param name
      * @returns {Promise<void>}
      */
-    async startPayment(amount, name) {
+    async startPaymentDoNotUse(amount, name) {
 
         const data = {
             "amount": amount,
