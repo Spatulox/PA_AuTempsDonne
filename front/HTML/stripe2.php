@@ -27,7 +27,7 @@
     <script type="text/javascript">
         async function payer() {
             const stripe = new GestionStripe()
-            stripe.startStripe([12, 24], ["test", "porc-epic"])
+            stripe.startStripeUseThisOne([12, 24], ["test", "porc-epic"])
         }
     </script>
 

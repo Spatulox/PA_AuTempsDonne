@@ -22,6 +22,20 @@
 
 			?>
 
+
+            <!-- Template de comment utiliser le module stripe créé -->
+            <input type="button" value="Payer sur Stripe" onclick="payer()">
+
+            <script src="https://js.stripe.com/v3/" data-js-isolation="on"></script>
+            <script type="text/javascript">
+                async function payer() {
+                    const stripe = new GestionStripe()
+                    stripe.startStripeUseThisOne([12], ["test"])
+                }
+            </script>
+
+
+
 		</main>
 
 		<?php include("../includes/footer.php");?>
