@@ -15,6 +15,7 @@ include_once './Controller/stockController.php';
 include_once './Controller/vehiculeController.php';
 include_once './Controller/donController.php';
 include_once './Controller/etagereController.php';
+include_once './Controller/stripeController.php';
 
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
