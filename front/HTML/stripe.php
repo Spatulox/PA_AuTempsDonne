@@ -11,15 +11,15 @@ require_once('../stripe/StripePayement.php');
 // Private :
 // sk_test_51PmzntFP4zc2O5WMKGFGEQ4tO5uzrr8BYgGUDHMUZnzdSOpO0Cpc4PJ3F0hQXJ8ORnY2i1VZSEGmvdnqTtexxLSa005Qm34kR7
 
-$payement = new StripePayement("sk_test_51PmzntFP4zc2O5WMKGFGEQ4tO5uzrr8BYgGUDHMUZnzdSOpO0Cpc4PJ3F0hQXJ8ORnY2i1VZSEGmvdnqTtexxLSa005Qm34kR7");
+$payement = new StripePayementFront("sk_test_51PmzntFP4zc2O5WMKGFGEQ4tO5uzrr8BYgGUDHMUZnzdSOpO0Cpc4PJ3F0hQXJ8ORnY2i1VZSEGmvdnqTtexxLSa005Qm34kR7");
 
 
-if(!isset($_POST['amount']) || empty($_POST['amount']) || !isset($_POST['name']) || empty($_POST['name'])) {
+/*if(!isset($_POST['amount']) || empty($_POST['amount']) || !isset($_POST['name']) || empty($_POST['name'])) {
 
     $message = "?message=Error, le montant et le nom sont obligatoire";
     header('Location: actualites.php' . $message);
     exit();
-}
+}*/
 
-$payement->startPayement(12000, "Trucs");
+$payement->startPayementFront(12000, "Trucs");
 ?>
