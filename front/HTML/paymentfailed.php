@@ -29,7 +29,10 @@ if($id_payment == NULL){
 }
 
 
-$id_user = selectDB("UTILISATEUR", "id_role","apikey='".$apikey."'")[0][0];
+$id_user = 1;
+if($apikey != NULL){
+    $id_user = selectDB("UTILISATEUR", "id_role","apikey='".$apikey."'")[0][0];
+}
 
 // Retrieve values
 $values = explode(",", explode("?name=", $_GET["amount"])[0]);
