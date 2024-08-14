@@ -304,11 +304,11 @@ CREATE TABLE FICHIER(
 );
 
 CREATE TABLE PAYMENTHISTORY(
-    id_index INT AUTO_INCREMENT,
+    id_index INT,
     index_user INT NOT NULL,
     amount INT NOT NULL,
     id_product VARCHAR(255) NOT NULL,
-    PRIMARY KEY(id_index),
+    success INT NOT NULL,
     FOREIGN KEY(index_user) REFERENCES UTILISATEUR(id_user)
 );
 
@@ -464,6 +464,9 @@ INSERT INTO TABINDEX (index_nom) VALUES
 
 
 INSERT INTO UTILISATEUR (nom, prenom, email, telephone, date_inscription, apikey, mdp, premium, id_adresse, id_entrepot, id_index, id_role) VALUES
+(
+'Unknow', 'Unknow', 'Unknow', '0635742201', '2024-04-04', NULL, 'Unknow', 0, 3, NULL, 2, 1
+),
 (
 'Doe', 'John', 'john.doe@gmail.com', '0635742201', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 0, 3, NULL, 2, 1
 ),
