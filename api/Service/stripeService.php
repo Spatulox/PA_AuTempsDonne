@@ -17,22 +17,13 @@ class stripeService
         $this->stripeSecretKey = $data['STRIPE_SECRET'];
     }
 
-    function startPayment($amount, $name, $mode){
+    function startPayment($amount, $name, $mode, $returnPath){
         $payement = new StripePayement($this->stripeSecretKey);
-        $payement->startPayement($amount, $name, $mode);
+        $payement->startPayement($amount, $name, $mode, $returnPath);
     }
 
     function startSubscription($amount, $name, $mode){
         $payement = new StripePayement();
         $payement->startPayement($amount, $name, $mode);
     }
-
-    function paymentFailed(){
-        // enregistre la tentative quelque part et envoie un mail
-    }
-
-    function paymentSucceed(){
-        // enregistre le payement quelque part et envoie un mail
-    }
-    //
 }

@@ -21,14 +21,14 @@ function stripeController($uri, $apiKey)
             }
             $tmp_array = ["payment", "subscription"];
 
-            if(!in_array($uri[3], $tmp_array)) {
-                exit_with_content(["message" => "Wrong type" ,"correct_values" => $tmp_array]);
+
+            if(in_array($uri[3], $tmp_array)) {
+                $stripeService = new StripeService();
+                $stripeService->startPayment($json['amount'], $json['name'], $uri[3], $json['returnPath']);
+                break;
             }
 
-            $stripeService = new StripeService();
-            $stripeService->startPayment($json['amount'], $json['name'], $uri[3]);
-            //$stripeService->startPayment(12, "test", $uri[3]);
-            break;
+            exit_with_content(["message" => "Wrong type" ,"correct_values" => $tmp_array]);
 
         case 'PUT':
             exit_with_message("You can't do PUT request for stripe");
