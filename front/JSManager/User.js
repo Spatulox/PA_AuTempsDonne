@@ -42,7 +42,7 @@ class User extends General{
         if(cookie == null && etagere !== "etagere.php"){
             // The message is only for debug, it gonna be deleted anyway
             alertDebug("Vous ne pouvez pas vous connecter (const user = new User() ) sans avoir un cookie, vous devez mettre l'email et le mot de passe")
-            redirect("./signup_login.php")
+            redirect("./signup_login.php?return=" + window.location.href)
             return false
         }
         this.apikey = cookie
