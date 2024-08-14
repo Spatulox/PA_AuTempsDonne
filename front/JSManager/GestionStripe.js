@@ -5,7 +5,7 @@ class GestionStripe extends User {
 
     stripe = null
 
-    async startStripeUseThisOne(amount, name) {
+    async startStripeUseThisOne(amount, name, returnPath = null) {
         startLoading()
 
         try{
@@ -19,7 +19,7 @@ class GestionStripe extends User {
         }
 
         try {
-            await this.startPaymentDoNotUse(amount, name);
+            await this.startPaymentDoNotUse(amount, name, returnPath);
         } catch (error) {
             console.log('Erreur lors du démarrage du paiement:', error);
         } finally {
@@ -34,17 +34,20 @@ class GestionStripe extends User {
      * @param name
      * @returns {Promise<void>}
      */
-    async startPaymentDoNotUse(amount, name) {
+    async startPaymentDoNotUse(amount, name, returnPath) {
 
         const data = {
             "amount": amount,
-            "name": name
+            "name": name,
+            "returnPath": returnPath
         };
 
         try {
             const response = await fetch(this.adresse + '/stripe/payment/', this.optionPost(data));
             if (!response.ok) {
-                console.log(`HTTP error! status: ${response.status}`);
+                console.log(`HTTP error! status: ${response.status} : ${response.statusText}`);
+                console.log(await response.text())
+                return
             }
 
             const result = await response.json();
