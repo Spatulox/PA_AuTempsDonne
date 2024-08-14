@@ -5,6 +5,7 @@
 <head>
 
     <?php include("../includes/head.php"); ?>
+    <script src="https://js.stripe.com/v3/" data-js-isolation="on"></script>
 
     <title><?php echo($data["don"]["title"]) ?></title>
 </head>
@@ -40,18 +41,25 @@
         startLoading()
         const prix = document.getElementById("prix")
 
-        if(prix == null){
-            popup("Error when creating don, nothing was retrieve from your account")
+        if(prix.value === ""){
+            popup("You need to specify the amount, nothing was retrieve from your account")
+            stopLoading()
             return
         }
 
-        let apikey = getCookie("apikey")
+
+        /* GESTION DON WITH STRIPE */
+        const stripe = new GestionStripe()
+        stripe.startStripeUseThisOne([prix.value], ["Don"], "don.php")
+
+
+        /* GESTION DON WITH LOCAL DB */
+        /*let apikey = getCookie("apikey")
 
         const data = {
             "prix":prix.value,
             "date":today()
         }
-
 
         const options = {
             method: 'POST',
@@ -78,17 +86,8 @@
             popup(message.message)
             stopLoading()
             return true
-        }
-
-        stopLoading()
+        }*/
     }
-
-    async function onload() {
-        //startLoading()
-        //stopLoading()
-    }
-
-    onload()
 
 </script>
 
