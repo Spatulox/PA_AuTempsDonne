@@ -14,9 +14,27 @@ class StripePayement
 
     // Create th Checkout on stripe to the user to pay
     // Send the result to a JS for the js to "redirect"
-    public function startPayement($amounts, $names, $mode = "payment")
+    public function startPayement($amounts, $names, $mode = "payment", $returnPath)
     {
+
+        $json_file = file_get_contents('/var/www/html/env.json');
+        $data = json_decode($json_file, true);
+
+        $leReturn = "moncompte.php";
+        if($returnPath != null){
+            $leReturn = $returnPath;
+        }
+
+        if(!is_array($amounts) || !is_array($names) || empty($amounts) || empty($names)){
+            exit_with_message("Amount and object of the transaction need to be an array of value, and not empty");
+        }
+
+        $total = "";
+        $allName = "";
+        $line_items = [];
         foreach ($amounts as $index => $amount) {
+            $total .= $amount.",";
+            $allName .= $names[$index].",";
             $line_items[] = [
                 'quantity' => 1,
                 'price_data' => [
@@ -31,10 +49,10 @@ class StripePayement
 
         try {
             $session = Session::create([
-                    'line_items' => [$line_items],
+                    'line_items' => $line_items,
                     'mode' => $mode,
-                    'success_url' => "http://localhost:8083/HTML/moncompte.php?message=Votre payement a ete realise avec succes",
-                    'cancel_url' => "http://localhost:8083/HTML/moncompte.php?message=Votre payement n'a pas abouti",
+                    'success_url' => $data["apiAddress"]."paymentsuccess.php?amount=".$total . "?name=".$allName . ($returnPath != null ? "?return_path=".$returnPath : ""),
+                    'cancel_url' => $data["apiAddress"]."paymentfailed.php?amount=".$total . "?name=".$allName . ($returnPath != null ? "?return_path=".$returnPath : ""),
                     'billing_address_collection' => 'required',
                     'metadata' => [
                         'cart_id' => 1
@@ -51,6 +69,7 @@ class StripePayement
         } catch (Exception $e) {
             exit_with_message($e->getMessage());
         }
+
     }
 }
 
