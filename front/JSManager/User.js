@@ -2,7 +2,7 @@ class User extends General{
 
     constructor(email = null, password = null) {
         super();
-        this.adresse = "http://localhost:8081/index.php";
+        this.adresse = ipAddressApi;
         this.apikey = null;
         this.nom = null;
         this.prenom = null;

@@ -24,7 +24,7 @@ error_reporting(E_ERROR | E_PARSE);
 // le contenu renvoyé par le serveur sera du JSON
 header("Content-Type: application/json; charset=utf8");
 
-// Autorise les requêtes depuis localhost
+// Autorise les requêtes depuis local host
 header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS,PATCH');
 header('Access-Control-Allow-Headers: Origin, Content-Type, Authorization, apikey, Accept');

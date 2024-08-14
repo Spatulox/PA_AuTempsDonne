@@ -70,7 +70,7 @@
             body: JSON.stringify(data)
         };
 
-        const response = await fetch("http://localhost:8081/index.php/don/create", options)
+        const response = await fetch(ipAddressApi+"/don/create", options)
 
         if (!response.ok) {
             const text = await response.json()

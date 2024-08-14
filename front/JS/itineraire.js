@@ -12,7 +12,7 @@ async function calcSpeedAddress(addressData) {
         "address": addressData
     };
 
-    const response = await fetch("http://localhost:8081/index.php/trajet", optionPost(address));
+    const response = await fetch(ipAddressApi+"/trajet", optionPost(address));
 
     const data = await response.json();
 

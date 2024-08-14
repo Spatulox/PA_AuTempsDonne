@@ -79,8 +79,8 @@ if($role == 5){
 <script type="text/javascript" src="../JS/tabs.js"></script>
 <script type="text/javascript" src="../JS/ledicodesmotsenjs.js"></script>
 <script type="text/javascript" src="../JS/replaceCharacters.js"></script>
-<script type="text/javascript" src="../JS/functions.js"></script>
 <script type="text/javascript" src="../JS/utils.js"></script>
+<script type="text/javascript" src="../JS/functions.js"></script>
 <script type="text/javascript" src="../JS/loader.js"></script>
 <script type="text/javascript" src="../JS/createHtmlElement.js"></script>
 
