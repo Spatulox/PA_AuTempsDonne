@@ -16,15 +16,15 @@ function stripeController($uri, $apiKey)
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
 
-            if(!isset($json['amount']) || empty($json['amount']) || !isset($json['name']) || empty($json['name'])) {
-                exit_with_message("Error, amount and name are mandatory to pay");
+            if(!isset($json['amount']) || empty($json['amount']) || !isset($json['name']) || empty($json['name']) || !isset($json['mail']) || empty($json['mail'])) {
+                exit_with_message("Error, amount, name and mail metadata are mandatory, to pay");
             }
             $tmp_array = ["payment", "subscription"];
 
 
             if(in_array($uri[3], $tmp_array)) {
                 $stripeService = new StripeService();
-                $stripeService->startPayment($json['amount'], $json['name'], $uri[3], $json['returnPath']);
+                $stripeService->startPayment($json['amount'], $json['name'], $uri[3], $json['returnPath'], $json["mail"]);
                 break;
             }
 

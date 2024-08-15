@@ -14,7 +14,7 @@ class StripePayement
 
     // Create th Checkout on stripe to the user to pay
     // Send the result to a JS for the js to "redirect"
-    public function startPayement($amounts, $names, $mode = "payment", $returnPath)
+    public function startPayement($amounts, $names, $mode = "payment", $returnPath, $mailMetadata)
     {
 
         $json_file = file_get_contents('/var/www/html/env.json');
@@ -51,7 +51,7 @@ class StripePayement
             $session = Session::create([
                     'line_items' => $line_items,
                     'mode' => $mode,
-                    'success_url' => $data["apiAddress"]."paymentsuccess.php?amount=".$total . "?name=".$allName . ($returnPath != null ? "?return_path=".$returnPath : ""),
+                    'success_url' => $data["apiAddress"]."paymentsuccess.php?amount=".$total . "?name=".$allName . ($returnPath != null ? "?return_path=".$returnPath : "") . "?subject=" . $mailMetadata['subject'] . "?htmlString=" . $mailMetadata['htmlString'],
                     'cancel_url' => $data["apiAddress"]."paymentfailed.php?amount=".$total . "?name=".$allName . ($returnPath != null ? "?return_path=".$returnPath : ""),
                     'billing_address_collection' => 'required',
                     'metadata' => [
