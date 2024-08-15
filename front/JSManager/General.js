@@ -33,7 +33,7 @@ class General {
         } else {
             const text = await response.json()
             if(showMessage === true){
-                alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
+                alert(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
             }
             if (text.hasOwnProperty("message")) {
                 if(showMessage === true){
