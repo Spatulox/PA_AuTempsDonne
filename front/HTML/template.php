@@ -30,7 +30,7 @@
             <script type="text/javascript">
                 async function payer() {
                     const stripe = new GestionStripe()
-                    stripe.startStripeUseThisOne([12], ["test"])
+                    stripe.startStripeUseThisOne([12], ["test"], {"subject":"MailObject", "htmlString":`MailBody`}, "optionalReturnPath")
                 }
             </script>
 
