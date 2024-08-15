@@ -39,6 +39,9 @@ $values = explode(",", explode("?name=", $_GET["amount"])[0]);
 $object = explode(",", explode("?return_path=", explode("?name=", $_GET["amount"])[1])[0]);
 $returnPath = explode(",", explode("?return_path=", $_GET["amount"])[1]);
 
+$subject = explode(",", explode("?subject=", explode("?htmlString", $_GET["amount"])[0])[1]);
+$htmlString = explode(",", explode("?htmlString=", $_GET["amount"])[1]);
+
 array_pop($values);
 array_pop($object);
 
@@ -48,8 +51,34 @@ for ($i = 0; $i < count($values); $i++) {
 
 if($returnPath == null) {
     $returnPath = "moncompte.php";
+} else {
+    explode("?", $returnPath[0])[0];
 }
 
-header("Location: ". $returnPath[0]."?message=Votre payement a ete realise avec succes");
+echo '<script type="text/javascript" src="../JS/ledicodesmotsenjs.js"></script>';
+echo '<script type="text/javascript" src="../JS/utils.js"></script>';
+
+echo '<script type="text/javascript" src="../JSManager/General.js"></script>';
+echo '<script type="text/javascript" src="../JSManager/User.js"></script>';
+echo '<script type="text/javascript" src="../JSManager/GestionMail.js"></script>';
+
+echo 'Plz wait, processing...';
+echo($htmlString[0]);
+
+echo "<script type='text/javascript' defer>
+        let amount = " .  array_sum($values) . "
+    
+        async function send(){
+            const gestionMail = new GestionMail()
+            await gestionMail.connect();
+            console.log(['M78stormtrooper@laposte.net', gestionMail.email]);
+            await gestionMail.sendMail('$subject[0]', '$htmlString[0]', [gestionMail.email]);
+            //alert('Send finish')
+            redirect('$returnPath[0]?message=Votre payment a ete realise avec succes !')   
+        }
+        
+        send()
+        
+</script>";
 exit();
 
