@@ -21,7 +21,7 @@ function collectController($uri, $apikey) {
                 $produitService->getType();
             }
             else{
-                $produitService->getProduitAll();
+                $produitService->getProduitAll($apikey);
             }
 
             exit_with_message("Wtf, why are you here bro", 500);

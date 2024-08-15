@@ -15,9 +15,9 @@ class ProduitService
         $produitRepository->getProduitId($id);
     }
 
-    function getProduitAll(){
+    function getProduitAll($apikey){
         $produitRepository = new ProduitRepository();
-        $produitRepository->getAllProduit();
+        $produitRepository->getAllProduit($apikey);
     }
 
     function createProduit($nom_produit, $type){

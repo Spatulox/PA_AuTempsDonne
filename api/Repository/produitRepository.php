@@ -1,4 +1,5 @@
 <?php
+include_once('./Repository/HistoriqueRepository.php');
 
 class ProduitRepository
 {
@@ -7,7 +8,7 @@ class ProduitRepository
     {
     }
 
-    function getAllProduit()
+    function getAllProduit($apikey)
     {
         $request = selectDB("PRODUIT", "*", "-1", "bool");
         if(!$request){
@@ -22,6 +23,14 @@ class ProduitRepository
             $model = new ProduitModel($request[$i]["id_produit"], $request[$i]["nom_produit"], $request[$i]["id_type"], $type);
             $array[$i] = $model;
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "List Produit";
+        $id_secteur = 2;
+        $id_user =getIdUserFromApiKey($apikey);
+
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 
         exit_with_content($array);
     }
@@ -85,4 +94,7 @@ class ProduitRepository
         }
         exit_with_content($tab);
     }
+
+
+
 }
