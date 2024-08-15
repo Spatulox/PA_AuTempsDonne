@@ -16,6 +16,7 @@ include_once './Controller/vehiculeController.php';
 include_once './Controller/donController.php';
 include_once './Controller/etagereController.php';
 include_once './Controller/stripeController.php';
+include_once './Controller/mailController.php';
 
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
@@ -155,11 +156,9 @@ function controller($uri) {
         case 'user':
             userController($uri, $apiKey);
             break;
-
         case 'entrepot':
             entrepotController($uri, $apiKey);
             break;
-
         case 'planning':
             planningController($uri, $apiKey);
             break;
@@ -172,11 +171,9 @@ function controller($uri) {
         case 'adresse':
             adresseController($uri, $apiKey);
             break;
-
         case 'produit':
             collectController($uri, $apiKey);
             break;
-
         case 'demande':
             demandeController($uri, $apiKey);
             break;
@@ -192,9 +189,12 @@ function controller($uri) {
         case 'etagere':
             etagereController($uri);
             break;
-
         case 'stripe':
             stripeController($uri, $apiKey);
+            break;
+
+        case 'mail':
+            mailController($uri, $apiKey);
             break;
 
 
