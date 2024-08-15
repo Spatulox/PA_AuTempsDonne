@@ -192,8 +192,8 @@ function controller($uri) {
         case 'etagere':
             etagereController($uri);
             break;
-        case 'historique':
-            historiqueController($uri);
+       case 'historique':
+            historiqueController($uri,$apiKey);
             break;
 
 
