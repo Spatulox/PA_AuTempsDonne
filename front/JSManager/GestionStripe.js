@@ -5,7 +5,7 @@ class GestionStripe extends User {
 
     stripe = null
 
-    async startStripeUseThisOne(amount, name, returnPath = null) {
+    async startStripeUseThisOne(amount, name, mail, returnPath = null) {
         startLoading()
 
         try{
@@ -19,7 +19,7 @@ class GestionStripe extends User {
         }
 
         try {
-            await this.startPaymentDoNotUse(amount, name, returnPath);
+            await this.startPaymentDoNotUse(amount, name, returnPath, mail);
         } catch (error) {
             console.log('Erreur lors du démarrage du paiement:', error);
         } finally {
@@ -34,12 +34,27 @@ class GestionStripe extends User {
      * @param name
      * @returns {Promise<void>}
      */
-    async startPaymentDoNotUse(amount, name, returnPath) {
+    async startPaymentDoNotUse(amount, name, returnPath, mail) {
+
+        let total = 0;
+        for (let i = 0; i < amount.length; i++) {
+            // Convertir chaque élément en nombre
+            let value = parseFloat(amount[i]); // ou utiliser Number(amount[i])
+
+            // Vérifier si la conversion a réussi
+            if (!isNaN(value)) {
+                total += value; // Ajouter à total si c'est un nombre valide
+            }
+        }
 
         const data = {
             "amount": amount,
             "name": name,
-            "returnPath": returnPath
+            "returnPath": returnPath,
+            "mail": {
+                "subject": mail.subject,
+                "htmlString" : mail.htmlString
+            }
         };
 
         try {
