@@ -27,8 +27,13 @@ function historiqueController($uri,$apiKey) {
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
 
+            if(!isset($json["description_hist"]) || !isset($json["id_secteur"]) || !isset($json["id_user"] )){
+                exit_with_message("", 403);
+            }
+
             $HistoriserService = new historiqueService();
-            var_dump('te');
+
+            $HistoriserService->createhistorique($json["description_hist"], $json["id_secteur"], $json["id_user"]);
 
 
             break;
