@@ -20,7 +20,7 @@ function mailController($uri, $apiKey)
                 exit_with_message("Need the subject the htmlString, and the emailToSend parameter");
             }
 
-            $newsletterSender = new NewsletterSender("PA AuTempsDonnee");
+            $newsletterSender = new NewsletterSender("NO MORE WASTE");
             $mailFailed = $newsletterSender->sendNewsletter($json["subject"], $json["htmlString"], $json["emailToSend"]);
             exit_with_content($mailFailed);
 
