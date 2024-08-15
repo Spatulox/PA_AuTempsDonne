@@ -35,7 +35,7 @@ class ProduitRepository
         exit_with_content($array);
     }
 
-    function getProduitId($id)
+    function getProduitId($id,$apikey)
     {
         $request = selectDB("PRODUIT", "*", "id_produit=".$id, "bool")[0];
 
@@ -48,10 +48,18 @@ class ProduitRepository
 
         $model = new ProduitModel($request["id_produit"], $request["nom_produit"], $request["id_type"], $type);
 
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "detaille produit " .$request["id_produit"] ." .";
+        $id_secteur = 2;
+        $id_user =getIdUserFromApiKey($apikey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         exit_with_content($model);
     }
 
-    function createProduit($nom_produit, $id_type){
+    function createProduit($nom_produit, $id_type,$apikey){
         $request = selectDB("PRODUIT", "*", "nom_produit='".$nom_produit."'", "bool");
 
         if($request){
@@ -60,9 +68,27 @@ class ProduitRepository
 
          $res= insertDB("PRODUIT", ["nom_produit", "id_type"], [$nom_produit, $id_type]);
 
+
+
         if($res==true) {
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit has been created " .$request["id_produit"] ." .";
+            $id_secteur = 2;
+            $id_user =getIdUserFromApiKey($apikey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
             exit_with_message("Produit has been created", 200);
         }else{
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not created .";
+            $id_secteur = 2;
+            $id_user =getIdUserFromApiKey($apikey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
             exit_with_message("Produit not created", 500);
 
         }
@@ -70,12 +96,27 @@ class ProduitRepository
 
     }
 
-    function deleteProduitId($id){
+    function deleteProduitId($id,$apikey){
         $request = deleteDB("PRODUIT", "id_produit=".$id, "bool");
 
         if($request){
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit has been deleted.";
+            $id_secteur = 2;
+            $id_user =getIdUserFromApiKey($apikey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
             exit_with_message("Produit has been deleted", 200);
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 2;
+        $id_user =getIdUserFromApiKey($apikey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 
         exit_with_message("Produit not deleted", 200);
 

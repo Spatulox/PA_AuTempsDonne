@@ -16,7 +16,7 @@ function collectController($uri, $apikey) {
             }
 
             if($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)) {
-                $produitService->getProduitByID($uri[3]);
+                $produitService->getProduitByID($uri[3],$apikey);
             }elseif ($uri[3]=="type"){
                 $produitService->getType();
             }
@@ -43,7 +43,7 @@ function collectController($uri, $apikey) {
 
             $produitService = new produitService();
 
-            $produitService->createProduit($json["nom_produit"], $json["type"]);
+            $produitService->createProduit($json["nom_produit"], $json["type"],$apikey);
 
 
             break;
@@ -65,7 +65,7 @@ function collectController($uri, $apikey) {
 
             $produitService = new produitService();
 
-            $produitService->deleteProduit($uri[3]);
+            $produitService->deleteProduit($uri[3],$apikey);
 
             break;
 
