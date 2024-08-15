@@ -11,19 +11,30 @@ class HistoriqueRepository
 
     function getAllHistorique()
     {
-        $request = selectDB("HISTORIQUE", "*", "-1", "bool");
-        if(!$request){
+
+        $request = selectJoinDB("HISTORIQUE hist", "*","inner join SECTEUR sec on sec.id_secteur = hist.id_secteur ", "-1");
+
+
+        if (!$request) {
             exit_with_message("Nothing to show", 200);
         }
 
+
         $array = [];
 
-        for ($i = 0; $i<count($request);$i++){
 
-            $secteur = selectDB("id_secteur", "*", "id_secteur=".$request[$i]["id_secteur"])[0]["secteur"];
-            $model = new HistoriqueModel($request[$i]["id_historique"], $request[$i]["description_hist"],
-                $request[$i]["heure_historisation"],$request[$i]["id_secteur"],$request[$i]["id_user"], $secteur);
-            $array[$i] = $model;
+        for ($i = 0; $i < count($request); $i++) {
+
+            $historique = [
+                "id_historique" => $request[$i]["id_historique"],
+                "description_hist" => $request[$i]["description_hist"],
+                "heure_historisation" => $request[$i]["heure_historisation"],
+                "id_secteur" => $request[$i]["id_secteur"],
+                "nom_secteur" => $request[$i]["nom_secteur"],
+                "id_user" => $request[$i]["id_user"]
+            ];
+
+            $array[$i] = $historique;
         }
 
         exit_with_content($array);
@@ -31,19 +42,9 @@ class HistoriqueRepository
 
     //-------------------------------------------------------------------------------------------------------------------------------
 
-    function createHistorique($description_hist, $id_secteur,$id_user)
+    function Createhistorique($description_hist ,$id_secteur ,$id_user)
     {
-
-        $res= insertDB("HISTORIQUE", ["description_hist","heure_historisation","id_secteur", "id_user"], [$description_hist, getdate() ,$id_secteur,$id_user]);
-
-        if($res==true) {
-            exit_with_message("HISTORIQUE has been created", 200);
-        }else{
-            exit_with_message("HISTORIQUE not created", 500);
-
-        }
-
-
+        insertDB("HISTORIQUE", ["description_hist","heure_historisation","id_secteur", "id_user"], [$description_hist, date('Y-m-d H:i:s') ,$id_secteur,$id_user]);
     }
 
 
