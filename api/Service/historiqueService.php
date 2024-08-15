@@ -10,9 +10,14 @@ class historiqueService
 
     function getAllHistory(){
 
-
         $HistoriqueRepository = new HistoriqueRepository();
         $HistoriqueRepository->getAllHistorique();
+    }
+
+    function CreateHistorique($description_hist ,$id_secteur ,$id_user){
+
+        $HistoriqueRepository = new HistoriqueRepository();
+        $HistoriqueRepository->createHistorique($description_hist ,$id_secteur ,$id_user);
     }
 
 }
