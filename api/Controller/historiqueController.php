@@ -1,16 +1,25 @@
 <?php
 
 include_once('./Service/historiqueService.php');
-include_once('./Models/historiqueModel.php');
-function historiqueController($uri) {
+include_once('./Models/HistoriqueModel.php');
 
-    $historiqueService = new HistoriqueService();
+function historiqueController($uri,$apiKey) {
+
+
 
     switch ($_SERVER['REQUEST_METHOD']) {
 
         case 'GET':
 
-            exit_with_message("Wtf, why are you here bro", 500);
+            if($apiKey == null){
+                exit_with_message("Unauthorized, need the apikey", 403);
+            }
+
+            $HistoriserService = new historiqueService();
+            if(!$uri[3]){
+                exit_with_content($HistoriserService->getAllHistory($apiKey));
+            }
+
 
             break;
         case 'POST':
@@ -18,8 +27,8 @@ function historiqueController($uri) {
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
 
-            $HistoriserService = new historiserService();
-            echo 'te';
+            $HistoriserService = new historiqueService();
+            var_dump('te');
 
 
             break;
