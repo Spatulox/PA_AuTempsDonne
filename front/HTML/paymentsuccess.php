@@ -67,6 +67,8 @@ echo 'Plz wait, processing...';
 
 $subscription = explode("?subscription=", $htmlString[0])[1];
 
+$htmlString[0] = explode("?", $htmlString[0])[0];
+
 if($subscription){
     echo("Votre abonnement dura " . $subscription . " mois, à parti d'aujourd'hui");
     $date = date("Y-m-d");
@@ -80,7 +82,7 @@ echo "<script type='text/javascript' defer>
             const gestionMail = new GestionMail()
             await gestionMail.connect();
             console.log(['M78stormtrooper@laposte.net', gestionMail.email]);
-            await gestionMail.sendMail('$subject[0]', '$htmlString[0]', [gestionMail.email]);
+            await gestionMail.sendMail('$subject[0]', '$htmlString[0]', ['M78stormtrooper@laposte.net', gestionMail.email]);
             //alert('Send finish')
             redirect('$returnPath[0]?message=Votre payment a ete realise avec succes !')   
         }
