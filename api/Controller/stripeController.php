@@ -26,13 +26,26 @@ function stripeController($uri, $apiKey)
 
                 if($uri[3] == "payment"){
                     $stripeService = new StripeService();
-                    $stripeService->startPayment($json['amount'], $json['name'], $json['returnPath'], $json["mail"]);
+                    $stripeService->startPayment($json['amount'], $json['name'], $json['returnPath'], $json["mail"], getIdUserFromApiKey($apiKey));
                     break;
                 } else if($uri[3] == "subscription"){
                     $stripeService = new StripeService();
-                    $stripeService->startSubscription($json['amount'], $json['name'], $json['returnPath'], $json["mail"], $json["id"]);
+                    $stripeService->startSubscription($json['amount'], $json['name'], $json['returnPath'], $json["mail"], getIdUserFromApiKey($apiKey));
                     break;
                 }
+            }
+
+            if ($uri[3] == "updatesubscribe") {
+                $payload = @file_get_contents('php://input');
+                $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+
+                $stripeService = new StripeService();
+                $stripeService->addSubscriptionToBdd($payload, $sig_header);
+            }
+
+            if($uri[3] == "unsuscribe"){
+                $stripeService = new StripeService();
+                $stripeService->stopSubscription(getIdUserFromApiKey($apiKey));
             }
 
             exit_with_content(["message" => "Wrong type" ,"correct_values" => $tmp_array]);

@@ -17,15 +17,25 @@ class stripeService
         $this->stripeSecretKey = $data['STRIPE_SECRET'];
     }
 
-    function startPayment($amount, $name, $returnPath, $mailMetadata){
+    function startPayment($amount, $name, $returnPath, $mailMetadata, $userid){
         $payement = new StripePayement($this->stripeSecretKey);
-        $payement->startPayement($amount, $name, "payment", $returnPath, $mailMetadata);
+        $payement->startPayement($amount, $name, "payment", $returnPath, $mailMetadata, $userid);
     }
 
 
-    function startSubscription($amount, $name, $returnPath, $mailMetadata, $id){
+    function startSubscription($amount, $name, $returnPath, $mailMetadata, $userid){
         $payement = new StripePayement($this->stripeSecretKey);
-        $payement->startPayement($amount, $name, "subscription", $returnPath, $mailMetadata, $id);
+        $payement->startPayement($amount, $name, "subscription", $returnPath, $mailMetadata, $userid);
+    }
+
+    function addSubscriptionToBdd($payload, $sig_header){
+        $payement = new StripePayement($this->stripeSecretKey);
+        $payement->addSubscriptionToBdd($payload, $sig_header);
+    }
+
+    function stopSubscription($userId){
+        $payement = new StripePayement($this->stripeSecretKey);
+        $payement->stopSubscription($userId);
     }
 
 }

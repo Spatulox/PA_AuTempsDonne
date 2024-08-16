@@ -97,6 +97,7 @@ CREATE TABLE UTILISATEUR(
    premium INT NOT NULL,
    date_premium DATE,
    month_premium INT,
+   premium_stripe_id VARCHAR(255),
    id_adresse INT NOT NULL,
    id_entrepot INT,
    id_index INT NOT NULL,
