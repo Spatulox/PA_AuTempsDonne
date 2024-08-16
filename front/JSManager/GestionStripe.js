@@ -4,8 +4,10 @@ class GestionStripe extends User {
     // to the page you want to use strip
 
     stripe = null
-
-    async startStripeUseThisOne(amount, name, mail, returnPath = null) {
+    /*
+     * Used to start a payment
+     */
+    async startStripePaymentUseThisOne(amount, name, mail, returnPath = null) {
         startLoading()
 
         try{
@@ -19,7 +21,33 @@ class GestionStripe extends User {
         }
 
         try {
-            await this.startPaymentDoNotUse(amount, name, returnPath, mail);
+            await this.startPaymentDoNotUse(amount, name, returnPath, mail, "payment");
+        } catch (error) {
+            console.log('Erreur lors du démarrage du paiement:', error);
+        } finally {
+            stopLoading();
+        }
+
+    }
+
+    /*
+     * Used to start a subscription
+     */
+    async startStripeSubscriptionUseThisOne(amount, name, mail, returnPath = null) {
+        startLoading()
+
+        try{
+            this.stripe = Stripe('pk_test_51PmzntFP4zc2O5WMI4vIV6PJuCwgI98zC5bvSjUoBFkBjQ32vONiDvEw4wWezAbeNYiIVI4MuF52OiI5v7xzmTBf00KmHRrRPt');
+        }
+        catch{
+            console.log('PLS ADD THIS TO THE PAGE : <script src=\"https://js.stripe.com/v3/\" data-js-isolation=\"on\"></script>')
+            popup("If you're a dev, plz check the console")
+            stopLoading()
+            return
+        }
+
+        try {
+            await this.startPaymentDoNotUse(amount, name, returnPath, mail, "subscription");
         } catch (error) {
             console.log('Erreur lors du démarrage du paiement:', error);
         } finally {
@@ -34,7 +62,7 @@ class GestionStripe extends User {
      * @param name
      * @returns {Promise<void>}
      */
-    async startPaymentDoNotUse(amount, name, returnPath, mail) {
+    async startPaymentDoNotUse(amount, name, returnPath, mail, mode) {
 
         let total = 0;
         for (let i = 0; i < amount.length; i++) {
@@ -58,7 +86,7 @@ class GestionStripe extends User {
         };
 
         try {
-            const response = await fetch(this.adresse + '/stripe/payment/', this.optionPost(data));
+            const response = await fetch(this.adresse + `/stripe/${mode}/`, this.optionPost(data));
             if (!response.ok) {
                 console.log(`HTTP error! status: ${response.status} : ${response.statusText}`);
                 console.log(await response.text())
