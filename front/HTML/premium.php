@@ -57,15 +57,10 @@
 <script type="text/javascript">
 
     function payerPremium(event){
-
-
-        const htmlString = `<h1>Nous vous remercions pour votre confiance</h1>
-        <h2>Vous avez souscrit a loffre "${event.target.children[0].innerHTML}"</h2>
-        <br>
-        <p>Chaque ${new Date().getDay()} du mois tous les ${event.target.children[3].value} mois votre premium vous sera facture</p>`
+        const htmlString = `<h1>Nous vous remercions pour votre confiance</h1><h2>Vous avez souscrit a loffre "${event.target.children[0].innerHTML}"</h2><br><p>Chaque ${new Date().getDay()} du mois tous les ${event.target.children[4].value} mois votre premium vous sera facture</p>`
 
         const stripe = new GestionStripe()
-        stripe.startStripeSubscriptionUseThisOne([event.target.children[2].value], [event.target.children[0].innerHTML], {"subject":event.target.children[0].innerHTML, "htmlString":htmlString}, "moncompte.php")
+        stripe.startStripeSubscriptionUseThisOne([event.target.children[3].value], [event.target.children[0].innerHTML], {"subject":event.target.children[0].innerHTML, "htmlString":htmlString}, "moncompte.php")
     }
 </script>
 
