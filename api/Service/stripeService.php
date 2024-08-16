@@ -17,15 +17,15 @@ class stripeService
         $this->stripeSecretKey = $data['STRIPE_SECRET'];
     }
 
-    function startPayment($amount, $name, $mode, $returnPath, $mailMetadata){
+    function startPayment($amount, $name, $returnPath, $mailMetadata){
         $payement = new StripePayement($this->stripeSecretKey);
-        $payement->startPayement($amount, $name, $mode, $returnPath, $mailMetadata);
+        $payement->startPayement($amount, $name, "payment", $returnPath, $mailMetadata);
     }
 
-    /*
-    function startSubscription($amount, $name, $mode){
-        $payement = new StripePayement();
-        $payement->startPayement($amount, $name, $mode);
+
+    function startSubscription($amount, $name, $returnPath, $mailMetadata, $id){
+        $payement = new StripePayement($this->stripeSecretKey);
+        $payement->startPayement($amount, $name, "subscription", $returnPath, $mailMetadata, $id);
     }
-    */
+
 }

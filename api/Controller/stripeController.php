@@ -23,9 +23,16 @@ function stripeController($uri, $apiKey)
 
 
             if(in_array($uri[3], $tmp_array)) {
-                $stripeService = new StripeService();
-                $stripeService->startPayment($json['amount'], $json['name'], $uri[3], $json['returnPath'], $json["mail"]);
-                break;
+
+                if($uri[3] == "payment"){
+                    $stripeService = new StripeService();
+                    $stripeService->startPayment($json['amount'], $json['name'], $json['returnPath'], $json["mail"]);
+                    break;
+                } else if($uri[3] == "subscription"){
+                    $stripeService = new StripeService();
+                    $stripeService->startSubscription($json['amount'], $json['name'], $json['returnPath'], $json["mail"], $json["id"]);
+                    break;
+                }
             }
 
             exit_with_content(["message" => "Wrong type" ,"correct_values" => $tmp_array]);
