@@ -15,6 +15,8 @@ class User extends General{
         this.entrepot = null
         this.entrepotString = null
         this.index = null
+        this.premiumDate = null
+        this.premiumTime = null
 
         this.roleArray = ["roleBait", "Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
 
@@ -97,6 +99,8 @@ class User extends General{
         }
         this.setVar(rep)
         this.setCookie("apikey", rep.apikey, 7);
+        this.setCookie("premiumTime", rep.premiumTime, 7)
+        this.setCookie("premiumDate", rep.premiumDate, 7)
         await this.myEntrepot()
         return true
     }
@@ -136,7 +140,9 @@ class User extends General{
                 date_inscription: this.date_inscription,
                 role: this.role,
                 roleString : this.roleString,
-                entrepot: this.entrepot
+                entrepot: this.entrepot,
+                premiumDate: this.premiumDate,
+                premiumTime: this.premiumTime
             };
         }
     }
@@ -235,6 +241,8 @@ class User extends General{
         this.entrepot = rep.id_entrepot
         this.roleString = this.roleArray[rep.id_role]
         this.index = rep.id_index
+        this.premiumDate = rep.premiumDate
+        this.premiumTime = rep.premiumTime
 
         return true
     }
@@ -302,6 +310,8 @@ class User extends General{
         console.log("role string : "+this.roleString)
         console.log("entrepot : "+this.entrepot)
         console.log("entrepot string : "+this.entrepotString)
+        console.log("Premium Date : "+this.premiumDate)
+        console.log("Premium Time : "+this.premiumTime)
     }
 
 }
