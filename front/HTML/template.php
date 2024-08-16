@@ -30,7 +30,12 @@
             <script type="text/javascript">
                 async function payer() {
                     const stripe = new GestionStripe()
-                    stripe.startStripeUseThisOne([12], ["test"], {"subject":"MailObject", "htmlString":`MailBody`}, "optionalReturnPath")
+                    // Normal payment
+                    stripe.startStripePaymentUseThisOne([12], ["test"], {"subject":"MailObject", "htmlString":`MailBody`}, "optionalReturnPath")
+
+                    // Subscription
+                    //stripe.startStripeSubscriptionUseThisOne(["price_1PoQAfFP4zc2O5WMWbSl8bPa"], ["Don"], {"subject":"Don", "htmlString":`<h1>Nous vous remercions pour votre don de ${prix.value} euro !! </h1>`}, "don.php")
+                    //                                          "    product Id from Stripe    "
                 }
             </script>
 
