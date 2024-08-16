@@ -153,7 +153,7 @@
   "moncompte": {
     "title": "Account",
     "premium": "Upgrade to premium",
-    "premiumTo" : "Premium to",
+    "premiumDayLeft" : " premium days left",
     "sectionTitle": "Account",
     "Ticketlink": "http://localhost:8085",
     "Ticket": "Créer un ticket",
