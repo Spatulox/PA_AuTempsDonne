@@ -9,18 +9,18 @@ class UserService {
     /*
      *  Récupère tous les utilisateurs
     */
-    public function getAllUsers() {
+    public function getAllUsers($apiKey) {
 
         $userRepository = new UserRepository();
-        return $userRepository->getUsers();
+        return $userRepository->getUsers($apiKey);
     }
 
     /*
      *  Récupère tous les utilisateurs en attente de validation
     */
-    public function getAllWaitingUsers() {
+    public function getAllWaitingUsers($apiKey) {
         $userRepository = new UserRepository();
-        return $userRepository->getWaitUsers();
+        return $userRepository->getWaitUsers($apiKey);
     }
 
     /*
@@ -35,9 +35,9 @@ class UserService {
      *  Récupère un utilisateur par son id
     */
 
-    public function getUserById($id) {
+    public function getUserById($id, $apiKey) {
         $userRepository = new UserRepository();
-        return $userRepository->getUser($id);
+        return $userRepository->getUser($id,$apiKey);
     }
 
     /*
@@ -67,7 +67,7 @@ class UserService {
         $id_user = getIdUserFromApiKey($apiKey);
 
 
-        $idUserUpdate = getIdUSerFromEmail($dataArray["email"]);
+        $idUserUpdate = getIdUSerFromEmail($dataArray["email"],$apiKey);
 
         if($role > 2 && $id_user != $idUserUpdate){
             exit_with_message("Vous ne pouvez pas update un utilisateur qui n'est pas vous");
@@ -99,10 +99,10 @@ class UserService {
 
     }
 
-    public function updateUserValidate($id_user, $id_index){
+    public function updateUserValidate($id_user, $id_index, $apiKey){
         $userRepository = new UserRepository();
-        $userRepository->updateUserValidate($id_user, $id_index);
-        exit_with_content($this->getUserById($id_user));
+        $userRepository->updateUserValidate($id_user, $id_index,);
+        exit_with_content($this->getUserById($id_user,$apiKey));
     }
 
 
@@ -155,7 +155,7 @@ class UserService {
             exit_with_message("vous n'avez pas le droit update ", 403);
         }
         $userRepository = new UserRepository();
-        return $userRepository->getAllDispoUsers();
+        return $userRepository->getAllDispoUsers($apiKey);
     }
 
     public function updatedispoUser($apiKey, $id_dispo)
@@ -237,7 +237,7 @@ class UserService {
         }
 
         $userRepository = new UserRepository();
-        return $userRepository->updateRoleUser($role,$id);
+        return $userRepository->updateRoleUser($role,$id,$apiKey);
 
     }
 
@@ -256,7 +256,7 @@ class UserService {
             exit_with_message("error getting dispo ");
         }
         $userRepository = new UserRepository();
-        return $userRepository->GetAllUserDate($id_jour,$date);
+        return $userRepository->GetAllUserDate($id_jour,$date,$apiKey);
     }
 
 }

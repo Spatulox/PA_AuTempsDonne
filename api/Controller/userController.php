@@ -26,13 +26,13 @@ function userController($uri, $apiKey) {
             // If a number exist after the /user
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
                 $userService = new UserService();
-                exit_with_content($userService->getUserById($uri[3]));
+                exit_with_content($userService->getUserById($uri[3],$apiKey));
             }
 
             // Take all the users if it's an admin/modo
             elseif($uri[3] == "all" && $role < 3){
                 $userService = new UserService();
-                exit_with_content($userService->getAllUsers());
+                exit_with_content($userService->getAllUsers($apiKey));
             }
 
             // Take all the users if it's an admin/modo
@@ -49,7 +49,7 @@ function userController($uri, $apiKey) {
 
             elseif($uri[3] == "validate" && $role < 3){
                 $userService = new UserService();
-                exit_with_content($userService->getAllWaitingUsers());
+                exit_with_content($userService->getAllWaitingUsers($apiKey));
             }
             elseif ($uri[3] == "dispoall") {
                 $userService = new UserService();
