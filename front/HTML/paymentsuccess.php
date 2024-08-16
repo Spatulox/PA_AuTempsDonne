@@ -63,14 +63,15 @@ echo '<script type="text/javascript" src="../JSManager/User.js"></script>';
 echo '<script type="text/javascript" src="../JSManager/GestionMail.js"></script>';
 
 echo 'Plz wait, processing...';
-//echo(explode("?subscription=", $htmlString[0])[0]);
 
 $subscription = explode("?subscription=", $htmlString[0])[1];
 
 $htmlString[0] = explode("?", $htmlString[0])[0];
 
+echo "<h1>" . $subject[0] . "</h1>";
+$premiumDate = date("Y-m-d");
 if($subscription){
-    echo("Votre abonnement dura " . $subscription . " mois, à parti d'aujourd'hui");
+    echo("<br><h3>Votre abonnement dura " . $subscription . " mois, à parti d'aujourd'hui</h3>");
     $date = date("Y-m-d");
     updateDB("UTILISATEUR", ["premium", "date_premium", "month_premium"], ["1", $date, $subscription], "apikey='".$apikey."'");
 }
@@ -83,6 +84,9 @@ echo "<script type='text/javascript' defer>
             await gestionMail.connect();
             console.log(['M78stormtrooper@laposte.net', gestionMail.email]);
             await gestionMail.sendMail('$subject[0]', '$htmlString[0]', ['M78stormtrooper@laposte.net', gestionMail.email]);
+            
+            gestionMail.setCookie('premiumDate', $premiumDate, 7)
+            gestionMail.setCookie('premiumTime', $subscription, 7)
             //alert('Send finish')
             redirect('$returnPath[0]?message=Votre payment a ete realise avec succes !')   
         }
