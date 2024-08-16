@@ -50,7 +50,7 @@
 
         /* GESTION DON WITH STRIPE */
         const stripe = new GestionStripe()
-        stripe.startStripeUseThisOne([prix.value], ["Don"], {"subject":"Don", "htmlString":`<h1>Nous vous remercions pour votre don de ${prix.value} euro !! </h1>`}, "don.php")
+        stripe.startStripePaymentUseThisOne([prix.value], ["Don"], {"subject":"Don", "htmlString":`<h1>Nous vous remercions pour votre don de ${prix.value} euro !! </h1>`}, "don.php")
     }
 
 </script>
