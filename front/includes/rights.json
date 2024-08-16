@@ -1,8 +1,8 @@
 {
-  "1": ["admin.php", "user.php", "storehouse.php", "gestPlanning.php", "stock.php", "vehicle.php", "product.php", "gestDon.php", "gestDemandes.php", "gestAddress.php", "stripe.php"],
-  "2": ["admin.php", "user.php", "storehouse.php", "gestPlanning.php", "stock.php", "vehicle.php", "product.php", "gestDon.php", "gestDemandes.php", "gestAddress.php", "stripe.php"],
-  "3": ["entrepots.php"],
-  "4": ["requests.php"],
-  "5": ["requests.php"],
-  "all": ["404.php", "actualites.php", "aide.php", "contact.php", "decouvrir.php", "don.php", "entrepots.php", "index.php", "moncompte.php", "planning.php", "signup_login.php", "etagere.php", "stripe2.php"]
+  "1": ["admin.php", "user.php", "storehouse.php", "gestPlanning.php", "stock.php", "vehicle.php", "product.php", "gestDon.php", "gestDemandes.php", "gestAddress.php", "stripe.php", "premium.php"],
+  "2": ["admin.php", "user.php", "storehouse.php", "gestPlanning.php", "stock.php", "vehicle.php", "product.php", "gestDon.php", "gestDemandes.php", "gestAddress.php", "stripe.php", "premium.php"],
+  "3": ["entrepots.php", "premium.php"],
+  "4": ["requests.php", "premium.php"],
+  "5": ["requests.php", "premium.php"],
+  "all": ["404.php", "actualites.php", "aide.php", "contact.php", "decouvrir.php", "don.php", "entrepots.php", "index.php", "moncompte.php", "planning.php", "signup_login.php", "etagere.php"]
 }
