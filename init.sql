@@ -95,6 +95,8 @@ CREATE TABLE UTILISATEUR(
    apikey VARCHAR(255),
    mdp VARCHAR(255) NOT NULL,
    premium INT NOT NULL,
+   date_premium DATE,
+   month_premium INT,
    id_adresse INT NOT NULL,
    id_entrepot INT,
    id_index INT NOT NULL,
