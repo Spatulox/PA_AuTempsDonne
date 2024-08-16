@@ -54,7 +54,7 @@ if($returnPath == null) {
 } else {
     explode("?", $returnPath[0])[0];
 }
-
+echo'<html>';
 echo '<script type="text/javascript" src="../JS/ledicodesmotsenjs.js"></script>';
 echo '<script type="text/javascript" src="../JS/utils.js"></script>';
 
@@ -63,7 +63,15 @@ echo '<script type="text/javascript" src="../JSManager/User.js"></script>';
 echo '<script type="text/javascript" src="../JSManager/GestionMail.js"></script>';
 
 echo 'Plz wait, processing...';
-echo($htmlString[0]);
+//echo(explode("?subscription=", $htmlString[0])[0]);
+
+$subscription = explode("?subscription=", $htmlString[0])[1];
+
+if($subscription){
+    echo("Votre abonnement dura " . $subscription . " mois, à parti d'aujourd'hui");
+    $date = date("Y-m-d");
+    updateDB("UTILISATEUR", ["premium", "date_premium", "month_premium"], ["1", $date, $subscription], "apikey='".$apikey."'");
+}
 
 echo "<script type='text/javascript' defer>
         let amount = " .  array_sum($values) . "
@@ -80,5 +88,16 @@ echo "<script type='text/javascript' defer>
         send()
         
 </script>";
-exit();
+?>
+<style>
+    html {
+        height: 100vh;
+        width: 100vw;
+        cursor: wait;
+    }
+</style>
+</html>
+
+
+<?php exit(); ?>
 
