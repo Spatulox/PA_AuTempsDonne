@@ -36,6 +36,21 @@
 
 			<section class="flex flexCenter wrap">
 				<h1 class="width100 textCenter noMarginBottom"><?php echo($data["moncompte"]["sectionTitle"]) ?></h1>
+                <?php if(!isset($_COOKIE["premiumDate"])){
+                    echo '<a href="./premium.php">' . $data["moncompte"]["premium"] .' </a>';
+                } else {
+
+                    $startDate = strtotime($_COOKIE["premiumDate"]);
+
+                    // Calcul de la durée en mois en jours (approximativement 30 jours par mois)
+                    $durationInDays = $_COOKIE["premiumTime"] * 30;
+
+                    // Calcul de la date d'expiration
+                    $expirationDate = $startDate + ($durationInDays * 86400);
+
+                    echo $data["moncompte"]["premiumTo"] . " " . date("Y-m-d", $expirationDate);
+                }
+                ?>
 			</section>
 
 			<section class="width80 border marginAuto marginTop30 flex flexAround nowrap">
