@@ -47,8 +47,10 @@
 
                     // Calcul de la date d'expiration
                     $expirationDate = $startDate + ($durationInDays * 86400);
+                    $currentDate = time();
+                    $daysRemaining = ($expirationDate - $currentDate) / 86400;
 
-                    echo $data["moncompte"]["premiumTo"] . " " . date("Y-m-d", $expirationDate);
+                    echo floor($daysRemaining) . $data["moncompte"]["premiumDayLeft"];
                 }
                 ?>
 			</section>

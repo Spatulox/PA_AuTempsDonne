@@ -99,8 +99,10 @@ class User extends General{
         }
         this.setVar(rep)
         this.setCookie("apikey", rep.apikey, 7);
-        this.setCookie("premiumTime", rep.premiumTime, 7)
-        this.setCookie("premiumDate", rep.premiumDate, 7)
+        if(rep.premiumTime){
+            this.setCookie("premiumTime", rep.premiumTime, 7)
+            this.setCookie("premiumDate", rep.premiumDate, 7)
+        }
         await this.myEntrepot()
         return true
     }
