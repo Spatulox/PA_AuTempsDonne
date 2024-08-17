@@ -243,7 +243,7 @@
 
 
         // Fetch the api
-        const response = await fetch("http://localhost:8081/index.php/user", options)
+        const response = await fetch(ipAddressApi+"/user", options)
 
         if (!response.ok) {
             const text = await response.json()
@@ -334,7 +334,7 @@
 
 
         // Fetch the api
-        const response = await fetch("http://localhost:8081/index.php/user", options)
+        const response = await fetch(ipAddressApi+"/user", options)
 
         if (!response.ok) {
             const text = await response.json()

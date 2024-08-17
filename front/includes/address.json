@@ -1,4 +1,5 @@
 {
   "api": "http://localhost:8081/index.php",
+  "front": "http://localhost:8083/HTML",
   "ticket": "http://localhost:8085"
 }

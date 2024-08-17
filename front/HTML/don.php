@@ -5,6 +5,7 @@
 <head>
 
     <?php include("../includes/head.php"); ?>
+    <script src="https://js.stripe.com/v3/" data-js-isolation="on"></script>
 
     <title><?php echo($data["don"]["title"]) ?></title>
 </head>
@@ -40,55 +41,17 @@
         startLoading()
         const prix = document.getElementById("prix")
 
-        if(prix == null){
-            popup("Error when creating don, nothing was retrieve from your account")
+        if(prix.value === ""){
+            popup("You need to specify the amount, nothing was retrieve from your account")
+            stopLoading()
             return
         }
 
-        let apikey = getCookie("apikey")
 
-        const data = {
-            "prix":prix.value,
-            "date":today()
-        }
-
-
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                "apikey" : apikey
-            },
-            body: JSON.stringify(data)
-        };
-
-        const response = await fetch("http://localhost:8081/index.php/don/create", options)
-
-        if (!response.ok) {
-            const text = await response.json()
-            if (text.hasOwnProperty("message")) {
-                popup(text.message)
-            }
-            stopLoading()
-            return false
-        }
-
-        const message = await response.json()
-        if (message.hasOwnProperty("message")) {
-            popup(message.message)
-            stopLoading()
-            return true
-        }
-
-        stopLoading()
+        /* GESTION DON WITH STRIPE */
+        const stripe = new GestionStripe()
+        stripe.startStripePaymentUseThisOne([prix.value], ["Don"], {"subject":"Don", "htmlString":`<h1>Nous vous remercions pour votre don de ${prix.value} euro !! </h1>`}, "don.php")
     }
-
-    async function onload() {
-        //startLoading()
-        //stopLoading()
-    }
-
-    onload()
 
 </script>
 

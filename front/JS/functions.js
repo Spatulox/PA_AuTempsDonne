@@ -1,6 +1,7 @@
     // functions.js
 
 async function connexion() {
+    startLoading()
 
     const email = document.getElementById("emailCo").value;
     const password = document.getElementById("motdepasseCo").value;
@@ -18,17 +19,20 @@ async function connexion() {
             return
         }
         await user.connect()
+        stopLoading()
         return user
     })
 
     const user = await new User(email, password)
     //const user = await new User()
     if(!await user.connect()){
+        stopLoading()
         return
     }
 
     if(window.location.href.includes("?return=")){
         redirect(getParamFromUrl("return"))
+        stopLoading()
         return
     }
 

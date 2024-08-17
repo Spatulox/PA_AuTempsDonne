@@ -2,7 +2,7 @@ class User extends General{
 
     constructor(email = null, password = null) {
         super();
-        this.adresse = "http://localhost:8081/index.php";
+        this.adresse = ipAddressApi;
         this.apikey = null;
         this.nom = null;
         this.prenom = null;
@@ -15,6 +15,8 @@ class User extends General{
         this.entrepot = null
         this.entrepotString = null
         this.index = null
+        this.premiumDate = null
+        this.premiumTime = null
 
         this.roleArray = ["roleBait", "Dirigeant", "Administrateur", "Bénévole", "Bénéficiaire", "Prestataire"]
 
@@ -42,7 +44,7 @@ class User extends General{
         if(cookie == null && etagere !== "etagere.php"){
             // The message is only for debug, it gonna be deleted anyway
             alertDebug("Vous ne pouvez pas vous connecter (const user = new User() ) sans avoir un cookie, vous devez mettre l'email et le mot de passe")
-            redirect("./signup_login.php")
+            redirect("./signup_login.php?return=" + window.location.href)
             return false
         }
         this.apikey = cookie
@@ -69,6 +71,14 @@ class User extends General{
             return true
         }
 
+        // -------------------------------PEUT ETRE PAS OUF EN FAIT, JE SAIS PAS----------------------------- //
+        if(this.getCookie("apikey")){
+            console.log("Je passe là")
+            this.apikey = this.getCookie("apikey")
+            this.me(true)
+            return true
+        }
+
         // ??????????????????????????????????????????????????????????????????????
         /*// There is thing stored inside the class
         if(this.email == "" || this.password == ""){
@@ -89,6 +99,10 @@ class User extends General{
         }
         this.setVar(rep)
         this.setCookie("apikey", rep.apikey, 7);
+        if(rep.premiumTime){
+            this.setCookie("premiumTime", rep.premiumTime, 7)
+            this.setCookie("premiumDate", rep.premiumDate, 7)
+        }
         await this.myEntrepot()
         return true
     }
@@ -128,7 +142,9 @@ class User extends General{
                 date_inscription: this.date_inscription,
                 role: this.role,
                 roleString : this.roleString,
-                entrepot: this.entrepot
+                entrepot: this.entrepot,
+                premiumDate: this.premiumDate,
+                premiumTime: this.premiumTime
             };
         }
     }
@@ -227,6 +243,8 @@ class User extends General{
         this.entrepot = rep.id_entrepot
         this.roleString = this.roleArray[rep.id_role]
         this.index = rep.id_index
+        this.premiumDate = rep.premiumDate
+        this.premiumTime = rep.premiumTime
 
         return true
     }
@@ -294,6 +312,8 @@ class User extends General{
         console.log("role string : "+this.roleString)
         console.log("entrepot : "+this.entrepot)
         console.log("entrepot string : "+this.entrepotString)
+        console.log("Premium Date : "+this.premiumDate)
+        console.log("Premium Time : "+this.premiumTime)
     }
 
 }

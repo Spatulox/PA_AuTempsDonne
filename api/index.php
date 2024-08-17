@@ -15,6 +15,8 @@ include_once './Controller/stockController.php';
 include_once './Controller/vehiculeController.php';
 include_once './Controller/donController.php';
 include_once './Controller/etagereController.php';
+include_once './Controller/stripeController.php';
+include_once './Controller/mailController.php';
 
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
@@ -23,7 +25,7 @@ error_reporting(E_ERROR | E_PARSE);
 // le contenu renvoyé par le serveur sera du JSON
 header("Content-Type: application/json; charset=utf8");
 
-// Autorise les requêtes depuis localhost
+// Autorise les requêtes depuis local host
 header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS,PATCH');
 header('Access-Control-Allow-Headers: Origin, Content-Type, Authorization, apikey, Accept');
@@ -154,11 +156,9 @@ function controller($uri) {
         case 'user':
             userController($uri, $apiKey);
             break;
-
         case 'entrepot':
             entrepotController($uri, $apiKey);
             break;
-
         case 'planning':
             planningController($uri, $apiKey);
             break;
@@ -171,11 +171,9 @@ function controller($uri) {
         case 'adresse':
             adresseController($uri, $apiKey);
             break;
-
         case 'produit':
             collectController($uri, $apiKey);
             break;
-
         case 'demande':
             demandeController($uri, $apiKey);
             break;
@@ -190,6 +188,13 @@ function controller($uri) {
             break;
         case 'etagere':
             etagereController($uri);
+            break;
+        case 'stripe':
+            stripeController($uri, $apiKey);
+            break;
+
+        case 'mail':
+            mailController($uri, $apiKey);
             break;
 
 

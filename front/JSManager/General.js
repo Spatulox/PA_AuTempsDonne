@@ -3,7 +3,7 @@ class General {
     constructor() {
         this.lang = getCookie("lang")
         this.msg = dico[this.lang]
-        this.frontaddresse = "http://localhost:8083/HTML/";
+        this.frontaddresse = ipAddressFront;
     }
 
 
@@ -33,7 +33,7 @@ class General {
         } else {
             const text = await response.json()
             if(showMessage === true){
-                alertDebug(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
+                alert(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
             }
             if (text.hasOwnProperty("message")) {
                 if(showMessage === true){

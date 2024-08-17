@@ -23,6 +23,9 @@ services:
       - ./api:/var/www/html/
     depends_on:
       - database
+    dns:
+    - 1.1.1.1
+    - 1.0.0.1
 
   ticket:
     build: 

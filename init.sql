@@ -95,6 +95,9 @@ CREATE TABLE UTILISATEUR(
    apikey VARCHAR(255),
    mdp VARCHAR(255) NOT NULL,
    premium INT NOT NULL,
+   date_premium DATE,
+   month_premium INT,
+   premium_stripe_id VARCHAR(255),
    id_adresse INT NOT NULL,
    id_entrepot INT,
    id_index INT NOT NULL,
@@ -303,6 +306,14 @@ CREATE TABLE FICHIER(
    FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
 );
 
+CREATE TABLE PAYMENTHISTORY(
+    id_index INT,
+    index_user INT NOT NULL,
+    amount INT NOT NULL,
+    id_product VARCHAR(255) NOT NULL,
+    success INT NOT NULL,
+    FOREIGN KEY(index_user) REFERENCES UTILISATEUR(id_user)
+);
 
 CREATE TABLE DISPONIBILITE(
    id_user INT,
@@ -456,6 +467,9 @@ INSERT INTO TABINDEX (index_nom) VALUES
 
 
 INSERT INTO UTILISATEUR (nom, prenom, email, telephone, date_inscription, apikey, mdp, premium, id_adresse, id_entrepot, id_index, id_role) VALUES
+(
+'Unknow', 'Unknow', 'Unknow', '0635742201', '2024-04-04', NULL, 'Unknow', 0, 3, NULL, 2, 1
+),
 (
 'Doe', 'John', 'john.doe@gmail.com', '0635742201', '2024-04-04', NULL, '03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4', 0, 3, NULL, 2, 1
 ),

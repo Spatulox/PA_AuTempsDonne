@@ -306,7 +306,7 @@ function optionPost(formData){
     let cookie = getCookie("apikey")
     if(cookie === null){
         alert("Le Cookie ets nul, on ne peux pas s'authentifier")
-        window.location.href("http://localhost:8083/HTML/signup_login.php")
+        window.location.href(ipAddressApi+"/signup_login.php")
         return
     }
 
@@ -329,7 +329,7 @@ function optionGet(){
     let cookie = getCookie("apikey")
     if(cookie === null){
         alert("Le Cookie est nul, on ne peux pas s'authentifier")
-        window.location.href("http://localhost:8083/HTML/signup_login.php")
+        window.location.href(ipAddressApi+"/signup_login.php")
         return
     }
 

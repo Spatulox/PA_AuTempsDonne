@@ -1,5 +1,8 @@
 // Spatulox
 
+
+const ipAddressApi = "http://localhost:8081/index.php"
+const ipAddressFront = "http://localhost:8083/HTML/"
 function redirect(page, message = null) {
     if (message) {
         window.location.href = page + "?message=" + message;
