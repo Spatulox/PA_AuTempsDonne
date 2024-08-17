@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\User;
-
 include_once './Repository/BDD.php';
 include_once './Models/userModel.php';
 include_once './Models/DispoModel.php';
@@ -20,7 +18,8 @@ class UserRepository {
         for ($i=0; $i < count($usersArray); $i++) {
             $address = selectDB("ADRESSE", "*", "id_adresse='".$usersArray[0]['id_adresse']."'")[0]["adresse"];
 
-            $user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $address, $usersArray[$i]['telephone'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index'], $usersArray[$i]['id_entrepot']);
+            $user[$i] = returnUser($usersArray, $address, $i);
+            //$user[$i] = new UserModel($usersArray[$i]['id_ueser'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $address, $usersArray[$i]['telephone'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index'], $usersArray[$i]['id_entrepot']);
         }
         return $user;
     }
@@ -32,8 +31,8 @@ class UserRepository {
 
         $address = selectDB("ADRESSE", "*", "id_adresse='".$user[0]['id_adresse']."'")[0]["adresse"];
 
-
-        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $address, $user[0]['telephone'], $user[0]['id_role'], "hidden", $user[0]['id_index'], $user[0]['id_entrepot']);
+        return returnUser($user, $address);
+        //return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $address, $user[0]['telephone'], $user[0]['id_role'], "hidden", $user[0]['id_index'], $user[0]['id_entrepot']);
     }
 
     //-------------------------------------
@@ -51,7 +50,8 @@ class UserRepository {
         for ($i=0; $i < count($usersArray); $i++) {
             $address = selectDB("ADRESSE", "*", "id_adresse='".$usersArray[0]['id_adresse']."'")[0]["adresse"];
 
-            $user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $address, $usersArray[$i]['telephone'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index'], $usersArray[$i]['id_entrepot']);
+            //$user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $address, $usersArray[$i]['telephone'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index'], $usersArray[$i]['id_entrepot']);
+            $user[$i] = returnUser($usersArray, $address, $i);
         }
 
         return $user;
@@ -68,8 +68,8 @@ class UserRepository {
 
         $address = selectDB("ADRESSE", "*", "id_adresse='".$user[0]['id_adresse']."'")[0]["adresse"];
 
-
-        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $address, $user[0]['telephone'], $user[0]['id_role'], "hidden", $user[0]['id_index'], $user[0]['id_entrepot']);
+        return returnUser($user, $address);
+        //return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $address, $user[0]['telephone'], $user[0]['id_role'], "hidden", $user[0]['id_index'], $user[0]['id_entrepot']);
     }
 
     //-------------------------------------
@@ -125,7 +125,8 @@ class UserRepository {
 
         $user = selectDB('UTILISATEUR', '*', 'email="'.$user[0]['email'].'"');
 
-        return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['adresse'], $user[0]['telephone'], $user[0]['id_role'], $user[0]['apikey'], $user[0]['id_index'], $user[0]['id_entrepot']);
+        return returnUser($user, $address);
+        //return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['adresse'], $user[0]['telephone'], $user[0]['id_role'], $user[0]['apikey'], $user[0]['id_index'], $user[0]['id_entrepot']);
     }
 
     //-------------------------------------
@@ -150,7 +151,8 @@ class UserRepository {
         $user = selectDB('UTILISATEUR', '*', 'email="'.$email.'"');
 
         if(count($user) > 0){
-            return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['adresse'], $user[0]['telephone'], $user[0]['id_role'], $user[0]['apikey'], $user[0]['id_index'], $user[0]['id_entrepot']);
+            return returnUser($user, $user[0]['adresse']);
+            //return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['adresse'], $user[0]['telephone'], $user[0]['id_role'], $user[0]['apikey'], $user[0]['id_index'], $user[0]['id_entrepot']);
         }
         exit_with_message('Email not exist');
 
@@ -236,13 +238,13 @@ class UserRepository {
 
     public function dispoUser($id_dispo, $id)
     {
-        $check =selectDB("DISPONIBILITE" , "*", "id_user=".$id, "bool");
+        $check = selectDB("DISPONIBILITE" , "*", "id_user=".$id, "bool");
         if ($check){
             exit_with_message("User already dispoted",500);
         }
         for ($i = 0; $i <count($id_dispo) ; $i++) {
 
-            $res=insertDB("DISPONIBILITE" ,["id_dispo", "id_user"], [$id_dispo[$i], $id]);
+            $res = insertDB("DISPONIBILITE" ,["id_dispo", "id_user"], [$id_dispo[$i], $id]);
         }
 
         return $this->getDispoUserMe($id);

@@ -98,7 +98,7 @@ function userController($uri, $apiKey) {
 
 
 
-                $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], -1 ,isset($json['telephone']) ? $json['telephone'] : "no_phone", $json['role'], null, 3, 1);
+                $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], -1 ,isset($json['telephone']) ? $json['telephone'] : "no_phone", $json['role'], null, 3, 1, -1, -1, -1);
 
                 exit_with_content($userService->createUser($user, $json["mdp"], $json["address"]));
             }
