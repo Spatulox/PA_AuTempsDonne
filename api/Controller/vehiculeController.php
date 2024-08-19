@@ -34,6 +34,13 @@ function vehiculeController($uri, $apiKey){
 
             $VehiculeService = new vehiculeService();
 
+            if ($uri[3] == "available"){
+                if(!isset($json["date_start"]) || empty($json["date_start"]) || !isset($json["date_end"]) || empty($json["date_end"])){
+                    exit_with_message("Missing required parameters date_start and date_end", 400);
+                }
+                exit_with_content($VehiculeService->getAllAvailableVehicule($apiKey, $json["date_start"], $json["date_end"]));
+            }
+
             if ( !isset($json['capacite']) || !isset($json['nom_du_vehicules']) || !isset($json['nombre_de_place']) || !isset($json['id_entrepot']))
             {
                 exit_with_message("Plz give the name, the capacite the nom_du_vehicules, the nombre_de_place and the id_entrepot ", 403);
