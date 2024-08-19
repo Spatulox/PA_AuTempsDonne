@@ -193,6 +193,27 @@
         return vehicleCard;
     }
 
+    function startDateChange(){
+        checkDateLogic()
+        updateDate("start")
+    }
+    function endDateChange(){
+        checkDateLogic()
+        updateDate("end")
+    }
+
+    function checkDateLogic(){
+        const startDate = document.getElementById("start-date");
+        const endDate = document.getElementById("end-date");
+
+
+        if(endDate.value < startDate.value){
+            let tday = new Date()
+            tday.setDate(new Date(startDate.value).getDate() + 1)
+            endDate.value = tday.toISOString().split("T")[0]
+        }
+    }
+
 </script>
 <?php if($role <= 3): ?>
 <script type="text/javascript" defer>
@@ -349,6 +370,12 @@
         return vehicleCard;
     }*/
 
+    // Function only paste when it's user role <= 3
+    function updateDate(){
+        //startLoading()
+        alert("Useless part :/")
+        stopLoading()
+    }
 
     async function onload() {
         startLoading()
@@ -359,6 +386,7 @@
         fillList()
 
         stopLoading()
+        alert("The choosing date functionnality is useless for rôle 1, 2 and 3")
     }
 
     onload()
@@ -372,16 +400,21 @@
         const vehicle = new VehicleAdmin()
         let dataVehicle = []
 
+        // Function only paste when it's user role == 4
+        function updateDate(){
+            startLoading()
+            fillListAvailable()
+            stopLoading()
+        }
+
         async function fillListAvailable() {
             const bodyList = document.getElementById('bodyList')
             bodyList.innerHTML = ""
 
-            const today = new Date()
-            const demain = new Date
-            demain.setDate(today.getDate() + 1)
+            const today = new Date(new Date(document.getElementById("start-date").value).setHours(0,0,0,0))
+            const demain = new Date(new Date(document.getElementById("end-date").value).setHours(23, 59, 59, 999))
 
             dataVehicle = await vehicle.getAvailableVehicle(today.toISOString().split('T')[0], demain.toISOString().split('T')[0])
-            console.log(dataVehicle)
             createBodyTableau(bodyList, dataVehicle, [], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
 
         }
@@ -390,7 +423,6 @@
             startLoading()
             openTab('tab1')
 
-            //await fillEnterpotList()
             await vehicle.connect()
             fillListAvailable()
 
