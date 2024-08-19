@@ -16,8 +16,8 @@ class VehiculeRepository
         $vehiculetArray = [];
 
         for ($i=0; $i < count($vehicule) ; $i++) {
-            $vehiculetArray[$i] = new VehiculeModel($vehicule[$i]["id_vehicule"], $vehicule[$i]["capacite"], $vehicule[$i]["nom_du_vehicules"],
-                $vehicule[$i]["nombre_de_place"],$vehicule[$i]["id_entrepot"]);
+            $vehiculetArray[$i] = returnVehicle($vehicule, $i);
+            //$vehiculetArray[$i] = new VehiculeModel($vehicule[$i]["id_vehicule"], $vehicule[$i]["capacite"], $vehicule[$i]["nom_du_vehicules"], $vehicule[$i]["nombre_de_place"],$vehicule[$i]["id_entrepot"]);
         }
 
             exit_with_content($vehiculetArray);
@@ -34,7 +34,6 @@ class VehiculeRepository
 
         for ($i=0; $i < count($vehicule) ; $i++) {
             $vehiculetArray[$i] = returnVehicle($vehicule, $i);
-            //$vehiculetArray[$i] = new VehiculeModel($vehicule[$i]["id_vehicule"], $vehicule[$i]["capacite"], $vehicule[$i]["nom_du_vehicules"], $vehicule[$i]["nombre_de_place"],$vehicule[$i]["id_entrepot"]);
         }
 
         exit_with_content($vehiculetArray);
