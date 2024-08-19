@@ -116,7 +116,7 @@ class StockService {
                 //
 
                 $toutranger = 0;
-                $bkpProduit = $stock->quantite_produit;
+                $bkpProduit = $stock->m3;
 
                 $tabb = [];
                 $tabRenvoyer = [];
@@ -128,10 +128,10 @@ class StockService {
                     // Regrde le nombre de place disponible dns l'étagère
                     $nbProduitsEtagere = $this->getnbplace($etagere[$j]['id_etagere']);
 
-                    if ($nbProduitsEtagere < $etagere[$j]['nombre_de_place']) {
+                    if ($nbProduitsEtagere < $etagere[$j]['nombre_de_m3']) {
 
                         //la place dans l'etagere
-                        $place = $etagere[$j]['nombre_de_place'] - $nbProduitsEtagere;
+                        $place = $etagere[$j]['nombre_de_m3'] - $nbProduitsEtagere;
 
 
                         $qte=$stock->quantite_produit;
@@ -195,6 +195,7 @@ class StockService {
                     $id_produit_stock[] = array(
                         'id_stock' => $item->id_stock,
                         'quantite_produit' => $item->quantite_produit,
+                        'm3' => $item->m3,
                         'date_entree' => $item->date_entree,
                         'date_sortie' => $item->date_sortie,
                         'id_etagere' => $item->id_etagere,
@@ -217,7 +218,7 @@ class StockService {
                 $tabb = [];
                 for ($j = 0; $j < count($id_produit_stock); $j++) {
                     $compteur++;
-                    $qteEtagere = $id_produit_stock[$j]['quantite_produit'];
+                    $qteEtagere = $id_produit_stock[$j]['m3'];
                     $tabRenvoyer[] = $compteur;
                     if ($qteEtagere < $stock->quantite_produit){
                         $tabb[$id_produit_stock[$j]['id_etagere']] = $qteEtagere;
@@ -268,7 +269,7 @@ class StockService {
     private function getnbplace($id)
     {
         $string = "id_etagere=".$id . " AND ". "date_sortie IS NULL";
-        $number= selectDB("STOCKS","quantite_produit",$string,"bool");
+        $number= selectDB("STOCKS","m3",$string,"bool");
         for ($i = 0; $i < count($number); $i++) {
             $sum=$sum+$number[$i]["quantite_produit"];
         }

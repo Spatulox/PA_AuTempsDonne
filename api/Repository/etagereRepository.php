@@ -32,6 +32,7 @@ class EtagereRepository
             $stock[$i] = new StockModel(
                 $stockArray[$i]['id_stock'],
                 $stockArray[$i]['quantite_produit'],
+                $stockArray[$i]['m3'],
                 $dateEntre,
                 $dateSortie,
                 $datePeremption,

@@ -31,7 +31,7 @@ class EntrepotRepository
 
             $etagere = [
                 "id_etagere" => $item["id_etagere"],
-                "nombre_de_place" => $item["nombre_de_place"],
+                "nombre_de_m3" => $item["nombre_de_m3"],
             ];
 
             $entrepots[$id_entrepot]["etagere"][] = $etagere;
@@ -115,9 +115,9 @@ class EntrepotRepository
 
             $last_id=$this->getLastInsertId("ETAGERES","id_etagere");
 
-            $code = hash('sha256', $last_id[0]['id_etagere'] ."_". $etagere['nombre_de_place'] ."_". $id_entrepot[0]['id_entrepot']);
+            $code = hash('sha256', $last_id[0]['id_etagere'] ."_". $etagere['nombre_de_m3'] ."_". $id_entrepot[0]['id_entrepot']);
 
-            $request_collecte = insertDB("ETAGERES", ["nombre_de_place","code", "id_entrepot"], [$etagere["nombre_de_place"],$code, $id_entrepot[0]["id_entrepot"]]);
+            $request_collecte = insertDB("ETAGERES", ["nombre_de_m3","code", "id_entrepot"], [$etagere["nombre_de_m3"],$code, $id_entrepot[0]["id_entrepot"]]);
 
             if (!$request_collecte) {
                 exit_with_message("Error creating etagere", 500);
@@ -202,7 +202,7 @@ class EntrepotRepository
             $code = hash('sha256', $last_id[0]['id_etagere'] ."_". $etageres_place[$i] ."_". $entrepot);
 
 
-            $request_collecte = insertDB("ETAGERES", ["nombre_de_place","code", "id_entrepot"], [$etageres_place[$i],$code, $entrepot]);
+            $request_collecte = insertDB("ETAGERES", ["nombre_de_m3","code", "id_entrepot"], [$etageres_place[$i],$code, $entrepot]);
             if ($request_collecte==false) {
                 exit_with_message("Error creating Etagere", 500);
             }
@@ -264,7 +264,7 @@ class EntrepotRepository
         for ($i = 0; $i < count($etagere); $i++) {
             $nbProduitsEtagere = $this->getnbplace($etagere[$i]['id_etagere']);
             $sum=$sum+$nbProduitsEtagere;
-            $place=$place+$etagere[$i]['nombre_de_place'];
+            $place=$place+$etagere[$i]['nombre_de_m3'];
         }
         $sum=$place-$sum;
         exit_with_message("il reste ".$sum. " place dans ".$check[0]["nom_entrepot"], 200);
@@ -274,9 +274,9 @@ class EntrepotRepository
     private function getnbplace($id)
     {
         $string = "id_etagere=".$id . " AND ". "date_sortie IS NULL";
-        $number= selectDB("STOCKS","quantite_produit",$string,"bool");
+        $number= selectDB("STOCKS","m3",$string,"bool");
         for ($i = 0; $i < count($number); $i++) {
-            $sum=$sum+$number[$i]["quantite_produit"];
+            $sum=$sum+$number[$i]["m3"];
         }
 
         return $sum;

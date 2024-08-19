@@ -28,6 +28,7 @@ class StockRepository
             $stock[$i] = new StockModel(
                 $stockArray[$i] ['id_stock'],
                 $stockArray[$i] ['quantite_produit'],
+                $stockArray[$i] ['m3'],
                 $dateEntre,
                 $dateSortie,
                 $datePeremption,
@@ -69,6 +70,7 @@ class StockRepository
             $stock[$i] = new StockModel(
                 $stockArray[$i]['id_stock'],
                 $stockArray[$i]['quantite_produit'],
+                $stockArray[$i] ['m3'],
                 $dateEntre,
                 $dateSortie,
                 $datePeremption,
@@ -90,8 +92,9 @@ class StockRepository
 
     {
 
-        $create = insertDB("STOCKS", ["quantite_produit", "date_entree", "date_sortie", "date_peremption", "desc_produit", "id_produit", "id_etagere"], [
+        $create = insertDB("STOCKS", ["quantite_produit", "m3" , "date_entree", "date_sortie", "date_peremption", "desc_produit", "id_produit", "id_etagere"], [
             $stock->quantite_produit,
+            $stock->m3,
             $stock->date_entree,
             $stock->date_sortie,
             $stock->date_peremption,
@@ -129,7 +132,7 @@ class StockRepository
 
         $string = "ENTREPOTS.id_entrepot=" . $id . " and " . "STOCKS.id_produit=" . $produit;
         $join= "INNER JOIN ETAGERES ON ETAGERES.id_etagere = STOCKS.id_etagere INNER JOIN ENTREPOTS ON ENTREPOTS.id_entrepot = ETAGERES.id_entrepot";
-        $colums="STOCKS.id_stock, STOCKS.quantite_produit, STOCKS.date_entree, STOCKS.date_sortie, STOCKS.date_peremption, STOCKS.desc_produit, STOCKS.id_produit,STOCKS.id_etagere ";
+        $colums="STOCKS.id_stock, STOCKS.quantite_produit, STOCKS.m3, STOCKS.date_entree, STOCKS.date_sortie, STOCKS.date_peremption, STOCKS.desc_produit, STOCKS.id_produit,STOCKS.id_etagere ";
         $stockArray = selectJoinDB("STOCKS", $colums ,$join , $string,"bool");
 
         $stock = [];
@@ -144,6 +147,7 @@ class StockRepository
             $stock[$i] = new StockModel(
                 $stockArray[$i] ['id_stock'],
                 $stockArray[$i] ['quantite_produit'],
+                $stockArray[$i] ['m3'],
                 $dateEntre,
                 $dateSortie,
                 $datePeremption,
@@ -183,8 +187,9 @@ class StockRepository
             $id_etagere = array_keys($tabb)[$i];
             $quantite = $tabb[$id_etagere];
 
-            $create = insertDB("STOCKS", ["quantite_produit", "date_entree", "date_sortie", "date_peremption", "desc_produit", "id_produit", "id_etagere"], [
+            $create = insertDB("STOCKS", ["quantite_produit","m3", "date_entree", "date_sortie", "date_peremption", "desc_produit", "id_produit", "id_etagere"], [
                 $quantite,
+                $stock->m3,
                 $stock->date_entree,
                 $stock->date_sortie,
                 $stock->date_peremption,
@@ -222,6 +227,7 @@ class StockRepository
             $stock[$i] = new StockModel(
                 $stockArray[$i]['id_stock'],
                 $stockArray[$i]['quantite_produit'],
+                $stockArray[$i]['m3'],
                 $dateEntre,
                 $dateSortie,
                 $datePeremption,
@@ -259,6 +265,7 @@ class StockRepository
             $stock[$i] = new StockModel(
                 $stockArray[$i] ['id_stock'],
                 $stockArray[$i] ['quantite_produit'],
+                $stockArray[$i] ['m3'],
                 $dateEntre,
                 $dateSortie,
                 $datePeremption,

@@ -6,6 +6,7 @@ class StockModel
 {
     public $id_stock;
     public $quantite_produit;
+    public $m3;
     public $date_entree;
     public $date_sortie;
     public $date_peremption;
@@ -17,9 +18,10 @@ class StockModel
     public $entrepot_desc;
 
 
-    public function __construct($id_stock, $quantite_produit, $date_entree, $date_sortie, $date_peremption,$desc_produit,$id_produit,$id_etagere) {
+    public function __construct($id_stock, $quantite_produit,$m3, $date_entree, $date_sortie, $date_peremption,$desc_produit,$id_produit,$id_etagere) {
         $this->id_stock = $id_stock;
         $this->quantite_produit = $quantite_produit;
+        $this->m3 = $m3;
         $this->date_entree = $date_entree;
         $this->date_sortie = $date_sortie;
         $this->date_peremption = $date_peremption;

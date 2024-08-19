@@ -36,12 +36,12 @@ function StockController($uri, $apiKey)
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
             if (!$uri[3]) {
-                if (!isset($json['quantite_produit']) || !isset($json['desc_produit']) || !isset($json['id_produit']) || !isset($json['id_entrepot'])) {
+                if (!isset($json['quantite_produit']) || !isset($json['m3'])  || !isset($json['desc_produit']) || !isset($json['id_produit']) || !isset($json['id_entrepot'])) {
                     exit_with_message("Erreur : Les informations du produit sont incomplètes. Veuillez vérifier que tous les champs sont remplis.", 403);
                 }
 
 
-                $stock = new StockModel(1, $json['quantite_produit'], $json['date_entree'], ($json['date_sortie']), ($json['date_peremption']), ($json['desc_produit']), ($json['id_produit']), (null));
+                $stock = new StockModel(1, $json['quantite_produit'], $json['m3'], $json['date_entree'], ($json['date_sortie']), ($json['date_peremption']), ($json['desc_produit']), ($json['id_produit']), (null));
 
                 exit_with_content($stockService->createStock($stock, $json['id_entrepot'], $apiKey));
             }
