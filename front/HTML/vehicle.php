@@ -365,7 +365,7 @@
 <?php endif; ?>
 
 <?php if($role == 4): ?>
-    <script type="text/javascript">
+    <script type="text/javascript" defer>
 
         const vehicle = new VehicleAdmin()
         let dataVehicle = []
@@ -373,7 +373,13 @@
         async function fillListAvailable() {
             const bodyList = document.getElementById('bodyList')
             bodyList.innerHTML = ""
-            dataVehicle = await vehicle.getAvailableVehicle()
+
+            const today = new Date()
+            const demain = new Date
+            demain.setDate(today.getDate() + 1)
+
+            dataVehicle = await vehicle.getAvailableVehicle(today.toISOString().split('T')[0], demain.toISOString().split('T')[0])
+            console.log(dataVehicle)
             createBodyTableau(bodyList, dataVehicle, [], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
 
         }
@@ -382,7 +388,7 @@
             startLoading()
             openTab('tab1')
 
-            await fillEnterpotList()
+            //await fillEnterpotList()
             await vehicle.connect()
             fillListAvailable()
 

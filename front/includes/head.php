@@ -74,6 +74,14 @@ if($role == 5){
     echo '<script type="text/javascript" src="../JSManager/GestionProduct.js"></script>';
 }
 
+
+if (basename($_SERVER['REQUEST_URI']) == "vehicle.php" && $role == 4){
+
+    echo '<script type="text/javascript" src="../JSManager/GestionVehicle.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
+
+}
+
 ?>
 
 <script type="text/javascript" src="../JS/popup.js"></script>
