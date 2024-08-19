@@ -1,5 +1,8 @@
 
-<?php include("../includes/checkRights.php");?>
+<?php
+include("../includes/checkRights.php");
+include("../includes/functions.php");
+?>
 
 
 <meta charset="utf-8">
