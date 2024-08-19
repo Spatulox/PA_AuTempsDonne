@@ -213,7 +213,7 @@ CREATE TABLE DEMANDE(
 
 CREATE TABLE ETAGERES(
    id_etagere INT AUTO_INCREMENT,
-   nombre_de_place INT NOT NULL,
+   nombre_de_m3 INT NOT NULL,
    code VARCHAR(255) NOT NULL,
    id_entrepot INT NOT NULL,
    PRIMARY KEY(id_etagere),
@@ -235,6 +235,7 @@ CREATE TABLE DON(
 CREATE TABLE STOCKS(
    id_stock INT AUTO_INCREMENT,
    quantite_produit INT NOT NULL,
+   m3 INT NOT NULL,
    date_entree DATE,
    date_sortie DATE,
    date_peremption DATE,
@@ -376,9 +377,10 @@ INSERT INTO ADRESSE (adresse) VALUES
 INSERT INTO TYPE (type, unit_mesure) VALUES
 ('Alimentaire', 'kg'),
 ('Vestimentaire', 'unite'),
-('Scolaire', 'unite'),
-('Medical', 'unite'),
-('Loisirs', 'unite');
+('Scolaire', 'kg'),
+('Medical', 'kg'),
+('Liquide', 'L'),
+('Loisirs', 'kg');
 
 INSERT INTO PRODUIT (nom_produit, id_type) VALUES
 ('Riz', 1),
@@ -411,7 +413,7 @@ INSERT INTO ENTREPOTS (nom_entrepot, parking, id_adresse) VALUES
 ('Entrepot Saint_Martin', 4, 3);
 
 
-INSERT INTO ETAGERES (nombre_de_place ,code, id_entrepot) VALUES
+INSERT INTO ETAGERES (nombre_de_m3 ,code, id_entrepot) VALUES
 (500,"255ba2e00eee912a0e83d46f5b6c90f0816ec9b3ab1c51850ed43b4ad50f8f63",1),
 (1000,"2c2c414882fd59e38e878abc6a96d2a86013b85951d2ec6eed9e8c22b5e6027d",1),
 (1000,"958666110ec960ed062a5371bf71ae9bc95d8008d1e6ec340ee0709cf316a94e",1),
@@ -632,12 +634,12 @@ VALUES
 
 
 
-  INSERT INTO STOCKS (quantite_produit, date_entree, date_sortie, date_peremption, desc_produit, id_produit, id_etagere)
+  INSERT INTO STOCKS (quantite_produit, m3,date_entree, date_sortie, date_peremption, desc_produit, id_produit, id_etagere)
 VALUES
-  (75, '2024-05-06', NULL, '2025-04-20', 'clair', 1, 8),
-  (12, '2024-05-06', NULL, '2025-04-20', 'pansement', 8, 8),
-  (30, '2024-05-06', NULL, NULL, 'pansement', 9, 8),
-  (30, '2024-05-06', NULL, NULL, 'pansement', 9, 1),
-  (400, '2024-05-06', NULL, '2024-05-06', 'brun', 1, 1),
-  (70, '2024-05-06', NULL, '2024-05-06', '', 2, 1),
-  (130, '2024-05-06', NULL, '2024-05-06', '', 2, 2);
+  (75,10, '2024-05-06', NULL, '2025-04-20', 'clair', 1, 8),
+  (12, 2 ,'2024-05-06', NULL, '2025-04-20', 'pansement', 8, 8),
+  (30,  4 ,'2024-05-06', NULL, NULL, 'pansement', 9, 8),
+  (30, 4 ,'2024-05-06', NULL, NULL, 'pansement', 9, 1),
+  (400, 3 , '2024-05-06', NULL, '2024-05-06', 'brun', 1, 1),
+  (70, 6 ,'2024-05-06', NULL, '2024-05-06', '', 2, 1),
+  (130, 15,'2024-05-06', NULL, '2024-05-06', '', 2, 2);
