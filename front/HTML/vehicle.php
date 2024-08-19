@@ -18,16 +18,17 @@
         <h1 class="textCenter"><?php echo($data["vehicle"]["title"]) ?></h1>
 
         <div class="tab flex flexAround nowrap">
-            <?php if($role <= 3): ?>
             <button class="tablinks width100"
                     onclick="openTab('tab1')"><?php echo htmlspecialchars($data["vehicle"]["tab1"]["title"]) ?></button>
+            <?php if($role <= 3): ?>
             <button class="tablinks width100"
                     onclick="openTab('tab2')"><?php echo htmlspecialchars($data["vehicle"]["tab2"]["title"]) ?></button>
             <button class="tablinks width100"
                     onclick="openTab('tab3')"><?php echo htmlspecialchars($data["vehicle"]["tab3"]["title"]) ?></button>
+            <?php endif; ?>
+            <?php if($role == 4): ?>
             <button class="tablinks width100"
                     onclick="openTab('tab4')"><?php echo htmlspecialchars($data["vehicle"]["tab4"]["title"]) ?></button>
-
             <?php endif; ?>
         </div>
 
@@ -92,18 +93,8 @@
 </body>
 </html>
 
-<script type="text/javascript" defer>
 
-    const vehicle = new VehicleAdmin()
-    let dataVehicle = []
-
-    async function fillList() {
-        const bodyList = document.getElementById('bodyList')
-        bodyList.innerHTML = ""
-        dataVehicle = await vehicle.getAllVehicle()
-        createBodyTableau(bodyList, dataVehicle, [], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
-
-    }
+<script type="text/javascript">
 
     async function fillEnterpotList() {
         const entrepot = new EntrepotAdmin()
@@ -161,6 +152,116 @@
         stopLoading()
     }
 
+    function formatVehicleToHTML(vehicleObject) {
+
+        const vehicleCard = document.createElement('div');
+        vehicleCard.classList.add("marginAuto")
+        vehicleCard.classList.add("width50")
+        vehicleCard.classList.add("border")
+
+        const vehicleInfo = document.createElement('div');
+        vehicleInfo.classList.add('vehicle-info');
+
+        const idVehicle = document.createElement('p');
+        idVehicle.innerHTML = '<strong>ID Véhicule:</strong> <span class="id-vehicule"></span>';
+        idVehicle.querySelector('.id-vehicule').textContent = vehicleObject.id_vehicule;
+
+        const nameVehicle = document.createElement('p');
+        nameVehicle.innerHTML = '<strong>Nom du véhicule:</strong> <span class="nom-vehicule"></span>';
+        nameVehicle.querySelector('.nom-vehicule').textContent = vehicleObject.nom_du_vehicules;
+
+        const capacity = document.createElement('p');
+        capacity.innerHTML = '<strong>Capacité:</strong> <span class="capacite"></span>';
+        capacity.querySelector('.capacite').textContent = vehicleObject.capacite;
+
+        const idWarehouse = document.createElement('p');
+        idWarehouse.innerHTML = '<strong>ID Entrepôt:</strong> <span class="id-entrepot"></span>';
+        idWarehouse.querySelector('.id-entrepot').textContent = vehicleObject.id_entrepot;
+
+        const seats = document.createElement('p');
+        seats.innerHTML = '<strong>Nombre de places:</strong> <span class="nombre-places"></span>';
+        seats.querySelector('.nombre-places').textContent = vehicleObject.nombre_de_place;
+
+        const button = createButton(vehicle.msg["Delete"])
+        button.setAttribute("onclick", "deleteVehicle(" + vehicleObject.id_vehicule + ")")
+
+        vehicleInfo.append(idVehicle, nameVehicle, capacity, idWarehouse, seats, button);
+        vehicleCard.append(vehicleInfo);
+
+        return vehicleCard;
+    }
+
+</script>
+<?php if($role <= 3): ?>
+<script type="text/javascript" defer>
+
+    const vehicle = new VehicleAdmin()
+    let dataVehicle = []
+
+    async function fillList() {
+        const bodyList = document.getElementById('bodyList')
+        bodyList.innerHTML = ""
+        dataVehicle = await vehicle.getAllVehicle()
+        createBodyTableau(bodyList, dataVehicle, [], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
+
+    }
+
+    /*async function fillEnterpotList() {
+        const entrepot = new EntrepotAdmin()
+        await entrepot.connect()
+        let dataEtr = await entrepot.getEntrepot()
+
+        let select = document.getElementById("leSelectAremplir")
+        select.innerHTML = ""
+
+        let option = []
+        const debut = "Choose"
+
+        for (const key in dataEtr) {
+
+            option[key] = {
+                "value": dataEtr[key].id_entrepot,
+                "text": dataEtr[key].nom
+            }
+
+        }
+        const newSelect = createSelect(option, debut)
+        newSelect.classList.add("marginTop10")
+        newSelect.classList.add("search-box")
+        newSelect.id ="entrepotV"
+
+
+        select.parentNode.replaceChild(newSelect, select)
+    }*/
+
+    /*async function seeDetail(id_vehicle = null) {
+
+        if (id_vehicle == null) {
+            const bodyDetail = document.getElementById("bodyDetail")
+            bodyDetail.innerHTML = ""
+            return
+        }
+
+        startLoading()
+        let data = await vehicle.getVehicleById(id_vehicle)
+        if (data.length === 0) {
+            popup("This vehicle don't exist ??")
+            startLoading()
+            fillList()
+            openTab('tab1')
+            stopLoading()
+            return
+        }
+
+        const html = formatVehicleToHTML(data[0])
+
+        const bodyDetail = document.getElementById("bodyDetail")
+        bodyDetail.innerHTML = ""
+        bodyDetail.appendChild(html)
+        openTab('tab2')
+        stopLoading()
+    }*/
+
     async function deleteVehicle(id_vehicle) {
         startLoading()
         await vehicle.deleteVehicle(id_vehicle)
@@ -207,7 +308,7 @@
 
     }
 
-    function formatVehicleToHTML(vehicleObject) {
+    /*function formatVehicleToHTML(vehicleObject) {
 
         const vehicleCard = document.createElement('div');
         vehicleCard.classList.add("marginAuto")
@@ -244,7 +345,7 @@
         vehicleCard.append(vehicleInfo);
 
         return vehicleCard;
-    }
+    }*/
 
 
     async function onload() {
@@ -261,3 +362,33 @@
     onload()
 
 </script>
+<?php endif; ?>
+
+<?php if($role == 4): ?>
+    <script type="text/javascript">
+
+        const vehicle = new VehicleAdmin()
+        let dataVehicle = []
+
+        async function fillListAvailable() {
+            const bodyList = document.getElementById('bodyList')
+            bodyList.innerHTML = ""
+            dataVehicle = await vehicle.getAvailableVehicle()
+            createBodyTableau(bodyList, dataVehicle, [], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
+
+        }
+
+        async function onload() {
+            startLoading()
+            openTab('tab1')
+
+            await fillEnterpotList()
+            await vehicle.connect()
+            fillListAvailable()
+
+            stopLoading()
+        }
+
+        onload()
+    </script>
+<?php endif; ?>
