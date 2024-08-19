@@ -67,6 +67,7 @@ class EntrepotRepository
         $string = "INNER JOIN ETAGERES E ON E.id_entrepot = ENTREPOTS.id_entrepot;";
         $request = selectJoinDB("ENTREPOTS", "*", $string,);
 
+        
         if (!$entrepot) {
             exit_with_message("Impossible to select data for entrepot in the DB");
         }
@@ -255,7 +256,7 @@ class EntrepotRepository
             exit_with_message("Entrepot not found", 500);
         }
         $string = "id_entrepot=" .$id;
-        $etagere= selectDB("ETAGERES", "id_etagere,nombre_de_place",$string);
+        $etagere= selectDB("ETAGERES", "id_etagere,nombre_de_m3",$string);
         if(!$etagere){
             exit_with_message("cette etagere n'existe pas ", 500);
         }
