@@ -17,6 +17,8 @@
     <div class="width80 marginAuto marginBottom30">
         <h1 class="textCenter"><?php echo($data["vehicle"]["title"]) ?></h1>
 
+        <?php createDateField(); ?>
+
         <div class="tab flex flexAround nowrap">
             <button class="tablinks width100"
                     onclick="openTab('tab1')"><?php echo htmlspecialchars($data["vehicle"]["tab1"]["title"]) ?></button>
