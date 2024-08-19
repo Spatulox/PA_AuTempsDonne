@@ -336,6 +336,10 @@
     "tab3": {
       "title": "Add Vehicle",
       "errorMsg": "Nothing to show"
+    },
+    "tab4": {
+      "title": "My Booked Vehicle",
+      "errorMsg": "Nothing to show"
     }
   }
 }
