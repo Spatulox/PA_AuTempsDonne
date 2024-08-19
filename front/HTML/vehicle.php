@@ -18,14 +18,20 @@
         <h1 class="textCenter"><?php echo($data["vehicle"]["title"]) ?></h1>
 
         <div class="tab flex flexAround nowrap">
+            <?php if($role <= 3): ?>
             <button class="tablinks width100"
-                    onclick="openTab('tab1')"><?php echo($data["vehicle"]["tab1"]["title"]) ?></button>
+                    onclick="openTab('tab1')"><?php echo htmlspecialchars($data["vehicle"]["tab1"]["title"]) ?></button>
             <button class="tablinks width100"
-                    onclick="openTab('tab2')"><?php echo($data["vehicle"]["tab2"]["title"]) ?></button>
+                    onclick="openTab('tab2')"><?php echo htmlspecialchars($data["vehicle"]["tab2"]["title"]) ?></button>
             <button class="tablinks width100"
-                    onclick="openTab('tab3')"><?php echo($data["vehicle"]["tab3"]["title"]) ?></button>
+                    onclick="openTab('tab3')"><?php echo htmlspecialchars($data["vehicle"]["tab3"]["title"]) ?></button>
+            <button class="tablinks width100"
+                    onclick="openTab('tab4')"><?php echo htmlspecialchars($data["vehicle"]["tab4"]["title"]) ?></button>
+
+            <?php endif; ?>
         </div>
 
+        <!--Beneficiaire ne voient que ça pour réserver un véhicule-->
         <div id="tab1" class="tabcontent">
             <h2 class="textCenter"><?php echo($data["vehicle"]["tab1"]["title"]) ?></h2>
             <table>
@@ -45,12 +51,15 @@
             </table>
         </div>
 
+        <?php if($role <= 3): ?>
         <div id="tab2" class="tabcontent">
             <h2 class="textCenter"><?php echo($data["vehicle"]["tab2"]["title"]) ?></h2>
             <!--<input type="number" class="search-box marginBottom10" placeholder="Search by id">-->
             <p id="bodyDetail"><?php echo($data["vehicle"]["tab2"]["errorMsg"]) ?></p>
         </div>
+        <?php endif; ?>
 
+        <?php if($role <= 3): ?>
         <div id="tab3" class="tabcontent">
             <h2 class="textCenter"><?php echo($data["vehicle"]["tab3"]["title"]) ?></h2>
             <hr>
@@ -66,6 +75,15 @@
                        value="<?php echo($data["vehicle"]["tab3"]["title"]) ?>">
             </div>
         </div>
+        <?php endif; ?>
+
+        <?php if($role == 4): ?>
+            <div id="tab4" class="tabcontent">
+                <h2 class="textCenter"><?php echo($data["vehicle"]["tab4"]["title"]) ?></h2>
+                <!--<input type="number" class="search-box marginBottom10" placeholder="Search by id">-->
+                <p id="bodyDetail"><?php echo($data["vehicle"]["tab4"]["errorMsg"]) ?></p>
+            </div>
+        <?php endif; ?>
     </div>
 
 </main>
