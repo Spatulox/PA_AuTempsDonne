@@ -47,16 +47,15 @@ class VehiculeRepository
         $join = "LEFT JOIN SERVICE s ON v.id_service = s.id_service";
         $condition = "s.id_service IS NULL 
                         OR NOT (
-                            s.service_date_debut BETWEEN '2024-08-19 00:00:00' AND '2024-08-19 23:59:59'
-                        OR s.service_date_fin BETWEEN '2024-08-19 00:00:00' AND '2024-08-19 23:59:59'
-                        OR (s.service_date_debut < '2024-08-19 00:00:00' AND s.service_date_fin > '2024-08-19 23:59:59')
+                            s.service_date_debut BETWEEN '".$debut." 00:00:00' AND '".$fin." 23:59:59'
+                        OR s.service_date_fin BETWEEN '".$debut." 00:00:00' AND '".$fin." 23:59:59'
+                        OR (s.service_date_debut < '".$debut." 00:00:00' AND s.service_date_fin > '".$fin." 23:59:59')
                         );";
         $data = selectJoinDB("VEHICULES v", $columns, $join, $condition);
 
         $vehiculetArray = [];
         for ($i=0; $i < count($data) ; $i++) {
             $vehiculetArray[$i] = returnVehicle($data, $i);
-            //$vehiculetArray[$i] = new VehiculeModel($vehicule[$i]["id_vehicule"], $vehicule[$i]["capacite"], $vehicule[$i]["nom_du_vehicules"], $vehicule[$i]["nombre_de_place"],$vehicule[$i]["id_entrepot"]);
         }
 
         exit_with_content($vehiculetArray);
