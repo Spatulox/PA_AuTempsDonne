@@ -61,12 +61,13 @@ function exit_with_content($content = null, $code = 200) {
     exit();
 }
 
-function getRoleFromApiKey($apiKey){
-    if($apiKey == null){
+function getRoleFromApiKey($apikey){
+    if($apikey == null){
         exit_with_message("The apikey is empty", 403);
     }
 
-    $role = selectDB("UTILISATEUR", 'id_role', "apikey='".$apiKey."'", "bool");
+    $role = selectDB("UTILISATEUR", 'id_role', "apikey='".$apikey."'", "bool");
+
     if($role){
         $role = $role[0]["id_role"];
     }
@@ -84,6 +85,7 @@ function getEmailFromApiKey($apiKey){
     $id = selectDB("UTILISATEUR", 'email', "apikey='".$apiKey."'", "bool");
     if($id){
         $id = $id[0]["id_user"];
+        return $id;
     }
 }
 
@@ -115,11 +117,6 @@ function getEmailFromIdUser($id){
 function getIdUserFromApiKey($apiKey){
     if($apiKey == null){
         exit_with_message("The apikey is empty", 403);
-    }
-
-    $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool");
-    if($id){
-        $id = $id[0]["id_user"];
     }
 
     $id = selectDB("UTILISATEUR", 'id_user', "apikey='".$apiKey."'", "bool");
