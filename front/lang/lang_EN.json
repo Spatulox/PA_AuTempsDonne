@@ -321,13 +321,19 @@
   "vehicle": {
     "title": "Vehicle Menu",
     "tab1": {
-      "title": "Vehicle list",
+      "title": "All Vehicle list",
       "id": "ID_Vehicle",
       "capacity": "Capacity",
       "name": "Name",
       "place": "Places",
       "entrepot": "Id_Entrepot",
+      "owner": "Owner",
+      "service": "Id Service",
+      "immatriculation": "Immatriculation",
       "button": "Detail"
+    },
+    "tab1.1": {
+      "title": "Free vehicle"
     },
     "tab2": {
       "title": "Vehicle details",
