@@ -581,8 +581,8 @@ VALUES
   (3, 'lexus lfa', 2, 1,1,NULL, 'AB-123-CD'),
   (100, 'Mercedes Sprinter', 2, 1,1,NULL, 'BA-321-DC'),
   (250, 'Peugeot Boxer', 2, 2,1,NULL, 'CD-456-EF'),
-  (400, 'Iveco Daily', 2, 2,1,NULL, 'DC-654-FE'),
-  (400, 'Nissan NV400', 2, 1,1,NULL, 'GH-789-IJ');
+  (400, 'Iveco Daily', 2, 2,2,NULL, 'DC-654-FE'),
+  (400, 'Nissan NV400', 2, 1,2,NULL, 'GH-789-IJ');
 
 INSERT INTO PLANNINGS (description, date_activite, id_index_planning, id_activite)
 VALUES (
