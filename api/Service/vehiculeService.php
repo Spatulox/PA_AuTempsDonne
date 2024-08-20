@@ -28,6 +28,17 @@ class VehiculeService
         }
     }
 
+    public function getMyVehicule($apikey){
+        $userRole = getRoleFromApiKey($apikey);
+        $id_user = getIdUserFromApiKey($apikey);
+        if($userRole[0] == 3){
+            $vehiculeRepository = new VehiculeRepository();
+            return $vehiculeRepository->getMyVehicules($id_user);
+        } else {
+            exit_with_message("You didn't have access to this command");
+        }
+    }
+
     public function getAllAvailableVehicule($apikey, $debut, $fin){
         $userRole = getRoleFromApiKey($apikey);
         if($userRole[0] <= 2 || $userRole[0] == 4){

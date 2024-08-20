@@ -60,6 +60,19 @@ class VehiculeRepository
         exit_with_content($vehiculetArray);
     }
     //----------------------------------------------------------------------------------
+
+    public function getMyVehicules($idUser){
+        $data = select("VEHICULES", "*", "id_user= ".$idUser);
+
+        $vehiculetArray = [];
+        for ($i=0; $i < count($data) ; $i++) {
+            $vehiculetArray[$i] = returnVehicle($data, $i);
+        }
+
+        exit_with_content($vehiculetArray);
+    }
+
+    //----------------------------------------------------------------------------------
     public function createVehicule(VehiculeModel $vehicule)
     {
         $string = "immatriculation='" . $vehicule->immatriculation ."'";
