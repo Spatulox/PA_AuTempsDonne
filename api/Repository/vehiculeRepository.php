@@ -62,7 +62,7 @@ class VehiculeRepository
     //----------------------------------------------------------------------------------
     public function createVehicule(VehiculeModel $vehicule)
     {
-        $string = "nom_du_vehicules='" . $vehicule->nom_du_vehicules ."'";
+        $string = "immatriculation='" . $vehicule->immatriculation ."'";
 
         $Select = selectDB("VEHICULES", "*", $string, "bool");
 
@@ -70,14 +70,14 @@ class VehiculeRepository
             exit_with_message("Y'a déjà une même vehicule", 403);
         }
 
-        $create = insertDB("VEHICULES", ["capacite","nom_du_vehicules","nombre_de_place","id_entrepot"]
-            ,[$vehicule->capacite ,$vehicule->nom_du_vehicules,$vehicule->nombre_de_place,$vehicule->id_entrepot]);
+        $create = insertDB("VEHICULES", ["capacite","nom_du_vehicules","nombre_de_place","id_entrepot", "immatriculation", "appartenance"]
+            ,[$vehicule->capacite ,$vehicule->nom_du_vehicules,$vehicule->nombre_de_place,$vehicule->id_entrepot, $vehicule->immatriculation, $vehicule->appartenance]);
 
         if(!$create){
             exit_with_message("Error, the vehicule can't be created, plz try again", 500);
         }
 
-        exit_with_message("vehicule created", 200);
+        exit_with_message("Vehicule created", 200);
     }
 //------------------------------------------------------------------------------------------
     public function deleteVehicule($id)

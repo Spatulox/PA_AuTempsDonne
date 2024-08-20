@@ -40,10 +40,13 @@ class VehiculeService
 
     public function createVehicule(VehiculeModel $vehicule, $apiKey)
     {
-        $userRole = getRoleFromApiKey($apiKey);
-        if ($userRole[0]==1 || $userRole[0]==2) {
-            $vehiculeRepository = new VehiculeRepository();
+        if(!isValidLicensePlate($vehicule->immatriculation)){
+            exit_with_message("License Plate invalide, plz use the 'AB-321-BC' pattern");
+        }
 
+        $userRole = getRoleFromApiKey($apiKey);
+        if ($userRole[0] <= 3) {
+            $vehiculeRepository = new VehiculeRepository();
             return $vehiculeRepository->createVehicule($vehicule);
         }else{
             exit_with_message("You didn't have access to this command");
@@ -53,11 +56,28 @@ class VehiculeService
     public function deleteVehicule($int, $apiKey)
     {
         $userRole = getRoleFromApiKey($apiKey);
-        if ($userRole[0]==1 || $userRole[0]==2) {
+        if ($userRole[0] <= 2) {
             $vehiculeRepository = new VehiculeRepository();
             return $vehiculeRepository->deleteVehicule($int);
-        }else{
+        } elseif($userRole[0] == 3) {
+            // Verifier si c'est bien son vehicule
+            $vehiculeRepository = new VehiculeRepository();
+            return $vehiculeRepository->deleteVehicule($int);
+        }
+        else{
             exit_with_message("You didn't have access to this command");
         }
+    }
+}
+
+function isValidLicensePlate($plate) {
+    // Définir l'expression régulière pour le format de la plaque
+    $regex = '/^[A-Z]{2}-\d{3}-[A-Z]{2}$/';
+
+    // Utiliser preg_match pour vérifier si la chaîne correspond au format
+    if (preg_match($regex, $plate)) {
+        return true;
+    } else {
+        return false;
     }
 }

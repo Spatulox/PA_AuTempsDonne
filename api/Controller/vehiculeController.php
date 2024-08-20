@@ -41,11 +41,11 @@ function vehiculeController($uri, $apiKey){
                 exit_with_content($VehiculeService->getAllAvailableVehicule($apiKey, $json["date_start"], $json["date_end"]));
             }
 
-            if ( !isset($json['capacite']) || !isset($json['nom_du_vehicules']) || !isset($json['nombre_de_place']) || !isset($json['id_entrepot']))
+            if ( !isset($json['capacite']) || !isset($json['nom_du_vehicules']) || !isset($json['nombre_de_place']) || !isset($json['id_entrepot']) || !isset($json['immatriculation']) || !isset($json['appartenance']))
             {
-                exit_with_message("Plz give the name, the capacite the nom_du_vehicules, the nombre_de_place and the id_entrepot ", 403);
+                exit_with_message("Plz give the name, the capacite the nom_du_vehicules, the nombre_de_place, the id_entrepot, the immatriculation, and the appartenance ", 403);
             }
-            $vehicule = new VehiculeModel(1, $json['capacite'], $json['nom_du_vehicules'], $json['nombre_de_place'], $json['id_entrepot']);
+            $vehicule = new VehiculeModel(1, $json['capacite'], $json['nom_du_vehicules'], $json['nombre_de_place'], $json['id_entrepot'], $json['appartenance'], -1, $json['immatriculation']);
 
             exit_with_content($VehiculeService->createVehicule($vehicule,$apiKey));
 
