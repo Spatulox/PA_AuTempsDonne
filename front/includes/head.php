@@ -96,9 +96,11 @@ if($role == 5){
 <script type="text/javascript" src="../JS/createHtmlElement.js"></script>
 
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRgUYpS2R7KL3eZeSGVQYj8Gs9_lVy0x0&libraries=places"></script>
-<script type="text/javascript" src="../JS/itineraire.js"></script>
-<script type="text/javascript" src="../JS/getDistance.js"></script>
+<?php if (basename($_SERVER['REQUEST_URI']) == "gestDemandes.php" || basename($_SERVER['REQUEST_URI']) == "request.php"): ?>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRgUYpS2R7KL3eZeSGVQYj8Gs9_lVy0x0&libraries=places"></script>
+    <script type="text/javascript" src="../JS/itineraire.js"></script>
+    <script type="text/javascript" src="../JS/getDistance.js"></script>
+<?php endif; ?>
 
 <?php
 if($returnCode === false){
