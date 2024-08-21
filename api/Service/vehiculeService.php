@@ -17,15 +17,10 @@ class VehiculeService
         }
     }
 
-    public function getVehiculeById($int,$apiKey)
+    public function getVehiculeById($int)
     {
-        $userRole = getRoleFromApiKey($apiKey);
-        if ($userRole[0]==1 || $userRole[0]==2) {
-            $vehiculeRepository = new VehiculeRepository();
-            return $vehiculeRepository->getVehiculeById($int);
-        }else{
-            exit_with_message("You didn't have access to this command");
-        }
+        $vehiculeRepository = new VehiculeRepository();
+        $vehiculeRepository->getVehiculeById($int);
     }
 
     public function getMyVehicule($apikey){
@@ -33,17 +28,22 @@ class VehiculeService
         $id_user = getIdUserFromApiKey($apikey);
         if($userRole[0] == 3){
             $vehiculeRepository = new VehiculeRepository();
-            return $vehiculeRepository->getMyVehicules($id_user);
+            $vehiculeRepository->getMyVehicules($id_user);
         } else {
             exit_with_message("You didn't have access to this command");
         }
     }
 
-    public function getAllAvailableVehicule($apikey, $debut, $fin){
+    public function getAvailableVehicule($apikey, $debut, $fin){
         $userRole = getRoleFromApiKey($apikey);
+        // Get all available vehicle
         if($userRole[0] <= 2 || $userRole[0] == 4){
             $vehiculeRepository = new VehiculeRepository();
-            return $vehiculeRepository->getVehiculeAvailable($debut, $fin);
+            $vehiculeRepository->getVehiculeAvailable($debut, $fin);
+        } elseif($userRole[0] == 3){
+            $id_user = getIdUserFromApiKey($apikey);
+            $vehiculeRepository = new VehiculeRepository();
+            $vehiculeRepository->getMyVehiculeAvailable($debut, $fin, $id_user);
         } else {
             exit_with_message("You didn't have access to this command");
         }
@@ -56,9 +56,10 @@ class VehiculeService
         }
 
         $userRole = getRoleFromApiKey($apiKey);
+        $id_user = getIdUserFromApiKey($apiKey);
         if ($userRole[0] <= 3) {
             $vehiculeRepository = new VehiculeRepository();
-            return $vehiculeRepository->createVehicule($vehicule);
+            $vehiculeRepository->createVehicule($vehicule, $id_user);
         }else{
             exit_with_message("You didn't have access to this command");
         }

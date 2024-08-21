@@ -17,7 +17,11 @@ function vehiculeController($uri, $apiKey){
 
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                exit_with_content($VehiculeService->getVehiculeById($uri[3],$apiKey));
+                $VehiculeService->getVehiculeById($uri[3]);
+            }
+
+            elseif ($uri[3] == "me"){
+                $VehiculeService->getMyVehicule($apiKey);
             }
 
 
@@ -31,16 +35,16 @@ function vehiculeController($uri, $apiKey){
 
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
-
             $VehiculeService = new vehiculeService();
 
             if ($uri[3] == "available"){
                 if(!isset($json["date_start"]) || empty($json["date_start"]) || !isset($json["date_end"]) || empty($json["date_end"])){
                     exit_with_message("Missing required parameters date_start and date_end", 400);
                 }
-                exit_with_content($VehiculeService->getAllAvailableVehicule($apiKey, $json["date_start"], $json["date_end"]));
+                $VehiculeService->getAvailableVehicule($apiKey, $json["date_start"], $json["date_end"]);
             }
 
+            // Create a vehicle
             if ( !isset($json['capacite']) || !isset($json['nom_du_vehicules']) || !isset($json['nombre_de_place']) || !isset($json['id_entrepot']) || !isset($json['immatriculation']) || !isset($json['appartenance']))
             {
                 exit_with_message("Plz give the name, the capacite the nom_du_vehicules, the nombre_de_place, the id_entrepot, the immatriculation, and the appartenance ", 403);
