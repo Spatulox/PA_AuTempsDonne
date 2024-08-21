@@ -320,6 +320,7 @@
 <?php endif; ?>
 
 <!-- ////////////////////////////////ADMIN-BÉNÉVOLES-COMMON//////////////////////////////////// -->
+<?php if($role <= 3): ?>
 <script type="text/javascript" defer>
 
     const vehicle = new VehicleAdmin()
@@ -402,6 +403,7 @@
     onload()
 
 </script>
+<?php endif; ?>
 
 <!-- ////////////////////////////////BÉNÉFICIAIRES//////////////////////////////////// -->
 <?php if($role == 4): ?>
