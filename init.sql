@@ -120,8 +120,6 @@ CREATE TABLE SERVICE(
    FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
 );
 
-
-
 CREATE TABLE VEHICULES(
    id_vehicule INT AUTO_INCREMENT,
    capacite INT,
@@ -130,9 +128,11 @@ CREATE TABLE VEHICULES(
    id_entrepot INT,
    appartenance INT,
    id_service INT,
+   id_user INT,
    immatriculation VARCHAR(255) UNIQUE,
    PRIMARY KEY(id_vehicule),
    FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user),
    FOREIGN KEY(id_service) REFERENCES SERVICE(id_service)
 );
 
@@ -576,13 +576,13 @@ VALUES
   (24, 1), (24, 2), (24, 3), (24, 7),
   (12, 4), (12, 5), (12, 6), (12, 7);
 
-  INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_entrepot, appartenance, id_service, immatriculation)
+  INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_entrepot, appartenance, id_service, immatriculation, id_user)
 VALUES
-  (3, 'lexus lfa', 2, 1,1,NULL, 'AB-123-CD'),
-  (100, 'Mercedes Sprinter', 2, 1,1,NULL, 'BA-321-DC'),
-  (250, 'Peugeot Boxer', 2, 2,1,NULL, 'CD-456-EF'),
-  (400, 'Iveco Daily', 2, 2,2,NULL, 'DC-654-FE'),
-  (400, 'Nissan NV400', 2, 1,2,NULL, 'GH-789-IJ');
+  (3, 'lexus lfa', 2, 1,1,NULL, 'AB-123-CD', 1),
+  (100, 'Mercedes Sprinter', 2, 1,1,NULL, 'BA-321-DC', 1),
+  (250, 'Peugeot Boxer', 2, 2,1,NULL, 'CD-456-EF', 1),
+  (400, 'Iveco Daily', 2, 2,2,NULL, 'DC-654-FE', 4),
+  (400, 'Nissan NV400', 2, 1,2,NULL, 'GH-789-IJ', 4);
 
 INSERT INTO PLANNINGS (description, date_activite, id_index_planning, id_activite)
 VALUES (
