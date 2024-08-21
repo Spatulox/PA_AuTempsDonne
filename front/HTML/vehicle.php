@@ -20,10 +20,10 @@
         <?php createDateField(); ?>
 
         <div class="tab flex flexAround nowrap">
-            <button class="tablinks width100"
+            <button id="titletab1.1" class="tablinks width100"
                     onclick="openTab('tab1.1')"><?php echo htmlspecialchars($data["vehicle"]["tab1.1"]["title"]) ?></button>
             <?php if($role <= 3): ?>
-            <button class="tablinks width100"
+            <button id="titletab1" class="tablinks width100"
                     onclick="openTab('tab1')"><?php echo htmlspecialchars($data["vehicle"]["tab1"]["title"]) ?></button>
             <button class="tablinks width100"
                     onclick="openTab('tab2')"><?php echo htmlspecialchars($data["vehicle"]["tab2"]["title"]) ?></button>
@@ -125,7 +125,7 @@
 </body>
 </html>
 
-
+<!-- ////////////////////////////////COMMON//////////////////////////////////// -->
 <script type="text/javascript">
 
     function dataVehicleOwnerReplace(dataVehicle){
@@ -140,6 +140,7 @@
     }
 
     async function fillListAvailable() {
+        console.log("Searching Available Vehicle")
         const bodyList = document.getElementById('bodyListAvailable')
         bodyList.innerHTML = ""
 
@@ -280,21 +281,49 @@
     }
 
 </script>
-<?php if($role <= 3): ?>
+
+<!-- ////////////////////////////////ADMIN//////////////////////////////////// -->
+<?php if($role <= 2): ?>
+    <script type="text/javascript">
+        async function fillList() {
+            console.log("Searching vehicle")
+            const bodyList = document.getElementById('bodyList')
+            bodyList.innerHTML = ""
+            dataVehicle = await vehicle.getAllVehicle()
+            dataVehicle = dataVehicleOwnerReplace(dataVehicle)
+            console.log(dataVehicle)
+            createBodyTableau(bodyList, dataVehicle, [], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
+
+        }
+    </script>
+<?php endif; ?>
+
+<!-- ////////////////////////////////BÉNÉVOLES//////////////////////////////////// -->
+<?php if($role == 3): ?>
+    <script type="text/javascript">
+        async function fillList() {
+            console.log("Searching vehicle")
+            const bodyList = document.getElementById('bodyList')
+            bodyList.innerHTML = ""
+            dataVehicle = await vehicle.getAllMyVehicle()
+            dataVehicle = dataVehicleOwnerReplace(dataVehicle)
+            console.log(dataVehicle)
+            createBodyTableau(bodyList, dataVehicle, [], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
+
+        }
+
+        tabs = [document.getElementById("titletab1.1"), document.getElementById("titletab1")]
+
+        tabs[0].innerHTML = "My Free Vehicle"
+        tabs[1].innerHTML = "My Vehicles"
+    </script>
+<?php endif; ?>
+
+<!-- ////////////////////////////////ADMIN-BÉNÉVOLES-COMMON//////////////////////////////////// -->
 <script type="text/javascript" defer>
 
     const vehicle = new VehicleAdmin()
     let dataVehicle = []
-
-    async function fillList() {
-        const bodyList = document.getElementById('bodyList')
-        bodyList.innerHTML = ""
-        dataVehicle = await vehicle.getAllVehicle()
-        dataVehicle = dataVehicleOwnerReplace(dataVehicle)
-        console.log(dataVehicle)
-        createBodyTableau(bodyList, dataVehicle, [], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
-
-    }
 
     async function deleteVehicle(id_vehicle) {
         startLoading()
@@ -346,6 +375,7 @@
         await vehicle.createVehicle(data)
         fillListAvailable()
         await fillList()
+        openTab("tab1")
         stopLoading()
 
     }
@@ -372,8 +402,8 @@
     onload()
 
 </script>
-<?php endif; ?>
 
+<!-- ////////////////////////////////BÉNÉFICIAIRES//////////////////////////////////// -->
 <?php if($role == 4): ?>
     <script type="text/javascript" defer>
 

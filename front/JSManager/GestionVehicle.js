@@ -8,6 +8,14 @@ class VehicleAdmin extends Admin{
         return response
     }
 
+    async getAllMyVehicle(){
+        let response = await this.fetchSync(this.adresse+'/vehicule/me', this.optionGet())
+        if(!this.compareAnswer(response)){
+            return false
+        }
+        return response
+    }
+
     async getAvailableVehicle(start, end){
 
         console.log(start, end)

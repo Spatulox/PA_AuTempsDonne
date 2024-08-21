@@ -58,10 +58,17 @@ if($role == 3){
     echo '<script type="text/javascript" src="../JSManager/Admin.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionStock.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionProduct.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionVehicle.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
 
 }
 
 if($role == 4){
+
+    if (basename($_SERVER['REQUEST_URI']) == "vehicle.php"){
+        echo '<script type="text/javascript" src="../JSManager/GestionVehicle.js"></script>';
+        echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
+    }
 
     echo '<script type="text/javascript" src="../JSManager/Admin.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/BeneficiaireRequest.js"></script>';
@@ -75,14 +82,6 @@ if($role == 5){
     echo '<script type="text/javascript" src="../JSManager/PrestataireRequest.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionActivite.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionProduct.js"></script>';
-}
-
-
-if (basename($_SERVER['REQUEST_URI']) == "vehicle.php" && $role == 4){
-
-    echo '<script type="text/javascript" src="../JSManager/GestionVehicle.js"></script>';
-    echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
-
 }
 
 ?>
