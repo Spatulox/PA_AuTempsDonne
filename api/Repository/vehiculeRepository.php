@@ -17,7 +17,6 @@ class VehiculeRepository
 
         for ($i=0; $i < count($vehicule) ; $i++) {
             $vehiculetArray[$i] = returnVehicle($vehicule, $i);
-            //$vehiculetArray[$i] = new VehiculeModel($vehicule[$i]["id_vehicule"], $vehicule[$i]["capacite"], $vehicule[$i]["nom_du_vehicules"], $vehicule[$i]["nombre_de_place"],$vehicule[$i]["id_entrepot"]);
         }
 
         exit_with_content($vehiculetArray);
@@ -139,7 +138,7 @@ class VehiculeRepository
             exit_with_message("Y'a déjà un même vehicule", 403);
         }
 
-        $create = insertDB("VEHICULES", ["capacite","nom_du_vehicules","nombre_de_place","id_entrepot", "immatriculation", "appartenance", "id_user"]
+        $create = insertDB("VEHICULES", ["capacite","nom_du_vehicules","nombre_de_place","id_ventrepot", "immatriculation", "appartenance", "id_user"]
             ,[$vehicule->capacite ,$vehicule->nom_du_vehicules,$vehicule->nombre_de_place,$vehicule->id_entrepot, $vehicule->immatriculation, $vehicule->appartenance, $id_user]);
 
         if(!$create){
