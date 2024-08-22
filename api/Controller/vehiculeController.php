@@ -1,6 +1,7 @@
 <?php
 include_once('./Service/vehiculeService.php');
 include_once('./Models/vehiculeModel.php');
+include_once('../returnFunctions.php');
 
 function vehiculeController($uri, $apiKey){
 
@@ -84,12 +85,6 @@ function vehiculeController($uri, $apiKey){
             exit_with_message("Not Found", 404);
             exit();
     }
-}
-
-function returnVehicle($dataFromDb, $id = 0){
-    $vehicle = new VehiculeModel($dataFromDb[$id]["id_vehicule"], $dataFromDb[$id]["capacite"], $dataFromDb[$id]["nom_du_vehicules"], $dataFromDb[$id]["nombre_de_place"], $dataFromDb[$id]["id_entrepot"], $dataFromDb[$id]["appartenance"], $dataFromDb[$id]["immatriculation"]);
-    return $vehicle;
-    //$user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $address, $usersArray[$i]['telephone'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index'], $usersArray[$i]['id_entrepot']);
 }
 
 ?>
