@@ -1,7 +1,7 @@
 <?php
 include_once('./Service/vehiculeService.php');
 include_once('./Models/vehiculeModel.php');
-include_once('../returnFunctions.php');
+include_once('./returnFunctions.php');
 
 function vehiculeController($uri, $apiKey){
 
