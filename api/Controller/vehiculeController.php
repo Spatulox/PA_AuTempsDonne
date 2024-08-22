@@ -39,9 +39,23 @@ function vehiculeController($uri, $apiKey){
 
             if ($uri[3] == "available"){
                 if(!isset($json["date_start"]) || empty($json["date_start"]) || !isset($json["date_end"]) || empty($json["date_end"])){
-                    exit_with_message("Missing required parameters date_start and date_end", 400);
+                    exit_with_message("Missing required parameters date_start and date_end", 403);
                 }
                 $VehiculeService->getAvailableVehicule($apiKey, $json["date_start"], $json["date_end"]);
+            }
+
+            if($uri[3] == "booked"){
+                if(!isset($json["date_start"]) || empty($json["date_start"]) || !isset($json["date_end"]) || empty($json["date_end"])){
+                    exit_with_message("Missing required parameters date_start and date_end", 403);
+                }
+                $VehiculeService->bookingVehicle();
+            }
+
+            if($uri[3] == "unbooked"){
+                if(!isset($json["id_service"]) || empty($json["id_service"])){
+                    exit_with_message("Missing required parameters id_service and date_end", 403);
+                }
+                $VehiculeService->unBookingVehicle();
             }
 
             // Create a vehicle
@@ -51,7 +65,7 @@ function vehiculeController($uri, $apiKey){
             }
             $vehicule = new VehiculeModel(1, $json['capacite'], $json['nom_du_vehicules'], $json['nombre_de_place'], $json['id_entrepot'], $json['appartenance'], -1, $json['immatriculation']);
 
-            exit_with_content($VehiculeService->createVehicule($vehicule,$apiKey));
+            $VehiculeService->createVehicule($vehicule,$apiKey);
 
             break;
 
@@ -73,7 +87,7 @@ function vehiculeController($uri, $apiKey){
 }
 
 function returnVehicle($dataFromDb, $id = 0){
-    $vehicle = new VehiculeModel($dataFromDb[$id]["id_vehicule"], $dataFromDb[$id]["capacite"], $dataFromDb[$id]["nom_du_vehicules"], $dataFromDb[$id]["nombre_de_place"], $dataFromDb[$id]["id_entrepot"], $dataFromDb[$id]["appartenance"],  $dataFromDb[$id]["id_service"], $dataFromDb[$id]["immatriculation"]);
+    $vehicle = new VehiculeModel($dataFromDb[$id]["id_vehicule"], $dataFromDb[$id]["capacite"], $dataFromDb[$id]["nom_du_vehicules"], $dataFromDb[$id]["nombre_de_place"], $dataFromDb[$id]["id_entrepot"], $dataFromDb[$id]["appartenance"], $dataFromDb[$id]["immatriculation"]);
     return $vehicle;
     //$user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $address, $usersArray[$i]['telephone'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index'], $usersArray[$i]['id_entrepot']);
 }
