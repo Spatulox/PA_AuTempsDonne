@@ -25,6 +25,11 @@ function vehiculeController($uri, $apiKey){
                 $VehiculeService->getMyVehicule($apiKey);
             }
 
+            elseif($uri[3] == "booked"){
+                // Gett all booked vehicle, even if the booked is over
+                $VehiculeService->getBookedVehicle($apiKey);
+            }
+
 
             else{
                 exit_with_message("You need to be admin to see all the trips", 403);
