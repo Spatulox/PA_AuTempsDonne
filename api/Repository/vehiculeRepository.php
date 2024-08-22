@@ -161,13 +161,42 @@ class VehiculeRepository
 
     //------------------------------------------------------------------------------------------
 
-    public function bookingAVehicle(){
+    public function bookingAVehicle($apiKey){
 
+        $id_user = getIdUserFromApiKey($apiKey);
+        $role = getRoleFromApiKey($apiKey);
+        //insertDB("SERVICE", ["description_service", "type_service", "service_date_debut", "service_date_fin", "id_user_booking"], ["Partage de vehicule", 1, "", "", $id_user]);
     }
 
     //------------------------------------------------------------------------------------------
 
-    public function unBookingAVehicle(){
+    public function unBookingAVehicle($id_service, $apiKey){
+        $id_user = getIdUserFromApiKey($apiKey);
+        $role = getRoleFromApiKey($apiKey);
+
+        if($role >= 3){
+            $exist = selectDB("SERVICE", "*", "id_service=".$id_service." AND id_user_booking=".$id_user, "bool");
+            if(!$exist) {
+                exit_with_message("Error, this reservation don't exist for you", 403);
+            }
+        } elseif ($role <= 2){
+            $exist = selectDB("SERVICE", "*", "id_service=".$id_service, "bool");
+            if(!$exist) {
+                exit_with_message("Error, this reservation don't exist", 500);
+            }
+        }
+
+        $data = selectDB("LINKSERVICEVEHICLE", "*", "id_service=".$id_service)[0];
+
+        if(deleteDB("LINKSERVICEVEHICLE", "id_service=".$id_service)){
+            if(deleteDB("SERVICE", "id_service=".$id_service)){
+                exit_with_message("Reservation canceled", 200);
+            } else {
+                insertDB("LINKSERVICEVEHICLE", ["id_service", "id_vehicule"], [$data["id_service"], $data["id_vehicule"]]);
+            }
+        }
+
+        exit_with_message("Error when deleting your reservation");
 
     }
 

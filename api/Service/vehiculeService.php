@@ -106,9 +106,13 @@ class VehiculeService
 
     public function bookingVehicle($apiKey){
 
+        $userRole = getRoleFromApiKey($apiKey);
+
     }
 
-    public function unBookingVehicle($apiKey){
+    public function unBookingVehicle($id_service, $apiKey){
+        $vehiculeRepository = new VehiculeRepository();
+        $vehiculeRepository->unBookingAVehicle($id_service, $apiKey);
     }
 }
 
