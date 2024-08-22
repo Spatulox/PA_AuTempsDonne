@@ -30,7 +30,6 @@ function vehiculeController($uri, $apiKey){
                 $VehiculeService->getBookedVehicle($apiKey);
             }
 
-
             else{
                 exit_with_message("You need to be admin to see all the trips", 403);
             }
@@ -48,26 +47,21 @@ function vehiculeController($uri, $apiKey){
                     exit_with_message("Missing required parameters date_start and date_end", 403);
                 }
                 $VehiculeService->getAvailableVehicule($apiKey, $json["date_start"], $json["date_end"]);
+                exit();
             }
 
             if($uri[3] == "booked"){
-                if(!isset($json["date_start"]) || empty($json["date_start"]) || !isset($json["date_end"]) || empty($json["date_end"])){
-                    exit_with_message("Missing required parameters date_start and date_end", 403);
+                if(!isset($json["id_vehicule"]) || empty($json["id_vehicule"]) || !isset($json["date_start"]) || empty($json["date_start"]) || !isset($json["date_end"]) || empty($json["date_end"])){
+                    exit_with_message("Missing required parameters id_vehicule, date_start and date_end", 403);
                 }
                 $VehiculeService->bookingVehicle($apiKey);
-            }
-
-            if($uri[3] == "unbooked"){
-                if(!isset($json["id_service"]) || empty($json["id_service"])){
-                    exit_with_message("Missing required parameters id_service and date_end", 403);
-                }
-                $VehiculeService->unBookingVehicle($apiKey);
+                exit();
             }
 
             // Create a vehicle
             if ( !isset($json['capacite']) || !isset($json['nom_du_vehicules']) || !isset($json['nombre_de_place']) || !isset($json['id_entrepot']) || !isset($json['immatriculation']) || !isset($json['appartenance']))
             {
-                exit_with_message("Plz give the name, the capacite the nom_du_vehicules, the nombre_de_place, the id_entrepot, the immatriculation, and the appartenance ", 403);
+                exit_with_message("Plz give the name, the capacite the nom_du_vehicules, the nombre_de_place, the id_entrepot, the immatriculation, and the appartenance", 403);
             }
             $vehicule = new VehiculeModel(1, $json['capacite'], $json['nom_du_vehicules'], $json['nombre_de_place'], $json['id_entrepot'], $json['appartenance'], -1, $json['immatriculation']);
 
@@ -76,14 +70,25 @@ function vehiculeController($uri, $apiKey){
             break;
 
         case 'PUT':
+            exit_with_message("Unauthorized to do a PUT request", 403);
             break;
 
         case 'DELETE':$VehiculeService = new vehiculeService();
 
-            if(!$uri[3]){
-                exit_with_message("No Vehicule specified", 400);
+            if($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
+                $VehiculeService->deleteVehicule($uri[3],$apiKey);
             }
-            $VehiculeService->deleteVehicule($uri[3],$apiKey);
+
+            if($uri[3] == "unbooked"){
+                if(!$uri[4]){
+                    exit_with_message("Missing required GET parameters id_service", 403);
+                }
+                $VehiculeService->unBookingVehicle($uri[4], $apiKey);
+                exit();
+            }
+
+            exit_with_message("Nothing specified", 400);
+
             break;
 
         default:
