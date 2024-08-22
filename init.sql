@@ -581,7 +581,7 @@ VALUES
   (24, 1), (24, 2), (24, 3), (24, 7),
   (12, 4), (12, 5), (12, 6), (12, 7);
 
-  INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_entrepot, appartenance, immatriculation, id_owner)
+INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_ventrepot, appartenance, immatriculation, id_owner)
 VALUES
   (3, 'lexus lfa', 2, 1,1, 'AB-123-CD', 1),
   (100, 'Mercedes Sprinter', 2, 1,1, 'BA-321-DC', 1),
