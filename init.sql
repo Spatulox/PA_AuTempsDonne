@@ -131,14 +131,13 @@ CREATE TABLE VEHICULES(
    immatriculation VARCHAR(255) UNIQUE,
    PRIMARY KEY(id_vehicule),
    FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
-   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user),
-   FOREIGN KEY(id_service) REFERENCES SERVICE(id_service)
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
 );
 
 CREATE TABLE LINKSERVICEVEHICLE(
-    id_vehicle INT NOT NULL,
+    id_vehicule INT NOT NULL,
     id_service INT NOT NULL,
-    FOREIGN KEY(id_vehicle) REFERENCES VEHICULES(id_vehicle),
+    FOREIGN KEY(id_vehicule) REFERENCES VEHICULES(id_vehicule),
     FOREIGN KEY(id_service) REFERENCES SERVICE(id_service)
 );
 
@@ -582,13 +581,21 @@ VALUES
   (24, 1), (24, 2), (24, 3), (24, 7),
   (12, 4), (12, 5), (12, 6), (12, 7);
 
-  INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_entrepot, appartenance, id_service, immatriculation, id_user)
+  INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_entrepot, appartenance, immatriculation, id_user)
 VALUES
-  (3, 'lexus lfa', 2, 1,1,NULL, 'AB-123-CD', 1),
-  (100, 'Mercedes Sprinter', 2, 1,1,NULL, 'BA-321-DC', 1),
-  (250, 'Peugeot Boxer', 2, 2,1,NULL, 'CD-456-EF', 1),
-  (400, 'Iveco Daily', 2, 2,2,NULL, 'DC-654-FE', 4),
-  (400, 'Nissan NV400', 2, 1,2,NULL, 'GH-789-IJ', 4);
+  (3, 'lexus lfa', 2, 1,1, 'AB-123-CD', 1),
+  (100, 'Mercedes Sprinter', 2, 1,1, 'BA-321-DC', 1),
+  (250, 'Peugeot Boxer', 2, 2,1, 'CD-456-EF', 1),
+  (400, 'Iveco Daily', 2, 2,2, 'DC-654-FE', 4),
+  (400, 'Nissan NV400', 2, 1,2, 'GH-789-IJ', 4);
+
+INSERT INTO SERVICE (id_service, description_service, type_service, service_date_debut, service_date_fin, id_user) VALUES
+(1, 'Partage de vehicule', 1, '2024-05-20 08:00:00', '2024-05-20 12:00:00', 5),
+(2, 'Partage de vehicule', 1, '2024-05-20 14:00:00', '2024-05-20 20:00:00', 11);
+
+INSERT INTO LINKSERVICEVEHICLE (id_service, id_vehicule) VALUES
+(1, 4),
+(2, 4);
 
 INSERT INTO PLANNINGS (description, date_activite, id_index_planning, id_activite)
 VALUES (
