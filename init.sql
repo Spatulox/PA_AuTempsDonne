@@ -115,9 +115,9 @@ CREATE TABLE SERVICE(
    type_service INT,
    service_date_debut DATETIME,
    service_date_fin DATETIME,
-   id_user INT NOT NULL,
+   id_user_booking INT NOT NULL,
    PRIMARY KEY(id_service),
-   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
+   FOREIGN KEY(id_user_booking) REFERENCES UTILISATEUR(id_user)
 );
 
 CREATE TABLE VEHICULES(
@@ -125,13 +125,13 @@ CREATE TABLE VEHICULES(
    capacite INT,
    nom_du_vehicules VARCHAR(255),
    nombre_de_place INT,
-   id_entrepot INT,
+   id_ventrepot INT,
    appartenance INT,
-   id_user INT,
+   id_owner INT,
    immatriculation VARCHAR(255) UNIQUE,
    PRIMARY KEY(id_vehicule),
-   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
-   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
+   FOREIGN KEY(id_ventrepot) REFERENCES ENTREPOTS(id_entrepot),
+   FOREIGN KEY(id_owner) REFERENCES UTILISATEUR(id_user)
 );
 
 CREATE TABLE LINKSERVICEVEHICLE(
@@ -581,7 +581,7 @@ VALUES
   (24, 1), (24, 2), (24, 3), (24, 7),
   (12, 4), (12, 5), (12, 6), (12, 7);
 
-  INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_entrepot, appartenance, immatriculation, id_user)
+  INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_entrepot, appartenance, immatriculation, id_owner)
 VALUES
   (3, 'lexus lfa', 2, 1,1, 'AB-123-CD', 1),
   (100, 'Mercedes Sprinter', 2, 1,1, 'BA-321-DC', 1),
@@ -589,7 +589,7 @@ VALUES
   (400, 'Iveco Daily', 2, 2,2, 'DC-654-FE', 4),
   (400, 'Nissan NV400', 2, 1,2, 'GH-789-IJ', 4);
 
-INSERT INTO SERVICE (id_service, description_service, type_service, service_date_debut, service_date_fin, id_user) VALUES
+INSERT INTO SERVICE (id_service, description_service, type_service, service_date_debut, service_date_fin, id_user_booking) VALUES
 (1, 'Partage de vehicule', 1, '2024-05-20 08:00:00', '2024-05-20 12:00:00', 5),
 (2, 'Partage de vehicule', 1, '2024-05-20 14:00:00', '2024-05-20 20:00:00', 11);
 
