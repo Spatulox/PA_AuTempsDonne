@@ -11,7 +11,7 @@ class VehiculeService
         $userRole = getRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2) {
             $vehiculeRepository = new VehiculeRepository();
-            return $vehiculeRepository->getAllVehicule();
+            $vehiculeRepository->getAllVehicule();
         }else{
             exit_with_message("You didn't have access to this command");
         }
@@ -70,11 +70,11 @@ class VehiculeService
         $userRole = getRoleFromApiKey($apiKey);
         if ($userRole[0] <= 2) {
             $vehiculeRepository = new VehiculeRepository();
-            return $vehiculeRepository->deleteVehicule($int);
+            $vehiculeRepository->deleteVehicule($int);
         } elseif($userRole[0] == 3) {
             // Verifier si c'est bien son vehicule
             $vehiculeRepository = new VehiculeRepository();
-            return $vehiculeRepository->deleteVehicule($int);
+            $vehiculeRepository->deleteVehicule($int);
         }
         else{
             exit_with_message("You didn't have access to this command");

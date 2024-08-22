@@ -20,7 +20,7 @@ class VehiculeRepository
             //$vehiculetArray[$i] = new VehiculeModel($vehicule[$i]["id_vehicule"], $vehicule[$i]["capacite"], $vehicule[$i]["nom_du_vehicules"], $vehicule[$i]["nombre_de_place"],$vehicule[$i]["id_entrepot"]);
         }
 
-            exit_with_content($vehiculetArray);
+        exit_with_content($vehiculetArray);
     }
 //----------------------------------------------------------------------------------
     public function getVehiculeById($int)
