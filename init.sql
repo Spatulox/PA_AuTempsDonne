@@ -127,13 +127,19 @@ CREATE TABLE VEHICULES(
    nombre_de_place INT,
    id_entrepot INT,
    appartenance INT,
-   id_service INT,
    id_user INT,
    immatriculation VARCHAR(255) UNIQUE,
    PRIMARY KEY(id_vehicule),
    FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
    FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user),
    FOREIGN KEY(id_service) REFERENCES SERVICE(id_service)
+);
+
+CREATE TABLE LINKSERVICEVEHICLE(
+    id_vehicle INT NOT NULL,
+    id_service INT NOT NULL,
+    FOREIGN KEY(id_vehicle) REFERENCES VEHICULES(id_vehicle),
+    FOREIGN KEY(id_service) REFERENCES SERVICE(id_service)
 );
 
 CREATE TABLE CONDUIT(
