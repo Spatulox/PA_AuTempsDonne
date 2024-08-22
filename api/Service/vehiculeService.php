@@ -80,6 +80,36 @@ class VehiculeService
             exit_with_message("You didn't have access to this command");
         }
     }
+
+    // Gett all booked vehicle, even if the booked is over
+    public function getBookedVehicle($apiKey){
+        $role = getRoleFromApiKey($apiKey);
+
+        $vehiculeRepository = new VehiculeRepository();
+        if($role[0] <= 2){
+
+            $vehiculeRepository->getAllBookedVehicle();
+
+        } elseif($role[0] == 3){
+
+            $vehiculeRepository->getMyVehicleWichAreBooked($apiKey);
+            // List all my vehicle which are booked
+            exit();
+
+        } elseif ($role[0] == 4) {
+
+            // List my current booked vehicle
+            $vehiculeRepository->getMyBookedVehicle($apiKey);
+            exit();
+        }
+    }
+
+    public function bookingVehicle($apiKey){
+
+    }
+
+    public function unBookingVehicle($apiKey){
+    }
 }
 
 function isValidLicensePlate($plate) {
