@@ -1,5 +1,7 @@
 <?php
 
+include_once "serviceModel.php";
+
 class VehiculeModel
 {
     public $id_vehicule;
@@ -8,10 +10,10 @@ class VehiculeModel
     public $nombre_de_place;
     public $id_entrepot;
     public $appartenance;
-    public $id_service;
     public $immatriculation;
+    public $services = [];
 
-    public function __construct($id_vehicule, $capacite, $nom_du_vehicules, $nombre_de_place, $id_entrepot, $appartenance, $id_service, $immatriculation)
+    public function __construct($id_vehicule, $capacite, $nom_du_vehicules, $nombre_de_place, $id_entrepot, $appartenance, $immatriculation)
     {
         $this->id_vehicule = $id_vehicule;
         $this->capacite = $capacite;
@@ -19,9 +21,14 @@ class VehiculeModel
         $this->nombre_de_place = $nombre_de_place;
         $this->id_entrepot = $id_entrepot;
         $this->appartenance = $appartenance;
-        $this->id_service = $id_service;
         $this->immatriculation = $immatriculation;
     }
+
+    public function addService(ServiceModel $service){
+        $this->services[] = $service;
+    }
+
+
 }
 
 ?>
