@@ -8,11 +8,11 @@ function createDateField(){
             <div class="testDate">
                 <div class="date-field">
                     <label for="start-date">Date de début :</label>
-                    <input type="date" id="start-date" class="date-input" onchange="startDateChange()" required>
+                    <input type="datetime-local" id="start-date" class="date-input" onchange="startDateChange()" required>
                 </div>
                 <div class="date-field">
                     <label for="end-date">Date de fin :</label>
-                    <input type="date" id="end-date" class="date-input" onchange="endDateChange()" required>
+                    <input type="datetime-local" id="end-date" class="date-input" onchange="endDateChange()" required>
                 </div>
             </div>
         </div>
@@ -20,21 +20,22 @@ function createDateField(){
         <script type="text/javascript">
         
             function setDefaultDates() {
-                const today = new Date();
-                const tomorrow = new Date();
-                tomorrow.setDate(today.getDate() + 1); // Définit demain
-
-                // Formate les dates au format YYYY-MM-DD
-                const formatDate = (date) => {
+                const now = new Date();
+                const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000); // Ajoute 1 heure
+            
+                // Formate les dates au format YYYY-MM-DDTHH:mm
+                const formatDateTime = (date) => {
                     const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, "0"); // Mois de 0 à 11
+                    const month = String(date.getMonth() + 1).padStart(2, "0");
                     const day = String(date.getDate()).padStart(2, "0");
-                    return `${year}-${month}-${day}`;
+                    const hours = String(date.getHours()).padStart(2, "0");
+                    const minutes = String(date.getMinutes()).padStart(2, "0");
+                    return `${year}-${month}-${day}T${hours}:${minutes}`;
                 };
-
-                // Définit les valeurs des champs de date
-                document.getElementById("start-date").value = formatDate(today);
-                document.getElementById("end-date").value = formatDate(tomorrow);
+            
+                // Définit les valeurs des champs de date et heure
+                document.getElementById("start-date").value = formatDateTime(now);
+                document.getElementById("end-date").value = formatDateTime(oneHourLater);
             }
 
             setDefaultDates()
