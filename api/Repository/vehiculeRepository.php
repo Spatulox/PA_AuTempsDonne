@@ -185,17 +185,25 @@ class VehiculeRepository
 
     //------------------------------------------------------------------------------------------
 
-    private function returnDesDataForBookedBookingVehicle($data){
+    private function returnDesDataForBookedBookingVehicle($data) {
+        $vehicleArray = [];
+        $vehicleMap = [];
 
-        $vehiculetArray = [];
-        for ($i = 0; $i < count($data) ; $i++) {
-            $vehiculetArray[$i] = returnVehicle($data, $i);
-            $service = returnService($data, $i);
-            $service->addUser(returnUser($data, "null", $i));
-            $vehiculetArray[$i]->addService($service);
+        foreach ($data as $index => $item) {
+            $vehicleId = $item['id_vehicule'];
+
+            if (!isset($vehicleMap[$vehicleId])) {
+                $vehicle = returnVehicle($data, $index);
+                $vehicleMap[$vehicleId] = $vehicle;
+                $vehicleArray[] = $vehicle;
+            }
+
+            $service = returnService($data, $index);
+            $service->addMiniUser(returnMiniUser($data, $index));
+            $vehicleMap[$vehicleId]->addService($service);
         }
 
-        exit_with_content($vehiculetArray);
+        exit_with_content($vehicleArray);
     }
 
     private function returnVehicleForm($data){
