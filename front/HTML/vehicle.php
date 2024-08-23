@@ -6,8 +6,8 @@
 
     <?php include("../includes/head.php"); ?>
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/locales/fr.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/locales/fr.js'></script>
 
     <title><?php echo($data["vehicle"]["title"]) ?></title>
 </head>
@@ -155,7 +155,7 @@
             return
         }
         dataVehicle = dataVehicleOwnerReplace(dataVehicle)
-        createBodyTableau(bodyList, dataVehicle, ["id_owner", "services"], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
+        createBodyTableau(bodyList, dataVehicle, ["id_owner", "services", "contact"], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
 
     }
 
@@ -214,6 +214,8 @@
         const bodyDetail = document.getElementById("bodyDetail")
         bodyDetail.innerHTML = ""
         bodyDetail.appendChild(html)
+
+        displayCalendar(data)
         openTab('tab2')
         stopLoading()
     }
@@ -256,13 +258,77 @@
         immatriculation.innerHTML = '<strong>Immatriculation:</strong> <span class="immatriculation"></span>';
         immatriculation.querySelector('.immatriculation').textContent = vehicleObject.immatriculation;
 
-        const button = createButton(vehicle.msg["Delete"])
-        button.setAttribute("onclick", "deleteVehicle(" + vehicleObject.id_vehicule + ")")
+        const contact = document.createElement('p');
+        contact.innerHTML = '<strong>Contact:</strong> <span class="contact"></span>';
+        contact.querySelector('.contact').textContent = vehicleObject.contact[0].email + " - " + vehicleObject.contact[0].telephone;
 
-        vehicleInfo.append(idVehicle, nameVehicle, capacity, idWarehouse, seats, owner, immatriculation, button);
+        let button
+        <?php if($role <= 2): ?>
+            button = createButton(vehicle.msg["Delete"])
+            button.setAttribute("onclick", "deleteVehicle(" + vehicleObject.id_vehicule + ")")
+            vehicleInfo.append(idVehicle, nameVehicle, capacity, idWarehouse, seats, owner, immatriculation, contact, button);
+        <?php endif; ?>
+
+        <?php if($role >= 3): ?>
+        vehicleInfo.append(idVehicle, nameVehicle, capacity, idWarehouse, seats, owner, immatriculation, contact);
+
+        if(vehicle.email === vehicleObject.contact[0].email){
+            button = createButton(vehicle.msg["Delete"])
+            button.setAttribute("onclick", "deleteVehicle(" + vehicleObject.id_vehicule + ")")
+            vehicleInfo.appendChild(button)
+        }
+            const button2 = createButton(vehicle.msg["Book"])
+            button2.setAttribute("onclick", "bookingVehicle(" + vehicleObject.id_vehicule + ")")
+            vehicleInfo.appendChild(button2)
+
+        <?php endif; ?>
+
         vehicleCard.append(vehicleInfo);
 
         return vehicleCard;
+    }
+
+    function displayCalendar(data, idHtml = "calendar"){
+
+        let event = []
+        const dataInter = data[0].services
+        for (let i = 0; i < dataInter.length; i++) {
+            event.push({
+                <?php if($role <= 3): ?>
+                "title": dataInter[i].description + " - " + dataInter[i].user.email + " - " + dataInter[i].user.telephone,
+                <?php endif; ?>
+                "start": (dataInter[i].date_debut).split(" ").join("T"),
+                "end": (dataInter[i].date_fin).split(" ").join("T"),
+                "description" : data[0].nom_du_vehicules + " (" + data[0].immatriculation + ")"
+            })
+        }
+        
+        
+        var calendarEl = document.getElementById(idHtml);
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'fr',
+            initialView: 'timeGridWeek',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            buttonText: {
+                today: "Aujourd'hui",
+                month: 'Mois',
+                week: 'Semaine',
+                day: 'Jour'
+            },
+            slotMinTime: '05:00:00',
+            slotMaxTime: '23:00:00',
+            events: event,
+            eventClick: function(info) {
+                alert('Service : ' + info.event.title + '\nVéhicule : ' + info.event.extendedProps.description);
+            },
+            firstDay: 1, // (0 pour dimanche, 1 pour lundi)
+            allDaySlot: false
+        });
+        calendar.render();
     }
 
     function startDateChange(){
@@ -314,8 +380,7 @@
             dataVehicle = await vehicle.getAllMyVehicle()
             dataVehicle = dataVehicleOwnerReplace(dataVehicle)
             console.log(dataVehicle)
-            createBodyTableau(bodyList, dataVehicle, [], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
-
+            createBodyTableau(bodyList, dataVehicle, ["id_owner", "services", "contact"], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
         }
 
         tabs = [document.getElementById("titletab1.1"), document.getElementById("titletab1")]
@@ -427,54 +492,13 @@
 
         async function onload() {
             startLoading()
-            openTab('tab1')
-
+            openTab('tab1.1')
             await vehicle.connect()
-            fillListAvailable()
+            await fillListAvailable()
             stopLoading()
         }
 
         onload()
     </script>
 <?php endif; ?>
-
-
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            locale: 'fr', // Définit la locale en français
-            initialView: 'timeGridWeek',
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            buttonText: { // Traduction des boutons
-                today: "Aujourd'hui",
-                month: 'Mois',
-                week: 'Semaine',
-                day: 'Jour'
-            },
-            slotMinTime: '05:00:00', // La journée commence à 5h du matin
-            slotMaxTime: '23:00:00', // La journée se termine à 23h
-            events: [
-                {
-                    title: 'Partage de véhicule - Emma Brown',
-                    start: '2024-05-20T08:00:00',
-                    end: '2024-05-20T12:00:00',
-                    description: 'Iveco Daily (DC-654-FE)'
-                }
-            ],
-            eventClick: function(info) {
-                alert('Service : ' + info.event.title + '\nVéhicule : ' + info.event.extendedProps.description);
-            },
-            firstDay: 1, // La semaine commence le lundi (0 pour dimanche, 1 pour lundi)
-            allDaySlot: false
-        });
-        calendar.render();
-
-        calendarEl.style.height = "500px"
-    });
-</script>
 
