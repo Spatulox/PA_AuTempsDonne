@@ -18,7 +18,6 @@ class VehicleAdmin extends Admin{
 
     async getAvailableVehicle(start, end){
 
-        //console.log(start, end)
         if(!this.isValidDate(start) || !this.isValidDate(end)){
             popup("Dates are not valid")
             return false
@@ -33,8 +32,6 @@ class VehicleAdmin extends Admin{
             "date_start" : start.split('T').join(" ").split(".")[0],
             "date_end" : end.split('T').join(" ").split(".")[0]
         }
-
-        console.log(data)
 
         let response = await this.fetchSync(this.adresse+'/vehicule/available', this.optionPost(data))
         if(!this.compareAnswer(response)){
