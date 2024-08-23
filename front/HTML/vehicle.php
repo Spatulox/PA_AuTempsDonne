@@ -28,8 +28,14 @@
             <?php if($role <= 3): ?>
             <button id="titletab1" class="tablinks width100"
                     onclick="openTab('tab1')"><?php echo htmlspecialchars($data["vehicle"]["tab1"]["title"]) ?></button>
+            <?php endif; ?>
             <button class="tablinks width100"
                     onclick="openTab('tab2')"><?php echo htmlspecialchars($data["vehicle"]["tab2"]["title"]) ?></button>
+            <?php if($role <= 2): ?>
+                <button id="titletab2" class="tablinks width100"
+                        onclick="openTab('tab2.1')"><?php echo htmlspecialchars($data["vehicle"]["tab2.1"]["title"]) ?></button>
+            <?php endif; ?>
+            <?php if($role <= 3): ?>
             <button class="tablinks width100"
                     onclick="openTab('tab3')"><?php echo htmlspecialchars($data["vehicle"]["tab3"]["title"]) ?></button>
             <?php endif; ?>
@@ -82,13 +88,20 @@
                     </tbody>
                 </table>
             </div>
+        <?php endif; ?>
 
-            <div id="tab2" class="tabcontent">
-                <h2 class="textCenter"><?php echo($data["vehicle"]["tab2"]["title"]) ?></h2>
-                <!--<input type="number" class="search-box marginBottom10" placeholder="Search by id">-->
-                <p id="bodyDetail"><?php echo($data["vehicle"]["tab2"]["errorMsg"]) ?></p>
-                <div id="calendar"></div>
-            </div>
+        <div id="tab2" class="tabcontent">
+            <h2 class="textCenter"><?php echo($data["vehicle"]["tab2"]["title"]) ?></h2>
+            <!--<input type="number" class="search-box marginBottom10" placeholder="Search by id">-->
+            <p id="bodyDetail"><?php echo($data["vehicle"]["tab2"]["errorMsg"]) ?></p>
+            <div id="calendar"></div>
+        </div>
+
+        <?php if($role <= 2): ?>
+        <div id="tab2.1" class="tabcontent">
+            <h2 class="textCenter"><?php echo($data["vehicle"]["tab2.1"]["title"]) ?></h2>
+            <div id="allCalendar"></div>
+        </div>
         <?php endif; ?>
 
         <?php if($role <= 3): ?>
@@ -364,7 +377,16 @@
             dataVehicle = await vehicle.getAllVehicle()
             dataVehicle = dataVehicleOwnerReplace(dataVehicle)
             console.log(dataVehicle)
-            createBodyTableau(bodyList, dataVehicle, ["id_owner", "services"], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
+            createBodyTableau(bodyList, dataVehicle, ["id_owner", "services", "contact"], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
+            fillAllCalendar()
+        }
+
+        async function fillAllCalendar(){
+            console.log("Filling all Calendar")
+            let data = await vehicle.getAllBookedVehicle()
+            data = dataVehicleOwnerReplace(data)
+            displayCalendar(data, 'allCalendar')
+            console.log("Finished")
 
         }
     </script>
