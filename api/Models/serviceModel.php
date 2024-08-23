@@ -21,4 +21,8 @@ class ServiceModel
     public function addUser(UserModel $user){
         $this->user = $user;
     }
+
+    public function addMiniUser(MiniUserModel $user){
+        $this->user = $user;
+    }
 }
