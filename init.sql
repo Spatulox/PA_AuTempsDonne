@@ -591,11 +591,19 @@ VALUES
 
 INSERT INTO SERVICE (id_service, description_service, type_service, service_date_debut, service_date_fin, id_user_booking) VALUES
 (1, 'Partage de vehicule', 1, '2024-05-20 08:00:00', '2024-05-20 12:00:00', 5),
-(2, 'Partage de vehicule', 1, '2024-05-20 14:00:00', '2024-05-20 20:00:00', 11);
+(2, 'Partage de vehicule', 1, '2024-08-21 08:00:00', '2024-08-21 12:00:00', 11),
+(3, 'Partage de vehicule', 1, '2024-08-22 14:00:00', '2024-08-22 20:00:00', 5),
+(4, 'Partage de vehicule', 1, '2024-08-23 08:00:00', '2024-08-23 12:00:00', 11),
+(5, 'Partage de vehicule', 1, '2024-08-24 14:00:00', '2024-08-24 20:00:00', 5),
+(6, 'Partage de vehicule', 1, '2024-08-25 08:00:00', '2024-08-25 20:00:00', 11);
 
 INSERT INTO LINKSERVICEVEHICLE (id_service, id_vehicule) VALUES
 (1, 4),
-(2, 4);
+(2, 4),
+(3, 4),
+(4, 5),
+(5, 4),
+(6, 5);
 
 INSERT INTO PLANNINGS (description, date_activite, id_index_planning, id_activite)
 VALUES (
