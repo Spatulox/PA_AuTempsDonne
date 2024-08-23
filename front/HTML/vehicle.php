@@ -143,6 +143,8 @@
 <!-- ////////////////////////////////COMMON//////////////////////////////////// -->
 <script type="text/javascript">
 
+    let messageAlert = 0
+
     function dataVehicleOwnerReplace(dataVehicle){
         dataVehicle.forEach(vehicle => {
             if (vehicle.appartenance === "1") {
@@ -229,6 +231,10 @@
         displayCalendar(data)
         openTab('tab2')
         stopLoading()
+        if(messageAlert === 0){
+            alert("Plz, click on the below 'previous' button to refresh the calendar below, otherwise nothing will appear :/")
+            messageAlert++
+        }
     }
 
     function formatVehicleToHTML(vehicleObject) {
@@ -342,8 +348,14 @@
             firstDay: 1, // (0 pour dimanche, 1 pour lundi)
             allDaySlot: false
         });
-        calendar.render();
+
+        setTimeout(() => {
+            calendar.render();
+            calendar.updateSize();
+        }, 100);
+
     }
+
 
     function startDateChange(){
         checkDateLogic()

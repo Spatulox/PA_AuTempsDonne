@@ -24,11 +24,7 @@
 }
 
 #calendar, #allCalendar{
-  height: 600px;
-}
-
-#calendar table, #allCalendar table{
-  width: 100% !important;
+  height: 1000px;
 }
 
 #language-select{
