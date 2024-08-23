@@ -41,6 +41,14 @@ class VehicleAdmin extends Admin{
         return response
     }
 
+    async getAllBookedVehicle(){
+        let response = await this.fetchSync(this.adresse+'/vehicule/booked', this.optionGet())
+        if(!this.compareAnswer(response)){
+            return false
+        }
+        return response
+    }
+
     async getVehicleById(id){
         let response = await this.fetchSync(this.adresse+'/vehicule/'+id, this.optionGet())
         if(!this.compareAnswer(response)){
