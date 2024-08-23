@@ -24,20 +24,14 @@ class VehiculeRepository
 //----------------------------------------------------------------------------------
     public function getVehiculeById($int)
     {
-        $dateDuJour = date('Y-m-d 00:00:00');
-
-        $vehicule = selectDB("VEHICULES", "*", "id_vehicule = ".$int);
-        if(!$vehicule){
-            exit_with_message("Impossible to select data for entrepot in the DB");
+        $columns = "s.*, v.*, u.id_user, u.telephone, u.email, u.id_role";
+        $join = "LEFT JOIN SERVICE s ON lsv.id_service = s.id_service LEFT JOIN VEHICULES v ON lsv.id_vehicule = v.id_vehicule LEFT JOIN UTILISATEUR u ON s.id_user_booking = u.id_user";
+        $condition = "lsv.id_vehicule = ". $int;
+        $data = selectJoinDB("LINKSERVICEVEHICLE lsv", $columns, $join, $condition, "bool");
+        if(!$data){
+            $data = selectDB("VEHICULES", "*", "id_vehicule = ". $int);
         }
-
-        $vehiculetArray = [];
-
-        for ($i=0; $i < count($vehicule) ; $i++) {
-            $vehiculetArray[$i] = returnVehicle($vehicule, $i);
-        }
-
-        exit_with_content($vehiculetArray);
+        $this->returnDesDataForBookedBookingVehicle($data);
     }
 
     //----------------------------------------------------------------------------------
