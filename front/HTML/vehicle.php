@@ -437,3 +437,44 @@
         onload()
     </script>
 <?php endif; ?>
+
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'fr', // Définit la locale en français
+            initialView: 'timeGridWeek',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            buttonText: { // Traduction des boutons
+                today: "Aujourd'hui",
+                month: 'Mois',
+                week: 'Semaine',
+                day: 'Jour'
+            },
+            slotMinTime: '05:00:00', // La journée commence à 5h du matin
+            slotMaxTime: '23:00:00', // La journée se termine à 23h
+            events: [
+                {
+                    title: 'Partage de véhicule - Emma Brown',
+                    start: '2024-05-20T08:00:00',
+                    end: '2024-05-20T12:00:00',
+                    description: 'Iveco Daily (DC-654-FE)'
+                }
+            ],
+            eventClick: function(info) {
+                alert('Service : ' + info.event.title + '\nVéhicule : ' + info.event.extendedProps.description);
+            },
+            firstDay: 1, // La semaine commence le lundi (0 pour dimanche, 1 pour lundi)
+            allDaySlot: false
+        });
+        calendar.render();
+
+        calendarEl.style.height = "500px"
+    });
+</script>
+
