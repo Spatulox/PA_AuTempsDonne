@@ -43,43 +43,33 @@ class VehiculeRepository
     //----------------------------------------------------------------------------------
 
     public function getVehiculeAvailable($debut, $fin){
-        $columns = "v.*";
-        $join = "LEFT JOIN SERVICE s ON v.id_service = s.id_service";
-        $condition = "s.id_service IS NULL 
-                        OR NOT (
-                            s.service_date_debut BETWEEN '".$debut." 00:00:00' AND '".$fin." 23:59:59'
-                        OR s.service_date_fin BETWEEN '".$debut." 00:00:00' AND '".$fin." 23:59:59'
-                        OR (s.service_date_debut < '".$debut." 00:00:00' AND s.service_date_fin > '".$fin." 23:59:59')
-                        );";
+        $columns = "DISTINCT v.*";
+        $join = "LEFT JOIN LINKSERVICEVEHICLE lsv ON v.id_vehicule = lsv.id_vehicule LEFT JOIN SERVICE s ON lsv.id_service = s.id_service";
+        $condition = "v.appartenance != 1 AND v.id_vehicule NOT IN (
+                SELECT DISTINCT lsv.id_vehicule
+                FROM LINKSERVICEVEHICLE lsv
+                JOIN SERVICE s ON lsv.id_service = s.id_service
+                WHERE ( s.service_date_debut <= '".$fin." 23:59:59'
+                AND s.service_date_fin >= '".$debut." 00:00:00')
+                );";
         $data = selectJoinDB("VEHICULES v", $columns, $join, $condition);
-
-        $vehiculetArray = [];
-        for ($i=0; $i < count($data) ; $i++) {
-            $vehiculetArray[$i] = returnVehicle($data, $i);
-        }
-
-        exit_with_content($vehiculetArray);
+        $this->returnVehicleForm($data);
     }
     //----------------------------------------------------------------------------------
 
     public function getMyVehiculeAvailable($debut, $fin, $id_user)
     {
-        $columns = "v.*";
-        $join = "LEFT JOIN SERVICE s ON v.id_service = s.id_service";
-        $condition = "v.id_user= ".$id_user." AND s.id_service IS NULL 
-                        OR NOT (
-                            s.service_date_debut BETWEEN '".$debut." 00:00:00' AND '".$fin." 23:59:59'
-                        OR s.service_date_fin BETWEEN '".$debut." 00:00:00' AND '".$fin." 23:59:59'
-                        OR (s.service_date_debut < '".$debut." 00:00:00' AND s.service_date_fin > '".$fin." 23:59:59')
-                        );";
+        $columns = "DISTINCT v.*";
+        $join = "LEFT JOIN LINKSERVICEVEHICLE lsv ON v.id_vehicule = lsv.id_vehicule LEFT JOIN SERVICE s ON lsv.id_service = s.id_service";
+        $condition = "v.id_owner= ".$id_user." AND v.id_vehicule NOT IN (
+                SELECT DISTINCT lsv.id_vehicule
+                FROM LINKSERVICEVEHICLE lsv
+                JOIN SERVICE s ON lsv.id_service = s.id_service
+                WHERE ( s.service_date_debut <= '".$fin." 23:59:59'
+                AND s.service_date_fin >= '".$debut." 00:00:00')
+                );";
         $data = selectJoinDB("VEHICULES v", $columns, $join, $condition);
-
-        $vehiculetArray = [];
-        for ($i=0; $i < count($data) ; $i++) {
-            $vehiculetArray[$i] = returnVehicle($data, $i);
-        }
-
-        exit_with_content($vehiculetArray);
+        $this->returnVehicleForm($data);
     }
 
     //----------------------------------------------------------------------------------
@@ -204,13 +194,21 @@ class VehiculeRepository
     private function returnDesDataForBookedBookingVehicle($data){
 
         $vehiculetArray = [];
-        for ($i=0; $i < count($data) ; $i++) {
+        for ($i = 0; $i < count($data) ; $i++) {
             $vehiculetArray[$i] = returnVehicle($data, $i);
             $service = returnService($data, $i);
-            $service->addUser(returnUser($data, $i));
+            $service->addUser(returnUser($data, "null", $i));
             $vehiculetArray[$i]->addService($service);
         }
 
+        exit_with_content($vehiculetArray);
+    }
+
+    private function returnVehicleForm($data){
+        $vehiculetArray = [];
+        for ($i=0; $i < count($data) ; $i++) {
+            $vehiculetArray[$i] = returnVehicle($data, $i);
+        }
         exit_with_content($vehiculetArray);
     }
 }
