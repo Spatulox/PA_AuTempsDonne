@@ -36,8 +36,8 @@ class VehiculeRepository
                 SELECT DISTINCT lsv.id_vehicule
                 FROM LINKSERVICEVEHICLE lsv
                 JOIN SERVICE s ON lsv.id_service = s.id_service
-                WHERE ( s.service_date_debut <= '".$fin." 23:59:59'
-                AND s.service_date_fin >= '".$debut." 00:00:00')
+                WHERE ( s.service_date_debut <= '".$fin."'
+                AND s.service_date_fin >= '".$debut."')
                 );";
         $data = selectJoinDB("VEHICULES v", $columns, $join, $condition);
         $this->returnVehicleForm($data);
@@ -52,8 +52,8 @@ class VehiculeRepository
                 SELECT DISTINCT lsv.id_vehicule
                 FROM LINKSERVICEVEHICLE lsv
                 JOIN SERVICE s ON lsv.id_service = s.id_service
-                WHERE ( s.service_date_debut <= '".$fin." 23:59:59'
-                AND s.service_date_fin >= '".$debut." 00:00:00')
+                WHERE ( s.service_date_debut <= '".$fin."'
+                AND s.service_date_fin >= '".$debut."')
                 );";
         $data = selectJoinDB("VEHICULES v", $columns, $join, $condition);
         $this->returnVehicleForm($data);

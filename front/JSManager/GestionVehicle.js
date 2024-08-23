@@ -30,9 +30,11 @@ class VehicleAdmin extends Admin{
         }
 
         const data = {
-            "date_start" : start,
-            "date_end" : end
+            "date_start" : start.split('T').join(" ").split(".")[0],
+            "date_end" : end.split('T').join(" ").split(".")[0]
         }
+
+        console.log(data)
 
         let response = await this.fetchSync(this.adresse+'/vehicule/available', this.optionPost(data))
         if(!this.compareAnswer(response)){
@@ -96,7 +98,7 @@ class VehicleAdmin extends Admin{
 
     isValidDate(dateString) {
         // Convertir la chaîne de caractères en objet Date
-        let date = new Date(dateString.split("T")[0].split(" ")[0]);
+        let date = new Date(dateString);
         if(isNaN(date)){
             console.log("dateString n'est pas valide")
             return false

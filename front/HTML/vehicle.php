@@ -159,17 +159,15 @@
         const bodyList = document.getElementById('bodyListAvailable')
         bodyList.innerHTML = ""
 
-        const today = new Date(new Date(document.getElementById("start-date").value).setHours(0,0,0,0))
-        const demain = new Date(new Date(document.getElementById("end-date").value).setHours(23, 59, 59, 999))
+        const today = new Date(new Date(document.getElementById("start-date").value))
+        const demain = new Date(new Date(document.getElementById("end-date").value))
 
-        dataVehicle = await vehicle.getAvailableVehicle(today.toISOString().split('T')[0], demain.toISOString().split('T')[0])
-        console.log(dataVehicle)
+        dataVehicle = await vehicle.getAvailableVehicle(today.toISOString(), demain.toISOString())
         if(dataVehicle === false){
             return
         }
         dataVehicle = dataVehicleOwnerReplace(dataVehicle)
         createBodyTableau(bodyList, dataVehicle, ["id_owner", "services", "contact"], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
-
     }
 
     async function fillEnterpotList() {
