@@ -12,14 +12,7 @@ class VehiculeRepository
         if(!$vehicule){
             exit_with_message("Impossible to select data for entrepot in the DB");
         }
-
-        $vehiculetArray = [];
-
-        for ($i=0; $i < count($vehicule) ; $i++) {
-            $vehiculetArray[$i] = returnVehicle($vehicule, $i);
-        }
-
-        exit_with_content($vehiculetArray);
+        $this->returnVehicleForm($vehicule);
     }
 //----------------------------------------------------------------------------------
     public function getVehiculeById($int)
@@ -68,14 +61,9 @@ class VehiculeRepository
 
     //----------------------------------------------------------------------------------
     public function getMyVehicules($idUser){
-        $data = selectDB("VEHICULES", "*", "id_user= ".$idUser);
+        $data = selectDB("VEHICULES", "*", "id_owner= ".$idUser);
 
-        $vehiculetArray = [];
-        for ($i=0; $i < count($data) ; $i++) {
-            $vehiculetArray[$i] = returnVehicle($data, $i);
-        }
-
-        exit_with_content($vehiculetArray);
+        $this->returnVehicleForm($data);
     }
 
     //----------------------------------------------------------------------------------
