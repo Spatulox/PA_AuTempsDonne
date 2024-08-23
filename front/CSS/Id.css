@@ -23,8 +23,12 @@
 
 }
 
-#calendar{
+#calendar, #allCalendar{
   height: 600px;
+}
+
+#calendar table, #allCalendar table{
+  width: 100%;
 }
 
 #language-select{

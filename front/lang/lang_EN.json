@@ -339,6 +339,10 @@
       "title": "Vehicle details",
       "errorMsg": "No vehicle selected"
     },
+    "tab2.1": {
+      "title": "All Booked Vehicle",
+      "errorMsg": "Nothing to show"
+    },
     "tab3": {
       "title": "Add Vehicle",
       "errorMsg": "Nothing to show"
