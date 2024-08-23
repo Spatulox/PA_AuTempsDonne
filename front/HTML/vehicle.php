@@ -5,6 +5,9 @@
 <head>
 
     <?php include("../includes/head.php"); ?>
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/locales/fr.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
 
     <title><?php echo($data["vehicle"]["title"]) ?></title>
 </head>
@@ -43,12 +46,11 @@
                 <thead>
                 <tr>
                     <td><?php echo $data["vehicle"]["tab1"]["id"] ?></td>
-                    <td><?php echo $data["vehicle"]["tab1"]["capacity"] ?></td>
                     <td><?php echo $data["vehicle"]["tab1"]["name"] ?></td>
+                    <td><?php echo $data["vehicle"]["tab1"]["capacity"] ?></td>
                     <td><?php echo $data["vehicle"]["tab1"]["place"] ?></td>
                     <td><?php echo $data["vehicle"]["tab1"]["entrepot"] ?></td>
                     <td><?php echo $data["vehicle"]["tab1"]["owner"] ?></td>
-                    <td><?php echo $data["vehicle"]["tab1"]["service"] ?></td>
                     <td><?php echo $data["vehicle"]["tab1"]["immatriculation"] ?></td>
                     <td><?php echo $data["vehicle"]["tab1"]["button"] ?></td>
                 </tr>
@@ -66,12 +68,11 @@
                     <thead>
                     <tr>
                         <td><?php echo $data["vehicle"]["tab1"]["id"] ?></td>
-                        <td><?php echo $data["vehicle"]["tab1"]["capacity"] ?></td>
                         <td><?php echo $data["vehicle"]["tab1"]["name"] ?></td>
+                        <td><?php echo $data["vehicle"]["tab1"]["capacity"] ?></td>
                         <td><?php echo $data["vehicle"]["tab1"]["place"] ?></td>
                         <td><?php echo $data["vehicle"]["tab1"]["entrepot"] ?></td>
                         <td><?php echo $data["vehicle"]["tab1"]["owner"] ?></td>
-                        <td><?php echo $data["vehicle"]["tab1"]["service"] ?></td>
                         <td><?php echo $data["vehicle"]["tab1"]["immatriculation"] ?></td>
                         <td><?php echo $data["vehicle"]["tab1"]["button"] ?></td>
                     </tr>
@@ -86,6 +87,7 @@
                 <h2 class="textCenter"><?php echo($data["vehicle"]["tab2"]["title"]) ?></h2>
                 <!--<input type="number" class="search-box marginBottom10" placeholder="Search by id">-->
                 <p id="bodyDetail"><?php echo($data["vehicle"]["tab2"]["errorMsg"]) ?></p>
+                <div id="calendar"></div>
             </div>
         <?php endif; ?>
 
@@ -148,8 +150,12 @@
         const demain = new Date(new Date(document.getElementById("end-date").value).setHours(23, 59, 59, 999))
 
         dataVehicle = await vehicle.getAvailableVehicle(today.toISOString().split('T')[0], demain.toISOString().split('T')[0])
+        console.log(dataVehicle)
+        if(dataVehicle === false){
+            return
+        }
         dataVehicle = dataVehicleOwnerReplace(dataVehicle)
-        createBodyTableau(bodyList, dataVehicle, [], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
+        createBodyTableau(bodyList, dataVehicle, ["id_owner", "services"], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
 
     }
 
@@ -292,7 +298,7 @@
             dataVehicle = await vehicle.getAllVehicle()
             dataVehicle = dataVehicleOwnerReplace(dataVehicle)
             console.log(dataVehicle)
-            createBodyTableau(bodyList, dataVehicle, [], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
+            createBodyTableau(bodyList, dataVehicle, ["id_owner", "services"], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
 
         }
     </script>
