@@ -310,6 +310,9 @@
                 <?php if($role <= 3): ?>
                 "title": dataInter[i].description + " - " + dataInter[i].user.email + " - " + dataInter[i].user.telephone,
                 <?php endif; ?>
+                <?php if($role == 4): ?>
+                "title": dataInter[i].description + " - Vehicule Booked",
+                <?php endif; ?>
                 "start": (dataInter[i].date_debut).split(" ").join("T"),
                 "end": (dataInter[i].date_fin).split(" ").join("T"),
                 "description" : data[0].nom_du_vehicules + " (" + data[0].immatriculation + ")"

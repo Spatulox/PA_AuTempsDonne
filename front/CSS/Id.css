@@ -28,7 +28,7 @@
 }
 
 #calendar table, #allCalendar table{
-  width: 100%;
+  width: 100% !important;
 }
 
 #language-select{
