@@ -12,6 +12,7 @@ class VehiculeModel
     public $id_entrepot;
     public $appartenance;
     public $immatriculation;
+    public $contact = null;
     public $services = [];
 
     public function __construct($id_vehicule, $capacite, $nom_du_vehicules, $nombre_de_place, $id_entrepot, $appartenance, $immatriculation, $id_owner)
@@ -28,6 +29,10 @@ class VehiculeModel
 
     public function addService(ServiceModel $service){
         $this->services[] = $service;
+    }
+
+    public function addContact(MiniUserModel $user){
+        $this->contact[] = $user;
     }
 
 

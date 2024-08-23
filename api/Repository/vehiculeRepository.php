@@ -193,7 +193,9 @@ class VehiculeRepository
             $vehicleId = $item['id_vehicule'];
 
             if (!isset($vehicleMap[$vehicleId])) {
+                $user = selectDB("UTILISATEUR", "*", "id_user=".$data[$index]["id_owner"]);
                 $vehicle = returnVehicle($data, $index);
+                $vehicle->addContact(returnMiniUser($user));
                 $vehicleMap[$vehicleId] = $vehicle;
                 $vehicleArray[] = $vehicle;
             }
