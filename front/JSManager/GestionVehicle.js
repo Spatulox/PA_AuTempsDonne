@@ -18,15 +18,15 @@ class VehicleAdmin extends Admin{
 
     async getAvailableVehicle(start, end){
 
-        console.log(start, end)
+        //console.log(start, end)
         if(!this.isValidDate(start) || !this.isValidDate(end)){
             popup("Dates are not valid")
-            return
+            return false
         }
 
         if(this.isDateInThePast(start) || this.isDateInThePast(end)){
             popup("Date start and date end cannot be in the past")
-            return
+            return false
         }
 
         const data = {
@@ -74,14 +74,14 @@ class VehicleAdmin extends Admin{
 
         date = date.toISOString().split('T')[0]
 
-        console.log(dateString.split("T")[0].split(" ")[0])
+        //console.log(dateString.split("T")[0].split(" ")[0])
 
 
         let today = new Date()
         today = today.toISOString().split('T')[0]
 
         // Vérifier si la date est valide
-        console.log(date >= today)
+        //console.log(date >= today)
         return !(date >= today);
 
     }
