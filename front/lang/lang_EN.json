@@ -355,6 +355,10 @@
     "tab4": {
       "title": "My Booked Vehicle",
       "errorMsg": "Nothing to show"
+    },
+    "tab4.1": {
+      "title": "Vehicle I Have Booked",
+      "errorMsg": "Nothing to show"
     }
   }
 }
