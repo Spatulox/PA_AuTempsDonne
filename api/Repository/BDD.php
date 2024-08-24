@@ -173,7 +173,7 @@ function selectJoinDB($table, $colums, $join, $condition = -1, $additionnalMessa
 		if ($reponse == false)
 		{
 			if ($additionnalMessage == NULL || $additionnalMessage == "-@"){
-				exit_with_message("ERROR : Impossible to select data, or no data here", 500);
+				exit_with_message("ERROR : Nothing to show", 500);
 			}
 			elseif($additionnalMessage == "bool"){
 				return false;
