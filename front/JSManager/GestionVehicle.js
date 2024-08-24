@@ -72,6 +72,20 @@ class VehicleAdmin extends Admin{
         return response
     }
 
+    async bookingVehicle(id, start, end){
+        const data = {
+            "id_vehicule":id,
+            "date_start":start,
+            "date_end":end
+        }
+
+        let response = await this.fetchSync(this.adresse+'/vehicule/booked', this.optionPost(data))
+        if(!this.compareAnswer(response)){
+            return false
+        }
+        return response
+    }
+
     isDateInThePast(dateString) {
         let date = new Date(dateString.split("T")[0].split(" ")[0]);
         if(isNaN(date)){
