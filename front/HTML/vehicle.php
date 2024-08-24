@@ -39,7 +39,7 @@
             <button class="tablinks width100"
                     onclick="openTab('tab3')"><?php echo htmlspecialchars($data["vehicle"]["tab3"]["title"]) ?></button>
             <?php endif; ?>
-            <?php if($role == 4): ?>
+            <?php if($role == 3 || $role == 4): ?>
             <button class="tablinks width100"
                     onclick="openTab('tab4')"><?php echo htmlspecialchars($data["vehicle"]["tab4"]["title"]) ?></button>
             <?php endif; ?>
@@ -125,11 +125,11 @@
         </div>
         <?php endif; ?>
 
-        <?php if($role == 4): ?>
+        <?php if($role == 3 || $role == 4): ?>
             <div id="tab4" class="tabcontent">
                 <h2 class="textCenter"><?php echo($data["vehicle"]["tab4"]["title"]) ?></h2>
                 <!--<input type="number" class="search-box marginBottom10" placeholder="Search by id">-->
-                <p id="bodyDetail"><?php echo($data["vehicle"]["tab4"]["errorMsg"]) ?></p>
+                <div id="bodyDetailCalendar"></div>
             </div>
         <?php endif; ?>
     </div>
@@ -144,6 +144,9 @@
 <script type="text/javascript">
 
     function dataVehicleOwnerReplace(dataVehicle){
+        if(!dataVehicle){
+            return false
+        }
         dataVehicle.forEach(vehicle => {
             if (vehicle.appartenance === "1") {
                 vehicle.appartenance = "Association";
@@ -302,19 +305,26 @@
     function displayCalendar(data, idHtml = "calendar"){
 
         let event = []
-        const dataInter = data[0].services
-        for (let i = 0; i < dataInter.length; i++) {
-            event.push({
-                <?php if($role <= 3): ?>
-                "title": dataInter[i].description + " - " + dataInter[i].user.email + " - " + dataInter[i].user.telephone,
-                <?php endif; ?>
-                <?php if($role == 4): ?>
-                "title": dataInter[i].description + " - Vehicule Booked",
-                <?php endif; ?>
-                "start": (dataInter[i].date_debut).split(" ").join("T"),
-                "end": (dataInter[i].date_fin).split(" ").join("T"),
-                "description" : data[0].nom_du_vehicules + " (" + data[0].immatriculation + ")"
-            })
+
+        for (let j = 0; j < data.length; j++) {
+            const dataInter = data[j].services
+            for (let i = 0; i < dataInter.length; i++) {
+                event.push({
+                    "title": dataInter[i].description + " - Vehicule Booked",
+                    <?php if($role <= 3): ?>
+                    "client":dataInter[i].user.email + " - " + dataInter[i].user.telephone,
+                    <?php endif; ?>
+                    "start": (dataInter[i].date_debut).split(" ").join("T"),
+                    "end": (dataInter[i].date_fin).split(" ").join("T"),
+                    "description" : data[j].nom_du_vehicules + " (" + data[j].immatriculation + ")",
+                    <?php if($role != 3): ?>
+                    "contact": data[j].contact[0].email + " - " + data[j].contact[0].telephone,
+                    <?php endif; ?>
+                    <?php if($role == 3): ?>
+                    "contact": "You",
+                    <?php endif; ?>
+                })
+            }
         }
         
         
@@ -337,7 +347,7 @@
             slotMaxTime: '23:00:00',
             events: event,
             eventClick: function(info) {
-                alert('Service : ' + info.event.title + '\nVéhicule : ' + info.event.extendedProps.description);
+                alert('Service : ' + info.event.title + '\nVéhicule : ' + info.event.extendedProps.description + '\nContact Client : ' + info.event.extendedProps.contact + '\nContact Owner : ' + info.event.extendedProps.contact)
             },
             firstDay: 1, // (0 pour dimanche, 1 pour lundi)
             allDaySlot: false
@@ -345,8 +355,12 @@
 
         setTimeout(() => {
             calendar.render();
+        }, 200);
+
+        setTimeout(() => {
+            calendar.render();
             calendar.updateSize();
-        }, 100);
+        }, 300);
 
     }
 
@@ -433,7 +447,7 @@
 
         tabs = [document.getElementById("titletab1.1"), document.getElementById("titletab1")]
 
-        tabs[0].innerHTML = "My Free Vehicle"
+        tabs[0].innerHTML = "Free Vehicle"
         tabs[1].innerHTML = "My Vehicles"
     </script>
 <?php endif; ?>
@@ -513,6 +527,10 @@
         await fillEnterpotList()
         await vehicle.connect()
         fillListAvailable()
+
+        <?php if($role == 3): ?>
+        fillMyBookedVehicle()
+        <?php endif; ?>
         await fillList()
 
         stopLoading()
@@ -669,6 +687,15 @@
             document.getElementById('id_vehicle_to_book').value = id_vehicle
         }
 
+        async function fillMyBookedVehicle(){
+            console.log("Filling my booked vehicle")
+            let data = await vehicle.getAllBookedVehicle()
+            data = dataVehicleOwnerReplace(data)
+            displayCalendar(data, 'bodyDetailCalendar')
+            console.log("Finished")
+
+        }
+
     </script>
 <?php endif; ?>
 <!-- ////////////////////////////////BÉNÉFICIAIRES//////////////////////////////////// -->
@@ -690,6 +717,7 @@
             openTab('tab1.1')
             await vehicle.connect()
             await fillListAvailable()
+            fillMyBookedVehicle()
             stopLoading()
         }
 
