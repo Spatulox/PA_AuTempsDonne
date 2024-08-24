@@ -311,18 +311,11 @@
             for (let i = 0; i < dataInter.length; i++) {
                 event.push({
                     "title": dataInter[i].description + " - Vehicule Booked",
-                    <?php if($role <= 3): ?>
-                    "client":dataInter[i].user.email + " - " + dataInter[i].user.telephone,
-                    <?php endif; ?>
+                    "client": (this.email === data[j].contact[0].email || this.role <= 2 ? (dataInter[i].user.email + " - " + dataInter[i].user.telephone) : "Unkown"),
                     "start": (dataInter[i].date_debut).split(" ").join("T"),
                     "end": (dataInter[i].date_fin).split(" ").join("T"),
                     "description" : data[j].nom_du_vehicules + " (" + data[j].immatriculation + ")",
-                    <?php if($role != 3): ?>
-                    "contact": data[j].contact[0].email + " - " + data[j].contact[0].telephone,
-                    <?php endif; ?>
-                    <?php if($role == 3): ?>
-                    "contact": "You",
-                    <?php endif; ?>
+                    "contact": data[j].contact[0].email + " - " + data[j].contact[0].telephone
                 })
             }
         }
@@ -347,7 +340,7 @@
             slotMaxTime: '23:00:00',
             events: event,
             eventClick: function(info) {
-                alert('Service : ' + info.event.title + '\nVéhicule : ' + info.event.extendedProps.description + '\nContact Client : ' + info.event.extendedProps.contact + '\nContact Owner : ' + info.event.extendedProps.contact)
+                alert('Service : ' + info.event.title + '\nVéhicule : ' + info.event.extendedProps.description + '\nContact Client : ' + info.event.extendedProps.client + '\nContact Owner : ' + info.event.extendedProps.contact)
             },
             firstDay: 1, // (0 pour dimanche, 1 pour lundi)
             allDaySlot: false
