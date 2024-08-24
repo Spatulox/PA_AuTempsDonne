@@ -40,8 +40,19 @@ class VehicleAdmin extends Admin{
         return response
     }
 
+    // The automatic booked vehicle for user role 1, 2, 4
+    // Take all my vehicle booked by other person id I'm a user role 3
     async getAllBookedVehicle(){
         let response = await this.fetchSync(this.adresse+'/vehicule/booked', this.optionGet())
+        if(!this.compareAnswer(response)){
+            return false
+        }
+        return response
+    }
+
+    // Get all vehicle I Have booked If i'm a user role 3
+    async getVehicleIHaveBookedBenevole(){
+        let response = await this.fetchSync(this.adresse+'/vehicule/booked/me', this.optionGet())
         if(!this.compareAnswer(response)){
             return false
         }
