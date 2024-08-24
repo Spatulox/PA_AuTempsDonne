@@ -268,6 +268,9 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
 		if ($returningData == null || $returningData == "-@" ||  $returningData == "bool"){
 			return true;
 		}
+        if(strpos($returningData, "MAX") !== false){
+            return selectDB($table, $returningData);
+        }
 		return selectDB($table, '*', $returningData);
 	}
 	catch (PDOException $e)
