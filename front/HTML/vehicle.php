@@ -143,8 +143,6 @@
 <!-- ////////////////////////////////COMMON//////////////////////////////////// -->
 <script type="text/javascript">
 
-    let messageAlert = 0
-
     function dataVehicleOwnerReplace(dataVehicle){
         dataVehicle.forEach(vehicle => {
             if (vehicle.appartenance === "1") {
@@ -163,7 +161,6 @@
 
         const today = new Date(new Date(document.getElementById("start-date").value))
         const demain = new Date(new Date(document.getElementById("end-date").value))
-
         dataVehicle = await vehicle.getAvailableVehicle(today.toISOString(), demain.toISOString())
         if(dataVehicle === false){
             return
@@ -231,10 +228,6 @@
         displayCalendar(data)
         openTab('tab2')
         stopLoading()
-        if(messageAlert === 0){
-            alert("Plz, click on the below 'previous' button to refresh the calendar below, otherwise nothing will appear :/")
-            messageAlert++
-        }
     }
 
     function formatVehicleToHTML(vehicleObject) {
@@ -366,16 +359,32 @@
         updateDate("end")
     }
 
-    function checkDateLogic(){
+    function checkDateLogic() {
         const startDate = document.getElementById("start-date");
         const endDate = document.getElementById("end-date");
 
+        // Convertir les valeurs en objets Date
+        const startDateTime = new Date(startDate.value);
+        const endDateTime = new Date(endDate.value);
 
-        if(endDate.value < startDate.value){
-            let tday = new Date()
-            tday.setDate(new Date(startDate.value).getDate() + 1)
-            endDate.value = tday.toISOString().split("T")[0]
+        if (endDateTime < startDateTime) {
+            // Ajouter une heure à la date de début
+            let newEndDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);
+
+            // Formater la nouvelle date de fin pour l'input datetime-local
+            endDate.value = formatDateTimeLocal(newEndDateTime);
         }
+    }
+
+    // Fonction auxiliaire pour formater la date au format attendu par datetime-local
+    function formatDateTimeLocal(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
 </script>
@@ -389,7 +398,6 @@
             bodyList.innerHTML = ""
             dataVehicle = await vehicle.getAllVehicle()
             dataVehicle = dataVehicleOwnerReplace(dataVehicle)
-            console.log(dataVehicle)
             createBodyTableau(bodyList, dataVehicle, ["id_owner", "services", "contact"], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
             fillAllCalendar()
         }
@@ -414,7 +422,6 @@
             bodyList.innerHTML = ""
             dataVehicle = await vehicle.getAllMyVehicle()
             dataVehicle = dataVehicleOwnerReplace(dataVehicle)
-            console.log(dataVehicle)
             createBodyTableau(bodyList, dataVehicle, ["id_owner", "services", "contact"], [vehicle.msg["See"]], ["seeDetail"], "id_vehicule")
         }
 
@@ -478,7 +485,6 @@
             "immatriculation" : imma,
             "appartenance" : appartenance
         }
-        console.log(data)
         await vehicle.createVehicle(data)
         fillListAvailable()
         await fillList()
