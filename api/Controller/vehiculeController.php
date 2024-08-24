@@ -54,7 +54,7 @@ function vehiculeController($uri, $apiKey){
                 if(!isset($json["id_vehicule"]) || empty($json["id_vehicule"]) || !isset($json["date_start"]) || empty($json["date_start"]) || !isset($json["date_end"]) || empty($json["date_end"])){
                     exit_with_message("Missing required parameters id_vehicule, date_start and date_end", 403);
                 }
-                $VehiculeService->bookingVehicle($apiKey);
+                $VehiculeService->bookingVehicle($apiKey, $json["id_vehicule"], $json["date_start"], $json["date_end"]);
                 exit();
             }
 

@@ -108,11 +108,37 @@ class VehiculeService
         }
     }
 
-    public function bookingVehicle($apiKey){
+    public function bookingVehicle($apiKey, $id_vehicule, $date_start_init, $date_end_init) {
+
+        $date_start = new DateTime($date_start_init);
+        $date_end = new DateTime($date_end_init);
+
+        if ($date_end <= $date_start) {
+            exit_with_message("The end date cannot be before the start date");
+        }
+
+        $today = new DateTime('today');
+        if ($date_start->format('Y-m-d') == $today->format('Y-m-d')) {
+            exit_with_message("You can't book a vehicle for today");
+        }
+
+
+        $deltaDate = $date_end->diff($date_start);
+        if ($deltaDate->h < 1 && $deltaDate->days == 0) {
+            exit_with_message("You need to book the vehicle for at least 1 hour");
+        }
+
 
         $userRole = getRoleFromApiKey($apiKey);
 
+        // In the model, the id_service is the id_vehicule, to avoid a lot of param in the next function
+        $service = new ServiceModel($id_vehicule, "Partage de vehicule", 1, $date_start_init, $date_end_init);
+        $vehiculeRepository = new VehiculeRepository();
+        $vehiculeRepository->bookingAVehicle($apiKey, $service);
+
+
     }
+
 
     public function unBookingVehicle($id_service, $apiKey){
         $vehiculeRepository = new VehiculeRepository();

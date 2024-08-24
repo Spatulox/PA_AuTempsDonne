@@ -132,11 +132,33 @@ class VehiculeRepository
 
     //------------------------------------------------------------------------------------------
 
-    public function bookingAVehicle($apiKey){
+    public function bookingAVehicle($apiKey, ServiceModel $serviceModel){
 
         $id_user = getIdUserFromApiKey($apiKey);
-        $role = getRoleFromApiKey($apiKey);
-        //insertDB("SERVICE", ["description_service", "type_service", "service_date_debut", "service_date_fin", "id_user_booking"], ["Partage de vehicule", 1, "", "", $id_user]);
+
+        // Try to know if a reservation is on the same hour
+        $columns = "s.*, v.*";
+        $join = "LEFT JOIN SERVICE s ON lsv.id_service = s.id_service LEFT JOIN VEHICULES v ON lsv.id_vehicule = v.id_vehicule";
+        $condition = "lsv.id_vehicule=".$serviceModel->id_service /*(C'est l'id du vehicule, c'est enregistré comme ça dans la fonction parente)*/."
+                      AND s.service_date_debut < '".$serviceModel->date_fin."'
+                      AND s.service_date_fin > '".$serviceModel->date_debut."';";
+        $data = selectJoinDB("LINKSERVICEVEHICLE lsv", $columns, $join, $condition, 'bool');
+
+        if($data){
+            exit_with_message("The Vehicule is already booked at this time", 200);
+        }
+
+        $return = insertDB("SERVICE", ["description_service", "type_service", "service_date_debut", "service_date_fin", "id_user_booking"], [$serviceModel->description, $serviceModel->type_service, $serviceModel->date_debut, $serviceModel->date_fin, $id_user], "MAX(id_service)"); //
+
+        /*(L'id du vehicule est enregistré comme ça dans la fonction parente)*/
+        $result = insertDB("LINKSERVICEVEHICLE", ["id_service", "id_vehicule"], [$return[0][0], $serviceModel->id_service]);
+        if(!$result){
+            if(deleteDB("SERVICE", "id_service=".$serviceModel->id_service)){
+                exit_with_message("Something went wrong :///", 200);
+            }
+        }
+
+        $this->getMyBookedVehicle($apiKey);
     }
 
     //------------------------------------------------------------------------------------------
