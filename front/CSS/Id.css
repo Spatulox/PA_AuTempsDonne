@@ -23,7 +23,7 @@
 
 }
 
-#calendar, #allCalendar{
+#calendar, #allCalendar, #bodyDetailCalendar, #bodyDetailCalendarIHaveBooked{
   height: 1000px;
   z-index: 1;
   position: relative;
