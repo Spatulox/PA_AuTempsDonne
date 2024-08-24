@@ -348,12 +348,8 @@
 
         setTimeout(() => {
             calendar.render();
-        }, 200);
-
-        setTimeout(() => {
-            calendar.render();
             calendar.updateSize();
-        }, 300);
+        }, 500);
 
     }
 
