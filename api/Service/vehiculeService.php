@@ -39,8 +39,11 @@ class VehiculeService
         $debut = explode(".", implode(" ", explode("T", $debut)))[0];
         $fin = explode(".", implode(" ", explode("T", $fin)))[0];
 
-        $userRole = getRoleFromApiKey($apikey);
+        $vehiculeRepository = new VehiculeRepository();
+        $vehiculeRepository->getVehiculeAvailable($debut, $fin);
+
         // Get all available vehicle
+        /*$userRole = getRoleFromApiKey($apikey);
         if($userRole[0] <= 2 || $userRole[0] == 4){
             $vehiculeRepository = new VehiculeRepository();
             $vehiculeRepository->getVehiculeAvailable($debut, $fin);
@@ -50,7 +53,7 @@ class VehiculeService
             $vehiculeRepository->getMyVehiculeAvailable($debut, $fin, $id_user);
         } else {
             exit_with_message("You didn't have access to this command");
-        }
+        }*/
     }
 
     public function createVehicule(VehiculeModel $vehicule, $apiKey)
