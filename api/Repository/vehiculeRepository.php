@@ -170,7 +170,7 @@ class VehiculeRepository
         if($role >= 3){
             $exist = selectDB("SERVICE", "*", "id_service=".$id_service." AND id_user_booking=".$id_user, "bool");
             if(!$exist) {
-                exit_with_message("Error, this reservation don't exist for you", 403);
+                exit_with_message("Error, this reservation isn't yours", 403);
             }
         } elseif ($role <= 2){
             $exist = selectDB("SERVICE", "*", "id_service=".$id_service, "bool");
