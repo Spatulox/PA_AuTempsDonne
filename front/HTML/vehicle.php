@@ -23,28 +23,28 @@
         <?php createDateField(); ?>
 
         <div class="tab flex flexAround nowrap">
-            <button id="titletab1.1" class="tablinks width100"
+            <button id="titletab1.1" name="tab1.1" class="tablinks width100"
                     onclick="openTab('tab1.1')"><?php echo htmlspecialchars($data["vehicle"]["tab1.1"]["title"]) ?></button>
             <?php if($role <= 3): ?>
-            <button id="titletab1" class="tablinks width100"
+            <button id="titletab1" name="tab1" class="tablinks width100"
                     onclick="openTab('tab1')"><?php echo htmlspecialchars($data["vehicle"]["tab1"]["title"]) ?></button>
             <?php endif; ?>
-            <button class="tablinks width100"
+            <button class="tablinks width100" name="tab2"
                     onclick="openTab('tab2')"><?php echo htmlspecialchars($data["vehicle"]["tab2"]["title"]) ?></button>
             <?php if($role <= 2): ?>
-                <button id="titletab2" class="tablinks width100"
+                <button id="titletab2" name="tab2.1" class="tablinks width100"
                         onclick="openTab('tab2.1')"><?php echo htmlspecialchars($data["vehicle"]["tab2.1"]["title"]) ?></button>
             <?php endif; ?>
             <?php if($role <= 3): ?>
-            <button class="tablinks width100"
+            <button class="tablinks width100" name="tab3"
                     onclick="openTab('tab3')"><?php echo htmlspecialchars($data["vehicle"]["tab3"]["title"]) ?></button>
             <?php endif; ?>
             <?php if($role == 3 || $role == 4): ?>
-                <button class="tablinks width100"
+                <button class="tablinks width100" name="tab4"
                         onclick="openTab('tab4')"><?php echo htmlspecialchars($data["vehicle"]["tab4"]["title"]) ?></button>
             <?php endif; ?>
             <?php if($role == 3): ?>
-            <button class="tablinks width100"
+            <button class="tablinks width100" name="tab4.1"
                     onclick="openTab('tab4.1')"><?php echo htmlspecialchars($data["vehicle"]["tab4.1"]["title"]) ?></button>
             <?php endif; ?>
         </div>
@@ -145,6 +145,83 @@
 
 </main>
 <?php include("../includes/footer.php"); ?>
+
+<div id="infoPopup" class="popup">
+    <div class="popup-content">
+        <h2 id="nameEvent"></h2>
+        <label for="Service">Service :</label>
+        <input type="text" id="Service" name="Service">
+        <label for="Vehicule">Véhicule :</label>
+        <input type="text" id="Vehicule" name="Vehicule">
+        <label for="Contact Client">Contact Client :</label>
+        <input type="text" id="Contact Client" name="ContactClient">
+        <label for="Contact Owner">Contact Owner :</label>
+        <input type="text" id="Contact Owner" name="ContactOwner">
+        <input type="hidden" id="hiddenServiceId" name="hiddenServiceId" value="">
+
+        <div class="button-group">
+            <button id="unbook-btn" onclick="Unbook()" style="background-color: red">Unbook</button>
+            <button id="cancel-btn" onclick="closeUnbook()">Back</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .popup {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        /*height: 100vh;*/
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .popup-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        transform: translateY(-20%);
+    }
+
+    .popup-content h2 {
+        margin-top: 0;
+    }
+
+    .popup-content input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        box-sizing: border-box;
+    }
+
+    .button-group {
+        text-align: right;
+        margin-top: 20px;
+    }
+
+    .button-group button {
+        padding: 10px 20px;
+        margin-left: 10px;
+    }
+
+    @keyframes shake {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        50% { transform: translateX(5px); }
+        75% { transform: translateX(-5px); }
+        100% { transform: translateX(0); }
+    }
+
+    .shake {
+        animation: shake 0.2s ease-in-out infinite;
+    }
+</style>
 
 </body>
 </html>
@@ -318,14 +395,15 @@
         for (let j = 0; j < data.length; j++) {
             const dataInter = data[j].services
             for (let i = 0; i < dataInter.length; i++) {
+                //"client": (this.email === data[j].contact[0].email || this.role <= 2 ? (dataInter[i].user.email + " - " + dataInter[i].user.telephone) : "Unkown"),
                 event.push({
                     "title": dataInter[i].description + " - Vehicule Booked",
-                    //"client": (this.email === data[j].contact[0].email || this.role <= 2 ? (dataInter[i].user.email + " - " + dataInter[i].user.telephone) : "Unkown"),
-                    "client": dataInter[i].user.email + " - " + dataInter[i].user.telephone),
+                    "client": dataInter[i].user.email + " - " + dataInter[i].user.telephone,
                     "start": (dataInter[i].date_debut).split(" ").join("T"),
                     "end": (dataInter[i].date_fin).split(" ").join("T"),
                     "description" : data[j].nom_du_vehicules + " (" + data[j].immatriculation + ")",
-                    "contact": data[j].contact[0].email + " - " + data[j].contact[0].telephone
+                    "contact": data[j].contact[0].email + " - " + data[j].contact[0].telephone,
+                    "id_service": dataInter[i].id_service,
                 })
             }
         }
@@ -350,8 +428,8 @@
             slotMaxTime: '23:00:00',
             events: event,
             eventClick: function(info) {
-                //showEventPopup(info.event);
-                alert('Service : ' + info.event.title + '\nVéhicule : ' + info.event.extendedProps.description + '\nContact Client : ' + info.event.extendedProps.client + '\nContact Owner : ' + info.event.extendedProps.contact)
+                showEventPopup(info.event);
+                //alert('Service : ' + info.event.title + '\nVéhicule : ' + info.event.extendedProps.description + '\nContact Client : ' + info.event.extendedProps.client + '\nContact Owner : ' + info.event.extendedProps.contact)
             },
             firstDay: 1, // (0 pour dimanche, 1 pour lundi)
             allDaySlot: false
@@ -372,40 +450,49 @@
         }
     }
 
+    //alert('Service : ' + info.event.title + '\nVéhicule : ' + info.event.extendedProps.description +
+    // 'Contact Client : ' + info.event.extendedProps.client + '\nContact Owner : ' + info.event.extendedProps.contact)
     function showEventPopup(event) {
         // Créer la popup
-        const popup = document.createElement('div');
-        popup.className = 'event-popup';
-        popup.innerHTML = `
-            <div class="event-popup-content">
-                <h3>${event.title}</h3>
-                <p>Véhicule : ${event.extendedProps.description}</p>
-                <p>Contact Client : ${event.extendedProps.client}</p>
-                <p>Contact Owner : ${event.extendedProps.contact}</p>
-                <div class="event-popup-buttons">
-                    <button id="unbook-btn">Unbook</button>
-                    <button id="cancel-btn">Cancel</button>
-                </div>
-            </div>
-        `;
+        const laPopupUnbook = document.getElementById("infoPopup")
+        document.getElementById("nameEvent").innerHTML = event.title
+        document.getElementById("Service").value = event.title
+        document.getElementById("Vehicule").value = event.extendedProps.description
+        document.getElementById("Contact Client").value = event.extendedProps.client
+        document.getElementById("Contact Owner").value = event.extendedProps.contact
+        document.getElementById("hiddenServiceId").value = event.extendedProps.id_service
 
-        // Ajouter la popup au body
-        document.body.appendChild(popup);
 
-        // Gérer le clic sur Unbook
-        document.getElementById('unbook-btn').addEventListener('click', function() {
-            // Ajoutez ici la logique pour "unbook"
-            console.log('Unbook clicked for event:', event);
-            closePopup();
-        });
-
-        // Gérer le clic sur Cancel
-        document.getElementById('cancel-btn').addEventListener('click', closePopup);
-
-        // Fonction pour fermer la popup
-        function closePopup() {
-            document.body.removeChild(popup);
+        if(event.extendedProps.client !== event.extendedProps.contact){
+            console.log("Différent")
+            document.getElementById("unbook-btn").style.display = "none"
+        } else {
+            console.log("same")
+            document.getElementById("unbook-btn").style.display = "block"
         }
+
+        laPopupUnbook.style.display = "block";
+    }
+
+    function closeUnbook(){
+        const laPopupUnbook = document.getElementById("infoPopup")
+        laPopupUnbook.style.display = "none";
+    }
+
+    async function Unbook(){
+        const id_service = document.getElementById("hiddenServiceId").value
+        startLoading()
+        await vehicle.unBook(id_service)
+        closeUnbook()
+        <?php if($role <= 3): ?>
+        fillList()
+        <?php endif; ?>
+        <?php if($role == 3): ?>
+        fillVehicleIHaveBooked()
+        fillMyBookedVehicle()
+        <?php endif; ?>
+        await fillListAvailable()
+        stopLoading()
     }
 
     function startDateChange(){
@@ -609,8 +696,7 @@
             z-index: 1;
             left: 0;
             top: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
             overflow: auto;
             background-color: rgba(0,0,0,0.4);
         }
@@ -622,6 +708,7 @@
             border: 1px solid #888;
             width: 80%;
             max-width: 500px;
+            transform: translateY(-20%);
         }
 
         .popup-content h2 {
@@ -667,6 +754,11 @@
             const startDateTime = document.getElementById('startDateTime').value;
             const endDateTime = document.getElementById('endDateTime').value;
             const id_vehicle = document.getElementById('id_vehicle_to_book').value
+
+            if(!startDateTime || !endDateTime || !id_vehicle){
+                changeColorThing("confirmBooking")
+                return
+            }
 
             if(vehicle.isDateInThePast(startDateTime)){
                 popup("The start date can't be in the past")
