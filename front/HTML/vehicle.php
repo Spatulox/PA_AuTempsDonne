@@ -276,6 +276,7 @@
         <?php if($role <= 2): ?>
             button = createButton(vehicle.msg["Delete"])
             button.setAttribute("onclick", "deleteVehicle(" + vehicleObject.id_vehicule + ")")
+            button.style.marginLeft = "10px"
             vehicleInfo.append(idVehicle, nameVehicle, capacity, idWarehouse, seats, owner, immatriculation, contact, button);
         <?php endif; ?>
 
@@ -362,17 +363,22 @@
     function checkDateLogic() {
         const startDate = document.getElementById("start-date");
         const endDate = document.getElementById("end-date");
+        const startDateTimePopup = document.getElementById('startDateTime')
+        const endDateTimePopup = document.getElementById('endDateTime')
 
         // Convertir les valeurs en objets Date
         const startDateTime = new Date(startDate.value);
         const endDateTime = new Date(endDate.value);
 
+        startDateTimePopup.value = startDate.value
+        endDateTimePopup.value = endDate.value
         if (endDateTime < startDateTime) {
             // Ajouter une heure à la date de début
             let newEndDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);
 
             // Formater la nouvelle date de fin pour l'input datetime-local
             endDate.value = formatDateTimeLocal(newEndDateTime);
+            endDateTimePopup.value = formatDateTimeLocal(newEndDateTime);
         }
     }
 
@@ -517,6 +523,154 @@
 </script>
 <?php endif; ?>
 
+<?php if($role == 3 || $role == 4): ?>
+
+    <div id="bookingPopup" class="popup">
+        <div class="popup-content">
+            <h2>Réserver un véhicule</h2>
+            <label for="startDateTime">Date et heure de début :</label>
+            <input type="datetime-local" id="startDateTime" required>
+            <label for="endDateTime">Date et heure de fin :</label>
+            <input type="datetime-local" id="endDateTime" required>
+            <input type="hidden" id="id_vehicle_to_book" value="">
+            <div class="button-group">
+                <button id="confirmBooking" onclick="confirmBooking()">Valider</button>
+                <button onclick="closeBooking()">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .popup-content h2 {
+            margin-top: 0;
+        }
+
+        .popup-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        .button-group {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .button-group button {
+            padding: 10px 20px;
+            margin-left: 10px;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .shake {
+            animation: shake 0.2s ease-in-out infinite;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function closeBooking() {
+            document.getElementById('bookingPopup').style.display = 'none';
+        }
+
+        async function confirmBooking() {
+            const startDateTime = document.getElementById('startDateTime').value;
+            const endDateTime = document.getElementById('endDateTime').value;
+            const id_vehicle = document.getElementById('id_vehicle_to_book').value
+
+            if(vehicle.isDateInThePast(startDateTime)){
+                popup("The start date can't be in the past")
+                changeColorThing("confirmBooking")
+                return
+            }
+            if(vehicle.isDateInThePast(endDateTime)){
+                popup("The end date can't be in the past")
+                changeColorThing("confirmBooking")
+                return
+            }
+
+            let startDateTimeDATE = new Date(startDateTime);
+            let endDateTimeDATE = new Date(endDateTime);
+            if(endDateTimeDATE < startDateTimeDATE){
+                popup("The end date can't be before the start date")
+                changeColorThing("confirmBooking")
+                return
+            }
+
+            const timeDifference = endDateTimeDATE - startDateTimeDATE;
+            const hourDifference = timeDifference / (1000 * 60 * 60); // Convertir en heures
+
+            if (hourDifference < 1) {
+                popup("The booking must be for at least one hour");
+                changeColorThing("confirmBooking");
+                return;
+            }
+
+            startLoading()
+            closeBooking()
+            await vehicle.bookingVehicle(id_vehicle, startDateTime, endDateTime)
+            await seeDetail(id_vehicle)
+            fillListAvailable()
+            stopLoading()
+
+        }
+
+        function changeColorThing(id, color = "red"){
+            const element = document.getElementById(id)
+            if (!element) return // Si l'élément n'existe pas, on sort de la fonction
+
+            // Sauvegarder la couleur de fond originale
+            const originalColor = element.style.backgroundColor
+
+            element.classList.add('shake');
+
+            // Changer la couleur de fond
+            element.style.backgroundColor = color;
+            element.style.transition = 'background-color 0.2s';
+
+            setTimeout(() => {
+                element.classList.remove('shake');
+            }, 300);
+            setTimeout(() => {
+                element.style.backgroundColor = originalColor;
+            }, 1000);
+        }
+
+        function bookingVehicle(id_vehicle){
+            document.getElementById('bookingPopup').style.display = 'block';
+            document.getElementById('id_vehicle_to_book').value = id_vehicle
+        }
+
+    </script>
+<?php endif; ?>
 <!-- ////////////////////////////////BÉNÉFICIAIRES//////////////////////////////////// -->
 <?php if($role == 4): ?>
     <script type="text/javascript" defer>
