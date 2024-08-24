@@ -89,22 +89,21 @@ class VehiculeService
     }
 
     // Gett all booked vehicle, even if the booked is over
-    public function getBookedVehicle($apiKey){
+    public function getBookedVehicle($apiKey, $addtionnalData = null){
         $role = getRoleFromApiKey($apiKey);
 
         $vehiculeRepository = new VehiculeRepository();
-        if($role[0] <= 2){
+
+        if($role <= 2){
 
             $vehiculeRepository->getAllBookedVehicle();
 
-        } elseif($role[0] == 3){
-
+        } elseif($role == 3 && $addtionnalData == null){
             $vehiculeRepository->getMyVehicleWichAreBooked($apiKey);
             // List all my vehicle which are booked
             exit();
 
-        } elseif ($role[0] == 4) {
-
+        } elseif (($role == 3 && $addtionnalData != null) || $role == 4) {
             // List my current booked vehicle
             $vehiculeRepository->getMyBookedVehicle($apiKey);
             exit();

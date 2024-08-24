@@ -27,7 +27,12 @@ function vehiculeController($uri, $apiKey){
 
             elseif($uri[3] == "booked"){
                 // Gett all booked vehicle, even if the booked is over
+                if($uri[4] == "me"){
+                    $VehiculeService->getBookedVehicle($apiKey, "1");
+                    exit();
+                }
                 $VehiculeService->getBookedVehicle($apiKey);
+                exit();
             }
 
             else{
