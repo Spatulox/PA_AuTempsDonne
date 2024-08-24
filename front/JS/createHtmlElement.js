@@ -26,6 +26,9 @@ function createSelect(options, debut = null) {
 
 
 function createBodyTableau(tbody, dataArray, hiddenKeys = [], buttonText = null, nameFunction = null, keyInsideFunction = null) {
+    if(!dataArray){
+        return false
+    }
     dataArray.forEach(item => {
         const row = document.createElement('tr');
 
