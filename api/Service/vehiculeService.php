@@ -35,6 +35,10 @@ class VehiculeService
     }
 
     public function getAvailableVehicule($apikey, $debut, $fin){
+
+        $debut = explode(".", implode(" ", explode("T", $debut)))[0];
+        $fin = explode(".", implode(" ", explode("T", $fin)))[0];
+
         $userRole = getRoleFromApiKey($apikey);
         // Get all available vehicle
         if($userRole[0] <= 2 || $userRole[0] == 4){
