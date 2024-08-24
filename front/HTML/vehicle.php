@@ -40,8 +40,12 @@
                     onclick="openTab('tab3')"><?php echo htmlspecialchars($data["vehicle"]["tab3"]["title"]) ?></button>
             <?php endif; ?>
             <?php if($role == 3 || $role == 4): ?>
+                <button class="tablinks width100"
+                        onclick="openTab('tab4')"><?php echo htmlspecialchars($data["vehicle"]["tab4"]["title"]) ?></button>
+            <?php endif; ?>
+            <?php if($role == 3): ?>
             <button class="tablinks width100"
-                    onclick="openTab('tab4')"><?php echo htmlspecialchars($data["vehicle"]["tab4"]["title"]) ?></button>
+                    onclick="openTab('tab4.1')"><?php echo htmlspecialchars($data["vehicle"]["tab4.1"]["title"]) ?></button>
             <?php endif; ?>
         </div>
 
@@ -130,6 +134,11 @@
                 <h2 class="textCenter"><?php echo($data["vehicle"]["tab4"]["title"]) ?></h2>
                 <!--<input type="number" class="search-box marginBottom10" placeholder="Search by id">-->
                 <div id="bodyDetailCalendar"></div>
+            </div>
+            <div id="tab4.1" class="tabcontent">
+                <h2 class="textCenter"><?php echo($data["vehicle"]["tab4.1"]["title"]) ?></h2>
+                <!--<input type="number" class="search-box marginBottom10" placeholder="Search by id">-->
+                <div id="bodyDetailCalendarIHaveBooked"></div>
             </div>
         <?php endif; ?>
     </div>
@@ -228,7 +237,7 @@
         bodyDetail.innerHTML = ""
         bodyDetail.appendChild(html)
 
-        displayCalendar(data)
+        displayCalendar(data, "calendar", "tab2")
         openTab('tab2')
         stopLoading()
     }
@@ -302,7 +311,7 @@
         return vehicleCard;
     }
 
-    function displayCalendar(data, idHtml = "calendar"){
+    function displayCalendar(data, idHtml = "calendar", tab = "tab1.1"){
 
         let event = []
 
@@ -311,7 +320,8 @@
             for (let i = 0; i < dataInter.length; i++) {
                 event.push({
                     "title": dataInter[i].description + " - Vehicule Booked",
-                    "client": (this.email === data[j].contact[0].email || this.role <= 2 ? (dataInter[i].user.email + " - " + dataInter[i].user.telephone) : "Unkown"),
+                    //"client": (this.email === data[j].contact[0].email || this.role <= 2 ? (dataInter[i].user.email + " - " + dataInter[i].user.telephone) : "Unkown"),
+                    "client": dataInter[i].user.email + " - " + dataInter[i].user.telephone),
                     "start": (dataInter[i].date_debut).split(" ").join("T"),
                     "end": (dataInter[i].date_fin).split(" ").join("T"),
                     "description" : data[j].nom_du_vehicules + " (" + data[j].immatriculation + ")",
@@ -340,19 +350,63 @@
             slotMaxTime: '23:00:00',
             events: event,
             eventClick: function(info) {
+                //showEventPopup(info.event);
                 alert('Service : ' + info.event.title + '\nVéhicule : ' + info.event.extendedProps.description + '\nContact Client : ' + info.event.extendedProps.client + '\nContact Owner : ' + info.event.extendedProps.contact)
             },
             firstDay: 1, // (0 pour dimanche, 1 pour lundi)
             allDaySlot: false
         });
 
-        setTimeout(() => {
-            calendar.render();
-            calendar.updateSize();
-        }, 500);
-
+        openTab(tab)
+        calendar.render();
+        calendar.updateSize();
+        if(tab === "tab2"){
+            return
+        }
+        if(!document.getElementById("tab1.1")){
+            openTab("tab1")
+            return
+        } else {
+            openTab("tab1.1")
+            return
+        }
     }
 
+    function showEventPopup(event) {
+        // Créer la popup
+        const popup = document.createElement('div');
+        popup.className = 'event-popup';
+        popup.innerHTML = `
+            <div class="event-popup-content">
+                <h3>${event.title}</h3>
+                <p>Véhicule : ${event.extendedProps.description}</p>
+                <p>Contact Client : ${event.extendedProps.client}</p>
+                <p>Contact Owner : ${event.extendedProps.contact}</p>
+                <div class="event-popup-buttons">
+                    <button id="unbook-btn">Unbook</button>
+                    <button id="cancel-btn">Cancel</button>
+                </div>
+            </div>
+        `;
+
+        // Ajouter la popup au body
+        document.body.appendChild(popup);
+
+        // Gérer le clic sur Unbook
+        document.getElementById('unbook-btn').addEventListener('click', function() {
+            // Ajoutez ici la logique pour "unbook"
+            console.log('Unbook clicked for event:', event);
+            closePopup();
+        });
+
+        // Gérer le clic sur Cancel
+        document.getElementById('cancel-btn').addEventListener('click', closePopup);
+
+        // Fonction pour fermer la popup
+        function closePopup() {
+            document.body.removeChild(popup);
+        }
+    }
 
     function startDateChange(){
         checkDateLogic()
@@ -415,7 +469,7 @@
             console.log("Filling all Calendar")
             let data = await vehicle.getAllBookedVehicle()
             data = dataVehicleOwnerReplace(data)
-            displayCalendar(data, 'allCalendar')
+            displayCalendar(data, 'allCalendar', "2.1")
             console.log("Finished")
 
         }
@@ -519,6 +573,7 @@
 
         <?php if($role == 3): ?>
         fillMyBookedVehicle()
+        fillVehicleIHaveBooked()
         <?php endif; ?>
         await fillList()
 
@@ -646,6 +701,10 @@
             await vehicle.bookingVehicle(id_vehicle, startDateTime, endDateTime)
             await seeDetail(id_vehicle)
             fillListAvailable()
+            fillMyBookedVehicle()
+            <?php if($role == 3): ?>
+            fillVehicleIHaveBooked()
+            <?php endif; ?>
             stopLoading()
 
         }
@@ -680,9 +739,17 @@
             console.log("Filling my booked vehicle")
             let data = await vehicle.getAllBookedVehicle()
             data = dataVehicleOwnerReplace(data)
-            displayCalendar(data, 'bodyDetailCalendar')
+            displayCalendar(data, 'bodyDetailCalendar', "tab4")
             console.log("Finished")
 
+        }
+
+        async function fillVehicleIHaveBooked(){
+            console.log("Filling my booked vehicle")
+            let data = await vehicle.getVehicleIHaveBookedBenevole()
+            data = dataVehicleOwnerReplace(data)
+            displayCalendar(data, 'bodyDetailCalendarIHaveBooked', "tab4.1")
+            console.log("Finished")
         }
 
     </script>
