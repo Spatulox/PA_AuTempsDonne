@@ -97,6 +97,14 @@ class VehicleAdmin extends Admin{
         return response
     }
 
+    async unBook(id_service){
+        let response = await this.fetchSync(this.adresse+'/vehicule/unbooked/'+id_service, this.optionDelete())
+        if(!this.compareAnswer(response)){
+            return false
+        }
+        return response
+    }
+
     isDateInThePast(dateString) {
         let date = new Date(dateString.split("T")[0].split(" ")[0]);
         if(isNaN(date)){
