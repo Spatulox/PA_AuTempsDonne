@@ -232,6 +232,7 @@ class User extends General{
     logout() {
         this.apikey = '';
         this.deleteCookie("apikey")
+        this.deleteCookie("userData")
     }
 
     /**
