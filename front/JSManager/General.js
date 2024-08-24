@@ -32,9 +32,11 @@ class General {
             return message
         } else {
             const text = await response.json()
+            // DEBUG alertDebug()
             if(showMessage === true){
                 alert(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
             }
+            // FIN DEBUG
             if (text.hasOwnProperty("message")) {
                 if(showMessage === true){
                     popup(text.message)
