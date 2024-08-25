@@ -128,6 +128,10 @@
                 </div>
             </div>
 
+            <div class="containerArrow">
+                <div class="arrow" id="arrow"></div>
+            </div>
+
         </div>
 
     </section>
@@ -161,6 +165,21 @@
 
         valueToReplace.value = value.value
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const inscriptionBox = document.getElementById('inscriptionBox');
+        const arrow = document.getElementById('arrow');
+
+        inscriptionBox.addEventListener('scroll', () => {
+
+            if (inscriptionBox.scrollTop >= 500) {
+                arrow.style.display="none"
+            } else {
+                arrow.style.display="block"
+            }
+        });
+    });
+
 </script>
 
 <script type="text/javascript" defer>
