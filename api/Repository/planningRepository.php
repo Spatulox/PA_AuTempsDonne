@@ -247,9 +247,9 @@ class PlanningRepository {
 
 
         if ($create) {
-            exit_with_message("le bénévole à bien été attribué au planning",200);
+            exit_with_message("Le bénévole à bien été attribué au planning",200);
         } else {
-            exit_with_message("le bénévole n'a pas pu être attribué au planning");
+            exit_with_message("Le bénévole n'a pas pu être attribué au planning");
         }
 
     }
@@ -415,7 +415,7 @@ class PlanningRepository {
         $check = updateDB("PLANNINGS", ["id_index_planning"], [$id_index_planning] ,"id_planning=".$id);
 
         if(!$check){
-            exit_with_message("erreur update planning",500);
+            exit_with_message("Error when updating the planning",500);
         }
 
         exit_with_content($this->getPlanningByid($id),200);
@@ -436,9 +436,9 @@ class PlanningRepository {
 
         if ($del !== false)
         {
-            exit_with_message("l'utilisateur a etait supprimer de l'activiter ",200);
+            exit_with_message("L'utilisateur a été supprimé de l'activité",200);
         }else{
-        exit_with_message("erreur lors  de la suppression de utilisateur",500);
+        exit_with_message("Erreur lors de la suppression de l'utilisateur",500);
         }
     }
 
