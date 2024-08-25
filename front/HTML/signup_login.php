@@ -103,19 +103,27 @@
 
                 <div>
                     <div class="form-group">
-                        <label>Sélectionnez votre statut :</label>
+                        <label><?php echo($data["signup_login"]["formSignUp"]["status"][0]) ?> :</label>
                     </div>
                     <div class="radio-group">
                         <input type="radio" id="benevole" name="statut" value="3">
-                        <label for="benevole">Bénévole</label>
+                        <label for="benevole"><?php echo($data["signup_login"]["formSignUp"]["status"][1]) ?></label>
                         <br>
                         <input type="radio" id="beneficiaire" name="statut" value="4">
-                        <label for="beneficiaire">Bénéficiaire</label>
+                        <label for="beneficiaire"><?php echo($data["signup_login"]["formSignUp"]["status"][2]) ?></label>
                         <br>
                         <input type="radio" id="prestataire" name="statut" value="5">
-                        <label for="prestataire">Prestataire</label>
+                        <label for="prestataire"><?php echo($data["signup_login"]["formSignUp"]["status"][3]) ?></label>
                     </div>
                 </div>
+
+                <form method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="file_upload"><?php echo($data["signup_login"]["formSignUp"]["conduct"]) ?></label>
+                        <input type="file" id="file_upload" name="file_upload" accept=".jpg, .jpeg, .png" />
+                    </div>
+                </form>
+
 
                 <div class="form-group">
                     <input type="button" onclick="signup()"
@@ -126,6 +134,10 @@
                     <input type="button" id="inscriptionButton"
                            value=" <?php echo($data["signup_login"]["formSignUp"]["switch"]) ?> ">
                 </div>
+            </div>
+
+            <div class="containerArrow">
+                <div class="arrow" id="arrow"></div>
             </div>
 
         </div>
@@ -161,6 +173,21 @@
 
         valueToReplace.value = value.value
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const inscriptionBox = document.getElementById('inscriptionBox');
+        const arrow = document.getElementById('arrow');
+
+        inscriptionBox.addEventListener('scroll', () => {
+
+            if (inscriptionBox.scrollTop >= 450) {
+                arrow.style.display="none"
+            } else {
+                arrow.style.display="block"
+            }
+        });
+    });
+
 </script>
 
 <script type="text/javascript" defer>
@@ -233,12 +260,20 @@
             "address": string
         }
 
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0]; // Récupère le premier fichier sélectionné
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('data', JSON.stringify(data)); // Ajout des données au FormData
+
+
         const options = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: formData//JSON.stringify(data)
         };
 
 

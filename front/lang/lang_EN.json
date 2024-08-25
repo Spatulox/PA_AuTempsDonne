@@ -250,7 +250,9 @@
       "switch": "Log In",
       "address": "Street",
       "city": "City",
-      "postal": "Postal Code"
+      "postal": "Postal Code",
+      "status":["Select your status", "Benevole", "Beneficiaire", "Prestataire"],
+      "conduct" : "Select your Permis de Conduire"
     },
     "formLogin": {
       "title": "Log in",
