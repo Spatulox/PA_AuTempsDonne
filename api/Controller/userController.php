@@ -1,4 +1,5 @@
 <?php
+include_once './Service/fichierService.php';
 include_once './Service/userService.php';
 include_once './Models/userModel.php';
 include_once './exceptions.php';
@@ -74,8 +75,44 @@ function userController($uri, $apiKey) {
         case 'POST':
          	$userService = new UserService($uri);
 
-            $body = file_get_contents("php://input");
-            $json = json_decode($body, true);
+            /*if(!isset($_FILES["file"])){
+                exit_with_message("You need to send the file to the formData with the keyname 'file'.");
+            }*/
+
+            $json = null;
+            if(!isset($_POST["data"])){
+                exit_with_message("You need to send the data to the formData with the keyname 'data'.");
+            }
+            $json = json_decode($_POST["data"], true);
+
+            $uploadFile = "";
+            // File uploaded with success to the server
+            if (isset($_FILES['file'])) {
+                $file = $_FILES['file'];
+
+                // Vérifiez si le fichier a été téléchargé sans erreur
+                if ($file['error'] === UPLOAD_ERR_OK) {
+                    // Déplacez le fichier téléchargé vers un répertoire spécifique
+                    $uploadDir = 'files/permis/';
+
+                    $extension = explode(".", basename($file['name']));
+                    $extension = ".".end($extension);
+
+                    // Rename the file
+                    $name = hash('sha256', $json["nom"] . $json["prenom"] . $json["password"] . $json["email"]);
+                    $uploadFile = $uploadDir .  "permis_".$name.$extension;
+
+                    if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
+                        echo "Le fichier a été téléchargé avec succès : " . htmlspecialchars($uploadFile);
+
+                    } else {
+                        exit_with_message("Erreur lors de l'enregistrement du fichier");
+                    }
+                } else {
+                    exit_with_message("Erreur lors de l'upload du fichier");
+                }
+            }
+
 
             if (!$uri[3]){
                 if ( !isset($json['nom']) || !isset($json['prenom']) || !isset($json['email']) || !isset($json['mdp']) || !isset($json['role']) || !isset($json['address']))
@@ -99,8 +136,11 @@ function userController($uri, $apiKey) {
 
 
                 $user = new UserModel(1, $json['nom'], $json['prenom'], null, $json['email'], -1 ,isset($json['telephone']) ? $json['telephone'] : "no_phone", $json['role'], null, 3, 1, -1, -1, -1);
+                if (isset($_FILES['file'])){
+                    exit_with_content($userService->createUser($user, $json["mdp"], $json["address"], $uploadFile));
+                }
+                exit_with_content($userService->createUser($user, $json["mdp"], $json["address"], null));
 
-                exit_with_content($userService->createUser($user, $json["mdp"], $json["address"]));
             }
             elseif ($uri[3] == "dispo") {
 

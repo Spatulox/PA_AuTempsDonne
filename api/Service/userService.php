@@ -44,9 +44,9 @@ class UserService {
      *  Créer un utilisateur
     */
 
-    public function createUser(UserModel $user, $password, $address) {
+    public function createUser(UserModel $user, $password, $address, $filePath) {
         $userRepository = new UserRepository();
-        return $userRepository->createUser($user, $password, $address);
+        return $userRepository->createUser($user, $password, $address, $filePath);
     }
 
     
