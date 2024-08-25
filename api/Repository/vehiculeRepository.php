@@ -107,27 +107,33 @@ class VehiculeRepository
         $Select = selectDB("VEHICULES", "*", $string, "bool");
 
         if($Select){
-            exit_with_message("Y'a déjà un même vehicule", 403);
+            exit_with_message("La plaque d'immatriculation est déjà utilisé :/", 403);
         }
 
         $create = insertDB("VEHICULES", ["capacite","nom_du_vehicules","nombre_de_place","id_ventrepot", "immatriculation", "appartenance", "id_user"]
             ,[$vehicule->capacite ,$vehicule->nom_du_vehicules,$vehicule->nombre_de_place,$vehicule->id_entrepot, $vehicule->immatriculation, $vehicule->appartenance, $id_user]);
 
         if(!$create){
-            exit_with_message("Error, the vehicule can't be created, plz try again", 500);
+            exit_with_message("Error, the vehicle can't be created, plz try again", 500);
         }
 
-        exit_with_message("Vehicule created", 200);
+        exit_with_message("Vehicle created", 200);
     }
     //------------------------------------------------------------------------------------------
-    public function deleteVehicule($id)
+    public function deleteVehicule($id, $id_owner)
     {
+
+        // Verifier si c'est bien son vehicule
+        if( $id_owner !== selectDB("VEHICULES", "id_owner", "id_vehicule= ".$id)[0]["id_owner"]){
+            exit_with_message("You can't delete this vehicule, this isn't yours", 403);
+        }
+
         $deleted = deleteDB("VEHICULES", "id_vehicule=".$id ,"bool");
 
         if(!$deleted){
-            exit_with_message("Error, the activite can't be deleted, plz try again", 500);
+            exit_with_message("Error, the vehicle can't be deleted, plz try again", 500);
         }
-        exit_with_message("Vehicule deleted", 200);
+        exit_with_message("Vehicle deleted", 200);
     }
 
     //------------------------------------------------------------------------------------------
@@ -145,7 +151,7 @@ class VehiculeRepository
         $data = selectJoinDB("LINKSERVICEVEHICLE lsv", $columns, $join, $condition, 'bool');
 
         if($data){
-            exit_with_message("The Vehicule is already booked at this time", 200);
+            exit_with_message("The Vehicle is already booked at this time", 200);
         }
 
         $return = insertDB("SERVICE", ["description_service", "type_service", "service_date_debut", "service_date_fin", "id_user_booking"], [$serviceModel->description, $serviceModel->type_service, $serviceModel->date_debut, $serviceModel->date_fin, $id_user], "MAX(id_service)"); //

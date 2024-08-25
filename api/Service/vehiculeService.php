@@ -79,9 +79,11 @@ class VehiculeService
             $vehiculeRepository = new VehiculeRepository();
             $vehiculeRepository->deleteVehicule($int);
         } elseif($userRole[0] == 3) {
-            // Verifier si c'est bien son vehicule
+
+            $id_owner = getIdUserFromApiKey($apiKey);
+
             $vehiculeRepository = new VehiculeRepository();
-            $vehiculeRepository->deleteVehicule($int);
+            $vehiculeRepository->deleteVehicule($int, $id_owner);
         }
         else{
             exit_with_message("You didn't have access to this command");
