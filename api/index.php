@@ -83,8 +83,10 @@ function getEmailFromApiKey($apiKey){
 
     $id = selectDB("UTILISATEUR", 'email', "apikey='".$apiKey."'", "bool");
     if($id){
-        $id = $id[0]["id_user"];
+        $id = $id[0]["email"];
+        return $id;
     }
+    return false;
 }
 
 function getIdUSerFromEmail($email){
