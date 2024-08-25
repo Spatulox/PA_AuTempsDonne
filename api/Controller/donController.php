@@ -26,7 +26,7 @@ function donController($uri, $apiKey)
 
             if ($uri[3] && $uri[3]=== 'annuel'){
                 if (!isset($json['date'])) {
-                    exit_with_message("Please provide all required fields to create a new planning", 400);
+                    exit_with_message("Please provide all required fields to create a new don", 400);
                 }
 
                 $donService = new DonService();
@@ -37,7 +37,7 @@ function donController($uri, $apiKey)
 
             if ($uri[3] && $uri[3]=== 'mensuel'){
                 if (!isset($json['date'])) {
-                    exit_with_message("Please provide all required fields to create a new planning", 400);
+                    exit_with_message("Please provide all required fields to create a new don", 400);
                 }
 
                 $donService = new DonService();
