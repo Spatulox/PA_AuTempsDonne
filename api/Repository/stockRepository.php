@@ -38,8 +38,6 @@ class StockRepository
             $stock[$i]->setIndexProduit(selectDB("PRODUIT", "nom_produit", "id_produit=" . $stockArray[$i]['id_produit'])[0]);
             $string = "INNER JOIN ENTREPOTS ON ENTREPOTS.id_entrepot = ETAGERES.id_entrepot";
             $stock[$i]->setentrepot(selectJoinDB("ETAGERES", "ETAGERES.id_entrepot ,ENTREPOTS.nom_entrepot", $string, "id_etagere=" . $stockArray[$i]['id_etagere'])[0]);
-
-            //    var_dump($stockArray[4]);
         }
         return $stock;
     }
@@ -115,7 +113,7 @@ class StockRepository
         $entrepots = selectDB("ENTREPOTS", "*", $string_entrepots, "bool");
 
         if (!$entrepots) {
-            exit_with_message("cette entrepot n'existe pas ", 200);
+            exit_with_message("Cet entrepot n'existe pas ", 200);
         }
 
         $string_produits = "id_produit=" . $produit;
@@ -123,7 +121,7 @@ class StockRepository
 
 
         if (!$produits) {
-            exit_with_message("ce produit n'existe pas  ", 200);
+            exit_with_message("Ce produit n'existe pas  ", 200);
         }
 
 
@@ -168,10 +166,10 @@ class StockRepository
         $request = deleteDB("STOCKS", "id_stock=" . $id, "bool");
 
         if ($request) {
-            exit_with_message("stock has been deleted", 200);
+            exit_with_message("Stock has been deleted", 200);
         }
 
-        exit_with_message("stock not deleted", 200);
+        exit_with_message("Stock not deleted", 200);
 
     }
 
@@ -245,7 +243,7 @@ class StockRepository
         $stockArray = selectjoinDB("STOCKS s", "*",$join, "et.id_entrepot=".$id." AND quantite_produit >0 AND date_entree IS NULL","bool");
 
         if (!$stockArray){
-            exit_with_message("pas de sorti de Stock dans cette entrepot", 500);
+            exit_with_message("Pas de sorti de Stock dans cet entrepot", 500);
         }
 
         $stock = [];

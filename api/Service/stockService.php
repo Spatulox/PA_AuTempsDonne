@@ -27,7 +27,7 @@ class StockService {
             $stockRepository = new StockRepository();
             return $stockRepository->getAllStock();
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
 
     }
@@ -51,7 +51,7 @@ class StockService {
             $stockRepository = new StockRepository();
             return $stockRepository->getAllProduitsInEntrepots($id,$produit);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
 
@@ -65,11 +65,8 @@ class StockService {
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
 
             $id=getIdUserFromApiKey($apiKey);
-          //  selectDB("UTILISATEUR","id_")
-
 
             // Vérifications
-
             if ($stock->date_peremption == "NULL"){
                 if (!$this->isValidDate($stock->date_peremption)) {
                     exit_with_message("Erreur : La date de péremption est invalide. Le format attendu est AAAA-MM-JJ.", 403);
@@ -80,15 +77,15 @@ class StockService {
             $produit = selectDB("PRODUIT", "id_produit",$string_prod,"bool");
 
             if(!$produit){
-                exit_with_message("ce produit n'existe pas ", 500);
+                exit_with_message("Ce produit n'existe pas ", 500);
             }
 
             if (($stock->date_sortie == "NULL" && $stock->date_entree =="NULL")) {
-                exit_with_message("Erreur : il faut rentre une date", 400);
+                exit_with_message("Erreur : il faut rentrer une date", 400);
             }
 
             if (($stock->date_sortie != "NULL" && $stock->date_entree !="NULL")) {
-                exit_with_message("Erreur : il ne faut pas deux date", 400);
+                exit_with_message("Erreur : il ne faut pas deux dates", 400);
             }
 
 
@@ -108,7 +105,7 @@ class StockService {
 
 
                 if(!$etagere){
-                    exit_with_message("cette etagere n'existe pas ", 500);
+                    exit_with_message("Cette etagere n'existe pas ", 500);
                 }
 
                 //
@@ -245,7 +242,7 @@ class StockService {
             }
 
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
 
@@ -258,7 +255,7 @@ class StockService {
             $stockRepository = new StockRepository();
             return $stockRepository->deleteStock($id);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
 
     }
@@ -294,7 +291,7 @@ class StockService {
             $stockRepository = new StockRepository();
             return $stockRepository->getAllStockdateSortie($date_sortie);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
 
@@ -307,7 +304,7 @@ class StockService {
             $stockRepository = new StockRepository();
             return $stockRepository->getAllStockSortie($id);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
 }

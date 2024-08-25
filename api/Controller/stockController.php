@@ -56,7 +56,7 @@ function StockController($uri, $apiKey)
 
         case 'DELETE':
             if(!$uri[3]){
-                exit_with_message("il manque qu'elle stock vous voulez supprimer", 403);
+                exit_with_message("Vous devez spécifier quel stock vous voulez supprimer", 403);
             }
 
             $stockService = new StockService();
