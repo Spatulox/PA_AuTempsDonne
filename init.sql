@@ -299,7 +299,7 @@ CREATE TABLE FORUM(
 
 CREATE TABLE FICHIER(
    id_fichier INT AUTO_INCREMENT,
-   nom_fichier VARCHAR(50) NOT NULL,
+   nom_fichier VARCHAR(255) NOT NULL,
    chemin_fichier VARCHAR(255) NOT NULL,
    id_user INT NOT NULL,
    PRIMARY KEY(id_fichier),
