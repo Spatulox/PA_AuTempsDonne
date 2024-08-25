@@ -31,7 +31,7 @@ class ProduitRepository
         $request = selectDB("PRODUIT", "*", "id_produit=".$id, "bool")[0];
 
         if(!$request){
-            exit_with_message("Nothing the show", 200);
+            exit_with_message("Nothing to show", 200);
         }
 
         $type = selectDB("TYPE", "*", "id_type=".$request["id_type"])[0]["type"];
@@ -46,15 +46,15 @@ class ProduitRepository
         $request = selectDB("PRODUIT", "*", "nom_produit='".$nom_produit."'", "bool");
 
         if($request){
-            exit_with_message("Produit already exists", 500);
+            exit_with_message("Product already exists", 500);
         }
 
          $res= insertDB("PRODUIT", ["nom_produit", "id_type"], [$nom_produit, $id_type]);
 
         if($res==true) {
-            exit_with_message("Produit has been created", 200);
+            exit_with_message("Product has been created", 200);
         }else{
-            exit_with_message("Produit not created", 500);
+            exit_with_message("Product not created", 500);
 
         }
 
@@ -65,10 +65,10 @@ class ProduitRepository
         $request = deleteDB("PRODUIT", "id_produit=".$id, "bool");
 
         if($request){
-            exit_with_message("Produit has been deleted", 200);
+            exit_with_message("Product has been deleted", 200);
         }
 
-        exit_with_message("Produit not deleted", 200);
+        exit_with_message("Product not deleted", 200);
 
     }
 

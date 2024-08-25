@@ -19,7 +19,6 @@ class UserRepository {
             $address = selectDB("ADRESSE", "*", "id_adresse='".$usersArray[0]['id_adresse']."'")[0]["adresse"];
 
             $user[$i] = returnUser($usersArray, $address, $i);
-            //$user[$i] = new UserModel($usersArray[$i]['id_ueser'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $address, $usersArray[$i]['telephone'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index'], $usersArray[$i]['id_entrepot']);
         }
         return $user;
     }
@@ -32,7 +31,6 @@ class UserRepository {
         $address = selectDB("ADRESSE", "*", "id_adresse='".$user[0]['id_adresse']."'")[0]["adresse"];
 
         return returnUser($user, $address);
-        //return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $address, $user[0]['telephone'], $user[0]['id_role'], "hidden", $user[0]['id_index'], $user[0]['id_entrepot']);
     }
 
     //-------------------------------------
@@ -49,8 +47,6 @@ class UserRepository {
 
         for ($i=0; $i < count($usersArray); $i++) {
             $address = selectDB("ADRESSE", "*", "id_adresse='".$usersArray[0]['id_adresse']."'")[0]["adresse"];
-
-            //$user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $address, $usersArray[$i]['telephone'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index'], $usersArray[$i]['id_entrepot']);
             $user[$i] = returnUser($usersArray, $address, $i);
         }
 
@@ -69,7 +65,6 @@ class UserRepository {
         $address = selectDB("ADRESSE", "*", "id_adresse='".$user[0]['id_adresse']."'")[0]["adresse"];
 
         return returnUser($user, $address);
-        //return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $address, $user[0]['telephone'], $user[0]['id_role'], "hidden", $user[0]['id_index'], $user[0]['id_entrepot']);
     }
 
     //-------------------------------------
@@ -91,7 +86,7 @@ class UserRepository {
         }
 
         $index_user = 1;
-        if($user->role == 3){
+        if($user->id_role == 3){
             $index_user = 2;
         }
 
@@ -126,25 +121,7 @@ class UserRepository {
         $user = selectDB('UTILISATEUR', '*', 'email="'.$user[0]['email'].'"');
 
         return returnUser($user, $address);
-        //return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['adresse'], $user[0]['telephone'], $user[0]['id_role'], $user[0]['apikey'], $user[0]['id_index'], $user[0]['id_entrepot']);
     }
-
-    //-------------------------------------
-    /*
-    public function updateUser(UserModel $user, $apiKey){
-
-        $idUSer = selectDB("UTILISATEUR", 'id_users', "apikey='".$apiKey."'")[0]["id_users"];
-        if ($idUSer != $user->id_users){
-            exit_with_message("You can't update an user which is not you");
-        }
-
-        updateDB("UTILISATEUR", ["role", "pseudo", "user_index"], [$user->role, $user->pseudo, $user->user_index], 'id_users='.$user->id_users." AND apikey='".$apiKey."'");
-
-        return $this->getUser($user->id_users, null);
-    }
-
-
-    */
 
     public function getUserEmail($email){
 
@@ -152,7 +129,6 @@ class UserRepository {
 
         if(count($user) > 0){
             return returnUser($user, $user[0]['adresse']);
-            //return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['adresse'], $user[0]['telephone'], $user[0]['id_role'], $user[0]['apikey'], $user[0]['id_index'], $user[0]['id_entrepot']);
         }
         exit_with_message('Email not exist');
 
@@ -186,20 +162,18 @@ class UserRepository {
 
         $userToDelete = $this->getUser($id);
 
-        //var_dump($userToDelete);
-
-        if($userToDelete->role == 1){
+        if($userToDelete->id_role == 1){
             exit_with_message("You can't unrefence an admin", 403);
         }
 
-        if($userToDelete->role == 2 && $role == 2){
+        if($userToDelete->id_role == 2 && $role == 2){
             if($id != $user["id_user"]){
                 exit_with_message("You can't unrefence a modo if you're a modo, unless if it's you :/", 403);
             }
         }
 
         if ($id != $user['id_user'] && $role > 2 ){
-            exit_with_message("You can't unrefence a user wich is not you", 403);
+            exit_with_message("You can't unrefence a user which is not you", 403);
         }
 
         return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id);
@@ -215,20 +189,18 @@ class UserRepository {
 
         $userToDelete = $this->getUser($id);
 
-        //var_dump($userToDelete);
-
-        if($userToDelete->role == 1){
+        if($userToDelete->id_role == 1){
             exit_with_message("You can't unrefence an admin", 403);
         }
 
-        if($userToDelete->role == 2 && $role == 2){
+        if($userToDelete->id_role == 2 && $role == 2){
             if($id != $user["id_user"]){
                 exit_with_message("You can't unrefence a modo if you're a modo, unless if it's you :/", 403);
             }
         }
 
         if ($id != $user['id_user'] && $role > 2 ){
-            exit_with_message("You can't unrefence a user wich is not you", 403);
+            exit_with_message("You can't unrefence a user which is not you", 403);
         }
 
         return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id);
@@ -304,7 +276,6 @@ class UserRepository {
             $dispos[] = new DispoModel($dispo["id_user"], $dispo["id_dispo"]);
         }
 
-
         return($dispos);
     }
 
@@ -358,7 +329,6 @@ class UserRepository {
     {
         updateDB("UTILISATEUR", ["id_role"], [$role],"id_user=".$id);
         exit_with_content($this->getUser($id));
-       
     }
 
     //-----------------------------------------------------------------------------------------
@@ -387,8 +357,6 @@ class UserRepository {
             $all[]=$this->getUser($usersArray[$i]["id_user"]);
 
         }
-
-
         return $all;
     }
 

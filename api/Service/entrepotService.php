@@ -38,6 +38,7 @@ class EntrepotService {
 
     
     public function updateEntrepot($id_entrepot, $nom, $localisation) {
+        // Entrepot Service Update is probably broken
         $entrepotRepository = new EntrepotRepository();
         $enterpot = new EntrepotModel($id_entrepot, $nom, $localisation);
         $entrepotRepository->updateEntrepot($enterpot);

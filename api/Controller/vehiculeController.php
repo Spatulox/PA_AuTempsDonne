@@ -13,7 +13,7 @@ function vehiculeController($uri, $apiKey){
 
             $VehiculeService = new vehiculeService();
             if(!$uri[3]){
-                exit_with_content($VehiculeService->getAllVehicule($apiKey));
+                $VehiculeService->getAllVehicule($apiKey);
             }
 
 

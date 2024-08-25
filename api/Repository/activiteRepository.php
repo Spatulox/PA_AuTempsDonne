@@ -34,9 +34,6 @@ class ActiviteRepository {
             $activite['nom_activite']
 
         );
-
-
-
         return $activiteModel;
     }
 
@@ -44,7 +41,7 @@ class ActiviteRepository {
 
     public function createActivite(ActiviteModels $activite){
 
-            $string = "nom_activite='" . $activite->nom_activite ."'";
+        $string = "nom_activite='" . $activite->nom_activite ."'";
 
         $Select = selectDB("ACTIVITES", "*", $string, "bool");
 
@@ -77,7 +74,7 @@ class ActiviteRepository {
         );
 
         if (!$updated) {
-            exit_with_message("Erreur, le activite n'a pas pu être mis à jour. Veuillez réessayer.", 500);
+            exit_with_message("Erreur, l'activité n'a pas pu être mis à jour. Veuillez réessayer.", 500);
         }
 
         return $activite;
@@ -92,7 +89,7 @@ class ActiviteRepository {
         if(!$deleted){
             exit_with_message("Error, the activite can't be deleted, plz try again", 500);
         }
-        exit_with_message("Activite deleted", 200);
+        exit_with_message("Activity deleted", 200);
     }
 }
 ?>

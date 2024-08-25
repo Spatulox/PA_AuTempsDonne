@@ -33,12 +33,12 @@ function demandeController($uri, $apikey){
             if (!$uri[3]){
 
                 if(!isset($json["desc_demande"]) || !isset($json["activite"]) || !isset($json["id_activite"])){
-                    exit_with_message("vous n'avez pas mis de description");
+                    exit_with_message("Vous n'avez pas mis de description");
                 }
 
                 if($json["activite"]=="seul"){
                     if(!isset($json["date_act"])){
-                        exit_with_message("vous n'avez pas mis de date");
+                        exit_with_message("Vous n'avez pas mis de date");
                     }
                 }
 
@@ -67,7 +67,7 @@ function demandeController($uri, $apikey){
             }elseif ($uri[3]==="groupe"){
 
                 if(!isset($json["id_demande"]) || !isset($json["id_depart"]) ||!isset($json["id_arriver"]) || !isset($json["date"])){
-                    exit_with_message("vous n'avez pas mis les id");
+                    exit_with_message("Vous n'avez pas mis les id");
                 }
 
 

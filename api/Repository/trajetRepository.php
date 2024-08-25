@@ -33,8 +33,6 @@ class TrajetRepository {
                     "addresses" => []
                 ];
             }
-            //var_dump($request);
-
             $res= selectDB("ADRESSE","adresse","id_adresse=".$request["id_adresse"].$request[$num]["id_adresse"]);
 
 

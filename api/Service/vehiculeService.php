@@ -13,7 +13,7 @@ class VehiculeService
             $vehiculeRepository = new VehiculeRepository();
             $vehiculeRepository->getAllVehicule();
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
 
@@ -30,7 +30,7 @@ class VehiculeService
             $vehiculeRepository = new VehiculeRepository();
             $vehiculeRepository->getMyVehicules($id_user);
         } else {
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
 
@@ -68,7 +68,7 @@ class VehiculeService
             $vehiculeRepository = new VehiculeRepository();
             $vehiculeRepository->createVehicule($vehicule, $id_user);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
 
@@ -86,7 +86,7 @@ class VehiculeService
             $vehiculeRepository->deleteVehicule($int, $id_owner);
         }
         else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
 
@@ -142,7 +142,6 @@ class VehiculeService
 
 
     }
-
 
     public function unBookingVehicle($id_service, $apiKey){
         $vehiculeRepository = new VehiculeRepository();

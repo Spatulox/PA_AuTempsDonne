@@ -26,7 +26,7 @@ function loginController($uri) {
 
         
         case 'GET':
-         	exit_with_message('you don t have the right to make a POST request', 500);
+         	exit_with_message('You don t have the right to make a POST request', 500);
             break;
 
 

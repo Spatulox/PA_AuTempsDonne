@@ -14,7 +14,7 @@ class activiteService {
             $ActiviteRepository = new ActiviteRepository();
             return $ActiviteRepository->getAllActivite();
         }else{
-            exit_with_message("Vous n'avez pas accès a cette commande");
+            exit_with_message("Vous n'avez pas accès à cette commande");
         }
     }
 
@@ -34,24 +34,27 @@ class activiteService {
         $userRole = getRoleFromApiKey($apikey);
         if ($userRole==1 || $userRole==2 || $userRole==4) {
             $ActiviteRepository = new ActiviteRepository();
-            return $ActiviteRepository->createActivite($Activite);
+            $ActiviteRepository->createActivite($Activite);
         }else{
-            exit_with_message("Vous n'avez pas accès a cette commande");
+            exit_with_message("Vous n'avez pas accès à cette commande");
         }
     }
 
     /*
      *  Met à jour un Activite
     */
-//    public function updateActivite( $id_planning, $nom_activite) {
-//        $ActiviteRepository = new ActiviteRepository();
-//        $updatedPlanning = new ActiviteModel(
-//            $id_activite,
-//            $nom_activite
-//        );
-//        $updatedPlanning->setId($id);
-//        return $ActiviteRepository->updateActivite($updatedActivite);
-//    }
+    public function updateActivite( $id_planning, $nom_activite) {
+        exit_with_message("This endpoint has been desactivated for some reason");
+        /*
+        $ActiviteRepository = new ActiviteRepository();
+        $updatedPlanning = new ActiviteModel(
+            $id_activite,
+            $nom_activite
+        );
+        $updatedPlanning->setId($id);
+        return $ActiviteRepository->updateActivite($updatedActivite);
+        */
+    }
 
     /*
      *  Supprimer un Activite
@@ -60,9 +63,9 @@ class activiteService {
         $userRole = getRoleFromApiKey($apikey);
         if ($userRole==1 || $userRole==2) {
             $ActiviteRepository = new ActiviteRepository();
-            return $ActiviteRepository->deleteActivite($id);
+            $ActiviteRepository->deleteActivite($id);
         }else{
-            exit_with_message("Vous n'avez pas accès a cette commande");
+            exit_with_message("Vous n'avez pas accès à cette commande");
         }
     }
 }

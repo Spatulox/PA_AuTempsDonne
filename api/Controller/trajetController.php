@@ -5,8 +5,6 @@ include_once './exceptions.php';
 
 function trajetController($uri, $apiKey){
 
-    //exit_with_message($_SERVER['REQUEST_METHOD']);
-
     switch ($_SERVER['REQUEST_METHOD']){
 
         case 'GET':
@@ -17,12 +15,12 @@ function trajetController($uri, $apiKey){
 
             $TrajetService = new trajetService();
             if(!$uri[3]){
-                exit_with_message("pas de trajets selectionner");
+                exit_with_message("Pas de trajets selectionné");
             }
 
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                exit_with_content($TrajetService->getTrajetById($uri[3]));
+                $TrajetService->getTrajetById($uri[3]);
             }
 
 
@@ -51,7 +49,7 @@ function trajetController($uri, $apiKey){
             }
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                exit_with_content($TrajetService->getTrajetById($uri[3]));
+                $TrajetService->getTrajetById($uri[3]);
             }
 
 
