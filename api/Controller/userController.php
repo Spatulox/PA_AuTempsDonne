@@ -103,7 +103,7 @@ function userController($uri, $apiKey) {
                     $uploadFile = $uploadDir .  "permis_".$name.$extension;
 
                     if (!move_uploaded_file($file['tmp_name'], $uploadFile)) {
-                        exit_with_message("Erreur lors de l'enregistrement du fichier");
+                        exit_with_message("Erreur lors de l'enregistrement du fichier check if the folder 'api/files/permis/' exist on your computer / server");
                     }
                 } else {
                     exit_with_message("Erreur lors de l'upload du fichier");

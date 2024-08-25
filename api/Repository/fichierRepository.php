@@ -6,7 +6,7 @@ class fichierRepository
     }
 
     public function registerFile($id_user, $path, $name){
-        $data = insertDB("FICHIER", ["nom_fichier", "chemin_fichier", "id_user"], [$name, $path, $id_user], "-@");
+        $data = insertDB("FICHIER", ["nom_fichier", "chemin_fichier", "id_user"], [$name, $path, $id_user]);
 
         if($data){
             return true;
