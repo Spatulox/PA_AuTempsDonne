@@ -146,7 +146,7 @@ function userController($uri, $apiKey) {
                     exit_with_message("Vous ne pouvez pas update un utilisateur qui n'est pas vous", 403);
                 }
                 if($role > 3){
-                    exit_with_message("Vouys n'avez pas les permissions requises", 403);
+                    exit_with_message("Vous n'avez pas les permissions requises", 403);
                 }
 
                 $userService->updateUserValidate($json["id_user"], $json["id_index"]);
@@ -161,24 +161,24 @@ function userController($uri, $apiKey) {
             }
             elseif ($uri[3] && $uri[3] == "dispo"){
                 if(!isset($json["id_dispo"]) ) {
-                    exit_with_message("erreur il manque vos jour de dispo", 403);
+                    exit_with_message("Erreur il manque vos jour de disponibilité", 403);
                 }
 
                 exit_with_content( $userService->updatedispoUser($apiKey, ($json["id_dispo"])));
         }
             elseif ($uri[3] && $uri[3] == "entrepot"){
                 if(!isset($json["id_entrepot"]) ) {
-                    exit_with_message("erreur il manque votre entrepot attribuer ", 403);
+                    exit_with_message("Erreur il manque votre entrepot attribué ", 403);
                 }
 
                 exit_with_content( $userService->updateentrepotUser($apiKey, ($json["id_entrepot"])));
             }
             elseif ($uri[3] && $uri[3] == "role" && filter_var($uri[4], FILTER_VALIDATE_INT)){
                 if(!isset($json["id_role"]) ) {
-                    exit_with_message("erreur il manque le changement de role ", 403);
+                    exit_with_message("Erreur il manque le changement de role ", 403);
                 }
                 if(isset($json["role"]) && filter_var($json["role"], FILTER_VALIDATE_INT) == false){
-                    exit_with_message("The role need to be an integer between 1 and 3", 403);
+                    exit_with_message("The role need to be an integer between 1 and 5", 403);
                 }
 
                 exit_with_content( $userService->updateRoleUser($apiKey, ($json["id_role"]),$uri[4]));
@@ -204,7 +204,7 @@ function userController($uri, $apiKey) {
             
             //If normal user and id specified
             if($uri[3] != $userId && $role != 1){
-                exit_with_message("You can't delete a user wich is not you :/", 403);
+                exit_with_message("You can't delete a user which is not you :/", 403);
             }
 
             if(isset($uri[3])){
