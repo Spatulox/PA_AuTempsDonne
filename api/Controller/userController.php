@@ -93,7 +93,13 @@ function userController($uri, $apiKey) {
                 // Vérifiez si le fichier a été téléchargé sans erreur
                 if ($file['error'] === UPLOAD_ERR_OK) {
                     // Déplacez le fichier téléchargé vers un répertoire spécifique
-                    $uploadDir = 'files/permis/';
+                    $uploadDir = 'files/permisTest/';
+
+                    if (!is_dir($uploadDir)) {
+                        if (!mkdir($uploadDir, 0777, true)) {
+                            exit_with_message("Impossible de créer le répertoire de destination");
+                        }
+                    }
 
                     $extension = explode(".", basename($file['name']));
                     $extension = ".".end($extension);
