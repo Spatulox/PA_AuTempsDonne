@@ -102,10 +102,7 @@ function userController($uri, $apiKey) {
                     $name = hash('sha256', $json["nom"] . $json["prenom"] . $json["password"] . $json["email"]);
                     $uploadFile = $uploadDir .  "permis_".$name.$extension;
 
-                    if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
-                        echo "Le fichier a été téléchargé avec succès : " . htmlspecialchars($uploadFile);
-
-                    } else {
+                    if (!move_uploaded_file($file['tmp_name'], $uploadFile)) {
                         exit_with_message("Erreur lors de l'enregistrement du fichier");
                     }
                 } else {
