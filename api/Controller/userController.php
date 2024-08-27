@@ -117,7 +117,11 @@ function userController($uri, $apiKey) {
                     exit_with_message("", 403);
                 }
 
-                exit_with_content($userService->GetAllUserDate($apiKey,$json["id_jour"], $json["date"]));
+                if(isset($json["role"]) && $json["role"] != null){
+                    exit_with_content($userService->GetAllRoleUserDate($apiKey, $json["id_jour"], $json["role"]));
+                }
+
+                exit_with_content($userService->GetAllUserDate($apiKey, $json["id_jour"], $json["date"]));
             }
 
             break;

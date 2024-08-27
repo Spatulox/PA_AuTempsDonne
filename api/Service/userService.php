@@ -243,7 +243,7 @@ class UserService {
 
     //--------------------------------------------------------------------------
 
-    public function GetAllUserDate($apiKey,$id_jour,$date)
+    public function GetAllUserDate($apiKey,$id_jour, $date)
     {
 
         $role = getRoleFromApiKey($apiKey);
@@ -256,7 +256,25 @@ class UserService {
             exit_with_message("error getting dispo ");
         }
         $userRepository = new UserRepository();
-        return $userRepository->GetAllUserDate($id_jour,$date);
+        return $userRepository->GetAllUserDate($id_jour);
+    }
+
+    //--------------------------------------------------------------------------
+
+    public function GetAllRoleUserDate($apiKey,$id_jour, $roleToSearch)
+    {
+
+        $role = getRoleFromApiKey($apiKey);
+        if ($role>3){
+            exit_with_message("vous n'avez pas de disposability");
+        }
+
+        $res=selectDB("SEMAINE", "*", "id_dispo = ".$id_jour,"bool");
+        if (!$res){
+            exit_with_message("error getting dispo ");
+        }
+        $userRepository = new UserRepository();
+        return $userRepository->GetAllRoleUserDate($id_jour, $roleToSearch);
     }
 
 }
