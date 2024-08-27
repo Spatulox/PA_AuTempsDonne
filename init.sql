@@ -573,13 +573,13 @@ UPDATE UTILISATEUR SET apikey = SHA2(CONCAT(id_user, nom, prenom, mdp, email), 2
 
 INSERT INTO DISPONIBILITE (id_user, id_dispo)
 VALUES
-  (3, 1), (3, 5), (3, 6), (3, 7),
-  (6, 1), (6, 2), (6, 6), (6, 7),
-  (15, 1), (15, 2), (15, 3),
-  (18, 1), (18, 2), (18, 3), (18, 4), (18, 5),
-  (9, 1), (9, 2), (9, 6), (9, 7),
-  (24, 1), (24, 2), (24, 3), (24, 7),
-  (12, 4), (12, 5), (12, 6), (12, 7);
+  (4, 1), (4, 5), (4, 6), (4, 7),
+  (7, 1), (7, 2), (7, 6), (7, 7),
+  (16, 1), (16, 2), (16, 3),
+  (19, 1), (19, 2), (19, 3), (19, 4), (19, 5),
+  (10, 1), (10, 2), (10, 6), (10, 7),
+  (25, 1), (25, 2), (25, 3), (25, 7),
+  (13, 4), (13, 5), (13, 6), (13, 7);
 
 INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_ventrepot, appartenance, immatriculation, id_owner)
 VALUES
@@ -630,7 +630,8 @@ VALUES
   ('collecte divers', 'groupe', 1, NULL, 6, NULL, 17),
   ('collecte divers', 'groupe', 1, NULL, 6, NULL, 23),
   ('ecole a besoin daide', 'seul', 1, '2024-05-15 09:00:00', 3, NULL, 4),
-  ('Mamie gertrude doit aller faire cest course', 'seul', 1, '2024-05-18 14:00:00', 5, NULL, 10),
+  ('Mamie gertrude doit aller faire ces courses', 'seul', 1, '2024-05-18 14:00:00', 5, NULL, 10),
+  ('Mamie gertrude doit aller faire ces courses', 'seul', 1, '2024-05-18 14:00:00', 5, NULL, 10),
   ('patoche help', 'seul', 0, '2024-05-20 08:00:00', 4, 1, 16),
   ('patoche cour du soir help', 'seul', 1, '2024-05-25 18:00:00', 4, NULL, 16);
 
