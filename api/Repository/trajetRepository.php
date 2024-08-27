@@ -17,7 +17,7 @@ class TrajetRepository {
     }
 
 
-    private function affiche($request){
+    private function affiche($request, $id_vehicle = null){
 
         $array = [];
 
@@ -50,15 +50,28 @@ class TrajetRepository {
                 ];
             }
 
-
             $trajets[$id_trajets]["addresses"][] = $addresses;
+
+            $trajets[$id_trajets]["vehicule"] = "";
+
+            if($id_vehicle != null) {
+                $vehicle = selectDB("VEHICULES", "*", "id_vehicule=".$id_vehicle);
+                if($vehicle){
+                    $vehicleRepo = new VehiculeRepository();
+                    $data = $vehicleRepo->returnVehicleForm($vehicle, false);
+                    $trajets[$id_trajets]["vehicule"] = $data[0];
+                }
+            }
+
+
             $num++;
         }
 
         foreach ($trajets as $trajet) {
             $array[] = new TrajetModel(
                 $trajet["id_trajets"],
-                $trajet["addresses"]
+                $trajet["addresses"],
+                $trajet["vehicule"]
             );
 
         }
@@ -89,11 +102,19 @@ class TrajetRepository {
 
     public function getTrajetById($id){
         $rows = selectDB("UTILISER", "id_trajets, id_adresse", "id_trajets=".$id);
+        $vehicle = selectJoinDB("CONDUIT c", "v.id_vehicule","LEFT JOIN VEHICULES v ON c.id_vehicule = v.id_vehicule", "-1");
+
+        if($vehicle){
+            $vehicle = $vehicle[0]["id_vehicule"];
+        } else {
+            $vehicle = null;
+        }
 
         if (!$rows) {
             exit_with_message("huh2");
         }
-        exit_with_content($this->affiche($rows));
+
+        exit_with_content($this->affiche($rows, $vehicle));
     }
 
     public function createTrajet($route){
@@ -119,7 +140,7 @@ class TrajetRepository {
         exit_with_content($data);
     }
 
-    public function createTrajetInDB($tab){
+    public function createTrajetInDB($tab, $id_vehicle){
         $lastID = $this->getLastInsertId("TRAJETS", "id_trajets");
 
         if(count($lastID) > 0){
@@ -153,6 +174,12 @@ class TrajetRepository {
                 deleteDB("UTILISER", "id_trajets=".$lastID);
                 exit_with_message($msg);
             }
+        }
+
+        $res = insertDB("CONDUIT", ["id_trajets", "id_vehicule"], [$lastID, $id_vehicle], "bool");
+        if($res === false){
+            deleteDB("UTILISER", "id_trajets=".$lastID);
+            exit_with_message("Impossible to save the vehicule for the trajet");
         }
 
         exit_with_message("Success", 200);

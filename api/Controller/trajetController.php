@@ -39,13 +39,20 @@ function trajetController($uri, $apiKey){
                 exit_with_message("Unauthorized, need the apikey", 403);
             }
 
+            if(!isset($json["address"]) || empty($json["address"])){
+                exit_with_message("You need to give valid addresses", 403);
+            }
+
             $TrajetService = new trajetService();
             if(!$uri[3]){
                 $TrajetService->createTrajet($json["address"]);
             }
 
             elseif($uri[3] && $uri[3] == "create"){
-                $TrajetService->createTrajetInDB($json["address"]);
+                if(!isset($json["id_vehicule"]) || empty($json["id_vehicule"])){
+                    exit_with_message("You need to give a vehicule", 403);
+                }
+                $TrajetService->createTrajetInDB($json["address"], $json["id_vehicule"]);
             }
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
