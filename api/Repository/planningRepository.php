@@ -3,6 +3,7 @@ include_once './Repository/BDD.php';
 include_once './Models/planningModel.php';
 include_once './exceptions.php';
 include_once './index.php';
+include_once './returnFunctions.php';
 
 class PlanningRepository {
 
@@ -10,7 +11,7 @@ class PlanningRepository {
        
     }
 
-    private function getTrajetFromId($id) {
+    public function getTrajetFromId($id) {
 
         $tabAddresse = [];
 
@@ -40,19 +41,7 @@ class PlanningRepository {
 
         for ($i=0; $i < count($planningArray); $i++) {
 
-            $planning[$i] = new PlanningModel(
-                $planningArray[$i]['id_planning'],
-                $planningArray[$i]['description'],
-                $planningArray[$i]['date_activite'],
-                $planningArray[$i]['id_index_planning'],
-                $planningArray[$i]['id_activite']
-            );
-            $planning[$i]->setId($planningArray[$i]['id_planning']);
-
-            $planning[$i]->setAddress($this->getTrajetFromId($planningArray[$i]["id_trajets"]));
-
-            $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
-            $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
+            $planning[$i] = returnPlanning($planningArray, $i);
         }
         return $planning;
     }
@@ -66,19 +55,7 @@ class PlanningRepository {
         $planning = [];
 
         for ($i=0; $i < count($planningArray); $i++) {
-            $planning[$i] = new PlanningModel(
-                $planningArray[$i]['id_planning'],
-                $planningArray[$i]['description'],
-                $planningArray[$i]['date_activite'],
-                $planningArray[$i]['id_index_planning'],
-                $planningArray[$i]['id_activite']
-            );
-            $planning[$i]->setId($planningArray[$i]['id_planning']);
-
-            $planning[$i]->setAddress($this->getTrajetFromId($planningArray[$i]["id_trajets"]));
-
-            $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
-            $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
+            $planning[$i] = returnPlanning($planningArray, $i);
         }
         return $planning[0];
     }
@@ -102,19 +79,7 @@ class PlanningRepository {
             $planningArray = selectDB("PLANNINGS", "*", "id_planning='" . $planning_id[0] . "'");
 
             foreach ($planningArray as $planningData) {
-                $planning = new PlanningModel(
-                    $planningData['id_planning'],
-                    $planningData['description'],
-                    $planningData['date_activite'],
-                    $planningData['id_index_planning'],
-                    $planningData['id_activite']
-                );
-                $planning->setId($planningData['id_planning']);
-
-                $planning->setAddress($this->getTrajetFromId($planningData["id_trajets"]));
-
-                $planning->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=" . $planningData['id_index_planning'])[0]);
-                $planning->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=" . $planningData['id_activite'])[0]);
+                $planning = returnPlanning($planningData);
 
                 $allPlanning[] = $planning;
             }
@@ -138,18 +103,7 @@ class PlanningRepository {
             $planningArray = selectDB("PLANNINGS", "*", "id_planning='" . $planning_id[0] . "'");
 
             foreach ($planningArray as $planningData) {
-                $planning = new PlanningModel(
-                    $planningData['id_planning'],
-                    $planningData['description'],
-                    $planningData['date_activite'],
-                    $planningData['id_index_planning'],
-                    $planningData['id_activite']
-                );
-                $planning->setId($planningData['id_planning']);
-                $planning->setAddress($this->getTrajetFromId($planningData["id_trajets"]));
-                $planning->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=" . $planningData['id_index_planning'])[0]);
-                $planning->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=" . $planningData['id_activite'])[0]);
-
+                $planning = returnPlanning($planningData);
                 $allPlanning[] = $planning;
             }
         }
@@ -286,19 +240,7 @@ class PlanningRepository {
         $planning = [];
 
         for ($i=0; $i < count($planningArray); $i++) {
-            $planning[$i] = new PlanningModel(
-                $planningArray[$i]['id_planning'],
-                $planningArray[$i]['description'],
-                $planningArray[$i]['date_activite'],
-                $planningArray[$i]['id_index_planning'],
-                $planningArray[$i]['id_activite']
-            );
-            $planning[$i]->setId($planningArray[$i]['id_planning']);
-
-            $planning[$i]->setAddress($this->getTrajetFromId($planningArray[$i]["id_trajets"]));
-
-            $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
-            $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
+            $planning[$i] = returnPlanning($planningArray, $i);
         }
         return $planning;
     }
@@ -316,19 +258,7 @@ class PlanningRepository {
         $planning = [];
 
         for ($i=0; $i < count($planningArray); $i++) {
-            $planning[$i] = new PlanningModel(
-                $planningArray[$i]['id_planning'],
-                $planningArray[$i]['description'],
-                $planningArray[$i]['date_activite'],
-                $planningArray[$i]['id_index_planning'],
-                $planningArray[$i]['id_activite']
-            );
-            $planning[$i]->setId($planningArray[$i]['id_planning']);
-
-            $planning[$i]->setAddress($this->getTrajetFromId($planningArray[$i]["id_trajets"]));
-
-            $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
-            $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
+            $planning[$i] = returnPlanning($planningArray, $i);
         }
 
         return $planning;
@@ -349,19 +279,7 @@ class PlanningRepository {
         $planning = [];
 
         for ($i=0; $i < count($planningArray); $i++) {
-            $planning[$i] = new PlanningModel(
-                $planningArray[$i]['id_planning'],
-                $planningArray[$i]['description'],
-                $planningArray[$i]['date_activite'],
-                $planningArray[$i]['id_index_planning'],
-                $planningArray[$i]['id_activite']
-            );
-            $planning[$i]->setId($planningArray[$i]['id_planning']);
-
-            $planning[$i]->setAddress($this->getTrajetFromId($planningArray[$i]["id_trajets"]));
-
-            $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
-            $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
+            $planning[$i] = returnPlanning($planningArray, $i);
         }
         return $planning;
     }
@@ -381,28 +299,7 @@ class PlanningRepository {
         $planning = [];
 
         for ($i = 0; $i < count($planningArray); $i++) {
-            $planning[$i] = new PlanningModel(
-                $planningArray[$i]['id_planning'],
-                $planningArray[$i]['description'],
-                $planningArray[$i]['date_activite'],
-                $planningArray[$i]['id_index_planning'],
-                $planningArray[$i]['id_activite']
-            );
-            $planning[$i]->setId($planningArray[$i]['id_planning']);
-
-            $planning[$i]->setAddress($this->getTrajetFromId($planningArray[$i]["id_trajets"]));
-
-            $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=" . $planningArray[$i]['id_index_planning'])[0]);
-            $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=" . $planningArray[$i]['id_activite'])[0]);
-
-            $res = selectDB("PARTICIPE pa INNER JOIN UTILISATEUR u ON pa.id_user = u.id_user", "u.email", "pa.id_planning=" . $planningArray[$i]['id_planning'] . " AND u.id_role = 3" );
-
-            $tab=[];
-            foreach ($res as $row) {
-                $tab[] = $row["email"];
-            }
-            $planning[$i]->setemailuser($tab);
-
+            $planning[$i] = returnPlanning($planningArray, $i);
         }
 
         return $planning;
