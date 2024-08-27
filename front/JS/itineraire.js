@@ -73,6 +73,7 @@ async function calcSpeedAddress(addressData, id_vehicule) {
     }
 
     dataToSend["address"] = array
+    dataToSend["id_vehicule"] = id_vehicule
 
     let trajet = new TrajetAdmin()
 
