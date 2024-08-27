@@ -7,9 +7,10 @@ function initMap() {
 }
 
 //btn.addEventListener("click", async () => {
-async function calcSpeedAddress(addressData) {
+async function calcSpeedAddress(addressData, id_vehicule) {
     const address = {
-        "address": addressData
+        "address": addressData,
+        "id_vehicule":id_vehicule
     };
 
     const response = await fetch(ipAddressApi+"/trajet", optionPost(address));
