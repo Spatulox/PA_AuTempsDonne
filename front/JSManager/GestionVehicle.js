@@ -16,6 +16,38 @@ class VehicleAdmin extends Admin{
         return response
     }
 
+    async getAssociationVehicle(){
+        let response = await this.fetchSync(this.adresse+'/vehicule/association', this.optionGet())
+        if(!this.compareAnswer(response)){
+            return false
+        }
+        return response
+    }
+
+    async getAssociationAvailableVehicle(start, end){
+
+        if(!this.isValidDate(start) || !this.isValidDate(end)){
+            popup("Dates are not valid")
+            return false
+        }
+
+        if(this.isDateInThePast(start) || this.isDateInThePast(end)){
+            popup("Date start and date end cannot be in the past")
+            return false
+        }
+
+        const data = {
+            "date_start" : start.split('T').join(" ").split(".")[0],
+            "date_end" : end.split('T').join(" ").split(".")[0]
+        }
+
+        let response = await this.fetchSync(this.adresse+'/vehicule/available/assoc', this.optionPost(data))
+        if(!this.compareAnswer(response)){
+            return false
+        }
+        return response
+    }
+
     async getAvailableVehicle(start, end){
 
         if(!this.isValidDate(start) || !this.isValidDate(end)){
