@@ -46,12 +46,15 @@ function returnPlanning($dataFromDb, $i = 0){
     $planning->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$dataFromDb[$i]['id_index_planning'])[0]);
     $planning->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$dataFromDb[$i]['id_activite'])[0]);
 
-    $res = selectDB("PARTICIPE pa INNER JOIN UTILISATEUR u ON pa.id_user = u.id_user", "u.email", "pa.id_planning=" . $dataFromDb[$i]['id_planning'] . " AND u.id_role = 3" );
+    $res = selectDB("PARTICIPE pa INNER JOIN UTILISATEUR u ON pa.id_user = u.id_user", "u.email", "pa.id_planning=" . $dataFromDb[$i]['id_planning'] . " AND u.id_role = 3", "bool");
 
-    $tab=[];
-    foreach ($res as $row) {
-        $tab[] = $row["email"];
+    if(res){
+        $tab=[];
+        foreach ($res as $row) {
+            $tab[] = $row["email"];
+        }
+        $planning->setemailuser($tab);
     }
-    $planning->setemailuser($tab);
+
     return $planning;
 }
