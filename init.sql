@@ -621,6 +621,9 @@ VALUES
 INSERT INTO UTILISER (id_trajets, id_adresse)
 VALUES (2, 17);
 
+INSERT INTO CONDUIT (id_trajets, id_vehicule) VALUES
+(2, 1);
+
   INSERT INTO DEMANDE (desc_demande, activite, etat, date_act, id_activite, id_planning, id_user)
 VALUES
   ('collecte intermarcher', 'groupe', 1, NULL, 6, NULL, 17),
