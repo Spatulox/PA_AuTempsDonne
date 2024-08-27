@@ -23,6 +23,15 @@ class VehiculeService
         $vehiculeRepository->getVehiculeById($int);
     }
 
+    public function getAllVehiculeAssoc($apiKey){
+        $userRole = getRoleFromApiKey($apiKey);
+        if($userRole[0] >= 2){
+            exit_with_message("You don't have access to this command");
+        }
+        $vehiculeRepository = new VehiculeRepository();
+        $vehiculeRepository->getAllVehiculeAssoc();
+    }
+
     public function getMyVehicule($apikey){
         $userRole = getRoleFromApiKey($apikey);
         $id_user = getIdUserFromApiKey($apikey);
@@ -34,7 +43,21 @@ class VehiculeService
         }
     }
 
-    public function getAvailableVehicule($apikey, $debut, $fin){
+    public function getVehiculeAssocAvailable($apikey, $debut, $fin){
+
+        $role = getRoleFromApiKey($apikey);
+        if($role[0] >= 2){
+            exit_with_message("You don't have access to this command");
+        }
+
+        $debut = explode(".", implode(" ", explode("T", $debut)))[0];
+        $fin = explode(".", implode(" ", explode("T", $fin)))[0];
+
+        $vehiculeRepository = new VehiculeRepository();
+        $vehiculeRepository->getVehiculeAssocAvailable($debut, $fin);
+    }
+
+    public function getAvailableVehicule($debut, $fin){
 
         $debut = explode(".", implode(" ", explode("T", $debut)))[0];
         $fin = explode(".", implode(" ", explode("T", $fin)))[0];

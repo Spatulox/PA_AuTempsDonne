@@ -10,11 +10,22 @@ class VehiculeRepository
     {
         $vehicule = selectDB("VEHICULES", "*");
         if(!$vehicule){
-            exit_with_message("Impossible to select data for entrepot in the DB");
+            exit_with_message("Impossible to select data for vehicle in the DB");
         }
         $this->returnVehicleForm($vehicule);
     }
-//----------------------------------------------------------------------------------
+
+    //----------------------------------------------------------------------------------
+
+    public function getAllVehiculeAssoc(){
+        $vehicule = selectDB("VEHICULES", "*", "appartenance=1");
+        if(!$vehicule){
+            exit_with_message("Impossible to select data for vehicle in the DB");
+        }
+        $this->returnVehicleForm($vehicule);
+    }
+    //----------------------------------------------------------------------------------
+
     public function getVehiculeById($int)
     {
         $columns = "s.*, v.*, u.id_user, u.telephone, u.email, u.id_role";
@@ -33,6 +44,22 @@ class VehiculeRepository
         $columns = "DISTINCT v.*";
         $join = "LEFT JOIN LINKSERVICEVEHICLE lsv ON v.id_vehicule = lsv.id_vehicule LEFT JOIN SERVICE s ON lsv.id_service = s.id_service";
         $condition = "v.appartenance != 1 AND v.id_vehicule NOT IN (
+                SELECT DISTINCT lsv.id_vehicule
+                FROM LINKSERVICEVEHICLE lsv
+                JOIN SERVICE s ON lsv.id_service = s.id_service
+                WHERE ( s.service_date_debut <= '".$fin."'
+                AND s.service_date_fin >= '".$debut."')
+                );";
+        $data = selectJoinDB("VEHICULES v", $columns, $join, $condition);
+        $this->returnVehicleForm($data);
+    }
+
+    //----------------------------------------------------------------------------------
+
+    public function getVehiculeAssocAvailable($debut, $fin){
+        $columns = "DISTINCT v.*";
+        $join = "LEFT JOIN LINKSERVICEVEHICLE lsv ON v.id_vehicule = lsv.id_vehicule LEFT JOIN SERVICE s ON lsv.id_service = s.id_service";
+        $condition = "v.appartenance = 1 AND v.id_vehicule NOT IN (
                 SELECT DISTINCT lsv.id_vehicule
                 FROM LINKSERVICEVEHICLE lsv
                 JOIN SERVICE s ON lsv.id_service = s.id_service
@@ -224,11 +251,15 @@ class VehiculeRepository
         exit_with_content($vehicleArray);
     }
 
-    private function returnVehicleForm($data){
+    public function returnVehicleForm($data, $exit = true){
         $vehiculetArray = [];
         for ($i=0; $i < count($data) ; $i++) {
             $vehiculetArray[$i] = returnVehicle($data, $i);
         }
-        exit_with_content($vehiculetArray);
+        if($exit == true){
+            exit_with_content($vehiculetArray);
+        } else {
+            return $vehiculetArray;
+        }
     }
 }

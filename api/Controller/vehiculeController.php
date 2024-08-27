@@ -21,6 +21,10 @@ function vehiculeController($uri, $apiKey){
                 $VehiculeService->getVehiculeById($uri[3]);
             }
 
+            elseif($uri[3] == "association"){
+                $VehiculeService->getAllVehiculeAssoc($apiKey);
+            }
+
             elseif ($uri[3] == "me"){
                 $VehiculeService->getMyVehicule($apiKey);
             }
@@ -51,7 +55,13 @@ function vehiculeController($uri, $apiKey){
                 if(!isset($json["date_start"]) || empty($json["date_start"]) || !isset($json["date_end"]) || empty($json["date_end"])){
                     exit_with_message("Missing required parameters date_start and date_end", 403);
                 }
-                $VehiculeService->getAvailableVehicule($apiKey, $json["date_start"], $json["date_end"]);
+
+                if($uri[4] == "assoc"){
+                    $VehiculeService->getVehiculeAssocAvailable($apiKey, $json["date_start"], $json["date_end"]);
+                    exit();
+                }
+
+                $VehiculeService->getAvailableVehicule($json["date_start"], $json["date_end"]);
                 exit();
             }
 
