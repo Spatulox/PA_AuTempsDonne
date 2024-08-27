@@ -78,10 +78,9 @@ class PlanningRepository {
         foreach ($id_planning as $planning_id) {
             $planningArray = selectDB("PLANNINGS", "*", "id_planning='" . $planning_id[0] . "'");
 
-            foreach ($planningArray as $planningData) {
-                $planning = returnPlanning($planningData);
-
-                $allPlanning[] = $planning;
+            for ($i=0; $i < count($planningArray); $i++) {
+                $planning[$i] = returnPlanning($planningArray, $i);
+                $allPlanning[] = $planning[$i];
             }
         }
 
@@ -102,9 +101,9 @@ class PlanningRepository {
         foreach ($id_planning as $planning_id) {
             $planningArray = selectDB("PLANNINGS", "*", "id_planning='" . $planning_id[0] . "'");
 
-            foreach ($planningArray as $planningData) {
-                $planning = returnPlanning($planningData);
-                $allPlanning[] = $planning;
+            for ($i=0; $i < count($planningArray); $i++) {
+                $planning[$i] = returnPlanning($planningArray, $i);
+                $allPlanning[] = $planning[$i];
             }
         }
 

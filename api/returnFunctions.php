@@ -48,7 +48,7 @@ function returnPlanning($dataFromDb, $i = 0){
 
     $res = selectDB("PARTICIPE pa INNER JOIN UTILISATEUR u ON pa.id_user = u.id_user", "u.email", "pa.id_planning=" . $dataFromDb[$i]['id_planning'] . " AND u.id_role = 3", "bool");
 
-    if(res){
+    if($res){
         $tab=[];
         foreach ($res as $row) {
             $tab[] = $row["email"];
