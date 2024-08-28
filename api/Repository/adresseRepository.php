@@ -28,7 +28,7 @@ class adresseRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 8;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
@@ -56,7 +56,7 @@ class adresseRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 8;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
@@ -84,7 +84,7 @@ class adresseRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 8;
             $id_user =getIdUserFromApiKey($apiKey);
 
             $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
@@ -106,7 +106,7 @@ class adresseRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 8;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
