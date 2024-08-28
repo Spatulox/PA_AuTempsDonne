@@ -33,4 +33,9 @@ class fichierService
         $repo->sendFile($name);
     }
 
+    public function removeFile($name, $apikey){
+        $repo = new FichierRepository();
+        $repo->removeFile($name);
+    }
+
 }

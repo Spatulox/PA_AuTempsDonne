@@ -58,4 +58,30 @@ class fichierRepository
         }
     }
 
+    function removeFile($nom)
+    {
+        $data = selectDB("FICHIER", "*", "nom_fichier='" . $nom . "'", 'bool');
+        if (!$data) {
+            exit_with_message("No files", 400);
+        }
+
+        $filePath = $data[0]["chemin_fichier"] . $data[0]["nom_fichier"];
+
+        if (!$filePath) {
+            exit_with_message("File path not found", 400);
+        }
+        // Supprimer le fichier physique
+        if (file_exists($filePath)) {
+            if (!unlink($filePath)) {
+                exit_with_message("Failed to delete the file", 500);
+            }
+        }
+
+        $returnMsg = deleteDB("FICHIER", "nom_fichier='" . $nom . "'", 'bool');
+        if ($returnMsg) {
+            exit_with_message("File deleted", 200);
+        }
+        exit_with_message("Failed to delete the file inside the DB, you gonna have a phantom file :/", 500);
+    }
+
 }
