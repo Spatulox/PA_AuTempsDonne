@@ -106,6 +106,12 @@ function userController($uri, $apiKey) {
                     $name = hash('sha256', $json["nom"] . $json["prenom"] . $json["password"] . $json["email"]);
                     $uploadFile = $uploadDir .  "permis_".$name.$extension;
 
+                    $counter = 1;
+                    while (file_exists($uploadFile)) {
+                        $uploadFile = $uploadDir .  "permis_".$name . "_" . $counter . $extension;
+                        $counter++;
+                    }
+
                     if (!move_uploaded_file($file['tmp_name'], $uploadFile)) {
                         exit_with_message("Erreur lors de l'enregistrement du fichier check if the folder 'api/files/permis/' exist on your computer / server");
                     }
