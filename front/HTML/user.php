@@ -56,6 +56,9 @@
             <div id="tab2Child" class="width50 padding10 marginBottom20 marginAuto border">
                 <?php echo $data["user"]["tab2"]["errorMsg"] ?>
             </div>
+            <div id="containerFileLoader">
+                <div class="loader"></div>
+            </div>
         </div>
 
         <div id="tab3" class="tabcontent">
@@ -109,6 +112,51 @@
 
 </main>
 
+<style>
+    #containerFileLoader {
+        width: 300px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    #containerFileLoader ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    #containerFileLoader li {
+        margin: 10px 0;
+    }
+
+    #containerFileLoader a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    #containerFileLoader a:hover {
+        text-decoration: underline;
+    }
+
+</style>
+
 <?php include("../includes/footer.php"); ?>
 
 </body>
@@ -131,6 +179,7 @@
 
     const user = new UserAdmin()
     const planning = new PlanningAdmin()
+    const fileManager = new File()
 
     let data = []
     let plannings = {}
@@ -364,7 +413,39 @@
     }
 
     async function getUserFile(id){
-        alert("Getting files for " + id)
+        const data = await fileManager.getFilesByUser(id)
+        const container = document.getElementById('containerFileLoader');
+        if(data){
+            const fileList = createFileList(data, id);
+            container.innerHTML = '';
+            container.appendChild(fileList);
+            container.style.width = "auto"
+        } else{
+            container.innerHTML = 'No Files';
+        }
+    }
+
+    function createFileList(files, iduser) {
+        const ul = document.createElement('ul');
+        files.forEach(file => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = '#';
+            a.textContent = file.name;
+            a.onclick = (e) => {
+                e.preventDefault();
+                downloadFile(file.name, iduser);
+            };
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+        return ul;
+    }
+
+    async function downloadFile(fileName, id_user) {
+        startLoading()
+         await fileManager.retrieveFile(fileName, id_user)
+        stopLoading()
     }
 
     async function invalidateUSer(id){
@@ -435,6 +516,7 @@
         data = await user.getAllUser()
 
         await planning.connect()
+        await fileManager.connect()
         fillTbodyUser()
         fillPlanningTab3()
         fillTab4()
