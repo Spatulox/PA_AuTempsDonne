@@ -37,7 +37,10 @@ const dico = {
         "Validate":"Validate ",
         "assign": "assign ",
         "Assign": "Assign ",
-        "Book":"Book"
+        "Book":"Book ",
+        "Sending":"Sending ",
+        "Email":"Email ",
+        "email":"email "
 
     },
     "FR":{
@@ -78,6 +81,9 @@ const dico = {
         "Validate":"Validé ",
         "assign": "assigner ",
         "Assign": "Assigner ",
-        "Book": "Reserver"
+        "Book": "Reserver ",
+        "Sending":"Envoie ",
+        "Email":"Email ",
+        "email":"email "
     }
 }
