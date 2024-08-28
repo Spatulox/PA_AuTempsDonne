@@ -75,11 +75,8 @@ function userController($uri, $apiKey) {
         case 'POST':
          	$userService = new UserService($uri);
 
-            /*if(!isset($_FILES["file"])){
-                exit_with_message("You need to send the file to the formData with the keyname 'file'.");
-            }*/
-
             $json = null;
+
             if(!isset($_POST["data"])){
                 exit_with_message("You need to send the data to the formData with the keyname 'data'.");
             }

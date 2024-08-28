@@ -11,7 +11,7 @@ class UserRepository {
     //-------------------------------------
 
     public function getUsers($index = 2){
-        $usersArray = selectDB("UTILISATEUR", "*", "id_index='".$index."'");
+        $usersArray = selectDB("UTILISATEUR", "*", "id_index='".$index."' AND id_user != 1");
 
         $user = [];
 
@@ -27,6 +27,9 @@ class UserRepository {
     //-------------------------------------
 
     public function getUser($id){
+        if($id == 1){
+            exit_with_message("No user");
+        }
         $user = selectDB("UTILISATEUR", "*", "id_user='".$id."'");
 
         $address = selectDB("ADRESSE", "*", "id_adresse='".$user[0]['id_adresse']."'")[0]["adresse"];
@@ -158,6 +161,9 @@ class UserRepository {
     }
 
     public function updateUser($id_user, $cle, $data){
+        if($id_user == 1){
+            exit_with_message("No user");
+        }
         $data = updateDB("UTILISATEUR", [$cle], [$data] , "id_user='".$id_user."'");
 
         if($data){
@@ -177,6 +183,9 @@ class UserRepository {
     //-------------------------------------
 
     public function unreferenceUserById($id, $apiKey){
+        if($id == 1){
+            exit_with_message("No user");
+        }
 
         $role = getRoleFromApiKey($apiKey);
 
@@ -236,6 +245,9 @@ class UserRepository {
 
     public function dispoUser($id_dispo, $id)
     {
+        if($id == 1){
+            exit_with_message("No user");
+        }
         $check = selectDB("DISPONIBILITE" , "*", "id_user=".$id, "bool");
         if ($check){
             exit_with_message("User already dispoted",500);
@@ -252,7 +264,7 @@ class UserRepository {
 
     public function getAllDispoUsers()
     {
-        $conditions = "id_index= 2 AND id_role=3 ";
+        $conditions = "id_index= 2 AND id_role=3 AND id_user != 1";
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
         $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
         $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions );
@@ -289,6 +301,9 @@ class UserRepository {
 
     public function updatedispoUser($id_dispo, $id)
     {
+        if($id == 1){
+            exit_with_message("No user");
+        }
         deleteDB("DISPONIBILITE", "id_user=".$id);
         $dispos = [];
 
@@ -310,6 +325,9 @@ class UserRepository {
 
     public function updateentrepotUser($id_entrepot, $id)
     {
+        if($id == 1){
+            exit_with_message("No user");
+        }
         $res=updateDB("UTILISATEUR", ["id_entrepot"], [$id_entrepot],"id_user=".$id);
         return $res;
     }
@@ -318,6 +336,9 @@ class UserRepository {
 
     public function getDispoUserMe($id)
     {
+        if($id == 1){
+            exit_with_message("No user");
+        }
         $conditions = "UTILISATEUR.id_user=".$id;
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
         $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
@@ -354,6 +375,9 @@ class UserRepository {
 
     public function updateRoleUser($role, $id)
     {
+        if($id == 1){
+            exit_with_message("No user");
+        }
         updateDB("UTILISATEUR", ["id_role"], [$role],"id_user=".$id);
         exit_with_content($this->getUser($id));
        
@@ -364,9 +388,36 @@ class UserRepository {
     public function GetAllUserDate($date)
     {
 
-        $conditions = "SEMAINE.id_dispo=".$date;
+        $conditions = "SEMAINE.id_dispo=" . $date . " AND UTILISATEUR.id_user != 1";
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
         $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
+        $usersArray = selectJoinDB("DISPONIBILITE", $columns, $join, $conditions);
+
+        $uniqueUsers = [];
+
+        foreach ($usersArray as $user) {
+            $id_user = $user["id_user"];
+            if (!in_array($id_user, $uniqueUsers)) {
+                $uniqueUsers[] = $id_user;
+            }
+        }
+
+        $all = [];
+
+        for ($i = 0; $i < count($usersArray); $i++) {
+
+            $all[] = $this->getUser($usersArray[$i]["id_user"]);
+
+        }
+    }
+
+
+    public function GetAllRoleUserDate($date, $role)
+    {
+
+        $conditions = "SEMAINE.id_dispo='".$date."' AND UTILISATEUR.id_user != 1 AND UTILISATEUR.id_role=".$role;
+        $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
+        $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo";
         $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions);
 
         $uniqueUsers = [];
@@ -385,8 +436,6 @@ class UserRepository {
             $all[]=$this->getUser($usersArray[$i]["id_user"]);
 
         }
-
-
         return $all;
     }
 
