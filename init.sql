@@ -102,6 +102,7 @@ CREATE TABLE UTILISATEUR(
    id_entrepot INT,
    id_index INT NOT NULL,
    id_role INT NOT NULL,
+   validate_files INT NOT NULL DEFAULT 0,
    PRIMARY KEY(id_user),
    FOREIGN KEY(id_adresse) REFERENCES ADRESSE(id_adresse),
    FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
