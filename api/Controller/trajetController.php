@@ -22,7 +22,7 @@ function trajetController($uri, $apiKey){
 
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                exit_with_content($TrajetService->getTrajetById($uri[3]));
+                exit_with_content($TrajetService->getTrajetById($uri[3],$apiKey));
             }
 
 
@@ -43,15 +43,15 @@ function trajetController($uri, $apiKey){
 
             $TrajetService = new trajetService();
             if(!$uri[3]){
-                $TrajetService->createTrajet($json["address"]);
+                $TrajetService->createTrajet($json["address"],$apiKey);
             }
 
             elseif($uri[3] && $uri[3] == "create"){
-                $TrajetService->createTrajetInDB($json["address"]);
+                $TrajetService->createTrajetInDB($json["address"],$apiKey);
             }
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                exit_with_content($TrajetService->getTrajetById($uri[3]));
+                exit_with_content($TrajetService->getTrajetById($uri[3]),$apiKey);
             }
 
 
