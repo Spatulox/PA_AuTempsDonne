@@ -322,7 +322,8 @@
     "tab4": {
       "title": "User Waiting to Validate",
       "errorMsg": "Nothing to show",
-      "button": "Validate"
+      "button": "Validate",
+      "validatefile": "File to validate"
     }
   },
   "vehicle": {
