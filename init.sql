@@ -571,6 +571,9 @@ INSERT INTO UTILISATEUR (nom, prenom, email, telephone, date_inscription, apikey
 
 UPDATE UTILISATEUR SET apikey = SHA2(CONCAT(id_user, nom, prenom, mdp, email), 256) WHERE id_user IS NOT NULL;
 
+UPDATE UTILISATEUR SET validate_files = 1 WHERE id_user > 0 AND id_user <= 15;
+UPDATE UTILISATEUR SET validate_files = 2 WHERE id_user > 15 AND id_user <= 20;
+
 
 INSERT INTO DISPONIBILITE (id_user, id_dispo)
 VALUES
