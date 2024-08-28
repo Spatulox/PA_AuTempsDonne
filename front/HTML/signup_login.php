@@ -120,7 +120,7 @@
                 <form method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="file_upload"><?php echo($data["signup_login"]["formSignUp"]["conduct"]) ?></label>
-                        <input type="file" id="file_upload" name="file_upload" accept=".jpg, .jpeg, .png" />
+                        <input type="file" id="fileInput" name="file_upload" accept=".jpg, .jpeg, .png" />
                     </div>
                 </form>
 
@@ -268,14 +268,11 @@
         formData.append('data', JSON.stringify(data)); // Ajout des données au FormData
 
 
+
         const options = {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: formData//JSON.stringify(data)
+            body: formData
         };
-
 
         // Fetch the api
         const response = await fetch(ipAddressApi+"/user", options)
@@ -308,7 +305,7 @@
 
 <script>
 
-    async function signup() {
+    /*async function signup() {
 
         startLoading()
 
@@ -395,6 +392,6 @@
         stopLoading()
         redirect("./moncompte.php?message=Votre compte est en attente de validation auprès de la modération")
 
-    }
+    }*/
 
 </script>
