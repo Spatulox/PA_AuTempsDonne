@@ -359,7 +359,12 @@
 
         openTab('tab2')
         fillPlanningTab3(+id)
+        getUserFile(+id)
         replaceCharacters()
+    }
+
+    async function getUserFile(id){
+        alert("Getting files for " + id)
     }
 
     async function invalidateUSer(id){
@@ -372,8 +377,12 @@
     async function validateUSer(id) {
         startLoading()
         const resp = await user.updateUserValidate(id)
-        await fillTab4()
-        await fillTbodyUser()
+        if(resp.ok){
+            data = await user.getAllUser()
+            await fillTab4()
+            await fillTbodyUser()
+            replaceCharacters()
+        }
         stopLoading()
     }
 
