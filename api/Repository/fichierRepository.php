@@ -26,7 +26,16 @@ class fichierRepository
 
 
 
-    function sendFile($filePath) {
+    function sendFile($name) {
+
+        $data = selectDB("FICHIER", "*", "nom_fichier='".$name."'", '-@');
+        if(!$data){
+            exit_with_message("No files", 400);
+        }
+        $data = $data[0];
+
+        $filePath = $data["chemin_fichier"] . $data["nom_fichier"];
+
         if (file_exists($filePath)) {
             // Définir les headers pour le téléchargement
             header('Content-Description: File Transfer');
@@ -42,7 +51,7 @@ class fichierRepository
             exit;
         } else {
             http_response_code(404);
-            echo json_encode(['error' => 'File not found']);
+            exit_with_message("File not found", 404);
         }
     }
 
