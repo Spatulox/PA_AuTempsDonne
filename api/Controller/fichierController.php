@@ -12,7 +12,6 @@ function fichierController($uri, $apiKey){
             // Pas Admin
             $uri3_int = intval($uri[3]);
             if(filter_var($uri[3], FILTER_VALIDATE_INT) && $id_role <= 2){
-                var_dump($uri[3]);
                 $fileService = new FichierService();
                 $fileService->getAllFileName($uri[3]);
                 exit();
