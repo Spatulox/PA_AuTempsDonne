@@ -9,14 +9,14 @@ function fichierController($uri, $apiKey){
         case 'GET':
             $id_role = getRoleFromApiKey($apiKey);
 
-            // Pas Admin
+            // Admin File view
             $uri3_int = intval($uri[3]);
             if(filter_var($uri[3], FILTER_VALIDATE_INT) && $id_role <= 2){
                 $fileService = new FichierService();
                 $fileService->getAllFileName($uri[3]);
                 exit();
             }
-            // Admin
+            // My file
             else if($uri[3] == "me"){
                 $id_user = getIdUserFromApiKey($apiKey);
                 $fileService = new FichierService();
