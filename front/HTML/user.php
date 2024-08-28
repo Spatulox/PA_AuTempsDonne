@@ -683,11 +683,11 @@
         const response = await user.deleteUser(id)
         data = await user.getAllUser()
         await fillTbodyUser()
-        const emailBody = "<p>Votre compte à été supprimé par un administrateur</p>"
+        const emailBody = `<p>Votre compte a ete supprime par l'administrateur ${user.id_user}</p>`
         const emailToSend = document.getElementById("va_email").innerHTML
         const mail = new GestionMail()
         await mail.connect()
-        await mail.sendMail("Account information", emailBody, [emailToSend])
+        mail.sendMail("Account information", emailBody, [emailToSend])
         stopLoading()
     }
 
