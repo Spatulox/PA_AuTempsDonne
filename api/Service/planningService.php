@@ -120,10 +120,10 @@ class PlanningService {
     */
     public function joinActivity($userId, $planningId, $confirme, $apiKey) {
 
-        $user=selectDB("UTILISATEUR", "*", "id_user=" . $userId,"bool");
+        $user=selectDB("UTILISATEUR", "*", "validate_files=1 id_user=" . $userId,"bool");
 
         if (!$user[0]["id_user"] ) {
-            exit_with_message("Cet utilisateur n'existe pas", 400);
+            exit_with_message("Cet utilisateur n'existe pas, ou ses fichiers ne sont validés", 400);
         }
         elseif ($user[0]["id_role"] != 3) {
             exit_with_message("Cet utilisateur n'est pas un benevole",400);

@@ -261,7 +261,7 @@
             row.appendChild(entrepotCell);
 
             const validateCell = document.createElement('td');
-            if(item.id_index === 3){
+            if (item.id_index === 3) {
                 validateCell.textContent = 'TO VALIDATE';
             } else {
                 validateCell.innerHTML = "<span style='color: red;'>TO VALIDATE</span>";
@@ -429,10 +429,12 @@
     async function validateUSer(id) {
         startLoading()
         const resp = await user.updateUserValidate(id)
-        if(resp.ok){
+        if(resp){
             data = await user.getAllUser()
             await fillTab4()
             await fillTbodyUser()
+            popup("User validated")
+            openTab("tab4")
             replaceCharacters()
         }
         stopLoading()

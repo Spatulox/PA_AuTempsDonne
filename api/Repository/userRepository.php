@@ -149,11 +149,23 @@ class UserRepository {
     }
 
     public function updateUserValidate($id_user, $id_index){
-        $debug = updateDB("UTILISATEUR", ["id_index", "validate_files"], [$id_index, 1], "id_user='".$id_user."'");
+        $debug = "";
+
+        $data = selectDB("FICHIER", "*", "id_user='".$id_user."'", "bool");
+        if($data){
+            // validate_files = 1 User has file into his account (only le permis pour l'instant on se base que dessus)
+            // Il pourra conduire
+            $debug = updateDB("UTILISATEUR", ["id_index", "validate_files"], [$id_index, 1], "id_user='".$id_user."'");
+        } else {
+            // validate_files = 2 User don't have any file into his account, mais il est quand même validé
+            // Il ne pourra pas conduire
+            $debug = updateDB("UTILISATEUR", ["id_index", "validate_files"], [$id_index, 2], "id_user='".$id_user."'");
+        }
 
         if(!$debug){
             exit_with_message("Error while update user");
         }
+        exit_with_message("User validated", 200);
     }
 
     //-------------------------------------
@@ -236,7 +248,7 @@ class UserRepository {
 
     public function getAllDispoUsers()
     {
-        $conditions = "id_index= 2 AND id_role=3 AND id_user != 1";
+        $conditions = "id_index= 2 AND id_role=3 AND validate_files=1 AND id_user != 1";
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
         $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
         $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions );
