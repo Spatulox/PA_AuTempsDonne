@@ -462,6 +462,16 @@
         const valueElement = document.createElement("span");
         if (label === "id_role") {
             valueElement.textContent = " " + user.roleArray[value] + " ("+value+")" || " N/A";
+        } else if (label === "validate_file") {
+            let msg
+            if(value === 0){
+                msg = " To Validate"
+            } else if(value === 1){
+                msg = " Validated"
+            } else {
+                msg = " No Files"
+            }
+            valueElement.textContent = msg;
         } else {
             valueElement.textContent = " " + value || " N/A"
         }
