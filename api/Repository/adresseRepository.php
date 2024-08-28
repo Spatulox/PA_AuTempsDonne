@@ -63,7 +63,7 @@ class adresseRepository {
 
         $res=insertDB("ADRESSE", ["adresse"],[$address]);
         if (!$res) {
-            exit_with_message("Erreur: creation addresse");
+            exit_with_message("Erreur lors de la création de l'adresse");
         }else{
             $add = selectDB("ADRESSE", "*", "adresse='".$address."'", "bool")[0];
             return new adresseModel($add["id_adresse"], $add["adresse"]);
@@ -80,7 +80,7 @@ class adresseRepository {
         if(deleteDB("ADRESSE", "id_adresse=".$id, "bool")){
             exit_with_message("Address successfully deleted", 200);
         }
-        exit_with_message("Erreur: delete addresse");
+        exit_with_message("Erreur lors de la suppression de l'adresse");
 
     }
 }

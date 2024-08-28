@@ -3,6 +3,7 @@ include_once './Service/fichierService.php';
 include_once './Service/userService.php';
 include_once './Models/userModel.php';
 include_once './exceptions.php';
+include_once('./returnFunctions.php');
 
 
 
@@ -156,7 +157,11 @@ function userController($uri, $apiKey) {
                     exit_with_message("", 403);
                 }
 
-                exit_with_content($userService->GetAllUserDate($apiKey,$json["id_jour"], $json["date"]));
+                if(isset($json["role"]) && $json["role"] != null){
+                    exit_with_content($userService->GetAllRoleUserDate($apiKey, $json["id_jour"], $json["role"]));
+                }
+
+                exit_with_content($userService->GetAllUserDate($apiKey, $json["id_jour"], $json["date"]));
             }
 
             break;
@@ -185,7 +190,7 @@ function userController($uri, $apiKey) {
                     exit_with_message("Vous ne pouvez pas update un utilisateur qui n'est pas vous", 403);
                 }
                 if($role > 3){
-                    exit_with_message("Vouys n'avez pas les permissions requises", 403);
+                    exit_with_message("Vous n'avez pas les permissions requises", 403);
                 }
 
                 $userService->updateUserValidate($json["id_user"], $json["id_index"]);
@@ -200,24 +205,24 @@ function userController($uri, $apiKey) {
             }
             elseif ($uri[3] && $uri[3] == "dispo"){
                 if(!isset($json["id_dispo"]) ) {
-                    exit_with_message("erreur il manque vos jour de dispo", 403);
+                    exit_with_message("Erreur il manque vos jour de disponibilité", 403);
                 }
 
                 exit_with_content( $userService->updatedispoUser($apiKey, ($json["id_dispo"])));
         }
             elseif ($uri[3] && $uri[3] == "entrepot"){
                 if(!isset($json["id_entrepot"]) ) {
-                    exit_with_message("erreur il manque votre entrepot attribuer ", 403);
+                    exit_with_message("Erreur il manque votre entrepot attribué ", 403);
                 }
 
                 exit_with_content( $userService->updateentrepotUser($apiKey, ($json["id_entrepot"])));
             }
             elseif ($uri[3] && $uri[3] == "role" && filter_var($uri[4], FILTER_VALIDATE_INT)){
                 if(!isset($json["id_role"]) ) {
-                    exit_with_message("erreur il manque le changement de role ", 403);
+                    exit_with_message("Erreur il manque le changement de role ", 403);
                 }
                 if(isset($json["role"]) && filter_var($json["role"], FILTER_VALIDATE_INT) == false){
-                    exit_with_message("The role need to be an integer between 1 and 3", 403);
+                    exit_with_message("The role need to be an integer between 1 and 5", 403);
                 }
 
                 exit_with_content( $userService->updateRoleUser($apiKey, ($json["id_role"]),$uri[4]));
@@ -243,7 +248,7 @@ function userController($uri, $apiKey) {
             
             //If normal user and id specified
             if($uri[3] != $userId && $role != 1){
-                exit_with_message("You can't delete a user wich is not you :/", 403);
+                exit_with_message("You can't delete a user which is not you :/", 403);
             }
 
             if(isset($uri[3])){
@@ -260,13 +265,6 @@ function userController($uri, $apiKey) {
             exit_with_message("Not Found", 404); 
             exit();
     }
-}
-
-
-function returnUser($dataFromDb, $address = "yep@yep.com", $id = 0){
-    $user = new UserModel($dataFromDb[$id]["id_user"], $dataFromDb[$id]["nom"], $dataFromDb[$id]["prenom"], $dataFromDb[$id]["date_inscription"], $dataFromDb[$id]["email"],  $address,  $dataFromDb[$id]["telephone"],  $dataFromDb[$id]["id_role"],  $dataFromDb[$id]["apikey"],  $dataFromDb[$id]["id_index"],  $dataFromDb[$id]["id_entrepot"],  $dataFromDb[$id]["date_premium"],  $dataFromDb[$id]["month_premium"], $dataFromDb[$id]["premium_stripe_id"]);
-    return $user;
-    //$user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $address, $usersArray[$i]['telephone'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index'], $usersArray[$i]['id_entrepot']);
 }
 
 ?>

@@ -21,11 +21,12 @@ class UserAdmin extends Admin{
 
     }
 
-    async getUserDispoByDay(day, date){
+    async getUserDispoByDay(day, date, role = null){
 
         const data = {
             "id_jour":day,
-            "date":date
+            "date":date,
+            "role":role
         }
 
         let response = await this.fetchSync(this.adresse+'/user/date', this.optionPost(data))

@@ -174,24 +174,24 @@
                             $sec = $dateTime->format('s');
 
                             if ($hour === '00' && $min === '00' && $sec === '00') {
-                                exit_with_message("Vous devez spécifier le bon format de l'heure ou l'heure ne peut pas être minuit.");
+                                exit_with_message("Vous devez spécifier le bon format de l'heure, l'heure ne peut pas être minuit.");
                             }
                         } catch (Exception $e) {
                             exit_with_message("Erreur Controller : " . $e->getMessage());
                         }
 
 
-                        exit_with_content($planningService->updatePlanning($json["id_planning"], $json["description"], $json["date_activite"],$id_index_planning, $json["id_activite"]));
+                        $planningService->updatePlanning($json["id_planning"], $json["description"], $json["date_activite"],$id_index_planning, $json["id_activite"]);
                     }
                     elseif ($uri[3] && $uri[3]=== 'validate' && filter_var($uri[4], FILTER_VALIDATE_INT)) {
                         if (!isset($json["id_index_planning"])) {
-                            exit_with_message("Plz give,id_index_planning");
+                            exit_with_message("Plz give, id_index_planning");
                         }
                         exit_with_content($planningService->updateValidatePlanning($json["id_index_planning"],$uri[4],$apiKey));
                     } elseif ($uri[3] && $uri[3]=== 'join' ) {
 
                         if (!isset($json["id_planning"])) {
-                            exit_with_message("Plz give,id_planning");
+                            exit_with_message("Plz give, id_planning");
                         }
                         exit_with_content($planningService->updatejoinPlanning($json["id_planning"],$json['confirme'],$apiKey));
                     }
