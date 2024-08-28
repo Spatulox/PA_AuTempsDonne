@@ -31,6 +31,25 @@ function fichierController($uri, $apiKey){
             if(!isset($json["name_file"]) || empty($json["name_file"])){
                 exit_with_message("You need to specifie the name of the file");
             }
+
+            $id_role = getRoleFromApiKey($apiKey);
+
+            // Admin File view
+            $uri3_int = intval($uri[3]);
+            if(filter_var($uri[3], FILTER_VALIDATE_INT) && $id_role <= 2){
+                $fileService = new FichierService();
+                $fileService->sendFile($json["name_file"]);
+                exit();
+            }
+            // My File
+            else if($uri[3] == "me"){
+                $fileService = new FichierService();
+                $fileService->sendFile($json["name_file"]);
+                exit();
+            } else {
+                exit_with_message("Vous devez mettre '/me' ou /'[IDUTILISATEUR]' pour voir les fichiers");
+            }
+
             break;
         case 'PUT':
             break;
