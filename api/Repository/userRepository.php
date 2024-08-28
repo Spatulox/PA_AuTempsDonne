@@ -408,35 +408,5 @@ class UserRepository {
         }
         return $all;
     }
-
-    //-----------------------------------------------------------------------------------------
-
-    public function GetAllRoleUserDate($date, $role)
-    {
-
-        $conditions = "SEMAINE.id_dispo='".$date."' AND UTILISATEUR.id_role=".$role;
-        $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
-        $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo";
-        $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions);
-
-        $uniqueUsers = [];
-
-        foreach ($usersArray as $user) {
-            $id_user = $user["id_user"];
-            if (!in_array($id_user, $uniqueUsers)) {
-                $uniqueUsers[] = $id_user;
-            }
-        }
-
-        $all=[];
-
-        for ($i = 0; $i <count($usersArray) ; $i++) {
-
-            $all[]=$this->getUser($usersArray[$i]["id_user"]);
-
-        }
-        return $all;
-    }
-
 }
 ?>
