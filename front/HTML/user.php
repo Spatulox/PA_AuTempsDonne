@@ -94,6 +94,7 @@
                         <td>Role</td>
                         <td><?php echo $data["user"]["tab1"]["storehouse"] ?></td>
                         <td><?php echo $data["user"]["tab4"]["button"] ?></td>
+                        <td><?php echo $data["user"]["tab1"]["buttonSee"] ?></td>
                         <td><?php echo $data["user"]["tab1"]["buttonDelete"] ?></td>
                     </tr>
                     </thead>
@@ -232,11 +233,10 @@
 
     async function fillPlanningTab3(id = null) {
         let container = ""
+        container = document.getElementById('tab3ChildBody');
+        container.innerHTML = ""
         if(id != null){
             plannings = await planning.getPlanningByIdUSer(id)
-
-            container = document.getElementById('tab3ChildBody');
-            container.innerHTML = ""
         } else {
             plannings = []
         }
@@ -312,20 +312,26 @@
             buttonCell.appendChild(button)
             row.appendChild(buttonCell);
 
-
             const buttonCell2 = document.createElement('td');
-            const button2 = createButton(dico[lang]["Delete"])
-            button2.setAttribute("onclick", "invalidateUSer(" + item.id_user + ")")
+            const button2 = createButton(dico[lang]["See"])
+            button2.setAttribute("onclick", "showUser(" + item.id_user + ", 1)")
             buttonCell2.appendChild(button2)
             row.appendChild(buttonCell2);
+
+            const buttonCell3 = document.createElement('td');
+            const button3 = createButton(dico[lang]["Delete"])
+            button3.setAttribute("onclick", "invalidateUSer(" + item.id_user + ")")
+            buttonCell3.appendChild(button3)
+            row.appendChild(buttonCell3);
 
             tab4ChildBody.appendChild(row);
         });
 
     }
 
-    async function showUser(id) {
+    async function showUser(id, validate = null) {
         const userWithId = data.find(item => item.id_user == id);
+        const userWaitId = userWait.find(item => item.id_user == id);
 
         const lesDivs = document.createElement("div")
         const divDisplay = document.createElement("div")
@@ -338,7 +344,15 @@
 
         let idDuRoleActuel = 0
 
-        for (const [key, value] of Object.entries(userWithId)) {
+        let userToUse = []
+        if(validate == null){
+            userToUse = userWithId
+        } else {
+            userToUse = userWaitId
+        }
+
+
+        for (const [key, value] of Object.entries(userToUse)) {
             if (key != "apikey") {
                 if(key == "id_role"){
                     idDuRoleActuel = value
@@ -350,7 +364,7 @@
 
 
         // Create Update part
-        for (const [key, value] of Object.entries(userWithId)) {
+        for (const [key, value] of Object.entries(userToUse)) {
             if (key != "apikey") {
                 keyOk = ["nom", "prenom", "telephone", "id_role"]
                 if (keyOk.includes(key) && key != 'id_role') {
@@ -397,14 +411,36 @@
         button.classList.add("block")
         userInfoContainer.appendChild(button)
 
-        // Create button to Update
-        button = createButton(dico[lang]["Delete"] + dico[lang]["user"])
-        button.setAttribute("onclick", "deleteLeUser(" + userWithId.id_user + ")")
-        button.classList.add("marginTop20")
-        button.classList.add("marginBottom10")
-        button.classList.add("marginAuto")
-        button.classList.add("block")
-        userInfoContainer.appendChild(button)
+        if(validate !== null) {
+            button = createButton(dico[lang]["Validate"] + dico[lang]["user"])
+            button.setAttribute("onclick", "validateUSer(" + userToUse.id_user + ")")
+            button.classList.add("marginTop20")
+            button.classList.add("marginBottom10")
+            button.classList.add("marginAuto")
+            button.classList.add("block")
+            userInfoContainer.appendChild(button)
+
+            // Create button to Update
+            button = createButton(dico[lang]["Delete"] + dico[lang]["user"])
+            button.setAttribute("onclick", "invalidateUSer(" + userToUse.id_user + ")")
+            button.classList.add("marginTop20")
+            button.classList.add("marginBottom10")
+            button.classList.add("marginAuto")
+            button.classList.add("block")
+            userInfoContainer.appendChild(button)
+
+        } else {
+            // Create button to Update
+            button = createButton(dico[lang]["Delete"] + dico[lang]["user"])
+            button.setAttribute("onclick", "deleteLeUser(" + userToUse.id_user + ")")
+            button.classList.add("marginTop20")
+            button.classList.add("marginBottom10")
+            button.classList.add("marginAuto")
+            button.classList.add("block")
+            userInfoContainer.appendChild(button)
+        }
+
+
 
         openTab('tab2')
         fillPlanningTab3(+id)
@@ -413,8 +449,10 @@
     }
 
     async function getUserFile(id){
-        const data = await fileManager.getFilesByUser(id)
         const container = document.getElementById('containerFileLoader');
+        container.innerHTML = '<div class="loader"></div>'
+        container.style.width = "300px"
+        const data = await fileManager.getFilesByUser(id)
         if(data){
             const fileList = createFileList(data, id);
             container.innerHTML = '';
@@ -567,7 +605,11 @@
     }
 
     async function deleteLeUser(id) {
+        startLoading()
         const response = await user.deleteUser(id)
+        data = await user.getAllUser()
+        await fillTbodyUser()
+        stopLoading()
     }
 
     window.addEventListener('load', () => {
