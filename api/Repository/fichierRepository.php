@@ -30,11 +30,9 @@ class fichierRepository
 
     }
 
-
-
     function sendFile($name) {
 
-        $data = selectDB("FICHIER", "*", "nom_fichier='".$name."'", '-@');
+        $data = selectDB("FICHIER", "*", "nom_fichier='".$name."'");
         if(!$data){
             exit_with_message("No files", 400);
         }
@@ -56,7 +54,6 @@ class fichierRepository
             readfile($filePath);
             exit;
         } else {
-            http_response_code(404);
             exit_with_message("File not found", 404);
         }
     }
