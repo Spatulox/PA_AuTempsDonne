@@ -214,6 +214,7 @@
 <script>
 
     async function signup() {
+        startLoading()
 
         let getSelectedValue = (() => {
             const radios = document.getElementsByName('statut');
@@ -222,6 +223,7 @@
                     return radios[i].value
                 }
             }
+            stopLoading()
             return false
         })
 
@@ -239,12 +241,14 @@
 
         if (!nom || !prenom || !email || !password || !street || !postal || !city) {
             popup("Veuillez remplir le formulaire...")
+            stopLoading()
             return
         }
 
         const role = getSelectedValue()
         if (role === false) {
             popup("Vous devez spécifier un rôle :/")
+            stopLoading()
             return
         }
 
@@ -284,19 +288,21 @@
                 alertDebug(text.message)
                 popup(text.message)
             }
+            stopLoading()
             return false
         }
 
         const message = await response.json()
         if (message.hasOwnProperty("message")) {
             popup(message.message)
+            stopLoading()
             return true
         }
 
         const user = new User(email, password)
         await user.connect()
         user.printUser()
-
+        stopLoading()
         redirect("./moncompte.php?message=Votre compte est en attente de validation auprès de la modération")
 
     }
