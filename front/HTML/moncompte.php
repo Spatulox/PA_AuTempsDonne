@@ -90,6 +90,34 @@
                 <button type="button" id="buttonTicket"><?php echo $data["moncompte"]["Ticket"] ?></button>
             </section>
 
+            <section class="textCenter width80 border marginAuto marginTop30 marginBottom30 flex flexAround wrap">
+                <h1 class="width80 textCenter">Vos fichiers</h1>
+                <div id="containerFileLoader" class="width80">
+                    <div class="loader"></div>
+                </div>
+                <div>
+                    <hr>
+                    <h2>Ajouter un document</h2>
+                    <div id="fileSelect">
+                        <label for="fileType">Type de document :</label>
+                        <select name="fileType" id="fileType" required>
+                            <option value="">Sélectionnez un type</option>
+                            <hr>
+                            <option value="permis">Permis de conduire</option>
+                            <!--<option value="cni">Carte Nationale d'Identité (CNI)</option>
+                            <option value="passport">Passeport</option>
+                            <option value="justificatif_domicile">Justificatif de domicile</option>
+                            <option value="rib">Relevé d'Identité Bancaire (RIB)</option>-->
+                        </select>
+                    </div>
+                    <div class="marginTop20">
+                        <label for="fileUpload">Choisissez un fichier :</label><br>
+                        <input type="file" name="fileUpload" id="fileInput" required><br>
+                        <input class="marginTop30" type="button" value="Ajouter un fichier" onclick="addFile()">
+                    </div>
+                </div>
+            </section>
+
 		</main>
 
 		<?php include("../includes/footer.php");?>
@@ -104,5 +132,33 @@
     button.addEventListener("click", ()=>{
         window.location.href = "<?php echo $data["moncompte"]["Ticketlink"] ?>"
     })
+
+    async function addFile(){
+        startLoading()
+        //const fileType = document.querySelectorAll("#fileSelect > select").value
+        const fileType = document.getElementById("fileType").value
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0]; // Récupère le premier fichier sélectionné
+
+        if(fileType === "Choisissez un fichier :"){
+            popup("Vous devez choisir un type")
+            stopLoading()
+            return
+        }
+
+        console.log(fileType)
+        const data = {
+            "file_type":fileType
+        }
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('data', JSON.stringify(data));
+
+        const fileManager = new File()
+        await fileManager.connect()
+        await fileManager.uploadFile(formData)
+        await getUserFile(fileManager.id_user)
+        stopLoading()
+    }
 
 </script>
