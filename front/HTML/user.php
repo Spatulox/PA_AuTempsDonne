@@ -93,9 +93,8 @@
                         <td>Telephone</td>
                         <td>Role</td>
                         <td><?php echo $data["user"]["tab1"]["storehouse"] ?></td>
-                        <td><?php echo $data["user"]["tab4"]["button"] ?></td>
+                        <td><?php echo $data["user"]["tab4"]["validatefile"] ?></td>
                         <td><?php echo $data["user"]["tab1"]["buttonSee"] ?></td>
-                        <td><?php echo $data["user"]["tab1"]["buttonDelete"] ?></td>
                     </tr>
                     </thead>
                     <tbody id="tab4ChildBody">
@@ -261,11 +260,19 @@
             entrepotCell.textContent = item.id_entrepot || 'N/A';
             row.appendChild(entrepotCell);
 
-            const buttonCell = document.createElement('td');
+            const validateCell = document.createElement('td');
+            if(item.id_index === 3){
+                validateCell.textContent = 'TO VALIDATE';
+            } else {
+                validateCell.innerHTML = "<span style='color: red;'>TO VALIDATE</span>";
+            }
+            row.appendChild(validateCell);
+
+            /*const buttonCell = document.createElement('td');
             const button = createButton(dico[lang]["Validate"])
             button.setAttribute("onclick", "validateUSer(" + item.id_user + ")")
             buttonCell.appendChild(button)
-            row.appendChild(buttonCell);
+            row.appendChild(buttonCell);*/
 
             const buttonCell2 = document.createElement('td');
             const button2 = createButton(dico[lang]["See"])
@@ -273,11 +280,11 @@
             buttonCell2.appendChild(button2)
             row.appendChild(buttonCell2);
 
-            const buttonCell3 = document.createElement('td');
+            /*const buttonCell3 = document.createElement('td');
             const button3 = createButton(dico[lang]["Delete"])
             button3.setAttribute("onclick", "invalidateUSer(" + item.id_user + ")")
             buttonCell3.appendChild(button3)
-            row.appendChild(buttonCell3);
+            row.appendChild(buttonCell3);*/
 
             tab4ChildBody.appendChild(row);
         });

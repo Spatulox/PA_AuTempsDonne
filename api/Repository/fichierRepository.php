@@ -9,6 +9,12 @@ class fichierRepository
         $data = insertDB("FICHIER", ["nom_fichier", "chemin_fichier", "id_user"], [$name, $path, $id_user]);
 
         if($data){
+
+            $debug = updateDB("UTILISATEUR", ["validate_files"], [0], "id_user='".$id_user."'", "bool");
+            if(!$debug){
+                // HISTORIQUE A RAJOUTER
+            }
+
             return true;
         }
         return false;
@@ -66,6 +72,7 @@ class fichierRepository
         }
 
         $filePath = $data[0]["chemin_fichier"] . $data[0]["nom_fichier"];
+        $id_user = $data[0]["id_user"];
 
         if (!$filePath) {
             exit_with_message("File path not found", 400);
@@ -79,6 +86,12 @@ class fichierRepository
 
         $returnMsg = deleteDB("FICHIER", "nom_fichier='" . $nom . "'", 'bool');
         if ($returnMsg) {
+
+            $debug = updateDB("UTILISATEUR", ["validate_files"], [0], "id_user='".$id_user."'", "bool");
+            if(!$debug){
+                // HISTORIQUE A RAJOUTER
+            }
+
             exit_with_message("File deleted", 200);
         }
         exit_with_message("Failed to delete the file inside the DB, you gonna have a phantom file :/", 500);

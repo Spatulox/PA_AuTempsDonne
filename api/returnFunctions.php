@@ -10,7 +10,7 @@ include_once("./Models/fichierModel.php");
 include_once("./Repository/planningRepository.php");
 
 function returnUser($dataFromDb, $address = "yep@yep.com", $id = 0){
-    $user = new UserModel($dataFromDb[$id]["id_user"], $dataFromDb[$id]["nom"], $dataFromDb[$id]["prenom"], $dataFromDb[$id]["date_inscription"], $dataFromDb[$id]["email"],  $address,  $dataFromDb[$id]["telephone"],  $dataFromDb[$id]["id_role"],  $dataFromDb[$id]["apikey"],  $dataFromDb[$id]["id_index"],  $dataFromDb[$id]["id_entrepot"],  $dataFromDb[$id]["date_premium"],  $dataFromDb[$id]["month_premium"], $dataFromDb[$id]["premium_stripe_id"]);
+    $user = new UserModel($dataFromDb[$id]["id_user"], $dataFromDb[$id]["nom"], $dataFromDb[$id]["prenom"], $dataFromDb[$id]["date_inscription"], $dataFromDb[$id]["email"],  $address,  $dataFromDb[$id]["telephone"],  $dataFromDb[$id]["id_role"],  $dataFromDb[$id]["apikey"],  $dataFromDb[$id]["id_index"],  $dataFromDb[$id]["id_entrepot"],  $dataFromDb[$id]["date_premium"],  $dataFromDb[$id]["month_premium"], $dataFromDb[$id]["premium_stripe_id"], $dataFromDb[$id]["prenom"]);
     return $user;
 }
 

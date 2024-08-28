@@ -39,7 +39,7 @@ class UserRepository {
     //-------------------------------------
 
     public function getWaitUsers(){
-        $usersArray = selectDB("UTILISATEUR", "*", "id_index=3", "bool");
+        $usersArray = selectDB("UTILISATEUR", "*", "id_index=3 OR validate_files=0", "bool");
         if(!$usersArray){
             exit_with_message("No users waiting user to validate", 200);
         }
@@ -149,7 +149,7 @@ class UserRepository {
     }
 
     public function updateUserValidate($id_user, $id_index){
-        $debug = updateDB("UTILISATEUR", ["id_index"], [$id_index], "id_user='".$id_user."'");
+        $debug = updateDB("UTILISATEUR", ["id_index", "validate_files"], [$id_index, 1], "id_user='".$id_user."'");
 
         if(!$debug){
             exit_with_message("Error while update user");

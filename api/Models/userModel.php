@@ -17,8 +17,9 @@ class UserModel {
     public $premiumDate;
     public $premiumTime;
     public $premium_stripe_id;
+    public $validate_file;
 
-    public function __construct($id_user, $nom, $prenom, $date_inscription, $email, $addresss, $telephone = null, $id_role = null, $apikey = null, $id_index = 3, $id_entrepot = 1, $premiumDate = null, $premiumTime = null, $premium_stripe_id = null) {
+    public function __construct($id_user, $nom, $prenom, $date_inscription, $email, $addresss, $telephone = null, $id_role = null, $apikey = null, $id_index = 3, $id_entrepot = 1, $premiumDate = null, $premiumTime = null, $premium_stripe_id = null, $validate_file = null) {
         $this->id_user = $id_user;
         $this->nom = $nom;
         $this->prenom = $prenom;
@@ -33,6 +34,7 @@ class UserModel {
         $this->premiumDate = $premiumDate;
         $this->premiumTime = $premiumTime;
         $this->premium_stripe_id = $premium_stripe_id;
+        $this->validate_file = $validate_file;
     }
 }
 
