@@ -15,13 +15,13 @@ class DemandeService
         }
 
         $repo = new DemandeRepository();
-        $repo->get();
+        $repo->get($apikey);
     }
 
     function getViaApikey($apikey){
         $repo = new DemandeRepository();
         $id=getIdUserFromApiKey($apikey);
-        $repo->getByUser($id);
+        $repo->getByUser($id,$apikey);
     }
 
     function getViaUser($id, $apikey){
@@ -34,7 +34,7 @@ class DemandeService
         }
 
         $repo = new DemandeRepository();
-        $repo->getByUser($id);
+        $repo->getByUser($id,$apikey);
     }
 
     function createDemande($apikey, $data,$produits){
@@ -49,7 +49,7 @@ class DemandeService
 
         $service = new DemandeRepository();
 
-        $service->createDemande($data, $idUser ,$produits);
+        $service->createDemande($data, $idUser ,$produits,$apikey);
 
     }
 
@@ -68,7 +68,7 @@ class DemandeService
         }
 
         $repo = new DemandeRepository();
-        $repo->updateDemande($id_demande, $id_planning);
+        $repo->updateDemande($id_demande, $id_planning,$apikey);
     }
 
     function deleteDemande($id, $apikey){
@@ -87,24 +87,24 @@ class DemandeService
         }
 
         $service = new DemandeRepository();
-        $service->deleteDemande($id);
+        $service->deleteDemande($id,$apikey);
     }
 
     public function createValidationDemande($apikey, $id)
     {
         $service = new DemandeRepository();
-        $service->createValidationDemande($id);
+        $service->createValidationDemande($id,$apikey);
     }
 
     public function createValidationDemandeGroupe($apikey, $id, $id_depart, $id_arriver,$date)
     {
         $service = new DemandeRepository();
-        $service->createValidationDemandeGroupe($id,$id_depart,$id_arriver,$date);
+        $service->createValidationDemandeGroupe($id,$id_depart,$id_arriver,$date,$apikey);
     }
 
     public function getAttente( $apikey)
     {
         $repo = new DemandeRepository();
-        $repo->getAttente();
+        $repo->getAttente($apikey);
     }
 }
