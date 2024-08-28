@@ -68,10 +68,105 @@ async function myAccount(){
     c_entrepot.innerHTML = "Entrepot : " + user.entrepotString
     c_role.innerHTML = "Role : " + user.roleString
 
+    //user.printUser()
+
     if(user.index == 3){
         const h1 = document.getElementsByTagName("h1")[0]
         h1.innerHTML += " (En attente de validation)"
         popup("Votre compte est en attente de validation par la modération")
     }
+
+    getUserFile(user.id_user)
+    stopLoading()
+}
+
+async function getUserFile(id){
+    const fileManager = new File()
+    fileManager.connect()
+
+    const container = document.getElementById('containerFileLoader');
+    container.innerHTML = '<div class="loader"></div>'
+
+    let data
+
+    if(id === fileManager.id_user){
+        data = await fileManager.getMyFiles()
+    } else {
+        data = await fileManager.getFilesByUser(id)
+    }
+
+    if(data){
+        const fileList = createFileList(data, id);
+        container.innerHTML = '';
+        container.appendChild(fileList);
+    } else{
+        container.innerHTML = 'No Files';
+    }
+}
+
+    function createFileList(files, iduser) {
+        const div = document.createElement("div")
+        const ul = document.createElement('ul');
+        files.forEach(file => {
+            const li = document.createElement('li');
+
+            // Création du lien pour le téléchargement
+            const a = document.createElement('a');
+            a.href = '#';
+            a.textContent = file.name;
+            a.onclick = (e) => {
+                e.preventDefault();
+                downloadFile(file.name, iduser);
+            };
+            li.appendChild(a);
+
+            // Création du bouton de suppression
+            const deleteButton = document.createElement('button');
+            deleteButton.style.marginLeft = "10px"
+            deleteButton.textContent = 'Supprimer';
+            deleteButton.onclick = () => {
+                deleteFile(file.name, iduser, li);
+            };
+            li.appendChild(deleteButton);
+
+            ul.appendChild(li);
+        });
+
+
+
+        div.appendChild(ul)
+        return ul;
+    }
+
+    // Fonction pour gérer la suppression du fichier
+    async function deleteFile(fileName, iduser, listItem) {
+
+        console.log(fileName, iduser, listItem)
+        if (confirm(`Êtes-vous sûr de vouloir supprimer ${fileName} ?`)) {
+            const fileManager = new File()
+            fileManager.connect()
+            console.log(listItem.children[0].innerHTML)
+            const rep = await fileManager.deleteFile(listItem.children[0].innerHTML)
+            if(rep){
+                startLoading()
+                listItem.remove();
+                await getUserFile(fileManager.id_user)
+                stopLoading()
+            }
+        }
+    }
+
+
+async function downloadFile(fileName, id_user) {
+    startLoading()
+    const fileManager = new File()
+    fileManager.connect()
+
+    if(id_user === fileManager.id_user){
+        await fileManager.retrieveFile(fileName, id_user)
+    } else {
+        await fileManager.retrieveFileAdmin(fileName, id_user)
+    }
+
     stopLoading()
 }
