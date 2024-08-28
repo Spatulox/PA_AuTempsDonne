@@ -89,7 +89,7 @@ class TrajetRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 3;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
@@ -131,7 +131,7 @@ class TrajetRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 3;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
@@ -177,7 +177,7 @@ class TrajetRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 3;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
