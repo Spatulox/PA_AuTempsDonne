@@ -8,7 +8,7 @@ class ActiviteRepository {
 
     }
 
-    public function getAllActivite(){
+    public function getAllActivite($apiKey){
         $activiteArray = selectDB("ACTIVITES", "*",-1);
 
         $activite = [];
@@ -21,12 +21,20 @@ class ActiviteRepository {
             );
             $activite[$i] = $test;
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $activite;
     }
 
     //-------------------------------------
 
-    public function getActiviteById($id){
+    public function getActiviteById($id,$apiKey){
         $activite = selectDB("ACTIVITES", "*", "id_activite='".$id."'")[0];
 
         $activiteModel = new ActiviteModels(
@@ -35,14 +43,19 @@ class ActiviteRepository {
 
         );
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
 
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 
         return $activiteModel;
     }
 
     //-------------------------------------
 
-    public function createActivite(ActiviteModels $activite){
+    public function createActivite(ActiviteModels $activite,$apiKey){
 
             $string = "nom_activite='" . $activite->nom_activite ."'";
 
@@ -58,12 +71,19 @@ class ActiviteRepository {
             exit_with_message("Error, the activite can't be created, plz try again", 500);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         exit_with_message("Activity muy created", 200);
     }
 
     //-------------------------------------
 
-    public function updateActivite(ActiviteModels $activite) {
+    public function updateActivite(ActiviteModels $activite,$apiKey) {
         $activiteRepository = new ActiviteRepository();
         $updated = $activiteRepository->updateDB(
             "ACTIVITES",
@@ -80,18 +100,33 @@ class ActiviteRepository {
             exit_with_message("Erreur, le activite n'a pas pu être mis à jour. Veuillez réessayer.", 500);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $activite;
     }
 
 
     //-------------------------------------
 
-    public function deleteActivite($id){
+    public function deleteActivite($id,$apiKey){
         $deleted = deleteDB("ACTIVITES", "id_activite=".$id ,"bool");
 
         if(!$deleted){
             exit_with_message("Error, the activite can't be deleted, plz try again", 500);
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         exit_with_message("Activite deleted", 200);
     }
 }
