@@ -20,6 +20,7 @@ include("../includes/functions.php");
 <script type="text/javascript" src="../JSManager/Planning.js"></script>
 <script type="text/javascript" src="../JSManager/GestionStripe.js"></script>
 <script type="text/javascript" src="../JSManager/GestionMail.js"></script>
+<script type="text/javascript" src="../JSManager/File.js"></script>
 
 
 <?php
