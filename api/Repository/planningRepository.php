@@ -30,7 +30,7 @@ class PlanningRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 4;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
@@ -65,7 +65,7 @@ class PlanningRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 4;
         $id_user =getIdUserFromApiKey($apiKey);
 
         return $planning;
@@ -97,7 +97,7 @@ class PlanningRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 4;
         $id_user =getIdUserFromApiKey($apiKey);
 
         return $planning[0];
@@ -142,7 +142,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
         return $allPlanning;
@@ -181,7 +181,7 @@ class PlanningRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 4;
         $id_user =getIdUserFromApiKey($apiKey);
 
         exit_with_content($allPlanning);
@@ -214,7 +214,7 @@ class PlanningRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 4;
         $id_user =getIdUserFromApiKey($apiKey);
 
         exit_with_content($this->getPlanningByid($lastId[0]["id_planning"]),200);
@@ -241,7 +241,7 @@ class PlanningRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 4;
         $id_user =getIdUserFromApiKey($apiKey);
 
     exit_with_content($this->getPlanningByid($planning->id_planning));
@@ -256,7 +256,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("Error, the planning can't be deleted, plz try again", 500);
@@ -264,7 +264,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("Planning deleted",200);
@@ -285,7 +285,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("Cet utilisateur n'existe pas");
@@ -295,7 +295,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("Ce planning n'existe pas");
@@ -306,7 +306,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("Cet utilisateur est deja inscrit",500);
@@ -319,7 +319,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("le bénévole à bien été attribué au planning",200);
@@ -327,7 +327,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("le bénévole n'a pas pu être attribué au planning");
@@ -344,7 +344,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("Erreur: planning n'existe pas ");
@@ -356,7 +356,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("Erreur: planning n'existe pas ");
@@ -367,7 +367,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("le trajet a bien etait attribuer aux plannings",200);
@@ -375,7 +375,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("le trajet n'a pas peux etre attribuer aux plannings",500);
@@ -408,7 +408,7 @@ class PlanningRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 4;
         $id_user =getIdUserFromApiKey($apiKey);
 
         return $planning;
@@ -424,7 +424,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("Erreur, le planning n'existe pas");
@@ -450,7 +450,7 @@ class PlanningRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 4;
         $id_user =getIdUserFromApiKey($apiKey);
 
         return $planning;
@@ -488,7 +488,7 @@ class PlanningRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 4;
         $id_user =getIdUserFromApiKey($apiKey);
 
         return $planning;
@@ -496,7 +496,7 @@ class PlanningRepository {
 
     //---------------------------------------------------------------------------------------------------------------------------------
 
-    public function getPlanningAffecteDate($date)
+    public function getPlanningAffecteDate($date,$apiKey)
     {
         $condition = " PLANNINGS.id_index_planning = 2 AND EXISTS (SELECT 1 FROM PARTICIPE pa WHERE pa.id_planning = PLANNINGS.id_planning) AND date_activite BETWEEN '".$date." 00:00:00' AND '".$date." 23:59:59' ORDER BY date_activite ASC";
         $planningArray = selectDB("PLANNINGS", "*", $condition);
@@ -506,7 +506,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("Erreur, le planning n'existe pas",500);
@@ -541,7 +541,7 @@ class PlanningRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 4;
         $id_user =getIdUserFromApiKey($apiKey);
 
         return $planning;
@@ -559,7 +559,7 @@ class PlanningRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 4;
         $id_user =getIdUserFromApiKey($apiKey);
 
         exit_with_content($this->getPlanningByid($id),200);
@@ -572,7 +572,7 @@ class PlanningRepository {
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 4;
         $id_user =getIdUserFromApiKey($apiKey);
 
         return $this->getPlanningByid($id_planning);
@@ -588,7 +588,7 @@ class PlanningRepository {
         {
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("l'utilisateur a etait supprimer de l'activiter ",200);
@@ -596,7 +596,7 @@ class PlanningRepository {
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
         exit_with_message("erreur lors  de la suppression de utilisateur",500);
