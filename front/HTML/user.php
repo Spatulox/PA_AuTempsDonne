@@ -411,6 +411,15 @@
         button.classList.add("block")
         userInfoContainer.appendChild(button)
 
+        button = createButton(dico[lang]["Sending"] + dico[lang]["email"])
+        button.setAttribute("onclick", "sendMailToNotify(" + userToUse.id_user + ")")
+        button.classList.add("marginTop20")
+        button.classList.add("marginBottom10")
+        button.classList.add("marginAuto")
+        button.classList.add("block")
+        userInfoContainer.appendChild(button)
+
+
         if(validate !== null) {
             button = createButton(dico[lang]["Validate"] + dico[lang]["user"])
             button.setAttribute("onclick", "validateUSer(" + userToUse.id_user + ")")
@@ -602,6 +611,71 @@
         }
 
         stopLoading()
+    }
+
+    async function sendMailToNotify(id_user){
+
+        const popupHtml = document.createElement('div');
+        popupHtml.className = 'email-popup';
+        popupHtml.innerHTML = `
+            <div class="popup-content">
+                <h2>Compose Email</h2>
+                <textarea id="emailBody" rows="10" cols="50" placeholder="Enter your email content here..."></textarea>
+                <div class="popup-buttons">
+                    <button id="sendButton">Send</button>
+                    <button id="cancelButton">Cancel</button>
+                </div>
+            </div>
+        `;
+
+        // Ajouter du style à la popup
+        const style = document.createElement('style');
+        style.textContent = `
+            .email-popup {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+            .popup-content {
+                background-color: white;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .popup-buttons {
+                margin-top: 10px;
+                text-align: right;
+            }
+            button {
+                margin-left: 10px;
+                padding: 5px 10px;
+            }
+        `;
+
+        document.head.appendChild(style);
+        document.body.appendChild(popupHtml);
+
+        document.getElementById('cancelButton').addEventListener('click', () => {
+                document.body.removeChild(popupHtml);
+                reject("Email sending cancelled");
+        });
+
+        document.getElementById('sendButton').addEventListener('click', async () => {
+            const emailToSend = document.getElementById("va_email").innerHTML
+            popup('Sending Email to '+emailToSend)
+            const emailBody = "<p>" + document.getElementById('emailBody').value + "</p><br><br><p>This is an automatic email, plz don't answer</p>";
+            const mail = new GestionMail()
+            await mail.connect()
+            await mail.sendMail("Problem when registering", emailBody, [emailToSend])
+            popup("Email sent to "+emailToSend)
+        });
     }
 
     async function deleteLeUser(id) {
