@@ -91,7 +91,7 @@ function userController($uri, $apiKey) {
                 // Vérifiez si le fichier a été téléchargé sans erreur
                 if ($file['error'] === UPLOAD_ERR_OK) {
                     // Déplacez le fichier téléchargé vers un répertoire spécifique
-                    $uploadDir = 'files/permisTest/';
+                    $uploadDir = 'files/permis/';
 
                     if (!is_dir($uploadDir)) {
                         if (!mkdir($uploadDir, 0777, true)) {
