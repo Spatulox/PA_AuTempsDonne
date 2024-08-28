@@ -10,7 +10,7 @@ class PlanningRepository {
        
     }
 
-    private function getTrajetFromId($id) {
+    private function getTrajetFromId($id,$apiKey) {
 
         $tabAddresse = [];
 
@@ -27,13 +27,21 @@ class PlanningRepository {
                 $tabAddresse[] = $addresse[$i]["ADRESSE"];
             }
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $tabAddresse;
 
     }
     
     //-------------------------------------
 
-    public function getAllPlanning(){
+    public function getAllPlanning($apiKey){
         $planningArray = selectDB("PLANNINGS", "*");
 
         $planning = [];
@@ -54,12 +62,18 @@ class PlanningRepository {
             $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
         return $planning;
     }
 
     //--------------------------------------------------------------------------
 
-    public function getPlanningByid($id){
+    public function getPlanningByid($id,$apiKey){
         $planningArray = selectDB("PLANNINGS", "*", "id_planning=".$id);
 
 
@@ -80,6 +94,12 @@ class PlanningRepository {
             $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
         return $planning[0];
     }
 
@@ -120,12 +140,17 @@ class PlanningRepository {
             }
         }
 
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
         return $allPlanning;
     }
 
     //-----------------------------------------------------------------------------------------
 
-    public function getPlanningByIdUser($id){
+    public function getPlanningByIdUser($id,$apiKey){
         $id_planning = selectDB("PARTICIPE", "id_planning", "id_user='" . $id . "'", "bool");
 
         if($id_planning == false){
@@ -153,6 +178,11 @@ class PlanningRepository {
                 $allPlanning[] = $planning;
             }
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
 
         exit_with_content($allPlanning);
     }
@@ -182,13 +212,17 @@ class PlanningRepository {
             insertDB("PARTICIPE",["id_user","id_planning"],[$id_user,$lastId[0]["id_planning"]]);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
 
         exit_with_content($this->getPlanningByid($lastId[0]["id_planning"]),200);
     }
 
     //--------------------------------------------------------------------------------------------------------------------------
     
-    public function updatePlanning(PlanningModel $planning) {
+    public function updatePlanning(PlanningModel $planning,$apiKey) {
     $updated = updateDB(
         "PLANNINGS",
         [ "description", "date_activite", "id_index_planning", "id_activite"],
@@ -205,17 +239,34 @@ class PlanningRepository {
         exit_with_message("Erreur, le planning n'a pas pu être mis à jour. Veuillez réessayer.", 500);
     }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
     exit_with_content($this->getPlanningByid($planning->id_planning));
 }
 
 
     //------------------------------------------------------------------------------------------------------------------------------
 
-    public function deletePlanning($id){
+    public function deletePlanning($id,$apiKey){
         $deleted = deleteDB("PLANNINGS", "id_planning=".$id,"bool");
         if(!$deleted){
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("Error, the planning can't be deleted, plz try again", 500);
         }else{
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("Planning deleted",200);
         }
 
@@ -224,22 +275,40 @@ class PlanningRepository {
      //------------------------------------------------------------------------------------------------------------------------------
 
 
-    public function joinActivity($userId, $planningId, $confirme) {
+    public function joinActivity($userId, $planningId, $confirme,$apiKey) {
 
         $user = selectDB("UTILISATEUR", "*", "id_user=".$userId, "bool");
 
         $planning = selectDB("PLANNINGS", "*", "id_planning=".$planningId, "bool");
 
         if(!$user){
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("Cet utilisateur n'existe pas");
         }
 
         if(!$planning){
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("Ce planning n'existe pas");
         }
 
         $check=selectDB("PARTICIPE", "*", "id_planning=".$planningId." AND id_user=".$userId,"bool");
         if ($check){
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("Cet utilisateur est deja inscrit",500);
         }
 
@@ -247,8 +316,20 @@ class PlanningRepository {
 
 
         if ($create) {
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("le bénévole à bien été attribué au planning",200);
         } else {
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("le bénévole n'a pas pu être attribué au planning");
         }
 
@@ -256,30 +337,54 @@ class PlanningRepository {
 
     //-----------------------------------------------------------------------------------------
 
-    public function linkPlanning(array $planning)
+    public function linkPlanning(array $planning,$apiKey)
     {
         $check =selectDB("PLANNINGS" , "id_planning" ,"id_planning=" .$planning[1],'bool');
         if (!$check){
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("Erreur: planning n'existe pas ");
         }
 
         $check =selectDB("TRAJETS" , "id_trajets" ,"id_trajets=" .$planning[0],'bool');
 
         if (!$check){
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("Erreur: planning n'existe pas ");
         }
 
         $create = updateDB("PLANNINGS", [ "id_trajets"], [$planning[0]], "id_planning=".$planning[1]);
         if ($create) {
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("le trajet a bien etait attribuer aux plannings",200);
         } else {
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("le trajet n'a pas peux etre attribuer aux plannings",500);
         }
     }
 
     //-----------------------------------------------------------------------------------------
 
-    public function getAllPlanningeindex(int $index)
+    public function getAllPlanningeindex(int $index,$apiKey)
     {
         $planningArray = selectDB("PLANNINGS", "*", "id_index_planning=".$index);
 
@@ -300,16 +405,28 @@ class PlanningRepository {
             $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
         return $planning;
     }
 
     //-----------------------------------------------------------------------------------------
 
-    public function getAllPlanningeDate($date)
+    public function getAllPlanningeDate($date,$apiKey)
     {
         $condition =" id_index_planning=2 AND date_activite BETWEEN '".$date." 00:00:00' AND '".$date." 23:59:59' ORDER BY date_activite ASC";
         $planningArray = selectDB("PLANNINGS", "*",$condition ,"bool");
         if (!$planningArray){
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("Erreur, le planning n'existe pas");
         }
 
@@ -331,12 +448,17 @@ class PlanningRepository {
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
         return $planning;
     }
 
     //-----------------------------------------------------------------------------------------
 
-    public function getPlanningNoAffecte()
+    public function getPlanningNoAffecte($apiKey)
     {
         $condition = " PLANNINGS.id_index_planning = 2 
                    AND NOT EXISTS (
@@ -363,6 +485,12 @@ class PlanningRepository {
             $planning[$i]->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$planningArray[$i]['id_index_planning'])[0]);
             $planning[$i]->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$planningArray[$i]['id_activite'])[0]);
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
         return $planning;
     }
 
@@ -375,6 +503,12 @@ class PlanningRepository {
 
         if (!$planningArray)
         {
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("Erreur, le planning n'existe pas",500);
         }
 
@@ -405,12 +539,17 @@ class PlanningRepository {
 
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
         return $planning;
     }
 
     //----------------------------------------------------------------------------------------------
 
-    public function updateValidatePlanning($id_index_planning, $id)
+    public function updateValidatePlanning($id_index_planning, $id,$apiKey)
     {
         $check = updateDB("PLANNINGS", ["id_index_planning"], [$id_index_planning] ,"id_planning=".$id);
 
@@ -418,26 +557,48 @@ class PlanningRepository {
             exit_with_message("erreur update planning",500);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
         exit_with_content($this->getPlanningByid($id),200);
 
     }
 
-    public function updatejoinPlanning($id_planning, $confirme, $id)
+    public function updatejoinPlanning($id_planning, $confirme, $id,$apiKey)
     {
         updateDB("PARTICIPE" ,["confirme"], [$confirme] ,"id_planning=".$id_planning." AND id_user=".$id);
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
         return $this->getPlanningByid($id_planning);
     }
 
     //--------------------------------------------------------------------------------------------------------
 
-    public function deletejoin($user_id, $id_planning)
+    public function deletejoin($user_id, $id_planning,$apiKey)
     {
         $del=deleteDB("PARTICIPE", "id_planning= ". $id_planning ." AND id_user=".$user_id,"bool");
 
         if ($del !== false)
         {
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
             exit_with_message("l'utilisateur a etait supprimer de l'activiter ",200);
         }else{
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
         exit_with_message("erreur lors  de la suppression de utilisateur",500);
         }
     }
