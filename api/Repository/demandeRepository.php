@@ -102,12 +102,13 @@ class DemandeRepository
 
         }
 
+
         exit_with_message("Why are you here ?", 500);
     }
 
     //------------------------------------------------------------------------------------------------------------
 
-    function getByUser($id_user)
+    function getByUser($id_user,$apiKey)
     {
         $colums = "DEMANDE.id_demande, DEMANDE.desc_demande,DEMANDE.activite,DEMANDE.etat, DEMANDE.date_act,DEMANDE.id_activite, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
         $string = "LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte";
@@ -116,12 +117,19 @@ class DemandeRepository
          exit_with_message("pas de Demande",500);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         exit_with_content($this->affiche($request));
     }
 
     //------------------------------------------------------------------------------------------------------------
 
-    function createDemande($data, $idUser, $produits)
+    function createDemande($data, $idUser, $produits,$apiKey)
     {
 
         if ($data["date_act"]) {
@@ -160,24 +168,47 @@ class DemandeRepository
             }
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         exit_with_message("Sucessfully created demande", 200);
     }
 
 //------------------------------------------------------------------------------------------------------------
 
-    function updateDemande($id_demande, $id_planning)
+    function updateDemande($id_demande, $id_planning,$apiKey)
     {
         $request = updateDB("DEMANDE", ["id_planning"], [$id_planning], "id_demande=" . $id_demande, "bool");
 
         if ($request) {
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
             exit_with_message("Sucessfully updated demande", 200);
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         exit_with_message("Error updating demande", 400);
     }
 
     //------------------------------------------------------------------------------------------------------------
 
-    function deleteDemande($id)
+    function deleteDemande($id,$apiKey)
     {
         $colums = "DEMANDE.id_demande, DEMANDE.desc_demande,DEMANDE.activite,DEMANDE.etat, DEMANDE.date_act,DEMANDE.id_activite, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
         $string = "LEFT JOIN RECU R ON R.id_demande = DEMANDE.id_demande LEFT JOIN COLLECTE C ON C.id_collecte = R.id_collecte";
@@ -207,6 +238,14 @@ class DemandeRepository
         if (!$tmp) {
             exit_with_message("The demande doesn't exist", 200);
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         exit_with_message("Sucessfully deleted demande", 200);
     }
 
@@ -221,7 +260,7 @@ class DemandeRepository
 
     //------------------------------------------------------------------------------------------------------
 
-    public function createValidationDemande($id)
+    public function createValidationDemande($id,$apiKey)
     {
         $res = selectDB("DEMANDE", "*", "id_demande=" . $id);
         if (!$res) {
@@ -243,10 +282,18 @@ class DemandeRepository
         $etat = 0;
         $last_planning = $this->getLastInsertId("PLANNINGS", "id_planning");
         updateDB("DEMANDE", ["etat", "id_planning"], [$etat, $last_planning[0]["id_planning"]], "id_demande=" . $id);
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         exit_with_message("Validate success", 200);
     }
 
-    public function createValidationDemandeGroupe($id, $id_depart, $id_arriver, $date)
+    public function createValidationDemandeGroupe($id, $id_depart, $id_arriver, $date,$apiKey)
     {
         $array[0] = $id_depart;
         for ($i = 0; $i < count($id); $i++) {
@@ -273,12 +320,18 @@ class DemandeRepository
             updateDB("DEMANDE", ["etat", "id_planning"], [$etat, $last_planning[0]["id_planning"]], "id_demande=" . $id[$j],);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 
         exit_with_content($array);
 
     }
 
-    public function getAttente()
+    public function getAttente($apiKey)
     {
 
             $colums = "DEMANDE.id_demande, DEMANDE.desc_demande,DEMANDE.activite,DEMANDE.etat, DEMANDE.date_act, DEMANDE.id_activite, DEMANDE.id_user, DEMANDE.id_planning, R.id_collecte, C.quantite, C.id_produit";
@@ -288,6 +341,13 @@ class DemandeRepository
             if (!$request) {
                 exit_with_message("No demande saved", 200);
             }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 
             exit_with_content($this->affiche($request));
     }
