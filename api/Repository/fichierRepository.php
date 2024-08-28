@@ -14,10 +14,36 @@ class fichierRepository
         return false;
     }
 
-    public function getFichiers($path, $id_user){
+    public function getFichiers($id_user){
         // to Rework
-        $data = selectDB("FICHIER", "*", "chemin_fichier=".$path." AND id_user=".$id_user);
-        return $data[0];
+        $data = selectDB("FICHIER", "*", "id_user=".$id_user, 'bool');
+        if(!$data){
+            exit_with_message("No files", 400);
+        }
+        exit_with_content(returnFichier($data));
 
     }
+
+
+
+    function sendFile($filePath) {
+        if (file_exists($filePath)) {
+            // Définir les headers pour le téléchargement
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($filePath).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($filePath));
+
+            // Lire et envoyer le fichier
+            readfile($filePath);
+            exit;
+        } else {
+            http_response_code(404);
+            echo json_encode(['error' => 'File not found']);
+        }
+    }
+
 }

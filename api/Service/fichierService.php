@@ -21,4 +21,16 @@ class fichierService
 
     }
 
+    public function getAllFileName($id_user){
+
+        $repo = new FichierRepository();
+        $repo->getFichiers($id_user);
+
+    }
+
+    public function sendFile($name){
+        $repo = new FichierRepository();
+        $repo->sendFile($name);
+    }
+
 }
