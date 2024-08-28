@@ -12,12 +12,12 @@ function adresseController($uri, $apiKey){
 
             $AdresseService = new adresseService();
             if(!$uri[3]){
-                exit_with_content($AdresseService->getAllAdresse());
+                exit_with_content($AdresseService->getAllAdresse($apiKey));
             }
 
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                exit_with_content($AdresseService->getAdresseById($uri[3]));
+                exit_with_content($AdresseService->getAdresseById($uri[3]),$apiKey);
             }
 
 
@@ -43,7 +43,7 @@ function adresseController($uri, $apiKey){
                     exit_with_message("Le format d'adresse attendu est le suivant : [Numéro de rue] [Nom de rue], [Code postal] [Ville]. Le code postal doit être composé de 5 chiffres, et le nom de la ville ne doit contenir que des lettres, des espaces et des traits d'union.", 400);
                 }
 
-                exit_with_content($AdresseService->CreateAdresse($json['address']));
+                exit_with_content($AdresseService->CreateAdresse($json['address']),$apiKey);
             }
 
             break;
@@ -57,7 +57,7 @@ function adresseController($uri, $apiKey){
 
             if($uri[3]=="delete" && $uri[4]){
 
-                $AdresseService->DeleteAdresse($uri[4]);
+                $AdresseService->DeleteAdresse($uri[4],$apiKey);
             }
 
             exit_with_message("You need to specifie the id you want to delete", 403);
