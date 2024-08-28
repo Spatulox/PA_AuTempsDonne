@@ -92,7 +92,7 @@ class StockRepository
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
@@ -122,7 +122,7 @@ class StockRepository
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
@@ -182,7 +182,7 @@ class StockRepository
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
@@ -201,7 +201,7 @@ class StockRepository
 
             $historiqueRepo = new HistoriqueRepository();
             $description_hist = "Produit not deleted .";
-            $id_secteur = 1;
+            $id_secteur = 9;
             $id_user =getIdUserFromApiKey($apiKey);
 
             $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
@@ -239,7 +239,7 @@ class StockRepository
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
@@ -283,7 +283,7 @@ class StockRepository
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
@@ -329,11 +329,11 @@ class StockRepository
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
+        $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
-        
+
         return $stock;
 
     }
