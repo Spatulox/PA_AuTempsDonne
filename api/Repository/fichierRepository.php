@@ -20,7 +20,13 @@ class fichierRepository
         if(!$data){
             exit_with_message("No files", 400);
         }
-        exit_with_content(returnFichier($data));
+
+        $all = [];
+        for ($i = 0; $i < count($data); $i++) {
+            $all[$i] = returnFichier($data, $i);
+        }
+        
+        exit_with_content($all);
 
     }
 
