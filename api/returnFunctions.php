@@ -5,6 +5,7 @@ include_once("./Models/userModel.php");
 include_once("./Models/vehiculeModel.php");
 include_once("./Models/serviceModel.php");
 include_once("./Models/planningModel.php");
+include_once("./Models/fichierModel.php");
 
 include_once("./Repository/planningRepository.php");
 
@@ -57,4 +58,11 @@ function returnPlanning($dataFromDb, $i = 0){
     }
 
     return $planning;
+}
+
+function returnFichier($dataFromDb, $i = 0){
+    $fichier = new FichierModel(
+        $dataFromDb[$i]['nom_fichier']
+    );
+    return $fichier;
 }
