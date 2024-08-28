@@ -281,7 +281,7 @@ class User extends General{
         this.entrepot = rep.id_entrepot
         this.entrepotString = rep.entrepot
         this.roleString = this.roleArray[rep.id_role]
-        this.index = rep.id_index
+        this.index = rep.index
         this.premiumDate = rep.premiumDate
         this.premiumTime = rep.premiumTime
 

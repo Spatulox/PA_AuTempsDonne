@@ -27,7 +27,7 @@ class General {
             const message = await response.json()
             if (message.hasOwnProperty("message") && showMessage === true) {
                 popup(message.message)
-                return
+                return true
             }
             return message
         } else {
