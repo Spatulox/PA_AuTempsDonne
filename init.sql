@@ -112,7 +112,7 @@ CREATE TABLE UTILISATEUR(
 CREATE TABLE RECETTE(   
    id_recette INT AUTO_INCREMENT,
    nom_recette NVARCHAR(100),
-   description_recette NVARCHAR(MAX),
+   description_recette TEXT,
    PRIMARY KEY(id_recette)
 );
 
@@ -133,7 +133,7 @@ CREATE TABLE DANS(
    id_ingredient INT NOT NULL,
    id_recette INT NOT NULL,
    quantite_recette INT,
-   unit_mesure_ingredient NVARCHAR(4);
+   unit_mesure_ingredient NVARCHAR(4),
    FOREIGN KEY(id_ingredient) REFERENCES INGREDIENT(id_ingredient),
    FOREIGN KEY(id_recette) REFERENCES RECETTE(id_recette)
 );
