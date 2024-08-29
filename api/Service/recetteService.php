@@ -28,6 +28,14 @@ class recetteService {
         $repo->SearchRecette($ingredients);
     }
 
+    public function getRecetteByid($apikey,  $id)
+    {
+
+        $repo = new recetteRepository();
+        $repo->getRecetteByid($apikey,$id);
+
+    }
+
 
 }
 ?>

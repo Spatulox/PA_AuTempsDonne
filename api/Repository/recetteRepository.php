@@ -58,11 +58,11 @@ class recetteRepository
     public function getAllRecette()
     {
 
-        $entrepot = selectDB("RECETTE", "*");
+        $recette = selectDB("RECETTE", "*");
         $string = "INNER JOIN DANS DA ON DA.id_recette = RECETTE.id_recette;";
         $request = selectJoinDB("RECETTE", "*", $string,);
 
-        if (!$entrepot) {
+        if (!$recette) {
             exit_with_message("Impossible to select data for recette in the DB");
         }
 
@@ -149,8 +149,6 @@ class recetteRepository
             ];
         }
 
-
-        //---------------------------------
         $string="r.id_recette IN (";
 
         for ($j = 0; $j < count($recipeArray)-1; $j++) {
@@ -181,24 +179,23 @@ class recetteRepository
             ];
         }
 
-        // Créer un tableau associatif pour faciliter la comparaison
+
         $recipeArray2Assoc = array_column($recipeArray2, null, 'id_recette');
 
-        // Filtrer les recettes avec au moins 50% des ingrédients
+
         $filteredRecipes = array_filter($recipeArray, function($recipe) use ($recipeArray2Assoc) {
             $totalIngredients = $recipeArray2Assoc[$recipe['id_recette']]['nb_ingredients_matches'];
             $matchedIngredients = $recipe['nb_ingredients_matches'];
             return ($matchedIngredients / $totalIngredients) >= 0.5; // 50% ou plus
         });
 
-        // Trier les recettes filtrées par pourcentage d'ingrédients correspondants (décroissant)
+
         usort($filteredRecipes, function($a, $b) use ($recipeArray2Assoc) {
             $percentA = $a['nb_ingredients_matches'] / $recipeArray2Assoc[$a['id_recette']]['nb_ingredients_matches'];
             $percentB = $b['nb_ingredients_matches'] / $recipeArray2Assoc[$b['id_recette']]['nb_ingredients_matches'];
             return $percentB <=> $percentA;
         });
 
-        // Ajouter le pourcentage d'ingrédients correspondants à chaque recette
         $finalRecipes = array_map(function($recipe) use ($recipeArray2Assoc) {
             $totalIngredients = $recipeArray2Assoc[$recipe['id_recette']]['nb_ingredients_matches'];
             $matchedIngredients = $recipe['nb_ingredients_matches'];
@@ -208,6 +205,18 @@ class recetteRepository
         }, $filteredRecipes);
 
         exit_with_content($finalRecipes);
+    }
+//-------------------------------------------------------------------------------------------------------------------
+    public function getRecetteByid($apikey, $id)
+    {
+
+        $sql= selectJoinDB(" RECETTE r", "*", 'JOIN DANS d ON r.id_recette = d.id_recette' ,"r.id_recette =". $id);
+
+        if (!$sql) {
+            exit_with_message("Impossible to select data for recette in the DB");
+        }
+
+        exit_with_content($this->stock($sql));
     }
 
 }

@@ -15,6 +15,9 @@ function recetteController($uri, $apikey)
             if($uri[3] == "all"){
                 $service->getAllRecette($apikey);
             }
+            if(filter_var($uri[3], FILTER_VALIDATE_INT)){
+                $service->getRecetteByid($apikey,$uri[3]);
+            }
 
             break;
 
