@@ -47,70 +47,72 @@ function fillRecipeDb($uri){
                 //deleteDB("RECETTE", "id_recette > 0");
                 $keys = array_keys($recette);
                 //for ($i = 0; $i < count($recette); $i++) {
-                for ($i = 0; $i < 20; $i++) {
-                    $meal = $recette[$keys[$i]];
-                    for ($i = 1; $i <= 20; $i++) {
+                for ($j = 0; $j < 20; $j++) {
+                    $meal = $recette[$keys[$j]];
+                    for ($k = 1; $k <= 20; $k++) {
 
-                        $ingredient = $meal["strIngredient$i"];
-                        $measure = $meal["strMeasure$i"];
+                        $ingredient = $meal["strIngredient$k"];
+                        $measure = $meal["strMeasure$k"];
 
-                        $meal["strInstructions"] = str_replace("'", "\"", $meal["strInstructions"]);
+                        $meal["strInstructions"] = str_replace("'", "\'", $meal["strInstructions"]);
 
-                        $id_recette = insertDB("RECETTE", ["nom_recette", "description_recette"], [$meal["strMeal"], $meal["strInstructions"]], 'MAX(id_recette)');//
-                        if(!$id_recette){
-                            exit_with_content("Récupération failed for id_recette");
-                        }
+                        $id_recette = insertDB("RECETTE", ["nom_recette", "description_recette"], [$meal["strMeal"], $meal["strInstructions"]], 'bool');//
 
-                        $id_recette = $id_recette[0][0];
-                        $ingredient = explode(", ", $ingredient);
+                        if($id_recette){
 
-                        if(count($ingredient) > 1){
-                            $ingredient = implode("' OR nom_ingredient LIKE '", $ingredient);
-                        } else {
-                            $ingredient = $ingredient[0];
-                        }
+                            $id_recette = selectDB("RECETTE", "MAX(id_recette)", "-1", "bool")[0][0];
+                            $ingredient = explode(", ", $ingredient);
 
-                        $id_ingredient = selectDB("INGREDIENT", "id_ingredient", "nom_ingredient LIKE '".$ingredient."'", 'bool');
-                        // If don't find any in the db
-                        if(!$id_ingredient){
+                            if(count($ingredient) > 1){
+                                $ingredient = implode("' OR nom_ingredient LIKE '", $ingredient);
+                            } else {
+                                $ingredient = $ingredient[0];
+                            }
 
-                            $ingredient = $meal["strIngredient$i"];
+                            $id_ingredient = selectDB("INGREDIENT", "id_ingredient", "nom_ingredient LIKE '".$ingredient."'", 'bool');
+                            // If don't find any in the db
+                            if(!$id_ingredient){
+
+                                $ingredient = $meal["strIngredient$i"];
+                                if (!empty($ingredient) && $ingredient !== null && !empty($measure) && $measure !== null) {
+
+                                    $ingredient = str_replace(",", " ", $ingredient);
+                                    $ingredient = str_replace("-", " ", $ingredient);
+                                    $ingredient = explode(" ", $ingredient);
+
+                                    if(count($ingredient) > 1){
+                                        $ingredient = implode("') OR SOUNDEX(nom_ingredient) LIKE SOUNDEX('", $ingredient);
+                                    } else {
+                                        $ingredient = $ingredient[0];
+                                    }
+                                    $id_ingredient = selectDB("INGREDIENT", "id_ingredient", "SOUNDEX(nom_ingredient) LIKE SOUNDEX('".$ingredient."%')", 'bool');
+                                    if($id_ingredient){
+                                        $id_ingredient = $id_ingredient[0]["id_ingredient"];
+                                    } else {
+                                        selectDB("INGREDIENT", "id_ingredient", "SOUNDEX(nom_ingredient) LIKE SOUNDEX('".$ingredient."%')", '-@');
+                                        exit_with_message("Error when getting ingredient for the recette : nom_ingredient LIKE '".$ingredient."'", 200);
+                                    }
+                                }
+                            }
+                            // Vérifiez si l'ingrédient et la mesure ne sont pas vides ou null
                             if (!empty($ingredient) && $ingredient !== null && !empty($measure) && $measure !== null) {
+                                $id_ingredient = $id_ingredient[0]["id_ingredient"];
 
-                                $ingredient = str_replace(",", " ", $ingredient);
-                                $ingredient = str_replace("-", " ", $ingredient);
-                                $ingredient = explode(" ", $ingredient);
+                                //var_dump($measure);
+                                $result = parseQuantity($measure);
 
-                                if(count($ingredient) > 1){
-                                    $ingredient = implode("') OR SOUNDEX(nom_ingredient) LIKE SOUNDEX('", $ingredient);
-                                } else {
-                                    $ingredient = $ingredient[0];
-                                }
-                                $id_ingredient = selectDB("INGREDIENT", "id_ingredient", "SOUNDEX(nom_ingredient) LIKE SOUNDEX('".$ingredient."%')", 'bool');
-                                if($id_ingredient){
-                                    $id_ingredient = $id_ingredient[0]["id_ingredient"];
-                                } else {
-                                    selectDB("INGREDIENT", "id_ingredient", "SOUNDEX(nom_ingredient) LIKE SOUNDEX('".$ingredient."%')", '-@');
-                                    exit_with_message("Error when getting ingredient for the recette : nom_ingredient LIKE '".$ingredient."'", 200);
+                                //var_dump($result["quantity"]);
+                                //var_dump($result["unit"]);
+
+                                $res = insertDB("DANS", ["id_ingredient", "id_recette", "quantite_recette", "unit_mesure_ingredient"], [$id_ingredient, $id_recette, $result["quantity"], $result["unit"]]);
+                                if(!$res){
+                                    var_dump("Impossible d'enregistrer ".$id_recette." dans la BDD");
                                 }
                             }
+                        } else {
+                            var_dump("Error when registering : ". $meal["strMeal"] . " dans la BDD");
+                            break;
                         }
-                        // Vérifiez si l'ingrédient et la mesure ne sont pas vides ou null
-                        if (!empty($ingredient) && $ingredient !== null && !empty($measure) && $measure !== null) {
-                            $id_ingredient = $id_ingredient[0]["id_ingredient"];
-
-                            //var_dump($measure);
-                            $result = parseQuantity($measure);
-
-                            //var_dump($result["quantity"]);
-                            //var_dump($result["unit"]);
-
-                            $res = insertDB("DANS", ["id_ingredient", "id_recette", "quantite_recette", "unit_mesure_ingredient"], [$id_ingredient, $id_recette, $result["quantity"], $result["unit"]]);
-                            if(!$res){
-                                var_dump("Impossible d'enregistrer ".$id_recette." dans la BDD");
-                            }
-                        }
-
                     }
                 }
             }
@@ -159,7 +161,9 @@ function parseQuantity($string) {
 
     $appelations = [
         "teaspoon" => "Cuilliere à café",
+        "tablespoons" => "Cuillieres à soupe",
         "tblsp" => "Cuilliere à soupe",
+        "tsp" => "Cuilliere à café",
         "sliced" => "tranché",
         "slice" => "tranche(s)"
     ];

@@ -31,7 +31,6 @@ class recetteRepository
                 ];
             }
 
-
             $liste = [
                 "id_ingredient" => $item["id_ingredient"],
                 "quantite_recette" => $item["quantite_recette"],
