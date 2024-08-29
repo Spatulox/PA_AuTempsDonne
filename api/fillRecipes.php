@@ -33,6 +33,8 @@ function fillRecipeDb($uri){
         for ($i = 0; $i < 26; $i++) {
             $api_url_meal2 = $api_url_meal . "?f=".$letters[$i];
 
+            //var_dump($api_url_meal2);
+
             $response = file_get_contents($api_url_meal2);
             if ($response === false) {
                 die('Erreur lors de la requête API');
@@ -97,11 +99,11 @@ function fillRecipeDb($uri){
                         if (!empty($ingredient) && $ingredient !== null && !empty($measure) && $measure !== null) {
                             $id_ingredient = $id_ingredient[0]["id_ingredient"];
 
-                            var_dump($measure);
+                            //var_dump($measure);
                             $result = parseQuantity($measure);
 
-                            var_dump($result["quantity"]);
-                            var_dump($result["unit"]);
+                            //var_dump($result["quantity"]);
+                            //var_dump($result["unit"]);
 
                             $res = insertDB("DANS", ["id_ingredient", "id_recette", "quantite_recette", "unit_mesure_ingredient"], [$id_ingredient, $id_recette, $result["quantity"], $result["unit"]]);
                             if(!$res){
