@@ -21,6 +21,21 @@ class recetteService {
         $repo->createRecette($recette, $ingredients);
     }
 
+    public function SearchRecette(array $ingredients)
+    {
+
+        $repo = new recetteRepository();
+        $repo->SearchRecette($ingredients);
+    }
+
+    public function getRecetteByid($apikey,  $id)
+    {
+
+        $repo = new recetteRepository();
+        $repo->getRecetteByid($apikey,$id);
+
+    }
+
 
 }
 ?>
