@@ -1,6 +1,6 @@
 <?php
 
-include_once './Repository/recetteRepository.php';
+include_once './Repository/ingredientRepository.php';
 include_once './index.php';
 
 class ingredientService {
