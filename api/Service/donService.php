@@ -13,7 +13,7 @@ class DonService
             $donRepository = new DonRepository();
             return $donRepository->getDonById($id);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
     //-------------------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ class DonService
             $donRepository = new DonRepository();
             return $donRepository->getDonEntrepot();
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
     //-------------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ class DonService
             $donRepository = new DonRepository();
             return $donRepository->getDonAnnuel($date);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
     //-------------------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ class DonService
             $donRepository = new DonRepository();
             return $donRepository->getDonMensuel($date);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
 

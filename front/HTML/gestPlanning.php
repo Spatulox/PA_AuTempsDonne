@@ -377,7 +377,7 @@
         }
 
 
-        users = await user.getUserDispoByDay(jourSemaine, dateStr.split(" ")[0].trim())
+        users = await user.getUserDispoByDay(jourSemaine, dateStr.split(" ")[0].trim(), "3")
 
         const selectBody = document.getElementById("select")
         selectBody.innerHTML = ""

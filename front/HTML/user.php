@@ -56,6 +56,9 @@
             <div id="tab2Child" class="width50 padding10 marginBottom20 marginAuto border">
                 <?php echo $data["user"]["tab2"]["errorMsg"] ?>
             </div>
+            <div id="containerFileLoader">
+                <div class="loader"></div>
+            </div>
         </div>
 
         <div id="tab3" class="tabcontent">
@@ -90,8 +93,8 @@
                         <td>Telephone</td>
                         <td>Role</td>
                         <td><?php echo $data["user"]["tab1"]["storehouse"] ?></td>
-                        <td><?php echo $data["user"]["tab4"]["button"] ?></td>
-                        <td><?php echo $data["user"]["tab1"]["buttonDelete"] ?></td>
+                        <td><?php echo $data["user"]["tab4"]["validatefile"] ?></td>
+                        <td><?php echo $data["user"]["tab1"]["buttonSee"] ?></td>
                     </tr>
                     </thead>
                     <tbody id="tab4ChildBody">
@@ -131,6 +134,7 @@
 
     const user = new UserAdmin()
     const planning = new PlanningAdmin()
+    const fileManager = new File()
 
     let data = []
     let plannings = {}
@@ -183,11 +187,10 @@
 
     async function fillPlanningTab3(id = null) {
         let container = ""
+        container = document.getElementById('tab3ChildBody');
+        container.innerHTML = ""
         if(id != null){
             plannings = await planning.getPlanningByIdUSer(id)
-
-            container = document.getElementById('tab3ChildBody');
-            container.innerHTML = ""
         } else {
             plannings = []
         }
@@ -257,26 +260,40 @@
             entrepotCell.textContent = item.id_entrepot || 'N/A';
             row.appendChild(entrepotCell);
 
-            const buttonCell = document.createElement('td');
+            const validateCell = document.createElement('td');
+            if (item.id_index === 3) {
+                validateCell.textContent = 'TO VALIDATE';
+            } else {
+                validateCell.innerHTML = "<span style='color: red;'>TO VALIDATE</span>";
+            }
+            row.appendChild(validateCell);
+
+            /*const buttonCell = document.createElement('td');
             const button = createButton(dico[lang]["Validate"])
             button.setAttribute("onclick", "validateUSer(" + item.id_user + ")")
             buttonCell.appendChild(button)
-            row.appendChild(buttonCell);
-
+            row.appendChild(buttonCell);*/
 
             const buttonCell2 = document.createElement('td');
-            const button2 = createButton(dico[lang]["Delete"])
-            button2.setAttribute("onclick", "invalidateUSer(" + item.id_user + ")")
+            const button2 = createButton(dico[lang]["See"])
+            button2.setAttribute("onclick", "showUser(" + item.id_user + ", 1)")
             buttonCell2.appendChild(button2)
             row.appendChild(buttonCell2);
+
+            /*const buttonCell3 = document.createElement('td');
+            const button3 = createButton(dico[lang]["Delete"])
+            button3.setAttribute("onclick", "invalidateUSer(" + item.id_user + ")")
+            buttonCell3.appendChild(button3)
+            row.appendChild(buttonCell3);*/
 
             tab4ChildBody.appendChild(row);
         });
 
     }
 
-    async function showUser(id) {
+    async function showUser(id, validate = null) {
         const userWithId = data.find(item => item.id_user == id);
+        const userWaitId = userWait.find(item => item.id_user == id);
 
         const lesDivs = document.createElement("div")
         const divDisplay = document.createElement("div")
@@ -289,7 +306,15 @@
 
         let idDuRoleActuel = 0
 
-        for (const [key, value] of Object.entries(userWithId)) {
+        let userToUse = []
+        if(validate == null){
+            userToUse = userWithId
+        } else {
+            userToUse = userWaitId
+        }
+
+
+        for (const [key, value] of Object.entries(userToUse)) {
             if (key != "apikey") {
                 if(key == "id_role"){
                     idDuRoleActuel = value
@@ -301,7 +326,7 @@
 
 
         // Create Update part
-        for (const [key, value] of Object.entries(userWithId)) {
+        for (const [key, value] of Object.entries(userToUse)) {
             if (key != "apikey") {
                 keyOk = ["nom", "prenom", "telephone", "id_role"]
                 if (keyOk.includes(key) && key != 'id_role') {
@@ -348,17 +373,49 @@
         button.classList.add("block")
         userInfoContainer.appendChild(button)
 
-        // Create button to Update
-        button = createButton(dico[lang]["Delete"] + dico[lang]["user"])
-        button.setAttribute("onclick", "deleteLeUser(" + userWithId.id_user + ")")
+        button = createButton(dico[lang]["Sending"] + dico[lang]["email"])
+        button.setAttribute("onclick", "sendMailToNotify(" + userToUse.id_user + ")")
         button.classList.add("marginTop20")
         button.classList.add("marginBottom10")
         button.classList.add("marginAuto")
         button.classList.add("block")
         userInfoContainer.appendChild(button)
 
+
+        if(validate !== null) {
+            button = createButton(dico[lang]["Validate"] + dico[lang]["user"])
+            button.setAttribute("onclick", "validateUSer(" + userToUse.id_user + ")")
+            button.classList.add("marginTop20")
+            button.classList.add("marginBottom10")
+            button.classList.add("marginAuto")
+            button.classList.add("block")
+            userInfoContainer.appendChild(button)
+
+            // Create button to Update
+            button = createButton(dico[lang]["Delete"] + dico[lang]["user"])
+            button.setAttribute("onclick", "invalidateUSer(" + userToUse.id_user + ")")
+            button.classList.add("marginTop20")
+            button.classList.add("marginBottom10")
+            button.classList.add("marginAuto")
+            button.classList.add("block")
+            userInfoContainer.appendChild(button)
+
+        } else {
+            // Create button to Update
+            button = createButton(dico[lang]["Delete"] + dico[lang]["user"])
+            button.setAttribute("onclick", "deleteLeUser(" + userToUse.id_user + ")")
+            button.classList.add("marginTop20")
+            button.classList.add("marginBottom10")
+            button.classList.add("marginAuto")
+            button.classList.add("block")
+            userInfoContainer.appendChild(button)
+        }
+
+
+
         openTab('tab2')
         fillPlanningTab3(+id)
+        getUserFile(+id)
         replaceCharacters()
     }
 
@@ -372,8 +429,14 @@
     async function validateUSer(id) {
         startLoading()
         const resp = await user.updateUserValidate(id)
-        await fillTab4()
-        await fillTbodyUser()
+        if(resp){
+            data = await user.getAllUser()
+            await fillTab4()
+            await fillTbodyUser()
+            popup("User validated")
+            openTab("tab4")
+            replaceCharacters()
+        }
         stopLoading()
     }
 
@@ -399,6 +462,16 @@
         const valueElement = document.createElement("span");
         if (label === "id_role") {
             valueElement.textContent = " " + user.roleArray[value] + " ("+value+")" || " N/A";
+        } else if (label === "validate_file") {
+            let msg
+            if(value === 0){
+                msg = " To Validate"
+            } else if(value === 1){
+                msg = " Validated"
+            } else {
+                msg = " No Files"
+            }
+            valueElement.textContent = msg;
         } else {
             valueElement.textContent = " " + value || " N/A"
         }
@@ -426,6 +499,7 @@
         data = await user.getAllUser()
 
         await planning.connect()
+        await fileManager.connect()
         fillTbodyUser()
         fillPlanningTab3()
         fillTab4()
@@ -475,8 +549,82 @@
         stopLoading()
     }
 
+    async function sendMailToNotify(id_user){
+
+        const popupHtml = document.createElement('div');
+        popupHtml.className = 'email-popup';
+        popupHtml.innerHTML = `
+            <div class="popup-content">
+                <h2>Compose Email</h2>
+                <textarea id="emailBody" rows="10" cols="50" placeholder="Enter your email content here..."></textarea>
+                <div class="popup-buttons">
+                    <button id="sendButton">Send</button>
+                    <button id="cancelButton">Cancel</button>
+                </div>
+            </div>
+        `;
+
+        // Ajouter du style à la popup
+        const style = document.createElement('style');
+        style.textContent = `
+            .email-popup {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+            .popup-content {
+                background-color: white;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .popup-buttons {
+                margin-top: 10px;
+                text-align: right;
+            }
+            button {
+                margin-left: 10px;
+                padding: 5px 10px;
+            }
+        `;
+
+        document.head.appendChild(style);
+        document.body.appendChild(popupHtml);
+
+        document.getElementById('cancelButton').addEventListener('click', () => {
+                document.body.removeChild(popupHtml);
+                reject("Email sending cancelled");
+        });
+
+        document.getElementById('sendButton').addEventListener('click', async () => {
+            const emailToSend = document.getElementById("va_email").innerHTML
+            popup('Sending Email to '+emailToSend)
+            const emailBody = "<p>" + document.getElementById('emailBody').value + "</p><br><br><p>This is an automatic email, plz don't answer</p>";
+            const mail = new GestionMail()
+            await mail.connect()
+            await mail.sendMail("Problem when registering", emailBody, [emailToSend])
+            popup("Email sent to "+emailToSend)
+        });
+    }
+
     async function deleteLeUser(id) {
+        startLoading()
         const response = await user.deleteUser(id)
+        data = await user.getAllUser()
+        await fillTbodyUser()
+        const emailBody = `<p>Votre compte a ete supprime par l'administrateur ${user.id_user}</p>`
+        const emailToSend = document.getElementById("va_email").innerHTML
+        const mail = new GestionMail()
+        await mail.connect()
+        mail.sendMail("Account information", emailBody, [emailToSend])
+        stopLoading()
     }
 
     window.addEventListener('load', () => {

@@ -9,7 +9,7 @@ class EntrepotModel {
     public $rangement;
 
 
-    public function __construct($id_entrepot, $nom, $parking,$id_addresse,$rangement) {
+    public function __construct($id_entrepot, $nom, $parking, $id_addresse, $rangement) {
         $this->id_entrepot = $id_entrepot;
         $this->nom = $nom;
         $this->parking = $parking;

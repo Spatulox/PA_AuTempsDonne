@@ -40,7 +40,7 @@ class ProduitRepository
         $request = selectDB("PRODUIT", "*", "id_produit=".$id, "bool")[0];
 
         if(!$request){
-            exit_with_message("Nothing the show", 200);
+            exit_with_message("Nothing to show", 200);
         }
 
         $type = selectDB("TYPE", "*", "id_type=".$request["id_type"])[0]["type"];
@@ -63,7 +63,7 @@ class ProduitRepository
         $request = selectDB("PRODUIT", "*", "nom_produit='".$nom_produit."'", "bool");
 
         if($request){
-            exit_with_message("Produit already exists", 500);
+            exit_with_message("Product already exists", 500);
         }
 
          $res= insertDB("PRODUIT", ["nom_produit", "id_type"], [$nom_produit, $id_type]);

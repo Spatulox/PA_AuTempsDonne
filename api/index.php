@@ -20,6 +20,7 @@ include_once './Controller/mailController.php';
 include_once './Controller/recetteController.php';
 include_once './Controller/ingredientController.php';
 include_once './Controller/historiqueController.php';
+include_once './Controller/fichierController.php';
 
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
@@ -86,8 +87,10 @@ function getEmailFromApiKey($apiKey){
 
     $id = selectDB("UTILISATEUR", 'email', "apikey='".$apiKey."'", "bool");
     if($id){
-        $id = $id[0]["id_user"];
+        $id = $id[0]["email"];
+        return $id;
     }
+    return false;
 }
 
 function getIdUSerFromEmail($email){
@@ -208,6 +211,8 @@ function controller($uri) {
         case 'ingredient':
             ingredientController($uri, $apiKey);
             break;
+        case 'fichier':
+            fichierController($uri, $apiKey);
 
 
         default:

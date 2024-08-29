@@ -5,8 +5,6 @@ include_once './exceptions.php';
 
 function trajetController($uri, $apiKey){
 
-    //exit_with_message($_SERVER['REQUEST_METHOD']);
-
     switch ($_SERVER['REQUEST_METHOD']){
 
         case 'GET':
@@ -17,12 +15,12 @@ function trajetController($uri, $apiKey){
 
             $TrajetService = new trajetService();
             if(!$uri[3]){
-                exit_with_message("pas de trajets selectionner");
+                exit_with_message("Pas de trajets selectionné");
             }
 
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                exit_with_content($TrajetService->getTrajetById($uri[3],$apiKey));
+                $TrajetService->getTrajetById($uri[3]);
             }
 
 
@@ -41,17 +39,24 @@ function trajetController($uri, $apiKey){
                 exit_with_message("Unauthorized, need the apikey", 403);
             }
 
+            if(!isset($json["address"]) || empty($json["address"])){
+                exit_with_message("You need to give valid addresses", 403);
+            }
+
             $TrajetService = new trajetService();
             if(!$uri[3]){
                 $TrajetService->createTrajet($json["address"],$apiKey);
             }
 
             elseif($uri[3] && $uri[3] == "create"){
-                $TrajetService->createTrajetInDB($json["address"],$apiKey);
+                if(!isset($json["id_vehicule"]) || empty($json["id_vehicule"])){
+                    exit_with_message("You need to give a vehicule", 403);
+                }
+                $TrajetService->createTrajetInDB($json["address"], $json["id_vehicule"]);
             }
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                exit_with_content($TrajetService->getTrajetById($uri[3]),$apiKey);
+                $TrajetService->getTrajetById($uri[3]);
             }
 
 

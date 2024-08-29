@@ -14,7 +14,7 @@ class activiteService {
             $ActiviteRepository = new ActiviteRepository();
             return $ActiviteRepository->getAllActivite($apikey);
         }else{
-            exit_with_message("Vous n'avez pas accès a cette commande");
+            exit_with_message("Vous n'avez pas accès à cette commande");
         }
     }
 
@@ -36,22 +36,25 @@ class activiteService {
             $ActiviteRepository = new ActiviteRepository();
             return $ActiviteRepository->createActivite($Activite,$apikey);
         }else{
-            exit_with_message("Vous n'avez pas accès a cette commande");
+            exit_with_message("Vous n'avez pas accès à cette commande");
         }
     }
 
     /*
      *  Met à jour un Activite
     */
-//    public function updateActivite( $id_planning, $nom_activite) {
-//        $ActiviteRepository = new ActiviteRepository();
-//        $updatedPlanning = new ActiviteModel(
-//            $id_activite,
-//            $nom_activite
-//        );
-//        $updatedPlanning->setId($id);
-//        return $ActiviteRepository->updateActivite($updatedActivite);
-//    }
+    public function updateActivite( $id_planning, $nom_activite) {
+        exit_with_message("This endpoint has been desactivated for some reason");
+        /*
+        $ActiviteRepository = new ActiviteRepository();
+        $updatedPlanning = new ActiviteModel(
+            $id_activite,
+            $nom_activite
+        );
+        $updatedPlanning->setId($id);
+        return $ActiviteRepository->updateActivite($updatedActivite);
+        */
+    }
 
     /*
      *  Supprimer un Activite
@@ -62,7 +65,7 @@ class activiteService {
             $ActiviteRepository = new ActiviteRepository();
             return $ActiviteRepository->deleteActivite($id,$apikey);
         }else{
-            exit_with_message("Vous n'avez pas accès a cette commande");
+            exit_with_message("Vous n'avez pas accès à cette commande");
         }
     }
 }

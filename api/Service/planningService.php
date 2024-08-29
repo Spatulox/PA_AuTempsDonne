@@ -19,7 +19,7 @@ class   PlanningService {
             $planningRepository = new PlanningRepository();
             return $planningRepository->getAllPlanning();
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
 
     }
@@ -55,21 +55,21 @@ class   PlanningService {
         $activite = selectDB("ACTIVITES", "id_activite", "id_activite=" . $planning->id_activite,"bool");
 
         if(!$activite){
-            exit_with_message("Please de rentre une activite qui existe ou en cree une", 400);
+            exit_with_message("Rentrez une activité qui existe ou en créez une", 400);
         }
 
         $userRole = $this->getUserRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2) {
             $planning->id_index_planning = 2;
             $planningRepository = new PlanningRepository();
-            return $planningRepository->createPlanning($planning,$apiKey);
+            $planningRepository->createPlanning($planning,$apiKey);
 
         }elseif($userRole[0]==4){
             $planning->id_index_planning = 3;
             $planningRepository = new PlanningRepository();
-            return $planningRepository->createPlanning($planning,$apiKey);
+            $planningRepository->createPlanning($planning,$apiKey);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
 
@@ -81,7 +81,7 @@ class   PlanningService {
         $activite = selectDB("ACTIVITES", "id_activite", "id_activite=" . $id_activite,"bool");
 
         if(!$activite){
-            exit_with_message("Please de rentre une activite qui existe ou en cree une", 400);
+            exit_with_message("Rentrez une activité qui existe ou en créez une", 400);
         }
         $planning=selectDB("PLANNINGS","*","id_planning=".$id_planning,"bool");
         if (!$planning){
@@ -97,7 +97,7 @@ class   PlanningService {
             $id_activite
         );
         $updatedPlanning->setId($id_planning);
-        return $planningRepository->updatePlanning($updatedPlanning);
+        $planningRepository->updatePlanning($updatedPlanning);
     }
 
     /*
@@ -108,7 +108,7 @@ class   PlanningService {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
              $planningRepository = new PlanningRepository();
-            return $planningRepository->deletePlanning($id);
+            $planningRepository->deletePlanning($id);
 
         }
         exit_with_message("You don't have access to this command", 403);
@@ -120,13 +120,13 @@ class   PlanningService {
     */
     public function joinActivity($userId, $planningId, $confirme, $apiKey) {
 
-        $user=selectDB("UTILISATEUR", "*", "id_user=" . $userId,"bool");
+        $user=selectDB("UTILISATEUR", "*", "validate_files=1 id_user=" . $userId,"bool");
 
         if (!$user[0]["id_user"] ) {
-            exit_with_message("Cette utilisateur n'existe pas", 400);
+            exit_with_message("Cet utilisateur n'existe pas, ou ses fichiers ne sont validés", 400);
         }
         elseif ($user[0]["id_role"] != 3) {
-            exit_with_message("Cette utilisateur n'est pas un benevole",400);
+            exit_with_message("Cet utilisateur n'est pas un benevole",400);
         }
         $planning=selectDB("PLANNINGS","*","id_planning=".$planningId,"bool");
         if (!$planning){
@@ -138,7 +138,7 @@ class   PlanningService {
         $check=selectJoinDB("PLANNINGS pl" ,"*",$join,"id_user=".$userId. " AND DATE(pl.date_activite) ='".$date[0]["DATE(date_activite)"]."'","bool");
 
         if(count($check)>=1 && $check !== false) {
-            exit_with_message("un utilisateur ne peut pas en faire trop d'activiter en 1 journee",400);
+            exit_with_message("un utilisateur ne peut pas faire trop d'activités en 1 journée",400);
         }
 
 
@@ -153,7 +153,7 @@ class   PlanningService {
             $planningRepository = new PlanningRepository();
             return $planningRepository->joinActivity($userId, $planningId,$confirme,$apiKey);
         }else{
-            exit_with_message("vous n'avez pas les droits",500);
+            exit_with_message("Vous n'avez pas les droits",403);
         }
     }
 
@@ -190,7 +190,7 @@ class   PlanningService {
             $index =3;
             return $planningRepository->getAllPlanningeindex($index,$apiKey);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
 
     }
@@ -204,7 +204,7 @@ class   PlanningService {
             $index =2;
             return $planningRepository->getAllPlanningeindex($index,$apiKey);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
 
     }
@@ -231,7 +231,7 @@ class   PlanningService {
             $planningRepository = new PlanningRepository();
             return $planningRepository->getPlanningNoAffecte($apiKey);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
 
     }
@@ -273,7 +273,7 @@ class   PlanningService {
             $planningRepository = new PlanningRepository();
             return $planningRepository->updatejoinPlanning($id_planning,$confirme,$id,$apiKey);
         }else{
-            exit_with_message("You didn't have access to this command");
+            exit_with_message("You don't have access to this command");
         }
     }
 
@@ -283,9 +283,9 @@ class   PlanningService {
     {
         $user=selectDB("UTILISATEUR","*","id_user=".$user_id,"bool");
         if (!$user){
-            exit_with_message("Cette utilisateur n'existe pas",400);
+            exit_with_message("Cet utilisateur n'existe pas",400);
         }elseif ($user[0]["id_index"]==1 || $user[0]["id_index"]==3) {
-            exit_with_message("Cette utilisateur est desactiver",400);
+            exit_with_message("Cet utilisateur est désactivé",400);
         }
 
         $planning=selectDB("PLANNINGS","*","id_planning=".$id_planning,"bool");
@@ -298,7 +298,7 @@ class   PlanningService {
             $planningRepository = new PlanningRepository();
             return $planningRepository->deletejoin($user_id, $id_planning,$apiKey);
         }else{
-            exit_with_message("vous n'avez pas les droits",500);
+            exit_with_message("Vous n'avez pas les droits",403);
         }
     }
 

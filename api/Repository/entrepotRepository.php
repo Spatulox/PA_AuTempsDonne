@@ -154,7 +154,7 @@ class EntrepotRepository
     {
 
         if ($entr->id_entrepot == null) {
-            exit_with_message("Impossible to update entrepot in the DB, need to specifie the entrepot you want to update");
+            exit_with_message("Impossible to update entrepot in the DB, need to specify the entrepot you want to update");
         }
 
         $columnArray = [];
@@ -211,7 +211,7 @@ class EntrepotRepository
                 $check=selectDB("STOCKS", "*", "id_etagere=" . $resquest[$i]["id_etagere"]. " AND quantite_produit >0 AND date_sortie IS NULL","bool");
                 if ($check){
 
-                    exit_with_message("etagere is already in use",500);
+                    exit_with_message("Etagere is already in use",500);
 
                 }
             }
@@ -252,9 +252,7 @@ class EntrepotRepository
                 exit_with_message("Error creating Etagere", 500);
             }
         }
-
-
-        exit_with_message("Etagere add with success", 200);
+        exit_with_message("Etagere added with success", 200);
     }
 
     //-------------------------------------------------------------------------------------
@@ -284,7 +282,7 @@ class EntrepotRepository
             $nb=selectDB("ETAGERES", "*", "id_entrepot=" . $resquest[0]["id_entrepot"], "bool");
 
             if (count($nb) ==1){
-                exit_with_message("Imposible de supprimer la derniére etagere",500);
+                exit_with_message("Impossible de supprimer la dernière etagere",500);
             }
 
             deleteDB("ETAGERES", "id_etagere=" . $id);
@@ -298,7 +296,7 @@ class EntrepotRepository
 
             exit_with_message("Etagere deleted with success ", 200);
         }else{
-            exit_with_message("The Etagere doesn't exist", 500);
+            exit_with_message("This Etagere doesn't exist", 500);
         }
 
     }
@@ -314,7 +312,7 @@ class EntrepotRepository
         $string = "id_entrepot=" .$id;
         $etagere= selectDB("ETAGERES", "id_etagere,nombre_de_place",$string);
         if(!$etagere){
-            exit_with_message("cette etagere n'existe pas ", 500);
+            exit_with_message("Cette etagere n'existe pas ", 500);
         }
         $sum=0;
         $place=0;

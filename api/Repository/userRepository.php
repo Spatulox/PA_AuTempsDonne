@@ -19,7 +19,6 @@ class UserRepository {
             $address = selectDB("ADRESSE", "*", "id_adresse='".$usersArray[0]['id_adresse']."'")[0]["adresse"];
 
             $user[$i] = returnUser($usersArray, $address, $i);
-            //$user[$i] = new UserModel($usersArray[$i]['id_ueser'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $address, $usersArray[$i]['telephone'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index'], $usersArray[$i]['id_entrepot']);
         }
 
         $historiqueRepo = new HistoriqueRepository();
@@ -63,8 +62,6 @@ class UserRepository {
 
         for ($i=0; $i < count($usersArray); $i++) {
             $address = selectDB("ADRESSE", "*", "id_adresse='".$usersArray[0]['id_adresse']."'")[0]["adresse"];
-
-            //$user[$i] = new UserModel($usersArray[$i]['id_user'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $address, $usersArray[$i]['telephone'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index'], $usersArray[$i]['id_entrepot']);
             $user[$i] = returnUser($usersArray, $address, $i);
         }
 
@@ -157,26 +154,8 @@ class UserRepository {
             $fichier = new FichierService();
             $fichier->registerFile($filePath, $user[0]["id_user"]);
         }
-
-        return returnUser($user, $address[0]["adresse"]);
+        return returnUser($user, $address);
     }
-
-    //-------------------------------------
-    /*
-    public function updateUser(UserModel $user, $apiKey){
-
-        $idUSer = selectDB("UTILISATEUR", 'id_users', "apikey='".$apiKey."'")[0]["id_users"];
-        if ($idUSer != $user->id_users){
-            exit_with_message("You can't update an user which is not you");
-        }
-
-        updateDB("UTILISATEUR", ["role", "pseudo", "user_index"], [$user->role, $user->pseudo, $user->user_index], 'id_users='.$user->id_users." AND apikey='".$apiKey."'");
-
-        return $this->getUser($user->id_users, null);
-    }
-
-
-    */
 
     public function getUserEmail($email){
 
@@ -184,7 +163,6 @@ class UserRepository {
 
         if(count($user) > 0){
             return returnUser($user, $user[0]['adresse']);
-            //return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $user[0]['adresse'], $user[0]['telephone'], $user[0]['id_role'], $user[0]['apikey'], $user[0]['id_index'], $user[0]['id_entrepot']);
         }
         exit_with_message('Email not exist');
 
@@ -192,6 +170,9 @@ class UserRepository {
     }
 
     public function updateUser($id_user, $cle, $data){
+        if($id_user == 1){
+            exit_with_message("No user");
+        }
         $data = updateDB("UTILISATEUR", [$cle], [$data] , "id_user='".$id_user."'");
 
         if($data){
@@ -201,7 +182,18 @@ class UserRepository {
     }
 
     public function updateUserValidate($id_user, $id_index,$apiKey){
-        $debug = updateDB("UTILISATEUR", ["id_index"], [$id_index], "id_user='".$id_user."'");
+        $debug = "";
+
+        $data = selectDB("FICHIER", "*", "id_user='".$id_user."'", "bool");
+        if($data){
+            // validate_files = 1 User has file into his account (only le permis pour l'instant on se base que dessus)
+            // Il pourra conduire
+            $debug = updateDB("UTILISATEUR", ["id_index", "validate_files"], [$id_index, 1], "id_user='".$id_user."'");
+        } else {
+            // validate_files = 2 User don't have any file into his account, mais il est quand même validé
+            // Il ne pourra pas conduire
+            $debug = updateDB("UTILISATEUR", ["id_index", "validate_files"], [$id_index, 2], "id_user='".$id_user."'");
+        }
 
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
@@ -221,19 +213,21 @@ class UserRepository {
 
             exit_with_message("Error while update user");
         }
+        exit_with_message("User validated", 200);
     }
 
     //-------------------------------------
 
     public function unreferenceUserById($id, $apiKey){
+        if($id == 1){
+            exit_with_message("No user");
+        }
 
         $role = getRoleFromApiKey($apiKey);
 
         $user = selectDB("UTILISATEUR", "id_user, id_index", "apikey='".$apiKey."'", "bool")[0];
 
         $userToDelete = $this->getUser($id);
-
-        //var_dump($userToDelete);
 
         if($userToDelete->id_role == 1){
             exit_with_message("You can't unrefence an admin", 403);
@@ -246,7 +240,7 @@ class UserRepository {
         }
 
         if ($id != $user['id_user'] && $role > 2 ){
-            exit_with_message("You can't unrefence a user wich is not you", 403);
+            exit_with_message("You can't unrefence a user which is not you", 403);
         }
 
         $historiqueRepo = new HistoriqueRepository();
@@ -269,8 +263,6 @@ class UserRepository {
 
         $userToDelete = $this->getUser($id);
 
-        //var_dump($userToDelete);
-
         if($userToDelete->id_role == 1){
             exit_with_message("You can't unrefence an admin", 403);
         }
@@ -282,7 +274,7 @@ class UserRepository {
         }
 
         if ($id != $user['id_user'] && $role > 2 ){
-            exit_with_message("You can't unrefence a user wich is not you", 403);
+            exit_with_message("You can't unrefence a user which is not you", 403);
         }
 
         $historiqueRepo = new HistoriqueRepository();
@@ -299,6 +291,9 @@ class UserRepository {
 
     public function dispoUser($id_dispo, $id,$apiKey)
     {
+        if($id == 1){
+            exit_with_message("No user");
+        }
         $check = selectDB("DISPONIBILITE" , "*", "id_user=".$id, "bool");
         if ($check){
             exit_with_message("User already dispoted",500);
@@ -322,7 +317,7 @@ class UserRepository {
 
     public function getAllDispoUsers($apiKey)
     {
-        $conditions = "id_index= 2 AND id_role=3 ";
+        $conditions = "id_index= 2 AND id_role=3 AND validate_files=1 AND id_user != 1";
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
         $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
         $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions );
@@ -366,6 +361,9 @@ class UserRepository {
 
     public function updatedispoUser($id_dispo, $id,$apiKey)
     {
+        if($id == 1){
+            exit_with_message("No user");
+        }
         deleteDB("DISPONIBILITE", "id_user=".$id);
         $dispos = [];
 
@@ -393,6 +391,9 @@ class UserRepository {
 
     public function updateentrepotUser($id_entrepot, $id,$apiKey)
     {
+        if($id == 1){
+            exit_with_message("No user");
+        }
         $res=updateDB("UTILISATEUR", ["id_entrepot"], [$id_entrepot],"id_user=".$id);
 
         $historiqueRepo = new HistoriqueRepository();
@@ -409,6 +410,9 @@ class UserRepository {
 
     public function getDispoUserMe($id,$apiKey)
     {
+        if($id == 1){
+            exit_with_message("No user");
+        }
         $conditions = "UTILISATEUR.id_user=".$id;
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
         $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
@@ -453,6 +457,9 @@ class UserRepository {
 
     public function updateRoleUser($role, $id,$apiKey)
     {
+        if($id == 1){
+            exit_with_message("No user");
+        }
         updateDB("UTILISATEUR", ["id_role"], [$role],"id_user=".$id);
 
         $historiqueRepo = new HistoriqueRepository();
@@ -463,7 +470,6 @@ class UserRepository {
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 
         exit_with_content($this->getUser($id));
-       
     }
 
     //-----------------------------------------------------------------------------------------
@@ -471,9 +477,36 @@ class UserRepository {
     public function GetAllUserDate($date,$apiKey)
     {
 
-        $conditions = "SEMAINE.id_dispo=".$date;
+        $conditions = "SEMAINE.id_dispo=" . $date . " AND UTILISATEUR.id_user != 1";
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
         $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo ";
+        $usersArray = selectJoinDB("DISPONIBILITE", $columns, $join, $conditions);
+
+        $uniqueUsers = [];
+
+        foreach ($usersArray as $user) {
+            $id_user = $user["id_user"];
+            if (!in_array($id_user, $uniqueUsers)) {
+                $uniqueUsers[] = $id_user;
+            }
+        }
+
+        $all = [];
+
+        for ($i = 0; $i < count($usersArray); $i++) {
+
+            $all[] = $this->getUser($usersArray[$i]["id_user"]);
+
+        }
+    }
+
+
+    public function GetAllRoleUserDate($date, $role)
+    {
+
+        $conditions = "SEMAINE.id_dispo='".$date."' AND UTILISATEUR.id_user != 1 AND UTILISATEUR.id_role=".$role;
+        $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
+        $join = "INNER JOIN UTILISATEUR ON DISPONIBILITE.id_user = UTILISATEUR.id_user INNER JOIN SEMAINE ON SEMAINE.id_dispo = DISPONIBILITE.id_dispo";
         $usersArray= selectJoinDB("DISPONIBILITE", $columns, $join, $conditions);
 
         $uniqueUsers = [];
@@ -502,7 +535,5 @@ class UserRepository {
 
         return $all;
     }
-
-
 }
 ?>

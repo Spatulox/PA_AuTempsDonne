@@ -26,7 +26,7 @@ class PlanningAdmin extends Admin{
 
     // Tout ceux qui sont validé (AssignTask) et non assigné
     async getNoAffectPlanning(){
-        let response = await this.fetchSync(this.adresse+'/planning/affecte', this.optionGet())
+        let response = await this.fetchSync(this.adresse+'/planning/affecte', this.optionGet(), false)
         if(!this.compareAnswer(response)){
             return false
         }

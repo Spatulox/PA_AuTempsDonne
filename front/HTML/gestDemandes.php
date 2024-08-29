@@ -25,7 +25,9 @@
             <p id="popupGestionBody"></p>
             <p id="select2"></p>
             <p id="select3"></p>
-            <input type="datetime-local" id="dateSelect">
+            <input type="datetime-local" id="dateSelectDebut">
+            <input type="datetime-local" id="dateSelectEnd">
+            <p id="select4"></p>
             <div class="flex flexAround nowrap marginTop20">
                 <button type="button" onclick="addAddressPopup()"><?php echo($data["gestDemande"]["addRequest"]) ?></button>
                 <button type="button" onclick="valideData()"><?php echo($data["gestDemande"]["create"]) ?></button>
@@ -121,6 +123,7 @@
     const request = new DemandeAdmin()
     const user = new UserAdmin()
     const activity = new Activite()
+    const vehicle = new VehicleAdmin()
     let email = []
     let demande = []
     let acti_desc = []
@@ -129,7 +132,8 @@
         "id_demande":[],
         "id_depart":-1,
         "id_arriver":-1,
-        "date": "1970-01-01 00:00:00"
+        "date": "1970-01-01 00:00:00",
+        "id_vehicle": null
     }
 
     async function fillListDemande() {
@@ -388,7 +392,11 @@
 
         lapopup.style.display = "flex"
 
-
+        const dateSelectDebut = document.getElementById("dateSelectDebut");
+        const dateSelectFin = document.getElementById("dateSelectEnd");
+        if(dateSelectDebut.value && dateSelectFin.value){
+            selectAvailableVehicle()
+        }
     }
 
     async function addAddressPopup(){
@@ -411,7 +419,6 @@
             return
         }
 
-
         const selectElement = document.querySelector("#select2 > select"); // Sélectionne l'élément <select>
         const selectedOption = selectElement.options[selectElement.selectedIndex]; // Récupère l'option sélectionnée
         const selectedInnerHTML = selectedOption.innerHTML;
@@ -425,12 +432,79 @@
         lesDataToSendGroup.id_arriver = end.value
         lesDataToSendGroup.id_demande.push(selectValue.value)
         popupGestionBody.innerHTML += selectedInnerHTML +"<br>"
+
+        await selectAvailableVehicle()
+    }
+
+    document.getElementById("dateSelectDebut").addEventListener("change", ()=>{
+        selectAvailableVehicle()
+    })
+    document.getElementById("dateSelectEnd").addEventListener("change", ()=>{
+        selectAvailableVehicle()
+    })
+
+    async function selectAvailableVehicle(){
+        // Check the available vehicle
+        startLoading()
+        const dateSelectDebut = document.getElementById("dateSelectDebut");
+        const dateSelectFin = document.getElementById("dateSelectEnd");
+        if(!dateSelectDebut.value || !dateSelectFin.value){
+            popup("Vous devez donner une heure de départ et de fin")
+        }
+        let startDate = new Date(dateSelectDebut.value);
+        const endDate = new Date(dateSelectFin.value);
+
+        const startDateString = startDate.toISOString();
+        const endDateString = endDate.toISOString();
+
+        if(!vehicle.isValidDate(dateSelectDebut.value)){
+            popup("Erreur..")
+            stopLoading()
+            return
+        }
+        if(!vehicle.isValidDate(dateSelectFin.value)){
+            popup("Erreur..")
+            stopLoading()
+            return
+        }
+
+        if(vehicle.isDateInThePast(dateSelectDebut.value)){
+            popup("Start Date is in the past :/")
+            stopLoading()
+            return
+        }
+        if(vehicle.isDateInThePast(dateSelectFin.value)){
+            popup("End Date is in the past :/")
+            stopLoading()
+            return
+        }
+
+
+        const data = await vehicle.getAssociationAvailableVehicle(startDateString, endDateString);
+
+        const options = [];
+        for (const key in data) {
+            options.push({
+                "value": data[key].id_vehicule,
+                "text": `${data[key].nom_du_vehicules}`
+            });
+        }
+
+        const select4 = createSelect(options, "Choose a Vehicle");
+        const idselect4 = document.getElementById("select4");
+        if (idselect4) {
+            idselect4.innerHTML = '';
+            idselect4.appendChild(select4);
+        } else {
+            console.error("Element 'idselect4' not found");
+        }
+        stopLoading()
     }
 
     async function valideData(){
         startLoading()
 
-        const dateSelect = document.getElementById("dateSelect")
+        const dateSelect = document.getElementById("dateSelectDebut")
         lesDataToSendGroup.date = dateSelect.value
 
         if( lesDataToSendGroup["id_demande"].length === 0){
@@ -451,6 +525,18 @@
             return
         }
 
+        const selectElement = document.querySelector("#select4 > select");
+        if(selectElement.value === "Choose a Vehicle" || selectElement.value === null){
+            popup("Sélectionnez un véhicle avant de valider")
+        }
+
+        lesDataToSendGroup.id_vehicule = selectElement.value
+        if (lesDataToSendGroup.id_vehicule === null) {
+            popup("Error, wrong start or end")
+            stopLoading()
+            return
+        }
+
         if(lesDataToSendGroup.date === "1970-01-01 00:00:00" || lesDataToSendGroup.date === ""){
             popup("Error, wrong date")
             stopLoading()
@@ -459,7 +545,7 @@
 
         const returnData = await request.validateGroupDemande(lesDataToSendGroup)
 
-        const duh = await calcSpeedAddress(returnData)
+        const duh = await calcSpeedAddress(returnData, lesDataToSendGroup.id_vehicule)
 
         if(duh === false){
             popup("Error lors du calcul du chemin le plus rapide")

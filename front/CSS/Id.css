@@ -23,6 +23,54 @@
 
 }
 
+#calendar, #allCalendar, #bodyDetailCalendar, #bodyDetailCalendarIHaveBooked{
+  height: 1000px;
+  z-index: 1;
+  position: relative;
+}
+
+#containerFileLoader {
+  /*width: 300px;*/
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#containerFileLoader ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#containerFileLoader li {
+  margin: 10px 0;
+}
+
+#containerFileLoader a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+#containerFileLoader a:hover {
+  text-decoration: underline;
+}
+
 #language-select{
   border-radius: 5px 5px 0px 0px;
 }

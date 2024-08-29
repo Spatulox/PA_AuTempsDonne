@@ -11,14 +11,14 @@ class EtagereRepository
     {
         $res=selectDB("ETAGERES","*","code='".$Key."'","bool");
        if(!$res){
-           exit_with_message("cette etagere n'existe pas",500);
+           exit_with_message("Cette etagere n'existe pas",500);
        }
 
         $string_join = "INNER JOIN ETAGERES ON STOCKS.id_etagere = ETAGERES.id_etagere";
         $stockArray = selectJoinDB("STOCKS", "*", $string_join, "ETAGERES.id_etagere=".$res[0]["id_etagere"] ." AND quantite_produit >0 AND date_sortie IS NULL","bool");
 
         if (!$stockArray){
-            exit_with_message("cette etagere n'a rien de stocke",500);
+            exit_with_message("Cette etagere n'a rien de stocké",500);
         }
 
         $stock = [];

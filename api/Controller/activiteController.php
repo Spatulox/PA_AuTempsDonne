@@ -23,7 +23,7 @@ function activiteController($uri, $apiKey) {
             }
 
             else{
-                exit_with_message("You need to be admin to see all the activite", 403);
+                exit_with_message("You need to be admin to see all the activities", 403);
             }
             
             break;
@@ -33,26 +33,18 @@ function activiteController($uri, $apiKey) {
 
             $body = file_get_contents("php://input");
             $json = json_decode($body, true);
-
-
                 
-                    if (!isset($json['nom_activite']) ) {
-                        exit_with_message("Please provide all required fields to create a new activite", 400);
-                    }
+            if (!isset($json['nom_activite']) ) {
+                exit_with_message("Please provide all required fields to create a new activity", 400);
+            }
 
-                    $activite = new ActiviteModels(
-                        1,
-                        $json['nom_activite']
-                    );
+            $activite = new ActiviteModels(
+                1,
+                $json['nom_activite']
+            );
 
-                    $ActiviteService->createActivite($activite, $apiKey);
+            $ActiviteService->createActivite($activite, $apiKey);
 
-//                    if ($createdPlanning) {
-//                        exit_with_content($createdActivite);
-//                    } else {
-//                        exit_with_message("Error while creating the activite.", 500);
-//                    }
-            
             break;
 
 

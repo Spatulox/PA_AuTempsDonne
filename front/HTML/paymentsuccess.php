@@ -82,8 +82,7 @@ echo "<script type='text/javascript' defer>
         async function send(){
             const gestionMail = new GestionMail()
             await gestionMail.connect();
-            console.log(['M78stormtrooper@laposte.net', gestionMail.email]);
-            await gestionMail.sendMail('$subject[0]', '$htmlString[0]', ['M78stormtrooper@laposte.net', gestionMail.email]);
+            await gestionMail.sendMail('$subject[0]', '$htmlString[0]', [gestionMail.email]);
             
             gestionMail.setCookie('premiumDate', $premiumDate, 7)
             gestionMail.setCookie('premiumTime', $subscription, 7)

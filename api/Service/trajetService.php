@@ -19,9 +19,15 @@ class TrajetService {
         $TrajetRepository->createTrajet($tab,$apiKey);
     }
 
-    public function createTrajetInDB($tab,$apiKey){
+    public function createTrajetInDB($tab, $id_vehicule){
+
+        $validVehicle = selectDB("VEHICULES", "*", "id_vehicule=".$id_vehicule . " AND appartenance = 1", "bool");
+        if(!$validVehicle){
+            exit_with_message("The vehicle doesn't exist, or isn't owned by the association");
+        }
+
         $TrajetRepository = new TrajetRepository();
-        $TrajetRepository->createTrajetInDB($tab,$apiKey);
+        $TrajetRepository->createTrajetInDB($tab, $id_vehicule);
     }
 }
 

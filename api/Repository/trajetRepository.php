@@ -17,7 +17,7 @@ class TrajetRepository {
     }
 
 
-    private function affiche($request){
+    private function affiche($request, $id_vehicle = null){
 
         $array = [];
 
@@ -33,8 +33,6 @@ class TrajetRepository {
                     "addresses" => []
                 ];
             }
-            //var_dump($request);
-
             $res= selectDB("ADRESSE","adresse","id_adresse=".$request["id_adresse"].$request[$num]["id_adresse"]);
 
 
@@ -52,15 +50,28 @@ class TrajetRepository {
                 ];
             }
 
-
             $trajets[$id_trajets]["addresses"][] = $addresses;
+
+            $trajets[$id_trajets]["vehicule"] = "";
+
+            if($id_vehicle != null) {
+                $vehicle = selectDB("VEHICULES", "*", "id_vehicule=".$id_vehicle);
+                if($vehicle){
+                    $vehicleRepo = new VehiculeRepository();
+                    $data = $vehicleRepo->returnVehicleForm($vehicle, false);
+                    $trajets[$id_trajets]["vehicule"] = $data[0];
+                }
+            }
+
+
             $num++;
         }
 
         foreach ($trajets as $trajet) {
             $array[] = new TrajetModel(
                 $trajet["id_trajets"],
-                $trajet["addresses"]
+                $trajet["addresses"],
+                $trajet["vehicule"]
             );
 
         }
@@ -101,11 +112,19 @@ class TrajetRepository {
 
     public function getTrajetById($id,$apiKey){
         $rows = selectDB("UTILISER", "id_trajets, id_adresse", "id_trajets=".$id);
+        $vehicle = selectJoinDB("CONDUIT c", "v.id_vehicule","LEFT JOIN VEHICULES v ON c.id_vehicule = v.id_vehicule", "-1");
+
+        if($vehicle){
+            $vehicle = $vehicle[0]["id_vehicule"];
+        } else {
+            $vehicle = null;
+        }
 
         if (!$rows) {
             exit_with_message("huh2");
         }
-        exit_with_content($this->affiche($rows));
+
+        exit_with_content($this->affiche($rows, $vehicle));
     }
 
     public function createTrajet($route,$apiKey){

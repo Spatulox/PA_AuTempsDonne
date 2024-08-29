@@ -4,6 +4,7 @@ class User extends General{
         super();
         this.adresse = ipAddressApi;
         this.apikey = null;
+        this.id_user = null;
         this.nom = null;
         this.prenom = null;
         this.email = null;
@@ -58,6 +59,7 @@ class User extends General{
      * @returns {boolean} - Returns true if the connection is successful, false otherwise.
      */
     async connect(){
+        console.log("Connect")
 
         if(this.email == "" && this.password == "" && this.apikey == null){
             popup("You need to give the email and the password")
@@ -67,6 +69,11 @@ class User extends General{
         // If the apikey is inside the class
         // loginApi detect it and store it inside before this
         if(this.apikey != null){
+            if(this.getBigCookie()){
+                console.log("Cookies déjà existant")
+                return true
+            }
+            console.log("Meh")
             await this.me(true)
             return true
         }
@@ -92,11 +99,13 @@ class User extends General{
             "mdp": this.password
         };
 
+        console.log("login")
         const rep = await this.fetchSync(this.adresse  + "/login", this.optionPost(data))
         if(!this.compareAnswer(rep)){
             return false
 
         }
+        this.setBigCookie(rep)
         this.setVar(rep)
         this.setCookie("apikey", rep.apikey, 7);
         if(rep.premiumTime){
@@ -129,6 +138,7 @@ class User extends General{
                 return false
             }
             this.setVar(rep)
+            this.setBigCookie(rep)
             await this.myEntrepot()
             return rep
         }
@@ -222,6 +232,7 @@ class User extends General{
     logout() {
         this.apikey = '';
         this.deleteCookie("apikey")
+        this.deleteCookie("userData")
     }
 
     /**
@@ -233,6 +244,7 @@ class User extends General{
         if(rep.apikey != "hidden"){
             this.apikey = rep.apikey
         }
+        this.id_user = rep.id_user
         this.nom = rep.nom
         this.prenom = rep.prenom
         this.email = rep.email
@@ -246,6 +258,61 @@ class User extends General{
         this.premiumDate = rep.premiumDate
         this.premiumTime = rep.premiumTime
 
+        return true
+    }
+
+    getBigCookie(){
+        let rep = getCookie("userData")
+        if(!rep){
+            return false
+        }
+
+        rep = decodeURIComponent(rep);
+        rep = JSON.parse(rep);
+
+        this.id_user = rep.id_user
+        this.nom = rep.nom
+        this.prenom = rep.prenom
+        this.email = rep.email
+        this.telephone = rep.telephone
+        this.date_inscription = rep.date_inscription
+        this.role = rep.id_role
+        this.password = null
+        this.entrepot = rep.id_entrepot
+        this.entrepotString = rep.entrepot
+        this.roleString = this.roleArray[rep.id_role]
+        this.index = rep.index
+        this.premiumDate = rep.premiumDate
+        this.premiumTime = rep.premiumTime
+
+        return true
+    }
+    async setBigCookie(rep){
+        console.log("Setting big cookies")
+        if(rep.apikey != "hidden"){
+            this.apikey = rep.apikey
+        }
+
+        let entrepot = await this.myEntrepot()
+
+        const userData = {
+            "id_user":rep.id_user,
+            "nom":rep.nom,
+            "prenom":rep.prenom,
+            "email":rep.email,
+            "telephone":rep.telephone,
+            "date_inscription":rep.date_inscription,
+            "id_role":rep.id_role,
+            "password":null,
+            "id_entrepot":entrepot[0].id_entrepot,
+            "entrepot":entrepot[0].nom,
+            "roleString":this.roleArray[rep.id_role],
+            "index":rep.id_index,
+            "premiumDate":rep.premiumDate,
+            "premiumTime":rep.premiumTime,
+        }
+        this.setCookie("userData", encodeURIComponent(JSON.stringify(userData)), 7)
+        console.log("Big Cooked set")
         return true
     }
 

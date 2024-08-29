@@ -2,7 +2,7 @@ class General {
 
     constructor() {
         this.lang = getCookie("lang")
-        this.msg = dico[this.lang]
+        this.msg = (dico[this.lang] !== undefined ? dico[this.lang] : dico["EN"])
         this.frontaddresse = ipAddressFront;
     }
 
@@ -27,14 +27,16 @@ class General {
             const message = await response.json()
             if (message.hasOwnProperty("message") && showMessage === true) {
                 popup(message.message)
-                return
+                return true
             }
             return message
         } else {
             const text = await response.json()
+            // DEBUG alertDebug() (a commenter) ou mettre un console.log
             if(showMessage === true){
                 alert(`Impossible de réaliser cette requête (${response.statusText}) : ${response.url}`)
             }
+            // FIN DEBUG
             if (text.hasOwnProperty("message")) {
                 if(showMessage === true){
                     popup(text.message)

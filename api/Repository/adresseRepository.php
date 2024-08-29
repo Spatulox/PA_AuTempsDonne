@@ -78,7 +78,7 @@ class adresseRepository {
 
         $res=insertDB("ADRESSE", ["adresse"],[$address]);
         if (!$res) {
-            exit_with_message("Erreur: creation addresse");
+            exit_with_message("Erreur lors de la création de l'adresse");
         }else{
             $add = selectDB("ADRESSE", "*", "adresse='".$address."'", "bool")[0];
 

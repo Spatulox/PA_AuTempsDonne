@@ -102,6 +102,7 @@ CREATE TABLE UTILISATEUR(
    id_entrepot INT,
    id_index INT NOT NULL,
    id_role INT NOT NULL,
+   validate_files INT NOT NULL DEFAULT 0,
    PRIMARY KEY(id_user),
    FOREIGN KEY(id_adresse) REFERENCES ADRESSE(id_adresse),
    FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
@@ -143,25 +144,32 @@ CREATE TABLE SERVICE(
    id_service INT AUTO_INCREMENT,
    description_service VARCHAR(255),
    type_service INT,
-   servive_date_debut DATETIME,
-   servive_date_fin DATETIME,
-   id_user INT NOT NULL,
+   service_date_debut DATETIME,
+   service_date_fin DATETIME,
+   id_user_booking INT NOT NULL,
    PRIMARY KEY(id_service),
-   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user)
+   FOREIGN KEY(id_user_booking) REFERENCES UTILISATEUR(id_user)
 );
-
 
 CREATE TABLE VEHICULES(
    id_vehicule INT AUTO_INCREMENT,
    capacite INT,
    nom_du_vehicules VARCHAR(255),
    nombre_de_place INT,
-   id_entrepot INT,
+   id_ventrepot INT,
    appartenance INT,
-   id_service INT,
+   id_owner INT,
+   immatriculation VARCHAR(255) UNIQUE,
    PRIMARY KEY(id_vehicule),
-   FOREIGN KEY(id_entrepot) REFERENCES ENTREPOTS(id_entrepot),
-   FOREIGN KEY(id_service) REFERENCES SERVICE(id_service)
+   FOREIGN KEY(id_ventrepot) REFERENCES ENTREPOTS(id_entrepot),
+   FOREIGN KEY(id_owner) REFERENCES UTILISATEUR(id_user)
+);
+
+CREATE TABLE LINKSERVICEVEHICLE(
+    id_vehicule INT NOT NULL,
+    id_service INT NOT NULL,
+    FOREIGN KEY(id_vehicule) REFERENCES VEHICULES(id_vehicule),
+    FOREIGN KEY(id_service) REFERENCES SERVICE(id_service)
 );
 
 CREATE TABLE CONDUIT(
@@ -593,24 +601,43 @@ INSERT INTO UTILISATEUR (nom, prenom, email, telephone, date_inscription, apikey
 
 UPDATE UTILISATEUR SET apikey = SHA2(CONCAT(id_user, nom, prenom, mdp, email), 256) WHERE id_user IS NOT NULL;
 
+UPDATE UTILISATEUR SET validate_files = 1 WHERE id_user > 0 AND id_user <= 15;
+UPDATE UTILISATEUR SET validate_files = 2 WHERE id_user > 15 AND id_user <= 20;
+
 
 INSERT INTO DISPONIBILITE (id_user, id_dispo)
 VALUES
-  (3, 1), (3, 5), (3, 6), (3, 7),
-  (6, 1), (6, 2), (6, 6), (6, 7),
-  (15, 1), (15, 2), (15, 3),
-  (18, 1), (18, 2), (18, 3), (18, 4), (18, 5),
-  (9, 1), (9, 2), (9, 6), (9, 7),
-  (24, 1), (24, 2), (24, 3), (24, 7),
-  (12, 4), (12, 5), (12, 6), (12, 7);
+  (4, 1), (4, 5), (4, 6), (4, 7),
+  (7, 1), (7, 2), (7, 6), (7, 7),
+  (16, 1), (16, 2), (16, 3),
+  (19, 1), (19, 2), (19, 3), (19, 4), (19, 5),
+  (10, 1), (10, 2), (10, 6), (10, 7),
+  (25, 1), (25, 2), (25, 3), (25, 7),
+  (13, 4), (13, 5), (13, 6), (13, 7);
 
-  INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_entrepot, appartenance, id_service)
+INSERT INTO VEHICULES (capacite, nom_du_vehicules, nombre_de_place, id_ventrepot, appartenance, immatriculation, id_owner)
 VALUES
-  (3, 'lexus lfa', 2, 1,1,NULL),
-  (100, 'Mercedes Sprinter', 2, 1,1,NULL),
-  (250, 'Peugeot Boxer', 2, 2,1,NULL),
-  (400, 'Iveco Daily', 2, 2,1,NULL),
-  (400, 'Nissan NV400', 2, 1,1,NULL);
+  (3, 'lexus lfa', 2, 1,1, 'AB-123-CD', 1),
+  (100, 'Mercedes Sprinter', 2, 1,1, 'BA-321-DC', 1),
+  (250, 'Peugeot Boxer', 2, 2,1, 'CD-456-EF', 1),
+  (400, 'Iveco Daily', 2, 2,2, 'DC-654-FE', 4),
+  (400, 'Nissan NV400', 2, 1,2, 'GH-789-IJ', 4);
+
+INSERT INTO SERVICE (id_service, description_service, type_service, service_date_debut, service_date_fin, id_user_booking) VALUES
+(1, 'Partage de vehicule', 1, '2024-05-20 08:00:00', '2024-05-20 12:00:00', 5),
+(2, 'Partage de vehicule', 1, '2024-08-21 08:00:00', '2024-08-21 12:00:00', 11),
+(3, 'Partage de vehicule', 1, '2024-08-22 14:00:00', '2024-08-22 20:00:00', 5),
+(4, 'Partage de vehicule', 1, '2024-08-23 08:00:00', '2024-08-23 12:00:00', 11),
+(5, 'Partage de vehicule', 1, '2024-08-24 14:00:00', '2024-08-24 20:00:00', 5),
+(6, 'Partage de vehicule', 1, '2024-08-25 08:00:00', '2024-08-25 20:00:00', 11);
+
+INSERT INTO LINKSERVICEVEHICLE (id_service, id_vehicule) VALUES
+(1, 4),
+(2, 4),
+(3, 4),
+(4, 5),
+(5, 4),
+(6, 5);
 
 INSERT INTO PLANNINGS (description, date_activite, id_index_planning, id_activite)
 VALUES (
@@ -628,13 +655,17 @@ VALUES
 INSERT INTO UTILISER (id_trajets, id_adresse)
 VALUES (2, 17);
 
+INSERT INTO CONDUIT (id_trajets, id_vehicule) VALUES
+(2, 1);
+
   INSERT INTO DEMANDE (desc_demande, activite, etat, date_act, id_activite, id_planning, id_user)
 VALUES
   ('collecte intermarcher', 'groupe', 1, NULL, 6, NULL, 17),
   ('collecte divers', 'groupe', 1, NULL, 6, NULL, 17),
   ('collecte divers', 'groupe', 1, NULL, 6, NULL, 23),
   ('ecole a besoin daide', 'seul', 1, '2024-05-15 09:00:00', 3, NULL, 4),
-  ('Mamie gertrude doit aller faire cest course', 'seul', 1, '2024-05-18 14:00:00', 5, NULL, 10),
+  ('Mamie gertrude doit aller faire ces courses', 'seul', 1, '2024-05-18 14:00:00', 5, NULL, 10),
+  ('Mamie gertrude doit aller faire ces courses', 'seul', 1, '2024-05-18 14:00:00', 5, NULL, 10),
   ('patoche help', 'seul', 0, '2024-05-20 08:00:00', 4, 1, 16),
   ('patoche cour du soir help', 'seul', 1, '2024-05-25 18:00:00', 4, NULL, 16);
 

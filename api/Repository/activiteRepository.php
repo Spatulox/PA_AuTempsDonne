@@ -57,7 +57,7 @@ class ActiviteRepository {
 
     public function createActivite(ActiviteModels $activite,$apiKey){
 
-            $string = "nom_activite='" . $activite->nom_activite ."'";
+        $string = "nom_activite='" . $activite->nom_activite ."'";
 
         $Select = selectDB("ACTIVITES", "*", $string, "bool");
 
@@ -97,7 +97,7 @@ class ActiviteRepository {
         );
 
         if (!$updated) {
-            exit_with_message("Erreur, le activite n'a pas pu être mis à jour. Veuillez réessayer.", 500);
+            exit_with_message("Erreur, l'activité n'a pas pu être mis à jour. Veuillez réessayer.", 500);
         }
 
         $historiqueRepo = new HistoriqueRepository();

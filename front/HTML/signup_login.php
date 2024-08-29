@@ -120,7 +120,7 @@
                 <form method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="file_upload"><?php echo($data["signup_login"]["formSignUp"]["conduct"]) ?></label>
-                        <input type="file" id="file_upload" name="file_upload" accept=".jpg, .jpeg, .png" />
+                        <input type="file" id="fileInput" name="file_upload" accept=".jpg, .jpeg, .png" />
                     </div>
                 </form>
 
@@ -214,6 +214,7 @@
 <script>
 
     async function signup() {
+        startLoading()
 
         let getSelectedValue = (() => {
             const radios = document.getElementsByName('statut');
@@ -222,6 +223,7 @@
                     return radios[i].value
                 }
             }
+            stopLoading()
             return false
         })
 
@@ -239,12 +241,14 @@
 
         if (!nom || !prenom || !email || !password || !street || !postal || !city) {
             popup("Veuillez remplir le formulaire...")
+            stopLoading()
             return
         }
 
         const role = getSelectedValue()
         if (role === false) {
             popup("Vous devez spécifier un rôle :/")
+            stopLoading()
             return
         }
 
@@ -268,14 +272,11 @@
         formData.append('data', JSON.stringify(data)); // Ajout des données au FormData
 
 
+
         const options = {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: formData//JSON.stringify(data)
+            body: formData
         };
-
 
         // Fetch the api
         const response = await fetch(ipAddressApi+"/user", options)
@@ -287,19 +288,21 @@
                 alertDebug(text.message)
                 popup(text.message)
             }
+            stopLoading()
             return false
         }
 
         const message = await response.json()
         if (message.hasOwnProperty("message")) {
             popup(message.message)
+            stopLoading()
             return true
         }
 
         const user = new User(email, password)
         await user.connect()
         user.printUser()
-
+        stopLoading()
         redirect("./moncompte.php?message=Votre compte est en attente de validation auprès de la modération")
 
     }
@@ -308,7 +311,7 @@
 
 <script>
 
-    async function signup() {
+    /*async function signup() {
 
         startLoading()
 
@@ -395,6 +398,6 @@
         stopLoading()
         redirect("./moncompte.php?message=Votre compte est en attente de validation auprès de la modération")
 
-    }
+    }*/
 
 </script>

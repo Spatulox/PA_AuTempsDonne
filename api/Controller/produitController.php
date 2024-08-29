@@ -24,7 +24,7 @@ function collectController($uri, $apikey) {
                 $produitService->getProduitAll($apikey);
             }
 
-            exit_with_message("Wtf, why are you here bro", 500);
+            exit_with_message("Wtf, why are you here bro", 404);
 
             break;
         case 'POST':
@@ -54,7 +54,7 @@ function collectController($uri, $apikey) {
         case 'DELETE':
 
             if(!$uri[3]){
-                exit_with_message("Need to specifie the id of the collect to delete", 403);
+                exit_with_message("Need to specify the id of the collect to delete", 403);
             }
 
             $role = getRoleFromApiKey($apikey);

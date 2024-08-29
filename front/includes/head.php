@@ -1,5 +1,8 @@
 
-<?php include("../includes/checkRights.php");?>
+<?php
+include("../includes/checkRights.php");
+include("../includes/functions.php");
+?>
 
 
 <meta charset="utf-8">
@@ -17,11 +20,14 @@
 <script type="text/javascript" src="../JSManager/Planning.js"></script>
 <script type="text/javascript" src="../JSManager/GestionStripe.js"></script>
 <script type="text/javascript" src="../JSManager/GestionMail.js"></script>
+<script type="text/javascript" src="../JSManager/File.js"></script>
 
 
 <?php
 
-if (basename($_SERVER['REQUEST_URI']) == "etagere.php"){
+$basename = explode("?", basename($_SERVER['REQUEST_URI']))[0];
+
+if ($basename == "etagere.php"){
 
     echo '<script type="text/javascript" src="../JSManager/Admin.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
@@ -55,15 +61,21 @@ if($role == 3){
     echo '<script type="text/javascript" src="../JSManager/Admin.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionStock.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionProduct.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionVehicle.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
 
 }
 
 if($role == 4){
-
     echo '<script type="text/javascript" src="../JSManager/Admin.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/BeneficiaireRequest.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionActivite.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionProduct.js"></script>';
+    
+    if ($basename == "vehicle.php"){
+        echo '<script type="text/javascript" src="../JSManager/GestionVehicle.js"></script>';
+        echo '<script type="text/javascript" src="../JSManager/GestionEntrepot.js"></script>';
+    }
 }
 
 if($role == 5){
@@ -86,9 +98,11 @@ if($role == 5){
 <script type="text/javascript" src="../JS/createHtmlElement.js"></script>
 
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRgUYpS2R7KL3eZeSGVQYj8Gs9_lVy0x0&libraries=places"></script>
-<script type="text/javascript" src="../JS/itineraire.js"></script>
-<script type="text/javascript" src="../JS/getDistance.js"></script>
+<?php if ($basename == "gestDemandes.php" || $basename == "request.php"): ?>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRgUYpS2R7KL3eZeSGVQYj8Gs9_lVy0x0&libraries=places"></script>
+    <script type="text/javascript" src="../JS/itineraire.js"></script>
+    <script type="text/javascript" src="../JS/getDistance.js"></script>
+<?php endif; ?>
 
 <?php
 if($returnCode === false){
