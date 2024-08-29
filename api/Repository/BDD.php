@@ -125,14 +125,13 @@ function selectDB($table, $colums, $condition = -1, $additionnalMessage = NULL){
         if($additionnalMessage == "-@"){
             exit_with_message($e->getMessage());
         }
-
+        exit_with_message($e->getMessage());
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
 
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
 			exit_with_message("Error : ".str_replace('"', "'", $tmp), 500);
 		}
-
 	    exit_with_message("PDO error :" . str_replace('"', "'", explode("DETAIL: ", $e->getMessage())[1]), 500);
 	}
 
@@ -190,7 +189,7 @@ function selectJoinDB($table, $colums, $join, $condition = -1, $additionnalMessa
         if($additionnalMessage == "-@"){
             exit_with_message($e->getMessage());
         }
-
+        exit_with_message($e->getMessage());
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
 
@@ -282,7 +281,7 @@ function insertDB($table, $columnArray, $columnData, $returningData = null)
         if($returningData == "bool"){
             return false;
         }
-
+        exit_with_message($e->getMessage());
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
@@ -427,7 +426,7 @@ function deleteDB($table, $condition, $debug = null)
         if($debug == "bool"){
             return false;
         }
-
+        exit_with_message($e->getMessage());
 		if (checkMsg($e->getMessage(), $wordToSearch = "Undefined column"))
 		{
 			$tmp = explode("does not exist", explode(":", $e->getMessage())[3])[0] . "does not exist";
