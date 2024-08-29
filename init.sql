@@ -109,8 +109,8 @@ CREATE TABLE UTILISATEUR(
    FOREIGN KEY(id_role) REFERENCES ROLES(id_role)
 );
 
-CREATE TABLE RECETTE(
-   id_recette INT ,
+CREATE TABLE RECETTE(   
+   id_recette INT AUTO_INCREMENT,
    nom_recette NVARCHAR(100),
    description_recette NVARCHAR(MAX),
    PRIMARY KEY(id_recette)
@@ -124,7 +124,7 @@ CREATE TABLE UTILISE(
 );
 
 CREATE TABLE INGREDIENT(
-   id_ingredient INT ,
+   id_ingredient INT AUTO_INCREMENT,
    nom_ingredient NVARCHAR(100),
    PRIMARY KEY(id_ingredient)
 );
