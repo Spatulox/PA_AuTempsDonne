@@ -33,17 +33,18 @@ class UserRepository {
 
     //-------------------------------------
 
-    public function getUser($id,$apiKey){
+    public function getUser($id,$apiKey = null){
         $user = selectDB("UTILISATEUR", "*", "id_user='".$id."'");
 
         $address = selectDB("ADRESSE", "*", "id_adresse='".$user[0]['id_adresse']."'")[0]["adresse"];
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
-        $id_user =getIdUserFromApiKey($apiKey);
-
-        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+        if($apiKey != null){
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+        }
 
         return returnUser($user, $address);
     }
@@ -227,7 +228,7 @@ class UserRepository {
 
         $user = selectDB("UTILISATEUR", "id_user, id_index", "apikey='".$apiKey."'", "bool")[0];
 
-        $userToDelete = $this->getUser($id);
+        $userToDelete = $this->getUser($id, $apiKey);
 
         if($userToDelete->id_role == 1){
             exit_with_message("You can't unrefence an admin", 403);
@@ -261,7 +262,7 @@ class UserRepository {
 
         $id = $user["id_user"];
 
-        $userToDelete = $this->getUser($id);
+        $userToDelete = $this->getUser($id, $apiKey);
 
         if($userToDelete->id_role == 1){
             exit_with_message("You can't unrefence an admin", 403);
@@ -469,7 +470,7 @@ class UserRepository {
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 
-        exit_with_content($this->getUser($id));
+        exit_with_content($this->getUser($id, $apiKey));
     }
 
     //-----------------------------------------------------------------------------------------
@@ -494,14 +495,14 @@ class UserRepository {
         $all = [];
 
         for ($i = 0; $i < count($usersArray); $i++) {
-
             $all[] = $this->getUser($usersArray[$i]["id_user"]);
-
         }
+
+        exit_with_content($all);
     }
 
 
-    public function GetAllRoleUserDate($date, $role)
+    public function GetAllRoleUserDate($date, $role, $apiKey)
     {
 
         $conditions = "SEMAINE.id_dispo='".$date."' AND UTILISATEUR.id_user != 1 AND UTILISATEUR.id_role=".$role;
