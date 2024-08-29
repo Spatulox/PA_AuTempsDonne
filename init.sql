@@ -109,6 +109,36 @@ CREATE TABLE UTILISATEUR(
    FOREIGN KEY(id_role) REFERENCES ROLES(id_role)
 );
 
+CREATE TABLE RECETTE(   
+   id_recette INT AUTO_INCREMENT,
+   nom_recette NVARCHAR(100),
+   description_recette TEXT,
+   PRIMARY KEY(id_recette)
+);
+
+CREATE TABLE UTILISE(
+   id_user INT NOT NULL,
+   id_recette INT NOT NULL,
+   FOREIGN KEY(id_user) REFERENCES UTILISATEUR(id_user),
+   FOREIGN KEY(id_recette) REFERENCES RECETTE(id_recette)
+);
+
+CREATE TABLE INGREDIENT(
+   id_ingredient INT AUTO_INCREMENT,
+   nom_ingredient NVARCHAR(100),
+   unit_mesure NVARCHAR(4),
+   PRIMARY KEY(id_ingredient)
+);
+
+CREATE TABLE DANS(
+   id_ingredient INT NOT NULL,
+   id_recette INT NOT NULL,
+   quantite_recette INT,
+   unit_mesure_ingredient NVARCHAR(4),
+   FOREIGN KEY(id_ingredient) REFERENCES INGREDIENT(id_ingredient),
+   FOREIGN KEY(id_recette) REFERENCES RECETTE(id_recette)
+);
+
 CREATE TABLE SERVICE(
    id_service INT AUTO_INCREMENT,
    description_service VARCHAR(255),

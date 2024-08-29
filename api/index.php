@@ -17,6 +17,8 @@ include_once './Controller/donController.php';
 include_once './Controller/etagereController.php';
 include_once './Controller/stripeController.php';
 include_once './Controller/mailController.php';
+include_once './Controller/recetteController.php';
+include_once './Controller/ingredientController.php';
 include_once './Controller/historiqueController.php';
 
 
@@ -199,6 +201,12 @@ function controller($uri) {
 
         case 'mail':
             mailController($uri, $apiKey);
+            break;
+        case 'recette':
+            recetteController($uri, $apiKey);
+            break;
+        case 'ingredient':
+            ingredientController($uri, $apiKey);
             break;
 
 
