@@ -18,6 +18,7 @@ include_once './Controller/etagereController.php';
 include_once './Controller/stripeController.php';
 include_once './Controller/mailController.php';
 include_once './Controller/recetteController.php';
+include_once './Controller/ingredientController.php';
 
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
@@ -199,6 +200,9 @@ function controller($uri) {
             break;
         case 'recette':
             recetteController($uri, $apiKey);
+            break;
+        case 'ingredient':
+            ingredientController($uri, $apiKey);
             break;
 
 
