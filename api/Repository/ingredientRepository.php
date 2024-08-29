@@ -15,20 +15,30 @@ class ingredientRepository
     public function getAllingredients()
     {
 
-        $liste = selectDB("INGREDIENT", "*");
+        $liste = selectDB("INGREDIENT", "*",-1);
+
+        $listeArray =[];
 
         if (!$liste) {
             exit_with_message("Impossible to select data for recette in the DB");
         }
+        for ($i=0; $i < count($liste); $i++) {
+            $ingredientModel = new IngredientModels(
+                $liste[$i]['id_ingredient'],
+                $liste[$i]['nom_ingredient']
+            );
 
-        exit_with_content($liste);
+            $listeArray[$i]=$ingredientModel;
+        }
+
+        exit_with_content($listeArray);
 
     }
 
    //-------------------------------------------------------------------------------------
     public function createingredient($nom_ingredient)
     {
-        $check=selectDB("INGREDIENT",["nom_ingredient"],"nom_ingredient='".$nom_ingredient."'","bool");
+        $check=selectDB("INGREDIENT","*","nom_ingredient='".$nom_ingredient."'","bool");
 
         if ($check) {
             exit_with_message("Ingredient already exists",500);
