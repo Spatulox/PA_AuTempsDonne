@@ -135,7 +135,7 @@ CREATE TABLE DANS(
    id_ingredient INT NOT NULL,
    id_recette INT NOT NULL,
    quantite_recette INT,
-   unit_mesure_ingredient NVARCHAR(20),
+   unit_mesure_ingredient NVARCHAR(255),
    FOREIGN KEY(id_ingredient) REFERENCES INGREDIENT(id_ingredient),
    FOREIGN KEY(id_recette) REFERENCES RECETTE(id_recette)
 );
