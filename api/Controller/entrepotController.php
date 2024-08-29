@@ -13,19 +13,19 @@ function entrepotController($uri, $apiKey) {
         case 'GET':
             if (!$uri[3]){
                 $entepotService = new EntrepotService();
-                $entepotService->getAllEntrepot();
+                $entepotService->getAllEntrepot($apiKey);
             }
             elseif(filter_var($uri[3], FILTER_VALIDATE_INT)){
 
                 $entepotService = new EntrepotService();
-                $entepotService->getEntrepotById($uri[3]);
+                $entepotService->getEntrepotById($uri[3],$apiKey);
             }
             elseif ($uri[3]=="place" && filter_var($uri[4], FILTER_VALIDATE_INT)) {
                 $entepotService = new EntrepotService();
-                $entepotService->getEntrepotPlaceById($uri[4]);
+                $entepotService->getEntrepotPlaceById($uri[4],$apiKey);
             } elseif ($uri[3]=="qr" && filter_var($uri[4], FILTER_VALIDATE_INT)) {
                 $entepotService = new EntrepotService();
-                $entepotService->getEtagereQR($uri[4]);
+                $entepotService->getEtagereQR($uri[4],$apiKey);
             }
 
             break;
@@ -121,7 +121,7 @@ function entrepotController($uri, $apiKey) {
             $localisation = $json["localisation"];
 
             $entrepotService = new EntrepotService();
-            $entrepotService->updateEntrepot($id_entrepot, $nom_entrepot, $localisation);
+            $entrepotService->updateEntrepot($id_entrepot, $nom_entrepot, $localisation,$apiKey);
             
 
             break;
@@ -143,7 +143,7 @@ function entrepotController($uri, $apiKey) {
 
 
                 $entrepotService = new EntrepotService();
-                $entrepotService->deleteEntrepotById($uri[4]);
+                $entrepotService->deleteEntrepotById($uri[4],$apiKey);
             }
 
             if ($uri[3]==="delete_etagere") {
@@ -153,7 +153,7 @@ function entrepotController($uri, $apiKey) {
 
 
                 $entrepotService = new EntrepotService();
-                $entrepotService->deleteEtageretById($uri[4]);
+                $entrepotService->deleteEtageretById($uri[4],$apiKey);
             }
 
             break;

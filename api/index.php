@@ -17,6 +17,7 @@ include_once './Controller/donController.php';
 include_once './Controller/etagereController.php';
 include_once './Controller/stripeController.php';
 include_once './Controller/mailController.php';
+include_once './Controller/historiqueController.php';
 
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
@@ -191,6 +192,9 @@ function controller($uri) {
             break;
         case 'stripe':
             stripeController($uri, $apiKey);
+            break;
+       case 'historique':
+            historiqueController($uri,$apiKey);
             break;
 
         case 'mail':

@@ -8,19 +8,19 @@ class ProduitService
     {
     }
 
-    function getProduitByID($id){
+    function getProduitByID($id,$apikey){
 
 
         $produitRepository = new ProduitRepository();
-        $produitRepository->getProduitId($id);
+        $produitRepository->getProduitId($id,$apikey);
     }
 
-    function getProduitAll(){
+    function getProduitAll($apikey){
         $produitRepository = new ProduitRepository();
-        $produitRepository->getAllProduit();
+        $produitRepository->getAllProduit($apikey);
     }
 
-    function createProduit($nom_produit, $type){
+    function createProduit($nom_produit, $type,$apikey){
         $check=selectDB("TYPE","*","id_type=".$type);
         if (!$check)
         {
@@ -28,12 +28,12 @@ class ProduitService
         }
 
         $produitRepository = new ProduitRepository();
-        $produitRepository->createProduit($nom_produit, $type);
+        $produitRepository->createProduit($nom_produit, $type,$apikey);
     }
 
-    function deleteProduit($id){
+    function deleteProduit($id,$apikey){
         $produitRepository = new ProduitRepository();
-        $produitRepository->deleteProduitId($id);
+        $produitRepository->deleteProduitId($id,$apikey);
     }
 
     public function getType()

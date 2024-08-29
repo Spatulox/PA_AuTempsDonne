@@ -8,7 +8,7 @@ class adresseRepository {
 
     }
 
-    public function getAllAdresse(){
+    public function getAllAdresse($apiKey){
         $adresseArray = selectDB("ADRESSE", "*", -1);
 
         if(!$adresseArray){
@@ -25,10 +25,18 @@ class adresseRepository {
             );
             $adresse[$i] = $test;
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 8;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $adresse;
     }
 
-    public function getAdresseById($id){
+    public function getAdresseById($id,$apiKey){
         $rows = selectDB("ADRESSE", "id_adresse, adresse", "id_adresse=".$id);
 
         if (!$rows) {
@@ -46,10 +54,17 @@ class adresseRepository {
             $trajet[] = $trajetModel;
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 8;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $trajet;
     }
 
-    public function CreateAdresse($address)
+    public function CreateAdresse($address,$apiKey)
     {
 
         if($address === ""){
@@ -66,12 +81,20 @@ class adresseRepository {
             exit_with_message("Erreur: creation addresse");
         }else{
             $add = selectDB("ADRESSE", "*", "adresse='".$address."'", "bool")[0];
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 8;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
             return new adresseModel($add["id_adresse"], $add["adresse"]);
         }
 
     }
 
-    public function DeleteAdresse($id){
+    public function DeleteAdresse($id,$apiKey){
         $add = selectDB("ADRESSE", "*", "id_adresse=".$id, "bool");
 
         if(count($add) == 0 || $add === false){
@@ -80,6 +103,14 @@ class adresseRepository {
         if(deleteDB("ADRESSE", "id_adresse=".$id, "bool")){
             exit_with_message("Address successfully deleted", 200);
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 8;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         exit_with_message("Erreur: delete addresse");
 
     }

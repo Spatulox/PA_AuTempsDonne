@@ -10,7 +10,7 @@ class UserRepository {
 
     //-------------------------------------
 
-    public function getUsers($index = 2){
+    public function getUsers($index = 2,$apiKey){
         $usersArray = selectDB("UTILISATEUR", "*", "id_index='".$index."'");
 
         $user = [];
@@ -21,23 +21,37 @@ class UserRepository {
             $user[$i] = returnUser($usersArray, $address, $i);
             //$user[$i] = new UserModel($usersArray[$i]['id_ueser'], $usersArray[$i]['nom'], $usersArray[$i]['prenom'], $usersArray[$i]['date_inscription'], $usersArray[$i]['email'], $address, $usersArray[$i]['telephone'], $usersArray[$i]['id_role'], $usersArray[$i]['apikey'], $usersArray[$i]['id_index'], $usersArray[$i]['id_entrepot']);
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $user;
     }
 
     //-------------------------------------
 
-    public function getUser($id){
+    public function getUser($id,$apiKey){
         $user = selectDB("UTILISATEUR", "*", "id_user='".$id."'");
 
         $address = selectDB("ADRESSE", "*", "id_adresse='".$user[0]['id_adresse']."'")[0]["adresse"];
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return returnUser($user, $address);
-        //return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $address, $user[0]['telephone'], $user[0]['id_role'], "hidden", $user[0]['id_index'], $user[0]['id_entrepot']);
     }
 
     //-------------------------------------
 
-    public function getWaitUsers(){
+    public function getWaitUsers($apiKey){
         $usersArray = selectDB("UTILISATEUR", "*", "id_index=3", "bool");
         if(!$usersArray){
             exit_with_message("No users waiting user to validate", 200);
@@ -54,12 +68,19 @@ class UserRepository {
             $user[$i] = returnUser($usersArray, $address, $i);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $user;
     }
 
     //-------------------------------------
 
-    public function getUserApi($api){
+    public function getUserApi($api,$apiKey){
 
         $user = selectDB("UTILISATEUR", "*", "apikey='".$api."'", "bool");
         if(!$user){
@@ -68,8 +89,14 @@ class UserRepository {
 
         $address = selectDB("ADRESSE", "*", "id_adresse='".$user[0]['id_adresse']."'")[0]["adresse"];
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return returnUser($user, $address);
-        //return new UserModel($user[0]['id_user'], $user[0]['nom'], $user[0]['prenom'], $user[0]['date_inscription'], $user[0]['email'], $address, $user[0]['telephone'], $user[0]['id_role'], "hidden", $user[0]['id_index'], $user[0]['id_entrepot']);
     }
 
     //-------------------------------------
@@ -119,6 +146,13 @@ class UserRepository {
 
         $user = selectDB('UTILISATEUR', '*', 'email="'.$user[0]['email'].'"');
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =$user[0]['id_user'];
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         if($filePath != null){
             $fichier = new FichierService();
             $fichier->registerFile($filePath, $user[0]["id_user"]);
@@ -166,10 +200,25 @@ class UserRepository {
         exit_with_message("User was not updated");
     }
 
-    public function updateUserValidate($id_user, $id_index){
+    public function updateUserValidate($id_user, $id_index,$apiKey){
         $debug = updateDB("UTILISATEUR", ["id_index"], [$id_index], "id_user='".$id_user."'");
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         if(!$debug){
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
             exit_with_message("Error while update user");
         }
     }
@@ -200,6 +249,13 @@ class UserRepository {
             exit_with_message("You can't unrefence a user wich is not you", 403);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id);
     }
 
@@ -229,12 +285,19 @@ class UserRepository {
             exit_with_message("You can't unrefence a user wich is not you", 403);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return updateDB("UTILISATEUR", ['id_index'], [1], "id_user=".$id);
     }
 
 //--------------------------------------------------------------------------------
 
-    public function dispoUser($id_dispo, $id)
+    public function dispoUser($id_dispo, $id,$apiKey)
     {
         $check = selectDB("DISPONIBILITE" , "*", "id_user=".$id, "bool");
         if ($check){
@@ -245,12 +308,19 @@ class UserRepository {
             $res = insertDB("DISPONIBILITE" ,["id_dispo", "id_user"], [$id_dispo[$i], $id]);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $this->getDispoUserMe($id);
     }
 
     //--------------------------------------------------------------------------------
 
-    public function getAllDispoUsers()
+    public function getAllDispoUsers($apiKey)
     {
         $conditions = "id_index= 2 AND id_role=3 ";
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
@@ -282,12 +352,19 @@ class UserRepository {
             unset($dispoArray);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $dispos;
     }
 
     //-------------------------------------------------------------------------------------------------------
 
-    public function updatedispoUser($id_dispo, $id)
+    public function updatedispoUser($id_dispo, $id,$apiKey)
     {
         deleteDB("DISPONIBILITE", "id_user=".$id);
         $dispos = [];
@@ -302,21 +379,35 @@ class UserRepository {
             $dispos[] = new DispoModel($dispo["id_user"], $dispo["id_dispo"]);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 
         return($dispos);
     }
 
     //-----------------------------------------------------------------------------------------------
 
-    public function updateentrepotUser($id_entrepot, $id)
+    public function updateentrepotUser($id_entrepot, $id,$apiKey)
     {
         $res=updateDB("UTILISATEUR", ["id_entrepot"], [$id_entrepot],"id_user=".$id);
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $res;
     }
 
     //-----------------------------------------------------------------------------------
 
-    public function getDispoUserMe($id)
+    public function getDispoUserMe($id,$apiKey)
     {
         $conditions = "UTILISATEUR.id_user=".$id;
         $columns = "UTILISATEUR.id_user, DISPONIBILITE.id_dispo, SEMAINE.dispo";
@@ -347,21 +438,37 @@ class UserRepository {
             unset($res);
             unset($dispoArray);
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $dispos;
     }
 
     //-----------------------------------------------------------------------------------------
 
-    public function updateRoleUser($role, $id)
+    public function updateRoleUser($role, $id,$apiKey)
     {
         updateDB("UTILISATEUR", ["id_role"], [$role],"id_user=".$id);
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         exit_with_content($this->getUser($id));
        
     }
 
     //-----------------------------------------------------------------------------------------
 
-    public function GetAllUserDate($date)
+    public function GetAllUserDate($date,$apiKey)
     {
 
         $conditions = "SEMAINE.id_dispo=".$date;
@@ -386,6 +493,12 @@ class UserRepository {
 
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 
         return $all;
     }

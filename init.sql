@@ -641,3 +641,16 @@ VALUES
   (400, '2024-05-06', NULL, '2024-05-06', 'brun', 1, 1),
   (70, '2024-05-06', NULL, '2024-05-06', '', 2, 1),
   (130, '2024-05-06', NULL, '2024-05-06', '', 2, 2);
+
+   INSERT INTO SECTEUR (id_secteur,nom_secteur)
+   VALUES
+   (1,'User'),
+   (2,'Produit'),
+   (3,'trajet'),
+   (4,'planning'),
+   (5,'entrepots'),
+   (6,'demande'),
+   (7,'activite'),
+   (8,'Adresse')
+   (9,'Stock');
+   

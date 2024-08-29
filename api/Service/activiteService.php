@@ -12,7 +12,7 @@ class activiteService {
         $userRole = getRoleFromApiKey($apikey);
         if ($userRole==1 || $userRole==2 || $userRole==4 || $userRole==5) {
             $ActiviteRepository = new ActiviteRepository();
-            return $ActiviteRepository->getAllActivite();
+            return $ActiviteRepository->getAllActivite($apikey);
         }else{
             exit_with_message("Vous n'avez pas accès a cette commande");
         }
@@ -24,7 +24,7 @@ class activiteService {
     public function getActiviteById($id,$apikey) {
         $userRole = getRoleFromApiKey($apikey);
         $ActiviteRepository = new ActiviteRepository();
-        return $ActiviteRepository->getActiviteById($id);
+        return $ActiviteRepository->getActiviteById($id,$apikey);
     }
 
     /*
@@ -34,7 +34,7 @@ class activiteService {
         $userRole = getRoleFromApiKey($apikey);
         if ($userRole==1 || $userRole==2 || $userRole==4) {
             $ActiviteRepository = new ActiviteRepository();
-            return $ActiviteRepository->createActivite($Activite);
+            return $ActiviteRepository->createActivite($Activite,$apikey);
         }else{
             exit_with_message("Vous n'avez pas accès a cette commande");
         }
@@ -60,7 +60,7 @@ class activiteService {
         $userRole = getRoleFromApiKey($apikey);
         if ($userRole==1 || $userRole==2) {
             $ActiviteRepository = new ActiviteRepository();
-            return $ActiviteRepository->deleteActivite($id);
+            return $ActiviteRepository->deleteActivite($id,$apikey);
         }else{
             exit_with_message("Vous n'avez pas accès a cette commande");
         }

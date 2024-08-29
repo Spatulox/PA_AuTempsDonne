@@ -69,7 +69,7 @@ class TrajetRepository {
 
 
 
-    public function getAllTrajet(){
+    public function getAllTrajet($apiKey){
         $trajetArray = selectDB("TRAJETS", "id_trajets", -1,"bool");
 
         if(!$trajetArray){
@@ -86,10 +86,20 @@ class TrajetRepository {
             );
             $trajet[$i] = $test;
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 3;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $trajet;
     }
 
-    public function getTrajetById($id){
+    //-------------------------------------------------------------------------------
+
+    public function getTrajetById($id,$apiKey){
         $rows = selectDB("UTILISER", "id_trajets, id_adresse", "id_trajets=".$id);
 
         if (!$rows) {
@@ -98,7 +108,7 @@ class TrajetRepository {
         exit_with_content($this->affiche($rows));
     }
 
-    public function createTrajet($route){
+    public function createTrajet($route,$apiKey){
 
         $string = "INNER JOIN UTILISER U ON U.id_adresse = ADRESSE.id_adresse INNER JOIN TRAJETS T ON U.id_trajets = T.id_trajets";
 
@@ -118,10 +128,18 @@ class TrajetRepository {
         $data = [
             "addresse" => $addresses
         ];
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 3;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         exit_with_content($data);
     }
 
-    public function createTrajetInDB($tab){
+    public function createTrajetInDB($tab,$apiKey){
         $lastID = $this->getLastInsertId("TRAJETS", "id_trajets");
 
         if(count($lastID) > 0){
@@ -156,6 +174,13 @@ class TrajetRepository {
                 exit_with_message($msg);
             }
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 3;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 
         exit_with_message("Success", 200);
 

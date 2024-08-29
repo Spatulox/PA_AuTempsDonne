@@ -12,7 +12,7 @@ class StockRepository
     }
 
 
-    public function getAllStock()
+    public function getAllStock( $apiKey)
     {
 
         $stockArray = selectDB("STOCKS", "*", " quantite_produit >0 AND date_sortie IS NULL");
@@ -41,12 +41,20 @@ class StockRepository
 
             //    var_dump($stockArray[4]);
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 1;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $stock;
     }
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------
 
-    public function getAllStockInEntrepots($id)
+    public function getAllStockInEntrepots($id, $apiKey)
     {
         $string = "id_entrepot=" . $id;
         $entrepots = selectDB("ENTREPOTS", "id_entrepot", $string,"bool");
@@ -81,12 +89,20 @@ class StockRepository
             $stock[$i]->setentrepot(selectJoinDB("ETAGERES", "ETAGERES.id_entrepot ,ENTREPOTS.nom_entrepot", $string, "id_etagere=" . $stockArray[$i]['id_etagere'])[0]);
 
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 9;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $stock;
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------
 
-    public function createStock(StockModel $stock)
+    public function createStock(StockModel $stock, $apiKey)
 
     {
 
@@ -104,12 +120,19 @@ class StockRepository
             exit_with_message("Error, the Stock can't be created, plz try again", 500);
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 9;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $create;
     }
 
 //------------------------------------------------------------------------------------------------------
 
-    public function getAllProduitsInEntrepots($id, $produit)
+    public function getAllProduitsInEntrepots($id, $produit, $apiKey)
     {
         $string_entrepots = "id_entrepot=" . $id;
         $entrepots = selectDB("ENTREPOTS", "*", $string_entrepots, "bool");
@@ -157,17 +180,32 @@ class StockRepository
 
         }
 
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 9;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $stock;
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
 
 
-    public function deleteStock($id)
+    public function deleteStock($id, $apiKey)
     {
         $request = deleteDB("STOCKS", "id_stock=" . $id, "bool");
 
         if ($request) {
+
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 9;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
             exit_with_message("stock has been deleted", 200);
         }
 
@@ -177,7 +215,7 @@ class StockRepository
 
 //-------------------------------------------------------------------------------------------------------------------------------------------
 
-    public function addStock(array $tabb, StockModel $stock, $msg, $tabRenvoyer)
+    public function addStock(array $tabb, StockModel $stock, $msg, $tabRenvoyer, $apiKey)
     {
         for ($i = 0; $i < count($tabb); $i++) {
             $id_etagere = array_keys($tabb)[$i];
@@ -198,12 +236,20 @@ class StockRepository
             }
            $msg_tab[] = 'il faut ranger ' . $quantite . "l dans la " . $id_etagere. " étagère";
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 9;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return array('create' => $create, 'msg' => $msg, 'msg_tab' => $msg_tab);
     }
 
     //----------------------------------------------------------------------------------------------------------
 
-    public function getAllStockdateSortie($date)
+    public function getAllStockdateSortie($date, $apiKey)
     {
         $string = "date_sortie='" . $date."'";
 
@@ -234,12 +280,20 @@ class StockRepository
             $stock[$i]->setentrepot(selectJoinDB("ETAGERES", "ETAGERES.id_entrepot ,ENTREPOTS.nom_entrepot", $string, "id_etagere=" . $stockArray[$i]['id_etagere'])[0]);
 
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 9;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $stock;
     }
 
     //----------------------------------------------------------------------------------------------------------------------------
 
-    public function getAllStockSortie($id)
+    public function getAllStockSortie($id, $apiKey)
     {
         $join="INNER JOIN ETAGERES et on et.id_etagere = s.id_etagere INNER JOIN ENTREPOTS en on en.id_entrepot = et.id_entrepot";
         $stockArray = selectjoinDB("STOCKS s", "*",$join, "et.id_entrepot=".$id." AND quantite_produit >0 AND date_entree IS NULL","bool");
@@ -272,6 +326,14 @@ class StockRepository
 
 
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "Produit not deleted .";
+        $id_secteur = 9;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         return $stock;
 
     }

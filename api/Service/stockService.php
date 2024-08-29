@@ -256,7 +256,7 @@ class StockService {
         $userRole = getRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
             $stockRepository = new StockRepository();
-            return $stockRepository->deleteStock($id);
+            return $stockRepository->deleteStock($id,$apiKey);
         }else{
             exit_with_message("You didn't have access to this command");
         }
@@ -278,13 +278,13 @@ class StockService {
 
     //--------------------------------------------------------------------------------------
 
-    public function updateStock($id_stock, $qteEtagere)
+    public function updateStock($id_stock, $qteEtagere,$apiKey)
 
     {
 
         $act=selectDB("STOCKS","quantite_produit"  ,"id_stock=".$id_stock);
         $act= (int) $act[0]["quantite_produit"]- (int)$qteEtagere;
-        updateDB("STOCKS",["quantite_produit"] , [$act] ,"id_stock=".$id_stock);
+        updateDB("STOCKS",["quantite_produit"] , [$act] ,"id_stock=".$id_stock,$apiKey);
     }
 
     public function getAllStockdateSortie($date_sortie, $apiKey)
@@ -292,7 +292,7 @@ class StockService {
         $userRole = getRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
             $stockRepository = new StockRepository();
-            return $stockRepository->getAllStockdateSortie($date_sortie);
+            return $stockRepository->getAllStockdateSortie($date_sortie,$apiKey);
         }else{
             exit_with_message("You didn't have access to this command");
         }
@@ -305,7 +305,7 @@ class StockService {
         $userRole = getRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
             $stockRepository = new StockRepository();
-            return $stockRepository->getAllStockSortie($id);
+            return $stockRepository->getAllStockSortie($id,$apiKey);
         }else{
             exit_with_message("You didn't have access to this command");
         }
