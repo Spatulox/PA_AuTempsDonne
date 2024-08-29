@@ -256,7 +256,7 @@ class UserService {
             exit_with_message("error getting dispo ");
         }
         $userRepository = new UserRepository();
-        return $userRepository->GetAllUserDate($id_jour);
+        return $userRepository->GetAllUserDate($id_jour,$apiKey);
     }
 
     //--------------------------------------------------------------------------

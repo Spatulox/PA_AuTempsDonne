@@ -19,7 +19,7 @@ class TrajetService {
         $TrajetRepository->createTrajet($tab,$apiKey);
     }
 
-    public function createTrajetInDB($tab, $id_vehicule){
+    public function createTrajetInDB($tab, $id_vehicule,$apikey){
 
         $validVehicle = selectDB("VEHICULES", "*", "id_vehicule=".$id_vehicule . " AND appartenance = 1", "bool");
         if(!$validVehicle){
@@ -27,7 +27,7 @@ class TrajetService {
         }
 
         $TrajetRepository = new TrajetRepository();
-        $TrajetRepository->createTrajetInDB($tab, $id_vehicule);
+        $TrajetRepository->createTrajetInDB($tab, $id_vehicule,$apikey);
     }
 }
 
