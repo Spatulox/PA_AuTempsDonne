@@ -1,7 +1,7 @@
 <?php
 
 include_once './Service/ingredientService.php';
-//include_once './Models/recetteModel.php';
+include_once './Models/ingredientModel.php';
 include_once './exceptions.php';
 
 
