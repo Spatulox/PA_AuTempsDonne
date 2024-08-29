@@ -217,7 +217,7 @@ function controller($uri) {
             fichierController($uri, $apiKey);
         case 'recipe':
             // Just for test
-            fillRecipeDb();
+            fillRecipeDb($uri);
             break;
 
 
