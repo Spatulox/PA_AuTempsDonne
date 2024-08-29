@@ -47,7 +47,7 @@ class ingredientRepository
             exit_with_message("Ingredient already exists",500);
         }
 
-        insertDB("INGREDIENT", ["nom_ingredient","unit_mesure"],  [$nom_ingredient,$unit_mesure],"-@");
+        insertDB("INGREDIENT", ["nom_ingredient","unit_mesure"],  [$nom_ingredient,$unit_mesure]);
 
         exit_with_message("Insertion successful");
     }
