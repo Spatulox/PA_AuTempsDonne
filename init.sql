@@ -712,6 +712,6 @@ VALUES
    (5,'entrepots'),
    (6,'demande'),
    (7,'activite'),
-   (8,'Adresse')
+   (8,'Adresse'),
    (9,'Stock');
    
