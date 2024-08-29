@@ -15,7 +15,7 @@ class recetteService {
         $repo->getAllRecette();
     }
 
-    public function createRecette(array $recette, mixed $ingredients)
+    public function createRecette(array $recette, array $ingredients)
     {
         $repo = new recetteRepository();
         $repo->createRecette($recette, $ingredients);
