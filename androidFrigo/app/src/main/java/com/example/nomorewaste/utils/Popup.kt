@@ -3,12 +3,23 @@ package com.example.nomorewaste.utils
 import android.app.AlertDialog
 import android.widget.Toast
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 
 class Popup {
 
     fun makeToast(context: Context, message: String, long: Boolean = false) {
-        Toast.makeText(context, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            // Nous sommes déjà sur le thread principal, affichons directement le Toast
+            Toast.makeText(context, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
+        } else {
+            // Nous ne sommes pas sur le thread principal, utilisons Handler pour basculer
+            Handler(Looper.getMainLooper()).post {
+                Toast.makeText(context, message, if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT).show()
+            }
+        }
     }
+
 
     /**
      * Affiche un message et attend une confirmation de l'utilisateur :
