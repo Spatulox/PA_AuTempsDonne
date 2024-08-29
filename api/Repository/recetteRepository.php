@@ -108,13 +108,106 @@ class recetteRepository
             exit_with_message("Sucessfully created recette", 200);
         }
     }
-    //---------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------------------
 
     private function getLastInsertId($table, $id)
     {
         $string = "ORDER BY " . $id . " DESC LIMIT 1";
         $envoie = selectDB($table, $id, -1, $string);
         return $envoie;
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------------
+
+    public function SearchRecette(array $ingredients)
+    {
+
+        $string = " (id_ingredient= " . $ingredients[0]["id_ingredient"] . " and quantite_recette<= " . $ingredients[0]["quantite_ingredient"].") ";
+        for ($i = 1; $i <count($ingredients) ; $i++) {
+            $string = $string." or  (id_ingredient= " . $ingredients[$i]["id_ingredient"] . " and quantite_recette <= " . $ingredients[$i]["quantite_ingredient"].") ";
+        }
+
+        $sql= selectJoinDB(" RECETTE r", "DISTINCT *", 'JOIN DANS d ON r.id_recette = d.id_recette' ,$string);
+
+        $recipeCounts = [];
+        $recipeNames = [];
+
+
+        foreach ($sql as $item) {
+            $recipeId = $item['id_recette'];
+            $recipeCounts[$recipeId] = ($recipeCounts[$recipeId] ?? 0) + 1;
+            $recipeNames[$recipeId] = $item['nom_recette'];
+        }
+
+
+        $recipeArray = [];
+        foreach ($recipeCounts as $recipeId => $count) {
+            $recipeArray[] = [
+                "id_recette" => $recipeId,
+                "nom_recette" => $recipeNames[$recipeId],
+                "nb_ingredients_matches" => $count
+            ];
+        }
+
+
+        //---------------------------------
+        $string="r.id_recette IN (";
+
+        for ($j = 0; $j < count($recipeArray)-1; $j++) {
+            $string= $string . $recipeArray[$j][ "id_recette"]. ", " ;
+        }
+        ;
+        $string= $string . $recipeArray[$j][ "id_recette"]. ")" ;
+
+        $sql= selectJoinDB(" RECETTE r", "DISTINCT *", 'JOIN DANS d ON r.id_recette = d.id_recette' ,$string);
+
+        $recipeCounts = [];
+        $recipeNames = [];
+
+
+        foreach ($sql as $item) {
+            $recipeId = $item['id_recette'];
+            $recipeCounts[$recipeId] = ($recipeCounts[$recipeId] ?? 0) + 1;
+            $recipeNames[$recipeId] = $item['nom_recette'];
+        }
+
+
+        $recipeArray2 = [];
+        foreach ($recipeCounts as $recipeId => $count) {
+            $recipeArray2[] = [
+                "id_recette" => $recipeId,
+                "nom_recette" => $recipeNames[$recipeId],
+                "nb_ingredients_matches" => $count
+            ];
+        }
+
+        // Créer un tableau associatif pour faciliter la comparaison
+        $recipeArray2Assoc = array_column($recipeArray2, null, 'id_recette');
+
+        // Filtrer les recettes avec au moins 50% des ingrédients
+        $filteredRecipes = array_filter($recipeArray, function($recipe) use ($recipeArray2Assoc) {
+            $totalIngredients = $recipeArray2Assoc[$recipe['id_recette']]['nb_ingredients_matches'];
+            $matchedIngredients = $recipe['nb_ingredients_matches'];
+            return ($matchedIngredients / $totalIngredients) >= 0.5; // 50% ou plus
+        });
+
+        // Trier les recettes filtrées par pourcentage d'ingrédients correspondants (décroissant)
+        usort($filteredRecipes, function($a, $b) use ($recipeArray2Assoc) {
+            $percentA = $a['nb_ingredients_matches'] / $recipeArray2Assoc[$a['id_recette']]['nb_ingredients_matches'];
+            $percentB = $b['nb_ingredients_matches'] / $recipeArray2Assoc[$b['id_recette']]['nb_ingredients_matches'];
+            return $percentB <=> $percentA;
+        });
+
+        // Ajouter le pourcentage d'ingrédients correspondants à chaque recette
+        $finalRecipes = array_map(function($recipe) use ($recipeArray2Assoc) {
+            $totalIngredients = $recipeArray2Assoc[$recipe['id_recette']]['nb_ingredients_matches'];
+            $matchedIngredients = $recipe['nb_ingredients_matches'];
+            $percentage = ($matchedIngredients / $totalIngredients) * 100;
+            $recipe['pourcentage_ingredients'] = round($percentage, 2);
+            return $recipe;
+        }, $filteredRecipes);
+
+        exit_with_content($finalRecipes);
     }
 
 }

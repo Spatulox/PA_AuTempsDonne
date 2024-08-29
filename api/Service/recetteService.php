@@ -21,6 +21,13 @@ class recetteService {
         $repo->createRecette($recette, $ingredients);
     }
 
+    public function SearchRecette(array $ingredients)
+    {
+
+        $repo = new recetteRepository();
+        $repo->SearchRecette($ingredients);
+    }
+
 
 }
 ?>

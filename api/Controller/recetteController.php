@@ -56,6 +56,30 @@ function recetteController($uri, $apikey)
 
             }
 
+            if ($uri[3] == "search"){
+
+                if (empty($json['ingredients'])) {
+                    exit_with_message("La liste des ingredients ne peut pas être vide",500);
+                }
+
+                foreach ($json['ingredients'] as $ingredient) {
+                    if (!isset($ingredient['id_ingredient']) || !isset($ingredient['quantite_ingredient']) || !isset($ingredient['unit_mesure_ingredient'])) {
+                        exit_with_message("Les champs ne sont pas tous completer ",500);
+                    }
+                }
+
+                $ingredients = $json['ingredients'];
+
+                foreach ($ingredients as $ingredient) {
+                    $id_ingredient = $ingredient['id_ingredient'];
+                    $quantite_ingredient = $ingredient['quantite_ingredient'];
+                    $unit_mesure_ingredient = $ingredient['unit_mesure_ingredient'];
+                }
+
+                $service->SearchRecette($ingredients);
+
+            }
+
             break;
 
         case 'PUT':
