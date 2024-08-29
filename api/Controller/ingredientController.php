@@ -26,11 +26,11 @@ function ingredientController($uri, $apikey)
             $service = new ingredientService();
             if (!$uri[3]) {
 
-                if(!isset($json["nom_ingredient"]) ){
+                if(!isset($json["nom_ingredient"]) || !isset($json["unit_mesure"]) ){
                     exit_with_message("vous n'avez pas rempli la case ingredient");
                 }
 
-                $service->createingredient($json["nom_ingredient"]);
+                $service->createingredient($json["nom_ingredient"],$json["unit_mesure"]);
 
             }
 

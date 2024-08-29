@@ -15,10 +15,10 @@ class ingredientService {
         $repo->getAllingredients();
     }
 
-    public function createingredient($nom_ingredient)
+    public function createingredient($nom_ingredient,$unit_mesure)
     {
         $repo = new ingredientRepository();
-        $repo->createingredient($nom_ingredient);
+        $repo->createingredient($nom_ingredient,$unit_mesure);
     }
 
 

@@ -22,10 +22,13 @@ class ingredientRepository
         if (!$liste) {
             exit_with_message("Impossible to select data for recette in the DB");
         }
+
+        
         for ($i=0; $i < count($liste); $i++) {
             $ingredientModel = new IngredientModels(
                 $liste[$i]['id_ingredient'],
-                $liste[$i]['nom_ingredient']
+                $liste[$i]['nom_ingredient'],
+                $liste[$i]['unit_mesure']
             );
 
             $listeArray[$i]=$ingredientModel;
@@ -36,7 +39,7 @@ class ingredientRepository
     }
 
    //-------------------------------------------------------------------------------------
-    public function createingredient($nom_ingredient)
+    public function createingredient($nom_ingredient,$unit_mesure)
     {
         $check=selectDB("INGREDIENT","*","nom_ingredient='".$nom_ingredient."'","bool");
 
@@ -44,7 +47,7 @@ class ingredientRepository
             exit_with_message("Ingredient already exists",500);
         }
 
-        insertDB("INGREDIENT", ["nom_ingredient"],  [$nom_ingredient]);
+        insertDB("INGREDIENT", ["nom_ingredient","unit_mesure"],  [$nom_ingredient,$unit_mesure],"-@");
 
         exit_with_message("Insertion successful");
     }
