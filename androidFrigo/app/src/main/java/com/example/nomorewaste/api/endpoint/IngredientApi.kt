@@ -30,7 +30,8 @@ class IngredientApi(private val context: Context) {
                             Log.d("IngredientApi", "Parsing ingredient: $jsonObject")
                             val id = jsonObject.getInt("id_ingredient")
                             val name = jsonObject.getString("nom_ingredient")
-                            ingredientList.add(Ingredient(id, name))
+                            val unit_mesure = jsonObject.getString("unit_mesure")
+                            ingredientList.add(Ingredient(id, name, unit_mesure))
                         } catch (e: Exception) {
                             Log.e("IngredientApi", "Error parsing ingredient", e)
                         }

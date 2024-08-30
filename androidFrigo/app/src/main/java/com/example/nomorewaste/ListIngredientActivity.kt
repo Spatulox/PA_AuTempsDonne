@@ -82,7 +82,7 @@ class ListIngredientActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 searchJob?.cancel()
                 searchJob = lifecycleScope.launch {
-                    delay(100) // Délai pour éviter les appels pdt la frappe
+                    delay(200) // Délai pour éviter les appels pdt la frappe
                     viewModel.searchIngredients(this@ListIngredientActivity, s.toString())
                 }
             }
@@ -98,7 +98,7 @@ class ListIngredientActivity : AppCompatActivity() {
         input.inputType = InputType.TYPE_CLASS_NUMBER
 
         AlertDialog.Builder(this)
-            .setTitle("Quantité pour ${ingredient.name}")
+            .setTitle("Quantité pour ${ingredient.name} (${ingredient.unit_measure})")
             .setView(input)
             .setPositiveButton("OK") { _, _ ->
                 val quantity = input.text.toString().toIntOrNull() ?: 0
@@ -106,9 +106,6 @@ class ListIngredientActivity : AppCompatActivity() {
             }
             .setNegativeButton("Annuler", null)
             .show()
-
-        val selectedIngredientsString = viewModel.selectedIngredients.value?.toString() ?: "Liste vide"
-        Popup().showInformationDialog(this@ListIngredientActivity, selectedIngredientsString)
     }
 }
 

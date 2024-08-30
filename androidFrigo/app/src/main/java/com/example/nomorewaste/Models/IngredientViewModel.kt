@@ -1,22 +1,76 @@
 package com.example.nomorewaste.Models
 
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.nomorewaste.api.endpoint.IngredientApi
 import com.example.nomorewaste.utils.Popup
+import java.io.Serializable
 
 data class Ingredient(
     val id: Int,
-    val name: String
-)
+    val name: String,
+    val unit_measure: String
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readString() ?: "", // Assurez-vous de gérer les valeurs nulles
+        parcel.readString() ?: "" // Lire le champ unit_measure
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeString(name)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Ingredient> {
+        override fun createFromParcel(parcel: Parcel): Ingredient {
+            return Ingredient(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Ingredient?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
+
 
 data class SelectedIngredient(
     val ingredient: Ingredient,
     var quantity: Int
-)
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readParcelable(Ingredient::class.java.classLoader)!!,
+        parcel.readInt()
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeParcelable(ingredient, flags)
+        parcel.writeInt(quantity)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<SelectedIngredient> {
+        override fun createFromParcel(parcel: Parcel): SelectedIngredient {
+            return SelectedIngredient(parcel)
+        }
+
+        override fun newArray(size: Int): Array<SelectedIngredient?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
 
 class IngredientViewModel : ViewModel() {
 
