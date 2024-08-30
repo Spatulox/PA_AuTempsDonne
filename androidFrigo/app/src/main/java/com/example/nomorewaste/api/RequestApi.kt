@@ -9,6 +9,7 @@ import com.android.volley.toolbox.Volley
 import com.example.nomorewaste.Managers.ApiKeyManager
 //import com.example.nomorewaste.constantes.ConstantesAPI.AppConstants
 import com.example.nomorewaste.utils.Popup
+import org.json.JSONArray
 import org.json.JSONException
 
 class RequestApi {
@@ -34,9 +35,13 @@ class RequestApi {
             ConstantesAPI.AppConstants.API_BASE_URL + endpoint,
             { response ->
                 val responseData = try {
-                    JSONObject(response)
+                    JSONArray(response)
                 } catch (e: JSONException) {
-                    response
+                    try {
+                        JSONObject(response)
+                    } catch (e: JSONException) {
+                        response
+                    }
                 }
                 callback(responseData)
             },
