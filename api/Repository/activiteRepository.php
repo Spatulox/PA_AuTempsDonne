@@ -23,7 +23,8 @@ class ActiviteRepository {
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Récupération de la liste des activités ";
+
         $id_secteur = 7;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -44,7 +45,7 @@ class ActiviteRepository {
         );
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Consultation de l'activité ID " . $id .".";
         $id_secteur = 7;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -72,7 +73,7 @@ class ActiviteRepository {
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Création d'une nouvelle activité : '" . $activite->nom_activite .".";
         $id_secteur = 7;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -101,7 +102,7 @@ class ActiviteRepository {
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "mise a jour d'une activité .";
         $id_secteur = 7;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -121,7 +122,7 @@ class ActiviteRepository {
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "supprime une activité  .";
         $id_secteur = 7;
         $id_user =getIdUserFromApiKey($apiKey);
 
