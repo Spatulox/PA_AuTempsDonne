@@ -125,6 +125,16 @@ function fillRecipeDb($uri){
                 }
             }
         }
+        /*
+         * UPDATE INGREDIENT i SET unit_mesure = (SELECT unit_mesure_ingredient FROM DANS WHERE id_ingredient = i.id_ingredient LIMIT 1) WHERE EXISTS (SELECT 1 FROM DANS WHERE id_ingredient = i.id_ingredient);
+         */
+
+        // Fill the TABLE INGREDIENT with the mesure_unit
+        $conditionSet = "(SELECT unit_mesure_ingredient FROM DANS WHERE id_ingredient = i.id_ingredient LIMIT 1 )";
+        $finalCondition = "EXISTS (SELECT 1 FROM DANS WHERE id_ingredient = i.id_ingredient)";
+        updateDB("INGREDIENT i", ["unit_mesure"] [$conditionSet], $finalCondition, "-@");
+
+
         exit_with_message("Recette filled", 200);
     }
 
