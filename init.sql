@@ -127,7 +127,7 @@ CREATE TABLE UTILISE(
 CREATE TABLE INGREDIENT(
    id_ingredient INT AUTO_INCREMENT,
    nom_ingredient NVARCHAR(100),
-   unit_mesure NVARCHAR(4),
+   unit_mesure NVARCHAR(255),
    PRIMARY KEY(id_ingredient)
 );
 
