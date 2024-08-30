@@ -48,6 +48,10 @@ class MainActivity : AppCompatActivity() {
             popup.makeToast(this, "Loading informations")
 
             LocalUserManager.refreshData(this@MainActivity)
+
+            val intent = Intent(this, ListIngredientActivity::class.java)
+            ResultLauncher.launch(intent)
+
         }
 
     }
