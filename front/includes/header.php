@@ -37,7 +37,7 @@ $message = hasMessageInUrl($_SERVER['REQUEST_URI']);
 ?>
 
 <header>
-	<a href="./actualites.php"><img src="../Images/Au_Temps_Donne.png" onclick="redirect('./actualites.php')"></a>
+	<a href="./actualites.php"><img src="../Images/Logo.png" onclick="redirect('./actualites.php')"></a>
 	<nav>
 		<ul>
 			<?php
