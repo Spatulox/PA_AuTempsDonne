@@ -41,7 +41,7 @@ class StockRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Consultation des stocks  .";
         $id_secteur = 1;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -89,7 +89,7 @@ class StockRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Consultation des stocks dans l'entrepots ".$id.".";
         $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -119,7 +119,7 @@ class StockRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "creation des stocks .";
         $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -179,7 +179,7 @@ class StockRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Consultation des stocks sortis ";
         $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -198,7 +198,7 @@ class StockRepository
         if ($request) {
 
             $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
+            $description_hist = "suppression des stocks .";
             $id_secteur = 9;
             $id_user =getIdUserFromApiKey($apiKey);
 
@@ -236,7 +236,7 @@ class StockRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "ajout de stocks .";
         $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -280,7 +280,7 @@ class StockRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Consultation des stocks sortis .";
         $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -326,7 +326,7 @@ class StockRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Consultation des stocks sortis pour l'entrepôt ID " . $id . " . " ;
         $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
