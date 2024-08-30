@@ -52,6 +52,30 @@ class ingredientRepository
         exit_with_message("Insertion successful");
     }
 
+    //-------------------------------------------------------------------------------------
+
+    public function getIngredientsByname($apikey, $name){
+
+        $liste=selectDB("INGREDIENT","*","nom_ingredient LIKE '%".$name."%'","bool");
+
+        if ($liste) {
+            $listeArray =[];
+            for ($i=0; $i < count($liste); $i++) {
+                $ingredientModel = new IngredientModels(
+                    $liste[$i]['id_ingredient'],
+                    $liste[$i]['nom_ingredient'],
+                    $liste[$i]['unit_mesure']
+                );
+
+                $listeArray[$i]=$ingredientModel;
+            }
+            exit_with_content($listeArray);
+
+        }
+
+        exit_with_message("No result");
+    }
+
 
 }
 ?>
