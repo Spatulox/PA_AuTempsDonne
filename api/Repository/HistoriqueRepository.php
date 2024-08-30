@@ -25,17 +25,23 @@ class HistoriqueRepository
 
         for ($i = 0; $i < count($request); $i++) {
 
+           $email= getEmailFromIdUser($request[$i]["id_user"]);
+
             $historique = [
                 "id_historique" => $request[$i]["id_historique"],
                 "description_hist" => $request[$i]["description_hist"],
                 "heure_historisation" => $request[$i]["heure_historisation"],
                 "id_secteur" => $request[$i]["id_secteur"],
                 "nom_secteur" => $request[$i]["nom_secteur"],
-                "id_user" => $request[$i]["id_user"]
+                "email" => $email
             ];
 
             $array[$i] = $historique;
         }
+
+        usort($array, function($a, $b) {
+            return strtotime($b['heure_historisation']) - strtotime($a['heure_historisation']);
+        });
 
         exit_with_content($array);
     }
