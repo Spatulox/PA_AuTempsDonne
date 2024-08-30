@@ -48,6 +48,7 @@ if($role == 1 || $role == 2){
     echo '<script type="text/javascript" src="../JSManager/GestionDemandes.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionActivite.js"></script>';
     echo '<script type="text/javascript" src="../JSManager/GestionAddress.js"></script>';
+    echo '<script type="text/javascript" src="../JSManager/HistoriqueAdmin.js"></script>';
 
     echo '<script type="text/javascript" src="../JS/qrcode.js"></script>';
     echo '<script type="text/javascript" src="../JS/pdfmake.js"></script>';

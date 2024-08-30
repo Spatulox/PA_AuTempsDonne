@@ -35,6 +35,7 @@
                         <li><a style="color: #0c2124" href="./gestDon.php" target="_blank"><?php echo($data["don"]["title"]) ?></a></li>
                         <li><a style="color: #0c2124" href="./gestDemandes.php" target="_blank"><?php echo($data["gestDemande"]["title"]) ?></a></li>
                         <li><a style="color: #0c2124" href="./gestAddress.php" target="_blank"><?php echo($data["gestAddress"]["title"]) ?></a></li>
+                        <li><a style="color: #0c2124" href="./historique.php" target="_blank"><?php echo($data["historique"]["title"]) ?></a></li>
                     </ul>
                 </div>
 
