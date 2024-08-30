@@ -14,17 +14,20 @@ import java.io.Serializable
 data class Ingredient(
     val id: Int,
     val name: String,
+    val quantite_recette: Int = 0,
     val unit_measure: String? = "null"
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString() ?: "", // Assurez-vous de gérer les valeurs nulles
+        parcel.readInt(),
         parcel.readString() ?: "" // Lire le champ unit_measure
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeString(name)
+        parcel.writeInt(quantite_recette)
         parcel.writeString(unit_measure)
     }
 
