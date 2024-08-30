@@ -185,7 +185,12 @@ class recetteRepository
         $filteredRecipes = array_filter($recipeArray, function($recipe) use ($recipeArray2Assoc) {
             $totalIngredients = $recipeArray2Assoc[$recipe['id_recette']]['nb_ingredients_matches'];
             $matchedIngredients = $recipe['nb_ingredients_matches'];
-            return ($matchedIngredients / $totalIngredients) >= 0.5; // 50% ou plus
+
+            $thingToReturn = ($matchedIngredients / $totalIngredients) >= 0.5; // 50% ou plus
+            if(!$thingToReturn) {
+                $thingToReturn = ($matchedIngredients / $totalIngredients) >= 0.2; // 20% ou plus
+            }
+            return $thingToReturn;
         });
 
 
