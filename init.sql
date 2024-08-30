@@ -251,7 +251,7 @@ CREATE TABLE DEMANDE(
 
 CREATE TABLE ETAGERES(
    id_etagere INT AUTO_INCREMENT,
-   nombre_de_place INT NOT NULL,
+   nombre_de_mcube INT NOT NULL,
    code VARCHAR(255) NOT NULL,
    id_entrepot INT NOT NULL,
    PRIMARY KEY(id_etagere),
@@ -273,6 +273,8 @@ CREATE TABLE DON(
 CREATE TABLE STOCKS(
    id_stock INT AUTO_INCREMENT,
    quantite_produit INT NOT NULL,
+   mcube INT NOT NULL,
+   poids float NOT NULL,
    date_entree DATE,
    date_sortie DATE,
    date_peremption DATE,
@@ -449,7 +451,7 @@ INSERT INTO ENTREPOTS (nom_entrepot, parking, id_adresse) VALUES
 ('Entrepot Saint_Martin', 4, 3);
 
 
-INSERT INTO ETAGERES (nombre_de_place ,code, id_entrepot) VALUES
+INSERT INTO ETAGERES (nombre_de_mcube ,code, id_entrepot) VALUES
 (500,"255ba2e00eee912a0e83d46f5b6c90f0816ec9b3ab1c51850ed43b4ad50f8f63",1),
 (1000,"2c2c414882fd59e38e878abc6a96d2a86013b85951d2ec6eed9e8c22b5e6027d",1),
 (1000,"958666110ec960ed062a5371bf71ae9bc95d8008d1e6ec340ee0709cf316a94e",1),
@@ -693,15 +695,15 @@ VALUES
 
 
 
-  INSERT INTO STOCKS (quantite_produit, date_entree, date_sortie, date_peremption, desc_produit, id_produit, id_etagere)
+  INSERT INTO STOCKS (quantite_produit,,mcube ,poids  ,date_entree, date_sortie, date_peremption, desc_produit, id_produit, id_etagere)
 VALUES
-  (75, '2024-05-06', NULL, '2025-04-20', 'clair', 1, 8),
-  (12, '2024-05-06', NULL, '2025-04-20', 'pansement', 8, 8),
-  (30, '2024-05-06', NULL, NULL, 'pansement', 9, 8),
-  (30, '2024-05-06', NULL, NULL, 'pansement', 9, 1),
-  (400, '2024-05-06', NULL, '2024-05-06', 'brun', 1, 1),
-  (70, '2024-05-06', NULL, '2024-05-06', '', 2, 1),
-  (130, '2024-05-06', NULL, '2024-05-06', '', 2, 2);
+  (75,10,8, '2024-05-06', NULL, '2025-04-20', 'clair', 1, 8),
+  (12,10,2.6, '2024-05-06', NULL, '2025-04-20', 'pansement', 8, 8),
+  (30,20,6, '2024-05-06', NULL, NULL, 'pansement', 9, 8),
+  (30,15,0.5, '2024-05-06', NULL, NULL, 'pansement', 9, 1),
+  (400,80,80, '2024-05-06', NULL, '2024-05-06', 'brun', 1, 1),
+  (70,45,6.5, '2024-05-06', NULL, '2024-05-06', '', 2, 1),
+  (130,38,13, '2024-05-06', NULL, '2024-05-06', '', 2, 2);
 
    INSERT INTO SECTEUR (id_secteur,nom_secteur)
    VALUES
@@ -712,6 +714,6 @@ VALUES
    (5,'entrepots'),
    (6,'demande'),
    (7,'activite'),
-   (8,'Adresse')
+   (8,'Adresse'),
    (9,'Stock');
    
