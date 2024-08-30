@@ -31,8 +31,11 @@ class recetteRepository
                 ];
             }
 
+            $nom_ingre = selectDB("INGREDIENT", "nom_ingredient", "id_ingredient='".$item["id_ingredient"]."'")[0]["nom_ingredient"];
+
             $liste = [
                 "id_ingredient" => $item["id_ingredient"],
+                "nom_ingredient" => $nom_ingre,
                 "quantite_recette" => $item["quantite_recette"],
                 "unit_mesure_ingredient" => $item["unit_mesure_ingredient"]
             ];
