@@ -30,14 +30,14 @@ class RecipeDetailsActivity : AppCompatActivity() {
             loadRecipe(recipeId)
         } else {
             Log.e("RecipeDetailActivity", "Invalid Recipe ID")
-            Popup().showInformationDialog(this@RecipeDetailsActivityBLEUBLEUBLEU, "An error occurred...")
+            Popup().showInformationDialog(this@RecipeDetailsActivity, "An error occurred...")
             finish()
         }
     }
 
     private fun loadRecipe(id: Int) {
         lifecycleScope.launch {
-            val recipe = RecipeApi().getRecipeId(this@RecipeDetailsActivityBLEUBLEUBLEU, id)
+            val recipe = RecipeApi().getRecipeId(this@RecipeDetailsActivity, id)
             recipe?.let {
                 recipeNameTextView.text = it.nom_recette
                 recipeDescriptionTextView.text = it.description
