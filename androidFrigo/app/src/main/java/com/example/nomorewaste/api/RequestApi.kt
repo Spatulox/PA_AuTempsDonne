@@ -91,9 +91,13 @@ class RequestApi {
             { response ->
                 println(response)
                 val responseData = try {
-                    JSONObject(response)
+                    JSONArray(response)
                 } catch (e: JSONException) {
-                    response
+                    try {
+                        JSONObject(response)
+                    } catch (e: JSONException) {
+                        response
+                    }
                 }
                 callback(responseData)
             },
@@ -145,9 +149,13 @@ class RequestApi {
             { response ->
                 println(response)
                 val responseData = try {
-                    JSONObject(response)
+                    JSONArray(response)
                 } catch (e: JSONException) {
-                    response
+                    try {
+                        JSONObject(response)
+                    } catch (e: JSONException) {
+                        response
+                    }
                 }
                 callback(responseData)
             },
@@ -199,9 +207,13 @@ class RequestApi {
             { response ->
                 println(response)
                 val responseData = try {
-                    JSONObject(response)
+                    JSONArray(response)
                 } catch (e: JSONException) {
-                    response
+                    try {
+                        JSONObject(response)
+                    } catch (e: JSONException) {
+                        response
+                    }
                 }
                 callback(responseData)
             },

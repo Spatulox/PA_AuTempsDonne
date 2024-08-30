@@ -60,7 +60,8 @@ class IngredientViewModel : ViewModel() {
         _selectedIngredients.value = newList
     }
 
-    fun clearSelectedIngredients() {
+    fun clearSelectedIngredients(context: Context) {
+        Popup().makeToast(context, "Liste d'ingrédients vidé")
         _selectedIngredients.value = emptyList()
     }
 }
