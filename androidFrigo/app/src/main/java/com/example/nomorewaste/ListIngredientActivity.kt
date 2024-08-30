@@ -53,11 +53,14 @@ class ListIngredientActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.searchRecipesButton).setOnClickListener {
             val intent = Intent(this, SearchRecipesActivity::class.java)
+            val selectedIngredients = viewModel.selectedIngredients.value ?: emptyList()
+            intent.putParcelableArrayListExtra("SELECTED_INGREDIENTS", ArrayList(selectedIngredients))
+
             startActivity(intent)
         }
 
         findViewById<Button>(R.id.clearIngredientsButton).setOnClickListener {
-            viewModel.clearSelectedIngredients()
+            viewModel.clearSelectedIngredients(this@ListIngredientActivity)
         }
 
         loadIngredients()
