@@ -10,7 +10,7 @@ class UserRepository {
 
     //-------------------------------------
 
-    public function getUsers($index = 2,$apiKey){
+    public function getUsers($index = 2,$apiKey= null){
         $usersArray = selectDB("UTILISATEUR", "*", "id_index='".$index."'");
 
         $user = [];
@@ -21,12 +21,14 @@ class UserRepository {
             $user[$i] = returnUser($usersArray, $address, $i);
         }
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 1;
-        $id_user =getIdUserFromApiKey($apiKey);
+        if($apiKey != null) {
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 1;
+            $id_user = getIdUserFromApiKey($apiKey);
 
-        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+        }
 
         return $user;
     }
