@@ -450,6 +450,7 @@
         const dateSelectFin = document.getElementById("dateSelectEnd");
         if(!dateSelectDebut.value || !dateSelectFin.value){
             popup("Vous devez donner une heure de départ et de fin")
+            return
         }
         let startDate = new Date(dateSelectDebut.value);
         const endDate = new Date(dateSelectFin.value);
