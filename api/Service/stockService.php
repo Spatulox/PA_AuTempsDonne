@@ -25,7 +25,7 @@ class StockService {
         $userRole = getRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
             $stockRepository = new StockRepository();
-            return $stockRepository->getAllStock();
+            return $stockRepository->getAllStock($apiKey);
         }else{
             exit_with_message("You don't have access to this command");
         }
@@ -38,7 +38,7 @@ class StockService {
     {
 
         $stockRepository = new StockRepository();
-        return $stockRepository->getAllStockInEntrepots($id);
+        return $stockRepository->getAllStockInEntrepots($id,$apiKey);
 
     }
 
@@ -49,7 +49,7 @@ class StockService {
         $userRole = getRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
             $stockRepository = new StockRepository();
-            return $stockRepository->getAllProduitsInEntrepots($id,$produit);
+            return $stockRepository->getAllProduitsInEntrepots($id,$produit,$apiKey);
         }else{
             exit_with_message("You don't have access to this command");
         }
@@ -159,7 +159,7 @@ class StockService {
 
                 if($toutranger != $bkpProduit){
                     $msg = "Il reste ". ($bkpProduit - $toutranger) . "L produit(s) à ranger car plus de place dans cet entrepot";
-                    return $stockRepository->addStock($tabb, $stock, $msg, $tabRenvoyer);
+                    return $stockRepository->addStock($tabb, $stock, $msg, $tabRenvoyer,$apiKey);
                 }
 
                 //
@@ -170,7 +170,7 @@ class StockService {
                     echo "1";
                 }
 
-                return $stockRepository->addStock($tabb ,$stock,$msg,$tabRenvoyer);
+                return $stockRepository->addStock($tabb ,$stock,$msg,$tabRenvoyer,$apiKey);
 
                 //exit_with_content();
 
@@ -220,13 +220,13 @@ class StockService {
                         $tabb[$id_produit_stock[$j]['id_etagere']] = $qteEtagere;
                         $stock->quantite_produit = $stock->quantite_produit - $qteEtagere;
 
-                        $this->updateStock($id_produit_stock[$j]["id_stock"], $qteEtagere);
+                        $this->updateStock($id_produit_stock[$j]["id_stock"], $qteEtagere,$apiKey);
 
                     } else {
                         $tabb[$id_produit_stock[$j]['id_etagere']] = $stock->quantite_produit;
                         $qteEtagere=$stock->quantite_produit ;
 
-                        $this->updateStock($id_produit_stock[$j]["id_stock"],$qteEtagere);
+                        $this->updateStock($id_produit_stock[$j]["id_stock"],$qteEtagere,$apiKey);
                         $stock->quantite_produit = 0;
                         break;
                     }
@@ -236,7 +236,7 @@ class StockService {
                 }
 
                 $msg="";
-                return $stockRepository->addStock($tabb ,$stock,$msg,$tabRenvoyer);
+                return $stockRepository->addStock($tabb ,$stock,$msg,$tabRenvoyer,$apiKey);
 
 
             }
@@ -283,7 +283,7 @@ class StockService {
         $act= (int) $act[0]["quantite_produit"]- (int)$qteEtagere;
         updateDB("STOCKS",["quantite_produit"] , [$act] ,"id_stock=".$id_stock,$apiKey);
     }
-
+//--------------------------------------------------------------------------------------------
     public function getAllStockdateSortie($date_sortie, $apiKey)
     {
         $userRole = getRoleFromApiKey($apiKey);

@@ -12,7 +12,7 @@ class StockRepository
     }
 
 
-    public function getAllStock( $apiKey)
+    public function getAllStock($apiKey)
     {
 
         $stockArray = selectDB("STOCKS", "*", " quantite_produit >0 AND date_sortie IS NULL");
@@ -89,7 +89,7 @@ class StockRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Consultation des stocks dans l'entrepots ".$id.".";
+        $description_hist = "Consultation des stocks dans l\'entrepots ".$id.".";
         $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -252,7 +252,7 @@ class StockRepository
         $string = "date_sortie='" . $date."'";
 
         $string_join = "INNER JOIN ETAGERES ON STOCKS.id_etagere = ETAGERES.id_etagere INNER JOIN ENTREPOTS ON ETAGERES.id_entrepot = ENTREPOTS.id_entrepot ";;
-        $stockArray = selectJoinDB("STOCKS", "*", $string_join, "STOCKS.$string"." AND quantite_produit >0 AND date_entree IS NULL","-@");
+        $stockArray = selectJoinDB("STOCKS", "*", $string_join, "STOCKS.$string"." AND quantite_produit >0 AND date_entree IS NULL");
 
 
         $stock = [];
@@ -326,7 +326,7 @@ class StockRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Consultation des stocks sortis pour l'entrepôt ID " . $id . " . " ;
+        $description_hist = "Consultation des stocks sortis pour l\'entrepôt ID " . $id . " . " ;
         $id_secteur = 9;
         $id_user =getIdUserFromApiKey($apiKey);
 

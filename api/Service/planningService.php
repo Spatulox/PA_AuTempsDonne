@@ -17,7 +17,7 @@ class   PlanningService {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2) {
             $planningRepository = new PlanningRepository();
-            return $planningRepository->getAllPlanning();
+            return $planningRepository->getAllPlanning($apiKey);
         }else{
             exit_with_message("You don't have access to this command");
         }
@@ -34,7 +34,7 @@ class   PlanningService {
         }
 
         $planningRepository = new PlanningRepository();
-        $planningRepository->getPlanningByIdUser($id);
+        $planningRepository->getPlanningByIdUser($id,$apiKey);
     }
 
     /*
@@ -97,7 +97,7 @@ class   PlanningService {
             $id_activite
         );
         $updatedPlanning->setId($id_planning);
-        $planningRepository->updatePlanning($updatedPlanning);
+        $planningRepository->updatePlanning($updatedPlanning,null);
     }
 
     /*
@@ -108,7 +108,7 @@ class   PlanningService {
         $userRole = $this->getUserRoleFromApiKey($apiKey);
         if ($userRole[0]==1 || $userRole[0]==2 || $userRole[0]==3) {
              $planningRepository = new PlanningRepository();
-            $planningRepository->deletePlanning($id);
+            $planningRepository->deletePlanning($id,$apiKey);
 
         }
         exit_with_message("You don't have access to this command", 403);
@@ -120,7 +120,7 @@ class   PlanningService {
     */
     public function joinActivity($userId, $planningId, $confirme, $apiKey) {
 
-        $user=selectDB("UTILISATEUR", "*", "validate_files=1 id_user=" . $userId,"bool");
+        $user=selectDB("UTILISATEUR", "*", "validate_files=1 and id_user=" . $userId,"bool");
 
         if (!$user[0]["id_user"] ) {
             exit_with_message("Cet utilisateur n'existe pas, ou ses fichiers ne sont validés", 400);

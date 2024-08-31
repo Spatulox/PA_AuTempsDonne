@@ -45,7 +45,7 @@ class ActiviteRepository {
         );
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Consultation de l'activité ID " . $id .".";
+        $description_hist = "Consultation de l\'activité ID " . $id .".";
         $id_secteur = 7;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -102,7 +102,7 @@ class ActiviteRepository {
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "mise a jour d'une activité .";
+        $description_hist = "mise a jour d\'une activité .";
         $id_secteur = 7;
         $id_user =getIdUserFromApiKey($apiKey);
 

@@ -42,7 +42,7 @@ function returnPlanning($dataFromDb, $i = 0){
 
     $planning->setId($dataFromDb[$i]['id_planning']);
 
-    $planning->setAddress($plannRepo->getTrajetFromId($dataFromDb[$i]["id_trajets"]));
+    $planning->setAddress($plannRepo->getTrajetFromId($dataFromDb[$i]["id_trajets"],null));
 
     $planning->setIndexPlanning(selectDB("INDEXPLANNING", "index_nom_planning", "id_index_planning=".$dataFromDb[$i]['id_index_planning'])[0]);
     $planning->setActivity(selectDB("ACTIVITES", "nom_activite", "id_activite=".$dataFromDb[$i]['id_activite'])[0]);

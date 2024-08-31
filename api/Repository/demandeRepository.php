@@ -118,7 +118,7 @@ class DemandeRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "recuperation des demandes de l'utilisateur". $id_user .".";
+        $description_hist = "recuperation des demandes de l\'utilisateur". $id_user .".";
         $id_secteur = 6;
         $id_user =getIdUserFromApiKey($apiKey);
 

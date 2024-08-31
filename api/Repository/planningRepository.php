@@ -11,7 +11,7 @@ class PlanningRepository {
        
     }
 
-    private function getTrajetFromId($id,$apiKey) {
+    public function getTrajetFromId($id,$apiKey) {
 
         $tabAddresse = [];
 
@@ -28,13 +28,15 @@ class PlanningRepository {
                 $tabAddresse[] = $addresse[$i]["ADRESSE"];
             }
         }
+        if ($apiKey !=null){
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 4;
+            $id_user =getIdUserFromApiKey($apiKey);
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 4;
-        $id_user =getIdUserFromApiKey($apiKey);
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+        }
 
-        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 
         return $tabAddresse;
 
@@ -62,7 +64,7 @@ class PlanningRepository {
 
     //--------------------------------------------------------------------------
 
-    public function getPlanningByid($id,$apiKey){
+    public function getPlanningByid($id,$apiKey=null){
         $planningArray = selectDB("PLANNINGS", "*", "id_planning=".$id);
 
 
@@ -71,11 +73,12 @@ class PlanningRepository {
         for ($i=0; $i < count($planningArray); $i++) {
             $planning[$i] = returnPlanning($planningArray, $i);
         }
-
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 4;
-        $id_user =getIdUserFromApiKey($apiKey);
+        if ($apiKey !=null) {
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Produit not deleted .";
+            $id_secteur = 4;
+            $id_user = getIdUserFromApiKey($apiKey);
+        }
 
         return $planning[0];
     }
@@ -191,13 +194,16 @@ class PlanningRepository {
     if (!$updated) {
         exit_with_message("Erreur, le planning n'a pas pu être mis à jour. Veuillez réessayer.", 500);
     }
+if ($apiKey !=null){
+    $historiqueRepo = new HistoriqueRepository();
+    $description_hist = "Produit not deleted .";
+    $id_secteur = 4;
+    $id_user =getIdUserFromApiKey($apiKey);
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 4;
-        $id_user =getIdUserFromApiKey($apiKey);
+}
 
-    exit_with_content($this->getPlanningByid($planning->id_planning));
+
+    exit_with_content($this->getPlanningByid($planning->id_planning,$apiKey));
 }
 
 
@@ -461,6 +467,8 @@ class PlanningRepository {
         exit_with_content($this->getPlanningByid($id),200);
 
     }
+
+    //----------------------------------------------------------------------------------------------------------------------------
 
     public function updatejoinPlanning($id_planning, $confirme, $id,$apiKey)
     {
