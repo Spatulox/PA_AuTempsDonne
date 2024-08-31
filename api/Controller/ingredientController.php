@@ -15,6 +15,9 @@ function ingredientController($uri, $apikey)
             if($uri[3] == "all"){
                 $service->getAllingredients($apikey);
             }
+            if(isset($uri[3])){
+                $service->getIngredientByName($apikey, $uri[3]);
+            }
 
             break;
 

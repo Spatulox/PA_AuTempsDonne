@@ -66,7 +66,7 @@ function recetteController($uri, $apikey)
                 }
 
                 foreach ($json['ingredients'] as $ingredient) {
-                    if (!isset($ingredient['id_ingredient']) || !isset($ingredient['quantite_ingredient']) || !isset($ingredient['unit_mesure_ingredient'])) {
+                    if (!isset($ingredient['id_ingredient']) || !isset($ingredient['quantite_ingredient'])) {
                         exit_with_message("Les champs ne sont pas tous completer ",500);
                     }
                 }
@@ -76,7 +76,7 @@ function recetteController($uri, $apikey)
                 foreach ($ingredients as $ingredient) {
                     $id_ingredient = $ingredient['id_ingredient'];
                     $quantite_ingredient = $ingredient['quantite_ingredient'];
-                    $unit_mesure_ingredient = $ingredient['unit_mesure_ingredient'];
+                    $unit_mesure_ingredient = null;
                 }
 
                 $service->SearchRecette($ingredients);

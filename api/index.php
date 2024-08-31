@@ -22,6 +22,8 @@ include_once './Controller/ingredientController.php';
 include_once './Controller/historiqueController.php';
 include_once './Controller/fichierController.php';
 
+include_once './fillRecipes.php';
+
 
 // Skipper les warnings, pour la production (vos exceptions devront être gérées proprement)
 error_reporting(E_ERROR | E_PARSE);
@@ -213,6 +215,10 @@ function controller($uri) {
             break;
         case 'fichier':
             fichierController($uri, $apiKey);
+        case 'recipe':
+            // Just for test
+            fillRecipeDb($uri);
+            break;
 
 
         default:

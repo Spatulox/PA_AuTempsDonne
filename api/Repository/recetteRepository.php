@@ -31,9 +31,11 @@ class recetteRepository
                 ];
             }
 
+            $nom_ingre = selectDB("INGREDIENT", "nom_ingredient", "id_ingredient='".$item["id_ingredient"]."'")[0]["nom_ingredient"];
 
             $liste = [
                 "id_ingredient" => $item["id_ingredient"],
+                "nom_ingredient" => $nom_ingre,
                 "quantite_recette" => $item["quantite_recette"],
                 "unit_mesure_ingredient" => $item["unit_mesure_ingredient"]
             ];
@@ -186,7 +188,12 @@ class recetteRepository
         $filteredRecipes = array_filter($recipeArray, function($recipe) use ($recipeArray2Assoc) {
             $totalIngredients = $recipeArray2Assoc[$recipe['id_recette']]['nb_ingredients_matches'];
             $matchedIngredients = $recipe['nb_ingredients_matches'];
-            return ($matchedIngredients / $totalIngredients) >= 0.5; // 50% ou plus
+
+            $thingToReturn = ($matchedIngredients / $totalIngredients) >= 0.5; // 50% ou plus
+            if(!$thingToReturn) {
+                $thingToReturn = ($matchedIngredients / $totalIngredients) >= 0.2; // 20% ou plus
+            }
+            return $thingToReturn;
         });
 
 

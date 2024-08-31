@@ -1,4 +1,6 @@
 .idea
 android/.idea
 android/.gradle
+androidFrigo/.idea
+androidFrigo/.gradle
 api/files

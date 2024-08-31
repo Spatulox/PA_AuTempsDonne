@@ -80,9 +80,9 @@ class UserRepository {
 
     //-------------------------------------
 
-    public function getUserApi($api){
+    public function getUserApi($apiKey){
 
-        $user = selectDB("UTILISATEUR", "*", "apikey='".$api."'", "bool");
+        $user = selectDB("UTILISATEUR", "*", "apikey='".$apiKey."'", "bool");
         if(!$user){
             exit_with_message('Wrong apikey or no data');
         }
