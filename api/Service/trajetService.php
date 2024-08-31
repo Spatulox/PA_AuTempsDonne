@@ -11,7 +11,7 @@ class TrajetService {
 
     public function getTrajetById($id,$apiKey) {
         $TrajetRepository = new TrajetRepository();
-        $TrajetRepository->getTrajetById($id);
+        $TrajetRepository->getTrajetById($id,$apiKey);
     }
 
     public function createTrajet($tab,$apiKey) {

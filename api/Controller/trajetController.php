@@ -20,7 +20,7 @@ function trajetController($uri, $apiKey){
 
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                $TrajetService->getTrajetById($uri[3]);
+                $TrajetService->getTrajetById($uri[3],$apiKey);
             }
 
 
@@ -56,7 +56,7 @@ function trajetController($uri, $apiKey){
             }
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                $TrajetService->getTrajetById($uri[3]);
+                $TrajetService->getTrajetById($uri[3],$apiKey);
             }
 
 
