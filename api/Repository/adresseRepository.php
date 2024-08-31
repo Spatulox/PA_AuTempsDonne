@@ -27,7 +27,7 @@ class adresseRepository {
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Consultation de toutes les adresses .";
         $id_secteur = 8;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -55,7 +55,7 @@ class adresseRepository {
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Consultation de l'adresses ". $id ." .";
         $id_secteur = 8;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -83,7 +83,7 @@ class adresseRepository {
             $add = selectDB("ADRESSE", "*", "adresse='".$address."'", "bool")[0];
 
             $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
+            $description_hist = "Creation d'adresses ";
             $id_secteur = 8;
             $id_user = ($apiKey != null ? getIdUserFromApiKey($apiKey) : 1);
 
@@ -105,7 +105,7 @@ class adresseRepository {
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "suppression adresses ";
         $id_secteur = 8;
         $id_user =getIdUserFromApiKey($apiKey);
 

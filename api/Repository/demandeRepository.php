@@ -118,7 +118,7 @@ class DemandeRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "recuperation des demandes de l'utilisateur". $id_user .".";
         $id_secteur = 6;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -169,7 +169,7 @@ class DemandeRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "creation demande";
         $id_secteur = 6;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -197,7 +197,7 @@ class DemandeRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "mise a jour de la demande". $id_demande .".";
         $id_secteur = 6;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -240,7 +240,7 @@ class DemandeRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "suppression de la demande ". $id .".";
         $id_secteur = 6;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -284,7 +284,7 @@ class DemandeRepository
         updateDB("DEMANDE", ["etat", "id_planning"], [$etat, $last_planning[0]["id_planning"]], "id_demande=" . $id);
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Validation de la demande ID " . $id .".";
         $id_secteur = 6;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -321,7 +321,7 @@ class DemandeRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Validation de la demande ID " . $id .".";
         $id_secteur = 6;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -343,7 +343,7 @@ class DemandeRepository
             }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "recuperation demande en attente.";
         $id_secteur = 6;
         $id_user =getIdUserFromApiKey($apiKey);
 

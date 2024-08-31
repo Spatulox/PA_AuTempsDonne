@@ -72,7 +72,7 @@ class EntrepotRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Consultation des données des entrepôts.";
         $id_secteur = 5;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -99,7 +99,7 @@ class EntrepotRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "Consultation des données des entrepôts.";
         $id_secteur = 5;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -138,7 +138,7 @@ class EntrepotRepository
             }
 
             $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
+            $description_hist = "creation des entrepôts .";
             $id_secteur = 5;
             $id_user =getIdUserFromApiKey($apiKey);
 
@@ -175,7 +175,7 @@ class EntrepotRepository
         if (updateDB("ENTREPOTS", $columnArray, $valuesArray, "id_entrepot=" . $entr->id_entrepot, "bool")) {
 
             $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
+            $description_hist = "mise a jour des données des entrepôts";
             $id_secteur = 5;
             $id_user =getIdUserFromApiKey($apiKey);
 
@@ -227,7 +227,7 @@ class EntrepotRepository
         }
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "suppression entrepôts.";
         $id_secteur = 5;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -239,7 +239,7 @@ class EntrepotRepository
 
     //-------------------------------------------------------------------------------------
 
-    public function createEtageres($entrepot, $etageres_place)
+    public function createEtageres($entrepot, $etageres_place,$apiKey)
     {
         for ($i = 0; $i < count($etageres_place); $i++) {
             $last_id=$this->getLastInsertId("ETAGERES","id_etagere");
@@ -252,6 +252,14 @@ class EntrepotRepository
                 exit_with_message("Error creating Etagere", 500);
             }
         }
+
+        $historiqueRepo = new HistoriqueRepository();
+        $description_hist = "creation des données des etageres.";
+        $id_secteur = 5;
+        $id_user =getIdUserFromApiKey($apiKey);
+
+        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         exit_with_message("Etagere added with success", 200);
     }
 
@@ -288,7 +296,7 @@ class EntrepotRepository
             deleteDB("ETAGERES", "id_etagere=" . $id);
 
             $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
+            $description_hist = "suppression des données des etageres.";
             $id_secteur = 5;
             $id_user =getIdUserFromApiKey($apiKey);
 
@@ -324,7 +332,7 @@ class EntrepotRepository
         $sum=$place-$sum;
 
         $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
+        $description_hist = "recuperation de la place dispo dans un entrepots.";
         $id_secteur = 5;
         $id_user =getIdUserFromApiKey($apiKey);
 
@@ -349,13 +357,6 @@ class EntrepotRepository
     {
         $code=selectDB("ETAGERES", "*", "id_etagere=" . $id, "bool");
         $tmpModel = ["key" => $code[0]["code"]];
-
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 5;
-        $id_user =getIdUserFromApiKey($apiKey);
-
-        $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 
         exit_with_content($tmpModel, 200);
     }
