@@ -28,13 +28,14 @@ class PlanningRepository {
                 $tabAddresse[] = $addresse[$i]["ADRESSE"];
             }
         }
-        if ($apiKey !=null){
+        if ($apiKey != null){
             $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
+            $description_hist = " recuperation de trajet.";
             $id_secteur = 4;
             $id_user =getIdUserFromApiKey($apiKey);
 
             $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         }
 
 
@@ -54,10 +55,15 @@ class PlanningRepository {
             $planning[$i] = returnPlanning($planningArray, $i);
         }
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 4;
-        $id_user =getIdUserFromApiKey($apiKey);
+        if ($apiKey != null){
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = " recuperation de planning  .";
+            $id_secteur = 4;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+        }
 
         return $planning;
     }
@@ -73,11 +79,14 @@ class PlanningRepository {
         for ($i=0; $i < count($planningArray); $i++) {
             $planning[$i] = returnPlanning($planningArray, $i);
         }
-        if ($apiKey !=null) {
+        if ($apiKey != null){
             $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
+            $description_hist = " recuperation de planning  .";
             $id_secteur = 4;
-            $id_user = getIdUserFromApiKey($apiKey);
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
         }
 
         return $planning[0];
@@ -107,10 +116,15 @@ class PlanningRepository {
             }
         }
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
+            if ($apiKey != null){
+                $historiqueRepo = new HistoriqueRepository();
+                $description_hist = " recuperation de planning  .";
+                $id_secteur = 4;
+                $id_user =getIdUserFromApiKey($apiKey);
+
+                $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+            }
 
         return $allPlanning;
     }
@@ -135,10 +149,15 @@ class PlanningRepository {
             }
         }
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 4;
-        $id_user =getIdUserFromApiKey($apiKey);
+        if ($apiKey != null){
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = " recuperation de planning  .";
+            $id_secteur = 4;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+        }
 
         exit_with_content($allPlanning);
     }
@@ -168,10 +187,15 @@ class PlanningRepository {
             insertDB("PARTICIPE",["id_user","id_planning"],[$id_user,$lastId[0]["id_planning"]]);
         }
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 4;
-        $id_user =getIdUserFromApiKey($apiKey);
+        if ($apiKey != null){
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = " creation de planning  .";
+            $id_secteur = 4;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+        }
 
         exit_with_content($this->getPlanningByid($lastId[0]["id_planning"]),200);
     }
@@ -194,13 +218,15 @@ class PlanningRepository {
     if (!$updated) {
         exit_with_message("Erreur, le planning n'a pas pu être mis à jour. Veuillez réessayer.", 500);
     }
-if ($apiKey !=null){
-    $historiqueRepo = new HistoriqueRepository();
-    $description_hist = "Produit not deleted .";
-    $id_secteur = 4;
-    $id_user =getIdUserFromApiKey($apiKey);
+        if ($apiKey != null){
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = " mise a jour de planning  .";
+            $id_secteur = 4;
+            $id_user =getIdUserFromApiKey($apiKey);
 
-}
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+        }
 
 
     exit_with_content($this->getPlanningByid($planning->id_planning,$apiKey));
@@ -213,18 +239,28 @@ if ($apiKey !=null){
         $deleted = deleteDB("PLANNINGS", "id_planning=".$id,"bool");
         if(!$deleted){
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
+            if ($apiKey != null){
+                $historiqueRepo = new HistoriqueRepository();
+                $description_hist = " echec suppression de planning  .";
+                $id_secteur = 4;
+                $id_user =getIdUserFromApiKey($apiKey);
+
+                $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+            }
 
             exit_with_message("Error, the planning can't be deleted, plz try again", 500);
         }else{
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
+            if ($apiKey != null){
+                $historiqueRepo = new HistoriqueRepository();
+                $description_hist = " suppression de planning  .";
+                $id_secteur = 4;
+                $id_user =getIdUserFromApiKey($apiKey);
+
+                $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+            }
 
             exit_with_message("Planning deleted",200);
         }
@@ -242,20 +278,10 @@ if ($apiKey !=null){
 
         if(!$user){
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
-
             exit_with_message("Cet utilisateur n'existe pas");
         }
 
         if(!$planning){
-
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("Ce planning n'existe pas");
         }
@@ -263,10 +289,6 @@ if ($apiKey !=null){
         $check=selectDB("PARTICIPE", "*", "id_planning=".$planningId." AND id_user=".$userId,"bool");
         if ($check){
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
 
             exit_with_message("Cet utilisateur est deja inscrit",500);
         }
@@ -276,18 +298,28 @@ if ($apiKey !=null){
 
         if ($create) {
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
+            if ($apiKey != null){
+                $historiqueRepo = new HistoriqueRepository();
+                $description_hist = " attribution de personnel aux planning  .";
+                $id_secteur = 4;
+                $id_user =getIdUserFromApiKey($apiKey);
+
+                $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+            }
 
             exit_with_message("le bénévole à bien été attribué au planning",200);
         } else {
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
+            if ($apiKey != null){
+                $historiqueRepo = new HistoriqueRepository();
+                $description_hist = "echec attribution de personnel aux planning  .";
+                $id_secteur = 4;
+                $id_user =getIdUserFromApiKey($apiKey);
+
+                $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+            }
 
             exit_with_message("le bénévole n'a pas pu être attribué au planning");
         }
@@ -301,11 +333,6 @@ if ($apiKey !=null){
         $check =selectDB("PLANNINGS" , "id_planning" ,"id_planning=" .$planning[1],'bool');
         if (!$check){
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
-
             exit_with_message("Erreur: planning n'existe pas ");
         }
 
@@ -313,29 +340,34 @@ if ($apiKey !=null){
 
         if (!$check){
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
-
             exit_with_message("Erreur: planning n'existe pas ");
         }
 
         $create = updateDB("PLANNINGS", [ "id_trajets"], [$planning[0]], "id_planning=".$planning[1]);
         if ($create) {
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
+            if ($apiKey != null){
+                $historiqueRepo = new HistoriqueRepository();
+                $description_hist = " attribution de trajet aux planning  .";
+                $id_secteur = 4;
+                $id_user =getIdUserFromApiKey($apiKey);
+
+                $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+            }
 
             exit_with_message("le trajet a bien etait attribuer aux plannings",200);
         } else {
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
+            if ($apiKey != null){
+                $historiqueRepo = new HistoriqueRepository();
+                $description_hist = "echec attribution de trajet aux planning  .";
+                $id_secteur = 4;
+                $id_user =getIdUserFromApiKey($apiKey);
+
+                $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+            }
 
             exit_with_message("le trajet n'a pas peux etre attribuer aux plannings",500);
         }
@@ -353,10 +385,15 @@ if ($apiKey !=null){
             $planning[$i] = returnPlanning($planningArray, $i);
         }
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 4;
-        $id_user =getIdUserFromApiKey($apiKey);
+        if ($apiKey != null){
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "recuperation de planning  .";
+            $id_secteur = 4;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+        }
 
         return $planning;
     }
@@ -383,10 +420,15 @@ if ($apiKey !=null){
             $planning[$i] = returnPlanning($planningArray, $i);
         }
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 4;
-        $id_user =getIdUserFromApiKey($apiKey);
+        if ($apiKey != null){
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "recuperation de planning  .";
+            $id_secteur = 4;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+        }
 
         return $planning;
     }
@@ -409,10 +451,15 @@ if ($apiKey !=null){
             $planning[$i] = returnPlanning($planningArray, $i);
         }
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 4;
-        $id_user =getIdUserFromApiKey($apiKey);
+        if ($apiKey != null){
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "recuperation de planning non affecté .";
+            $id_secteur = 4;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+        }
 
         return $planning;
     }
@@ -427,10 +474,15 @@ if ($apiKey !=null){
         if (!$planningArray)
         {
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
+            if ($apiKey != null){
+                $historiqueRepo = new HistoriqueRepository();
+                $description_hist = "essay de recuperation de planning affecter .";
+                $id_secteur = 4;
+                $id_user =getIdUserFromApiKey($apiKey);
+
+                $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+            }
 
             exit_with_message("Erreur, le planning n'existe pas",500);
         }
@@ -441,10 +493,15 @@ if ($apiKey !=null){
             $planning[$i] = returnPlanning($planningArray, $i);
         }
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 4;
-        $id_user =getIdUserFromApiKey($apiKey);
+        if ($apiKey != null){
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "recuperation de planning affecter .";
+            $id_secteur = 4;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+        }
 
         return $planning;
     }
@@ -459,10 +516,15 @@ if ($apiKey !=null){
             exit_with_message("Error when updating the planning",500);
         }
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 4;
-        $id_user =getIdUserFromApiKey($apiKey);
+        if ($apiKey != null){
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = "Mise a jour planning valider .";
+            $id_secteur = 4;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+        }
 
         exit_with_content($this->getPlanningByid($id),200);
 
@@ -474,10 +536,15 @@ if ($apiKey !=null){
     {
         updateDB("PARTICIPE" ,["confirme"], [$confirme] ,"id_planning=".$id_planning." AND id_user=".$id);
 
-        $historiqueRepo = new HistoriqueRepository();
-        $description_hist = "Produit not deleted .";
-        $id_secteur = 4;
-        $id_user =getIdUserFromApiKey($apiKey);
+        if ($apiKey != null){
+            $historiqueRepo = new HistoriqueRepository();
+            $description_hist = " mise a jour commentaire de la participation .";
+            $id_secteur = 4;
+            $id_user =getIdUserFromApiKey($apiKey);
+
+            $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+        }
 
         return $this->getPlanningByid($id_planning);
     }
@@ -490,18 +557,28 @@ if ($apiKey !=null){
 
         if ($del !== false)
         {
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
+            if ($apiKey != null){
+                $historiqueRepo = new HistoriqueRepository();
+                $description_hist = " suppression utilisateur de planning  .";
+                $id_secteur = 4;
+                $id_user =getIdUserFromApiKey($apiKey);
 
-            exit_with_message("l'utilisateur a etait supprimer de l'activiter ",200);
+                $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+            }
+
+            exit_with_message("l'utilisateur a ete supprimer de l'activiter ",200);
         }else{
 
-            $historiqueRepo = new HistoriqueRepository();
-            $description_hist = "Produit not deleted .";
-            $id_secteur = 4;
-            $id_user =getIdUserFromApiKey($apiKey);
+            if ($apiKey != null){
+                $historiqueRepo = new HistoriqueRepository();
+                $description_hist = " echec suppression utilisateur  de planning  .";
+                $id_secteur = 4;
+                $id_user =getIdUserFromApiKey($apiKey);
+
+                $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
+
+            }
 
         exit_with_message("erreur lors  de la suppression de utilisateur",500);
         }
