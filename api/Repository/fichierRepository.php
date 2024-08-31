@@ -24,7 +24,7 @@ class fichierRepository
         // to Rework
         $data = selectDB("FICHIER", "*", "id_user=".$id_user, 'bool');
         if(!$data){
-            exit_with_message("No files", 400);
+            exit_with_message("No files", 404);
         }
 
         $all = [];
@@ -40,7 +40,7 @@ class fichierRepository
 
         $data = selectDB("FICHIER", "*", "nom_fichier='".$name."'");
         if(!$data){
-            exit_with_message("No files", 400);
+            exit_with_message("No files", 404);
         }
         $data = $data[0];
 
@@ -68,7 +68,7 @@ class fichierRepository
     {
         $data = selectDB("FICHIER", "*", "nom_fichier='" . $nom . "'", 'bool');
         if (!$data) {
-            exit_with_message("No files", 400);
+            exit_with_message("No files", 404);
         }
 
         $filePath = $data[0]["chemin_fichier"] . $data[0]["nom_fichier"];

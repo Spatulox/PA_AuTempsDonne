@@ -78,7 +78,7 @@
                         <li id="" class="marginTop10"><input class="noMarginImportant" type="text" id="u_telephone" name="u_telephone" placeholder="<?php echo($data["moncompte"]["form"]["placeholderPhone"]) ?>"></li>
                         <li id="" class="marginTop10"><input class="noMarginImportant" type="text" id="u_name" name="u_name" placeholder="<?php echo($data["moncompte"]["form"]["placeholderName"]) ?>"></li>
                         <li id="" class="marginTop10"><input class="noMarginImportant" type="text" id="u_lastname" name="u_lastname" placeholder="<?php echo($data["moncompte"]["form"]["placeholderLastname"]) ?>"></li>					</ul>
-					<input class="noMarginImportant" type="button" name="updateAccount" value="<?php echo($data["moncompte"]["form"]["inputUpdate"]) ?>" id="updateAccount">
+					<input class="noMarginImportant" type="button" name="updateAccount" value="<?php echo($data["moncompte"]["form"]["inputUpdate"]) ?>" id="updateAccount" onclick="updateLeUser()">
 				</div>
 			</section>
 
@@ -159,6 +159,34 @@
         await fileManager.uploadFile(formData)
         await getUserFile(fileManager.id_user)
         stopLoading()
+    }
+
+
+    async function updateLeUser() {
+        let u_email = document.getElementById("u_email").value
+        let u_telephone = document.getElementById("u_telephone").value
+        let u_name = document.getElementById("u_name").value
+        let u_lastname = document.getElementById("u_lastname").value
+
+        const userBabla = new User()
+        await userBabla.connect()
+
+        in_email = u_email ? u_email : userBabla.email
+        in_telephone = u_telephone ? u_telephone : userBabla.telephone
+        in_nom = u_name ? u_name : userBabla.nom
+        in_prenom = u_lastname ? u_lastname : userBabla.prenom
+
+        startLoading()
+        const response = await userBabla.updateUser(in_nom, in_prenom, in_telephone, in_email)
+
+        if (response) {
+            popup("Updated successfully")
+            await userBabla.me(true)
+        } else {
+            popup("Something went wrong")
+        }
+        stopLoading()
+        myAccount()
     }
 
 </script>

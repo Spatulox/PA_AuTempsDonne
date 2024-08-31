@@ -179,7 +179,7 @@ class UserRepository {
         $data = updateDB("UTILISATEUR", [$cle], [$data] , "id_user='".$id_user."'");
 
         if($data){
-            exit_with_content($this->getUser($id_user));
+            return true;
         }
         exit_with_message("User was not updated");
     }

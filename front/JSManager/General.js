@@ -120,7 +120,7 @@ class General {
      */
     optionGet() {
 
-        if (this.apikey === "hidden") {
+        if (this.apikey === "hidden" || this.apikey === null || this.apikey === undefined) {
             this.loginApi()
         }
 
@@ -140,7 +140,7 @@ class General {
      * @returns {{headers: {apikey: string, "Content-Type": string}, method: string, body: string}}
      */
     optionPost(data) {
-        if (this.apikey === "hidden") {
+        if (this.apikey === "hidden" || this.apikey === null || this.apikey === undefined) {
             this.loginApi();
         }
 
@@ -161,9 +161,11 @@ class General {
      * @returns {{headers: {apikey: string, "Content-Type": string}, method: string}}
      */
     optionPut(data) {
-        if (this.apikey === "hidden") {
+        if (this.apikey === "hidden" || this.apikey === null || this.apikey === undefined) {
             this.loginApi();
         }
+
+        console.log(this.apikey)
 
         const options = {
             method: 'PUT',
@@ -182,7 +184,7 @@ class General {
      * @returns {{headers: {apikey: string, "Content-Type": string}, method: string}}
      */
     optionDelete() {
-        if (this.apikey === "hidden" || this.apikey === null) {
+        if (this.apikey === "hidden" || this.apikey === null || this.apikey === undefined) {
             this.loginApi();
         }
 

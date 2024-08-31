@@ -67,7 +67,7 @@ class UserService {
         $id_user = getIdUserFromApiKey($apiKey);
 
 
-        $idUserUpdate = getIdUSerFromEmail($dataArray["email"],$apiKey);
+        $idUserUpdate = getIdUSerFromEmail($dataArray["email"]);
 
         if($role > 2 && $id_user != $idUserUpdate){
             exit_with_message("Vous ne pouvez pas update un utilisateur qui n'est pas vous");

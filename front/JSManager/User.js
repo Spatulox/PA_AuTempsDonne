@@ -200,11 +200,30 @@ class User extends General{
             "nom" : this.nom
         }
 
+        const newBigCookie = {
+                "id_user":this.id_user,
+                "nom":this.nom,
+                "prenom":this.prenom,
+                "email":this.email,
+                "telephone":this.telephone,
+                "date_inscription":this.date_inscription,
+                "id_role":this.role,
+                "password":null,
+                "id_entrepot":this.id_entrepot,
+                "entrepot":this.nom,
+                "roleString":this.roleArray[this.role],
+                "index":this.id_index,
+                "premiumDate":this.premiumDate,
+                "premiumTime":this.premiumTime
+        }
+
+        await this.setBigCookie(newBigCookie)
+        console.log("Mise a jour en cours")
+
         const response = await this.fetchSync(this.adresse+"/user", this.optionPut(data))
-        if(!this.compareAnswer(response, "Impossible de mettre à jour l'utilisateur")){
+        if(!this.compareAnswer(response)){
             return false
         }
-        popup("Mise à jour de vos informations terminée")
         return response
 
     }
@@ -304,8 +323,8 @@ class User extends General{
             "date_inscription":rep.date_inscription,
             "id_role":rep.id_role,
             "password":null,
-            "id_entrepot":entrepot[0].id_entrepot,
-            "entrepot":entrepot[0].nom,
+            "id_entrepot":1,//entrepot[0].id_entrepot,
+            "entrepot":1,//entrepot[0].nom,
             "roleString":this.roleArray[rep.id_role],
             "index":rep.id_index,
             "premiumDate":rep.premiumDate,
@@ -323,6 +342,10 @@ class User extends General{
      */
     async myEntrepot(){
         const entre = await this.getEntrepot()
+        if(!entre){
+            this.entrepotString = "Unknown"
+            return false
+        }
         for (let i of entre){
             if(this.entrepot === i.id_entrepot){
                 this.entrepotString = i.nom
