@@ -17,7 +17,7 @@ function adresseController($uri, $apiKey){
 
 
             elseif($uri[3] && filter_var($uri[3], FILTER_VALIDATE_INT)){
-                exit_with_content($AdresseService->getAdresseById($uri[3]),$apiKey);
+                exit_with_content($AdresseService->getAdresseById($uri[3],$apiKey));
             }
 
 

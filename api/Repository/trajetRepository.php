@@ -135,7 +135,7 @@ class TrajetRepository {
 
         foreach ($route as $id) {
             $repo = new adresseRepository();
-            $address = $repo->getAdresseById($id)[0];
+            $address = $repo->getAdresseById($id, $apiKey)[0];
 
             if ($address) {
                 $addresses[] = $address->adresse;
