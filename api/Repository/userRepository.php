@@ -78,7 +78,7 @@ class UserRepository {
 
     //-------------------------------------
 
-    public function getUserApi($api,$apiKey){
+    public function getUserApi($api){
 
         $user = selectDB("UTILISATEUR", "*", "apikey='".$api."'", "bool");
         if(!$user){
@@ -90,7 +90,7 @@ class UserRepository {
         $historiqueRepo = new HistoriqueRepository();
         $description_hist = "Produit not deleted .";
         $id_secteur = 1;
-        $id_user =getIdUserFromApiKey($apiKey);
+        $id_user =getIdUserFromApiKey($api);
 
         $historiqueRepo->Createhistorique($description_hist, $id_secteur, $id_user);
 

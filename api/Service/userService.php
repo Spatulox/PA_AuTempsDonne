@@ -12,7 +12,7 @@ class UserService {
     public function getAllUsers($apiKey) {
 
         $userRepository = new UserRepository();
-        return $userRepository->getUsers($apiKey);
+        return $userRepository->getUsers(2,$apiKey);
     }
 
     /*
