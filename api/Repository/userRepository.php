@@ -107,7 +107,7 @@ class UserRepository {
         }
 
         $add = new adresseRepository();
-        $resp = $add->CreateAdresse($addressToInsert);
+        $resp = $add->CreateAdresse($addressToInsert, null);
 
         if($resp instanceof adresseModel){
             $user->address = $resp->id_adresse;

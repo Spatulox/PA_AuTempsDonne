@@ -6,7 +6,7 @@ class TrajetModel {
 
     public $id_trajet;
     public $id_adresses;
-    public VehiculeModel $vehicule;
+    public ?VehiculeModel $vehicule;
 
 
     public function __construct($id_trajet, $id_adresses, VehiculeModel $vehicule = null) {
