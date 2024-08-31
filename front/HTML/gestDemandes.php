@@ -503,31 +503,32 @@
     }
 
     async function valideData(){
+
         startLoading()
 
         const dateSelect = document.getElementById("dateSelectDebut")
         lesDataToSendGroup.date = dateSelect.value
 
-        if( lesDataToSendGroup["id_demande"].length === 0){
+        if (lesDataToSendGroup["id_demande"].length === 0) {
             popup('Vous devez mettre des données avant de valider')
             stopLoading()
             return
         }
 
-        if(lesDataToSendGroup.id_demande.length === 0){
+        if (lesDataToSendGroup.id_demande.length === 0) {
             popup("Error, wrong request length")
             stopLoading()
             return
         }
 
-        if(lesDataToSendGroup.id_depart === -1 || lesDataToSendGroup.id_arriver === -1){
+        if (lesDataToSendGroup.id_depart === -1 || lesDataToSendGroup.id_arriver === -1) {
             popup("Error, wrong start or end")
             stopLoading()
             return
         }
 
         const selectElement = document.querySelector("#select4 > select");
-        if(selectElement.value === "Choose a Vehicle" || selectElement.value === null){
+        if (selectElement.value === "Choose a Vehicle" || selectElement.value === null) {
             popup("Sélectionnez un véhicle avant de valider")
         }
 
@@ -538,7 +539,7 @@
             return
         }
 
-        if(lesDataToSendGroup.date === "1970-01-01 00:00:00" || lesDataToSendGroup.date === ""){
+        if (lesDataToSendGroup.date === "1970-01-01 00:00:00" || lesDataToSendGroup.date === "") {
             popup("Error, wrong date")
             stopLoading()
             return
@@ -546,9 +547,10 @@
 
         const returnData = await request.validateGroupDemande(lesDataToSendGroup)
 
+
         const duh = await calcSpeedAddress(returnData, lesDataToSendGroup.id_vehicule)
 
-        if(duh === false){
+        if (duh === false) {
             popup("Error lors du calcul du chemin le plus rapide")
             stopLoading()
             return
@@ -577,9 +579,9 @@
         pdfMake.createPdf(docDefinition).download(`Trajet.pdf`);
 
         lesDataToSendGroup = {
-            "id_demande":[],
-            "id_depart":-1,
-            "id_arriver":-1,
+            "id_demande": [],
+            "id_depart": -1,
+            "id_arriver": -1,
             "date": "1970-01-01 00:00:00"
         }
 

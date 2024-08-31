@@ -15,6 +15,10 @@ async function calcSpeedAddress(addressData, id_vehicule) {
 
     const response = await fetch(ipAddressApi+"/trajet", optionPost(address));
 
+    if(!response.ok){
+        console.log(await response.text())
+        return false
+    }
     const data = await response.json();
 
     // Save id of the address as values. The key of the object if the name of the address
@@ -25,6 +29,8 @@ async function calcSpeedAddress(addressData, id_vehicule) {
 
     }
 
+    console.log(data)
+    //SAME ADDRESS AS FIRST
     const sortedAddresses = [];
     const startAddress = data.addresse[0]; // Adresse de l'entrepôt de départ
     sortedAddresses.push(startAddress);
@@ -41,6 +47,7 @@ async function calcSpeedAddress(addressData, id_vehicule) {
 
         for (let i = 0; i < intermediateAddresses.length; i++) {
             const destination = intermediateAddresses[i];
+            console.log(origin, destination)
             const distance = await getDistance(origin, destination);
 
             if (distance < shortestDistance) {

@@ -120,7 +120,7 @@ class General {
      */
     optionGet() {
 
-        if (this.apikey === "hidden" || this.apikey === null || this.apikey === undefined) {
+        if (this.apikey === "hidden") {
             this.loginApi()
         }
 
@@ -140,7 +140,7 @@ class General {
      * @returns {{headers: {apikey: string, "Content-Type": string}, method: string, body: string}}
      */
     optionPost(data) {
-        if (this.apikey === "hidden" || this.apikey === null || this.apikey === undefined) {
+        if (this.apikey === "hidden") {
             this.loginApi();
         }
 

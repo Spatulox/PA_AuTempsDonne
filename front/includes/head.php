@@ -100,7 +100,7 @@ if($role == 5){
 
 
 <?php if ($basename == "gestDemandes.php" || $basename == "request.php"): ?>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRgUYpS2R7KL3eZeSGVQYj8Gs9_lVy0x0&libraries=places"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLiW2GZ29QRybEBkUzULYA_0eTomvWjvI&libraries=places"></script>
     <script type="text/javascript" src="../JS/itineraire.js"></script>
     <script type="text/javascript" src="../JS/getDistance.js"></script>
 <?php endif; ?>
