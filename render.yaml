@@ -1,0 +1,53 @@
+services:
+  - type: web
+    name: frontend
+    env: docker
+    #image: spatulox/pa-front:latest
+    dockerCommand: docker run -p $PORT:8083 spatulox/pa-front:latest
+    envVars:
+      - key: PORT
+        value: 80
+
+  - type: web
+    name: api
+    env: docker
+    #image: spatulox/pa-api:latest
+    dockerCommand: docker run -p $PORT:8081 spatulox/pa-api:latest
+    envVars:
+      - key: PORT
+        value: 80
+
+  - type: web
+    name: ticket
+    env: docker
+    #image: spatulox/pa-ticket:latest
+    dockerCommand: docker run -p $PORT:8085 spatulox/pa-ticket:latest
+    envVars:
+      - key: PORT
+        value: 8085
+      - key: DB_CONTAINER_NAME
+        value: database
+
+  - type: pserv
+    name: database
+    env: docker
+    #image: mysql
+    disk:
+      name: db-data
+      mountPath: /var/lib/mysql
+      sizeGB: 1
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        value: ghjTkishFkfggf_HDRz85
+      - key: MYSQL_DATABASE
+        value: apiDev_db
+      - key: MYSQL_USER
+        value: apiDev
+      - key: MYSQL_PASSWORD
+        value: ghjTkishFkfggf_HDRz85
+
+databases:
+  - name: mysql
+    databaseName: apidev_db
+    user: apidev
+    plan: free
