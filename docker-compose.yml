@@ -2,11 +2,12 @@
 services:
   frontend:
     build: 
-      context: ./front/
+      context: ./front
       dockerfile: Dockerfile
-    image: spatulox/pa-front:latest
-    #volumes:
-    #  - ./front:/var/www/html/
+    image: pa-front:latest
+    #image: spatulox/pa-front:latest
+    volumes:
+      - ./front:/var/www/html/
     ports:
       - 8083:80
     depends_on:
@@ -14,13 +15,14 @@ services:
 
   api:
     build: 
-      context: ./api/
+      context: ./api
       dockerfile: Dockerfile
-    image: spatulox/pa-api:latest
+    image: pa-api:latest
+    #image: spatulox/pa-api:latest
     ports:
       - 8081:80
-    #volumes:
-    #  - ./api:/var/www/html/
+    volumes:
+      - ./api:/var/www/html/
     depends_on:
       - database
 
