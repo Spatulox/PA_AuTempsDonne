@@ -1,0 +1,375 @@
+{
+  "header": {
+    "li": {
+      "./actualites.php": "Actualities",
+      "./decouvrir.php": "Discover Us",
+      "./aide.php": "Help us",
+      "./don.php": "Give us",
+      "./moncompte.php": "Account",
+      "./signup_login.php": "Login/Sign up"
+    },
+    "connected": {
+      "./actualites.php": "Actualities",
+      "./don.php": "Give us",
+      "./planning.php": "Planning",
+      "./vehicle.php": "Vehicle Sharing",
+      "./moncompte.php": "Account",
+      "./signup_login.php": "Connexion"
+    },
+    "admin": {
+      "./admin.php": "Admin Panel",
+      "./moncompte.php": "Account"
+    },
+    "disconnect": "Deconnexion"
+  },
+  "footer": {
+    "li": {
+      "contact.php": "Contact us"
+    }
+  },
+  "404": {
+    "title": "404 Page",
+    "errorMessage": "Oops ! The page doesn't exist",
+    "goBack": "Go back to main menu"
+  },
+  "actualites": {
+    "title": "Actuality",
+    "sectionTitle": "Be Partership",
+    "button": "Buy us a coffe",
+    "buttonLink": "./donateur.php"
+  },
+  "admin": {
+    "title": "Admin Panel"
+  },
+  "aide": {
+    "title": "Help us",
+    "sectionTitle": "Help us",
+    "sections": {
+      "1": {
+        "title": "BECOME VOLUNTEER HELP",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      },
+      "2": {
+        "title": "BECOME VOLUNTER ENTERPRISE (giv food / giv clothes) ",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      },
+      "3": {
+        "title": "HELP STOREHOUSE",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      },
+      "4": {
+        "title": "VEHICLE SHARING",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact us",
+    "sectionTitle": "Contact us",
+    "li": {
+      "1": "Admin : jazzoul@gmail.com",
+      "2": "Storehouse 1 : spatulox@gmail.com",
+      "3": "Storehouse 2 : spatulox@gmail.com",
+      "4": "Datacenter : fousta@gmail.com"
+    }
+  },
+  "decouvrir": {
+    "title": "Discover Us",
+    "sectionTitle": "Discovers Us",
+    "button": "Buy us a coffe",
+    "buttonLink": "./donateur.php"
+  },
+  "don": {
+    "title": "Donation Menu",
+    "montant": "Amount",
+    "give": "Give",
+    "id": "Id_DON",
+    "date": "Date",
+    "prix": "Prix",
+    "idUser": "Id_User"
+  },
+  "etagere": {
+    "title": "Shelf Menu",
+    "tab1": {
+      "title": "List product inside Shelf",
+      "id": "ID",
+      "desc": "Description",
+      "qte": "Quantity"
+    }
+  },
+  "gestAddress": {
+    "title": "Address Menu",
+    "tab1": {
+      "title": "Listing"
+    },
+    "tab2": {
+      "title": "Add"
+    }
+  },
+  "gestPlanning": {
+    "title": "Planning Menu",
+    "tab1": {
+      "title": "Assing a task",
+      "desc": "Description",
+      "date": "Date",
+      "state": "State",
+      "type": "Type",
+      "button": "Validate",
+      "buttonD": "Delete",
+      "email": "Email",
+      "participateUsers": "Participating Users",
+      "Addresse": "Addresses"
+    },
+    "tab2": {
+      "title": "Daily Planning"
+    },
+    "tab3": {
+      "title": "Validate waiting Planning"
+    },
+    "addUser": "Add User",
+    "assign": "Assign"
+  },
+  "gestDemande": {
+    "title": "Request Menu",
+    "Create Trajet": "Create Trajet",
+    "Location to pass": "Location to pass",
+    "create": "Create",
+    "addRequest": "Add Request",
+    "tab1": {
+      "title": "Request List",
+      "id": "Id Request",
+      "desc": "Description",
+      "type": "Type",
+      "state": "State",
+      "date": "Date",
+      "activite": "Activite",
+      "id_planning": "Id_planning",
+      "?": "Collect",
+      "user": "User",
+      "button": "Manage"
+    },
+    "tab2": {
+      "title": "Request Detail"
+    },
+    "tab3": {
+      "title": "Waiting Request"
+    }
+  },
+  "historique":{
+    "title": "Historique",
+    "description":"description",
+    "date":"date",
+    "secteur":"sector",
+    "email":"e-mail"
+  },
+
+  "moncompte": {
+    "title": "Account",
+    "premium": "Upgrade to premium",
+    "premiumDayLeft" : " premium days left",
+    "sectionTitle": "Account",
+    "Ticketlink": "http://localhost:8085",
+    "Ticket": "Créer un ticket",
+    "form": {
+      "titleF1": "My Informations",
+      "inputPlanning": "Planning",
+      "titleF2": "Update my Informations",
+      "placeholderEmail": "New Email",
+      "placeholderPhone": "New Phone",
+      "placeholderName": "New Name",
+      "placeholderLastname": "New Lastname",
+      "inputUpdate": "Update"
+    },
+    "error": {
+      "errorCo": "You need to login before"
+    }
+  },
+  "planning": {
+    "title": "Planning",
+    "sectionTitle": "Planning"
+  },
+  "premium" : {
+    "title" : "Premium"
+  },
+  "product": {
+    "title": "Product Menu",
+    "tab1": {
+      "title": "List Product",
+      "id": "Id_Product",
+      "name": "Name",
+      "type": "Type",
+      "button": "See"
+    },
+    "tab2": {
+      "title": "Detail Product",
+      "errorMsg": "Select a Product to see it"
+    },
+    "tab3": {
+      "title": "Add Product"
+    }
+  },
+  "request": {
+    "title": "Request",
+    "tab1": {
+      "title": "List"
+    },
+    "tab2": {
+      "title": "Create Request"
+    },
+    "tab3": {
+      "title": "tab3"
+    }
+  },
+  "stock": {
+    "title": "Stock Menu",
+    "tab1": {
+      "title": "Storehouse List",
+      "ID_Stock": "ID Stock",
+      "QTE": "Quantity (L)",
+      "Date_Entry": "Date Entry",
+      "Date_Exit": "Date Exit",
+      "Date_perem": "Date Peremption",
+      "desc": "Description",
+      "IdEtagere": "ID Shelf",
+      "Storehouse_id": "Storehouse ID",
+      "Storehouse_desc": "Storehouse name",
+      "btn_see": "SEE"
+    },
+    "tab2": {
+      "title": "Stock in Storehouse",
+      "errorMsg": "Select a stock before"
+    },
+    "tab3": {
+      "title": "Add Product to Stock"
+    },
+    "tab4": {
+      "title": "Retrieve from Stock"
+    },
+    "tab5": {
+      "title": "Exited Stock History"
+    }
+  },
+  "signup_login": {
+    "title": "Log In/Sign Up",
+    "formSignUp": {
+      "title": "Sign up",
+      "name": "Last Name",
+      "firstname": "First Name",
+      "email": "Email",
+      "phone": "Phone",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "input": "Sign up",
+      "switch": "Log In",
+      "address": "Street",
+      "city": "City",
+      "postal": "Postal Code",
+      "status":["Select your status", "Benevole", "Beneficiaire", "Prestataire"],
+      "conduct" : "Select your Permis de Conduire"
+    },
+    "formLogin": {
+      "title": "Log in",
+      "email": "Email",
+      "password": "Password",
+      "input": "Log In",
+      "switch": "Sign Up"
+    }
+  },
+  "storehouse": {
+    "title": "Storehouse Menu",
+    "tab1": {
+      "title": "Listing",
+      "IDStorehouse": "ID Storehouse",
+      "name": "Name",
+      "ParkingPlace": "Parking Places",
+      "Addresses": "Address",
+      "Rangement": "Store Place",
+      "See": "See",
+      "shelf": "Shelf places",
+      "shelfId": "ID Shelf",
+      "postal": "Postal code"
+    },
+    "tab2": {
+      "title": "Details",
+      "errorMsg": "Nothing to show, select a storehouse before",
+      "createShelf": " Create a Shelf",
+      "availablePlace": "Remaining Places inside the Storehouse"
+    },
+    "tab3": {
+      "title": "Create Storehouse",
+      "city": "City",
+      "generalInfo": "General informations",
+      "complementary": "Complementary informations"
+    }
+  },
+  "ticket": {
+    "title": "Ticket Menu",
+    "assignFalse": "See non assign tickets",
+    "me": "See my tickets",
+    "all": "See all tickets"
+  },
+  "user": {
+    "title": "User Menu",
+    "title2": "Main Menu",
+    "AffectToPlanning": "Assign someone to planning",
+    "tab1": {
+      "title": "Users list",
+      "name": "Name/Lastname",
+      "storehouse": "Storehouse",
+      "buttonSee": "See",
+      "buttonDelete": "Delete"
+    },
+    "tab2": {
+      "title": "User details",
+      "errorMsg": "No user selected"
+    },
+    "tab3": {
+      "title": "Planning",
+      "errorMsg": "Nothing to show"
+    },
+    "tab4": {
+      "title": "User Waiting to Validate",
+      "errorMsg": "Nothing to show",
+      "button": "Validate",
+      "validatefile": "File to validate"
+    }
+  },
+  "vehicle": {
+    "title": "Vehicle Menu",
+    "tab1": {
+      "title": "All Vehicle list",
+      "id": "ID_Vehicle",
+      "capacity": "Capacity",
+      "name": "Name",
+      "place": "Places",
+      "entrepot": "Id_Entrepot",
+      "owner": "Owner",
+      "service": "Id Service",
+      "immatriculation": "Immatriculation",
+      "button": "Detail"
+    },
+    "tab1.1": {
+      "title": "Free vehicle"
+    },
+    "tab2": {
+      "title": "Vehicle details",
+      "errorMsg": "No vehicle selected"
+    },
+    "tab2.1": {
+      "title": "All Booked Vehicle",
+      "errorMsg": "Nothing to show"
+    },
+    "tab3": {
+      "title": "Add Vehicle",
+      "errorMsg": "Nothing to show"
+    },
+    "tab4": {
+      "title": "My Booked Vehicle",
+      "errorMsg": "Nothing to show"
+    },
+    "tab4.1": {
+      "title": "Vehicle I Have Booked",
+      "errorMsg": "Nothing to show"
+    }
+  }
+}
